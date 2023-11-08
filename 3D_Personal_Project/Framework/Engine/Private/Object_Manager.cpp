@@ -51,12 +51,12 @@ HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag
 		if (pLayer == nullptr)
 			return E_FAIL;
 		
-		pLayer->Add_GmaeObject(pClone);
+		pLayer->Add_GameObject(pClone);
 
 		m_mapLayer[iLevelIndex].emplace(strLayerTag, pLayer);
 	}
 	else {
-		pLayer->Add_GmaeObject(pClone);
+		pLayer->Add_GameObject(pClone);
 	}
 		
 	return S_OK;

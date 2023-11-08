@@ -49,6 +49,9 @@
     <Filter Include="01.Utility\02.GameObjects\Manager\Layer">
       <UniqueIdentifier>{94e7b571-1301-4bc2-b76d-0e6e2755487c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\98. Renderer">
+      <UniqueIdentifier>{627c5d1c-30de-47db-beef-3128561dce74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">

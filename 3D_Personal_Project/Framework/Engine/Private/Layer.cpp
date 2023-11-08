@@ -5,7 +5,7 @@ CLayer::CLayer()
 {
 }
 
-HRESULT CLayer::Add_GmaeObject(class CGameObject* pGameObject)
+HRESULT CLayer::Add_GameObject(class CGameObject* pGameObject)
 {
 	if (pGameObject == nullptr)
 		return E_FAIL;
