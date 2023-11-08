@@ -90,11 +90,11 @@
     <ClInclude Include="..\Public\GameObject.h">
       <Filter>01.Utility\02.GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GameObejct.h">
-      <Filter>01.Utility\02.GameObjects\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Layer.h">
       <Filter>01.Utility\02.GameObjects\Manager\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Manager.h">
+      <Filter>01.Utility\02.GameObjects\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,11 +122,11 @@
     <ClCompile Include="..\Private\GameObject.cpp">
       <Filter>01.Utility\02.GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GameObejct.cpp">
-      <Filter>01.Utility\02.GameObjects\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
       <Filter>01.Utility\02.GameObjects\Manager\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Object_Manager.cpp">
+      <Filter>01.Utility\02.GameObjects\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
