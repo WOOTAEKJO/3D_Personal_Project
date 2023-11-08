@@ -1,11 +1,14 @@
 ﻿  Base.cpp
   GameInstance.cpp
+  GameObejct.cpp
   GameObject.cpp
   Graphic_Device.cpp
+  Layer.cpp
   Level.cpp
   Level_Manager.cpp
   Timer.cpp
   Timer_Manager.cpp
   코드를 생성하고 있습니다...
+  LINK : ..\Bin\Engine.dll을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
      ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
-  Engine.vcxproj -> C:\Users\조우택\Desktop\쥬신게임아카데미\1. 수업파일\쥬신 7개월 차\7일차\Framework\Engine\Bin\Engine.dll
+  Engine.vcxproj -> C:\Users\조우택\Documents\SourcTree\3D_Personal_Project\3D_Personal_Project\Framework\Engine\Bin\Engine.dll
