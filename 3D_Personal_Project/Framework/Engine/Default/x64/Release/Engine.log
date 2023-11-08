@@ -1,0 +1,13 @@
+﻿  Base.cpp
+  GameInstance.cpp
+  Graphic_Device.cpp
+  Level.cpp
+  Level_Manager.cpp
+  Timer.cpp
+  Timer_Manager.cpp
+     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
+  코드를 생성하고 있습니다.
+  All 298 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  Engine.vcxproj -> D:\정의훈\139\Framework\Engine\Default\..\Bin\Engine.dll
+  Engine.vcxproj -> ..\Bin\Engine.pdb (Full PDB)

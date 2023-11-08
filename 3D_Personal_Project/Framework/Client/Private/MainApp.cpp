@@ -1,0 +1,91 @@
+#include "stdafx.h"
+#include "..\Public\MainApp.h"
+
+#include "GameInstance.h"
+#include "Level_Loading.h"
+
+CMainApp::CMainApp()	
+	: m_pGameInstance(CGameInstance::GetInstance())
+{
+	Safe_AddRef(m_pGameInstance);
+
+}
+
+HRESULT CMainApp::Initialize()
+{	
+	GRAPHIC_DESC		GraphicDesc = {};
+
+	GraphicDesc.hWnd = g_hWnd;
+	GraphicDesc.eWinMode = GRAPHIC_DESC::WINMODE_WIN;
+	GraphicDesc.iBackBufferSizeX = g_iWinSizeX;
+	GraphicDesc.iBackBufferSizeY = g_iWinSizeY;
+
+	if (FAILED(m_pGameInstance->Initialize_Engine(GraphicDesc, &m_pDevice, &m_pContext)))
+		return E_FAIL;
+
+	if (FAILED(Open_Level(LEVEL_LOGO)))
+		return E_FAIL;
+	
+	return S_OK;
+}
+
+void CMainApp::Tick(_float fTimeDelta)
+{
+	m_pGameInstance->Tick_Engine(fTimeDelta);
+
+}
+
+HRESULT CMainApp::Render()
+{
+	m_pGameInstance->Clear_BackBuffer_View(_float4(0.f, 0.f, 1.f, 1.f));
+	m_pGameInstance->Clear_DepthStencil_View();
+
+	/* 그려야할 모델들을 그리낟.*/	
+#ifdef _DEBUG
+	m_pGameInstance->Render_Engine();
+#endif
+
+	m_pGameInstance->Present();
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
+{
+	if (nullptr == m_pGameInstance)
+		return E_FAIL;
+
+	/* 무조건 로딩레벨부터 시작ㅇ르 할꺼야 .*/
+	CLevel*		pLevel = CLevel_Loading::Create(m_pDevice, m_pContext, eStartLevelID);
+	if (nullptr == pLevel)
+		return E_FAIL;
+
+	m_pGameInstance->Open_Level(pLevel);
+
+	return S_OK;
+}
+
+CMainApp * CMainApp::Create()
+{
+	CMainApp*		pInstance = new CMainApp();
+
+	if (FAILED(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed to Created : CMainApp");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+void CMainApp::Free()
+{
+	Safe_Release(m_pContext);
+	Safe_Release(m_pDevice);
+
+	/*  내 멤버를 정리하면. */
+	Safe_Release(m_pGameInstance);
+
+	CGameInstance::Release_Engine();
+
+}
+
