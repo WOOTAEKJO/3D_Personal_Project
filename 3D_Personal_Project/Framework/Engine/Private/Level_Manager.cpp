@@ -1,14 +1,15 @@
 #include "..\Public\Level_Manager.h"
 #include "Level.h"
+#include "GameInstance.h"
 
 CLevel_Manager::CLevel_Manager()
+	:m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CLevel_Manager::Initialize()
 {
-
-
 	return S_OK;
 }
 
@@ -28,7 +29,7 @@ HRESULT CLevel_Manager::Render()
 	return m_pCurrentLevel->Render();
 }
 
-HRESULT CLevel_Manager::Open_Level(CLevel * pNewLevel)
+HRESULT CLevel_Manager::Open_Level(_uint iCurrentLevelIndex, CLevel * pNewLevel)
 {
 	if (nullptr == pNewLevel)
 		return E_FAIL;
@@ -37,8 +38,11 @@ HRESULT CLevel_Manager::Open_Level(CLevel * pNewLevel)
 		return E_FAIL;		// 이전 레벨 삭제
 
 	/* 자원들을 정리한다. */
+	m_pGameInstance->Clear(m_iCurrentLevelIndex);
 
 	m_pCurrentLevel = pNewLevel;
+
+	m_iCurrentLevelIndex = iCurrentLevelIndex;
 
 	return S_OK;
 }
@@ -57,6 +61,7 @@ CLevel_Manager * CLevel_Manager::Create()
 
 void CLevel_Manager::Free()
 {
+	Safe_Release(m_pGameInstance);
 	Safe_Release(m_pCurrentLevel);
 }
 

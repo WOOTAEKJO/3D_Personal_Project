@@ -24,19 +24,22 @@ HRESULT CBackGround::Initialize_Prototype()
 
 HRESULT CBackGround::Initialize(void* pArg)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void CBackGround::Priority_Tick(_float fTimeDelta)
 {
+	int a = 10;
 }
 
 void CBackGround::Tick(_float fTimeDelta)
 {
+	int a = 10;
 }
 
 void CBackGround::Late_Tick(_float fTimeDelta)
 {
+	int a = 10;
 }
 
 HRESULT CBackGround::Render()
@@ -72,5 +75,6 @@ CGameObject * CBackGround::Clone(void* pArg)
 
 void CBackGround::Free()
 {
+	__super::Free();
 }
 

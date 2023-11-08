@@ -54,7 +54,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			if (nullptr == pNewLevel)
 				return;
 
-			if (FAILED(m_pGameInstance->Open_Level(pNewLevel)))
+			if (FAILED(m_pGameInstance->Open_Level(m_eNextLevelID, pNewLevel)))
 				return;
 		}
 	}

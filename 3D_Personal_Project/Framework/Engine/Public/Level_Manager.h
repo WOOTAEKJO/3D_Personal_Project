@@ -23,10 +23,14 @@ public:
 	HRESULT Render();
 
 public:
-	HRESULT Open_Level(class CLevel* pNewLevel);
+	HRESULT Open_Level(_uint iCurrentLevelIndex,class CLevel* pNewLevel);
 
 private:
 	class CLevel*				m_pCurrentLevel = { nullptr };
+	class CGameInstance*		m_pGameInstance = { nullptr };
+
+private:
+	_uint						m_iCurrentLevelIndex = { 0 };
 
 public:
 	static CLevel_Manager* Create();

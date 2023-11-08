@@ -20,7 +20,7 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iBackBufferSizeX = g_iWinSizeX;
 	GraphicDesc.iBackBufferSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(GraphicDesc, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END,GraphicDesc, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
@@ -32,7 +32,6 @@ HRESULT CMainApp::Initialize()
 void CMainApp::Tick(_float fTimeDelta)
 {
 	m_pGameInstance->Tick_Engine(fTimeDelta);
-
 }
 
 HRESULT CMainApp::Render()
@@ -60,7 +59,7 @@ HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
 	if (nullptr == pLevel)
 		return E_FAIL;
 
-	m_pGameInstance->Open_Level(pLevel);
+	m_pGameInstance->Open_Level(LEVEL_LOADING,pLevel);
 
 	return S_OK;
 }

@@ -5,10 +5,10 @@ namespace Engine
 {
 	typedef		bool						_bool;
 
-	typedef		signed char					_byte;
-	typedef		unsigned char				_ubyte;
+	typedef		signed char					_byte;			// 문자를 저장하는 용도가 아닌 숫자를 저장하는 용도
+	typedef		unsigned char				_ubyte;			// 마찬가지
 
-	typedef		char						_char;
+	typedef		char						_char;			// 문자를 저장하는 용도
 	typedef		wchar_t						_tchar;
 	
 	typedef		signed short				_short;
