@@ -40,9 +40,7 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	/* ±×·Á¾ßÇÒ ¸ğµ¨µéÀ» ±×¸®³®.*/	
-#ifdef _DEBUG
 	m_pGameInstance->Render_Engine();
-#endif
 
 	m_pGameInstance->Present();
 

@@ -32,6 +32,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	/* 렌더러 사용 준비*/
+	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -47,14 +52,18 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pLevel_Manager->Tick(fTimeDelta);
 }
 
-void CGameInstance::Render_Engine()
+HRESULT CGameInstance::Render_Engine()
 {
-	if (nullptr == m_pLevel_Manager)
-		return;
+	if (nullptr == m_pLevel_Manager || nullptr == m_pRenderer)
+		return E_FAIL;
+
+	m_pRenderer->Draw_RenderGroup();
 
 #ifdef _DEBUG
 	m_pLevel_Manager->Render();
 #endif
+
+	return S_OK;
 }
 
 void CGameInstance::Clear(_uint iLevelIndex)
@@ -126,11 +135,20 @@ HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, 
 	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, pArg);
 }
 
+HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameObject* pGameObject)
+{
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	return m_pRenderer->Add_RenderGroup(eRenderID, pGameObject);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
+	Safe_Release(m_pRenderer);
 	Safe_Release(m_pGraphic_Device);
 }
 

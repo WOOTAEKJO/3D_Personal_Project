@@ -20,7 +20,6 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
-
 public:
 	/* 원형객체를 생성한다. */
 	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

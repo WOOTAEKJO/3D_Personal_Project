@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base.h"
+#include "Renderer.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -22,7 +22,7 @@ public: /* For.Engine */
 	/* 엔진라이브러리를 사용하기위한 준비를 모두 거친다. */
 	HRESULT Initialize_Engine(_uint iNumLevels,const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
 	void Tick_Engine(_float fTimeDelta);
-	void Render_Engine();	// 렌더는 렌더러 클래스를 통해 실행된다.
+	HRESULT Render_Engine();	// 렌더는 렌더러 클래스를 통해 실행된다.
 	void Clear(_uint iLevelIndex);
 
 public: /* For.Graphic_Device */		
@@ -40,12 +40,15 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr);
+public: /* For.Renderer*/
+	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
 	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
+	class CRenderer*				m_pRenderer = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 public:
 	void Release_Manager();

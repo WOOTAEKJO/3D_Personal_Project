@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\BackGround.h"
-
+#include "GameInstance.h"
 
 CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -39,11 +39,14 @@ void CBackGround::Tick(_float fTimeDelta)
 
 void CBackGround::Late_Tick(_float fTimeDelta)
 {
-	int a = 10;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDERGROUP::RENDER_PRIORITY, this)))
+		return;
 }
 
 HRESULT CBackGround::Render()
 {
+	int a = 10;
+
 	return S_OK;
 }
 

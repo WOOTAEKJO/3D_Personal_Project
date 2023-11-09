@@ -1,2 +1,7 @@
-﻿  Object_Manager.cpp
+﻿  GameObject.cpp
+  GameInstance.cpp
+  Level.cpp
+  Level_Manager.cpp
+  코드를 생성하고 있습니다...
+     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
   Engine.vcxproj -> C:\Users\조우택\Documents\SourcTree\3D_Personal_Project\3D_Personal_Project\Framework\Engine\Bin\Engine.dll

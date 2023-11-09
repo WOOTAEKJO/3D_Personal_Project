@@ -10,7 +10,7 @@ private:
 	virtual	~CLayer() = default;
 
 public:
-	HRESULT	Add_GmaeObject(class CGameObject* pGameObject);
+	HRESULT	Add_GameObject(class CGameObject* pGameObject);
 	void	Priority_Tick(_float fTimeDelta);
 	void	Tick(_float fTimeDelta);
 	void	Late_Tick(_float fTimeDelta);

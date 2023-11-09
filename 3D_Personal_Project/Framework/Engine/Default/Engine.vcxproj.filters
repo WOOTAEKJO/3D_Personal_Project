@@ -99,6 +99,9 @@
     <ClInclude Include="..\Public\Object_Manager.h">
       <Filter>01.Utility\02.GameObjects\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Renderer.h">
+      <Filter>01.Utility\98. Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
       <Filter>01.Utility\02.GameObjects\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Renderer.cpp">
+      <Filter>01.Utility\98. Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
