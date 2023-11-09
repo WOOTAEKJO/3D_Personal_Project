@@ -114,11 +114,8 @@
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>attrib -r "$(SolutionDir)Reference\Headers\*.*" /s
-xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
-attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
-xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
-xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,11 +155,8 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
       <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>attrib -r "$(SolutionDir)Reference\Headers\*.*" /s
-xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
-attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
-xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
-xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
