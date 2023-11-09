@@ -1,5 +1,7 @@
-﻿  Level_Loading.cpp
+﻿  stdafx.cpp
   BackGround.cpp
+  Level_GamePlay.cpp
+  Level_Loading.cpp
   Level_Logo.cpp
   Loader.cpp
   MainApp.cpp

@@ -43,6 +43,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -50,6 +51,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,14 +76,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\Export\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>..\Bin\Intermediate\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\Export\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>..\Bin\Intermediate\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,6 +116,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>attrib -r "$(SolutionDir)Reference\Headers\*.*" /s
+xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
+attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
+xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,6 +161,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>attrib -r "$(SolutionDir)Reference\Headers\*.*" /s
+xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
+attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
+xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h" />
