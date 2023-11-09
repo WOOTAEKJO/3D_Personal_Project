@@ -25,7 +25,8 @@ private:
 	ID3D11Device*			m_pDevice = { nullptr };		// 할당 담당
 	ID3D11DeviceContext*	m_pContext = { nullptr };		// 나머지 기능(그리기 등등) 담당
 	CGameInstance*			m_pGameInstance = { nullptr };	// 엔진 쪽 클래스는 이 변수를 통해서만 접근 가능
-
+private:
+	ImGuiIO* io = nullptr;
 private:
 	HRESULT Open_Level(LEVEL eStartLevelID);
 
