@@ -30,7 +30,7 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tool()
 {
-    if (ImGui::TreeNode(u8"Tool"))
+    if (ImGui::TreeNode(u8"Åø"))
     {
 
         
