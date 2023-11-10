@@ -12,4 +12,11 @@ namespace Engine
 		unsigned int	iBackBufferSizeY;	// 백버퍼 y 사이즈
 
 	}GRAPHIC_DESC;
+
+	typedef struct tagVertex_Position_TexCoord
+	{
+		XMFLOAT3	fPosition;
+		XMFLOAT2	fTexCoord;
+	}VERPOSTEX;
+
 }
