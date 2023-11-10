@@ -3,6 +3,7 @@
 #include "TImer_Manager.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
+#include "Event_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -35,6 +36,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	/* 렌더러 사용 준비*/
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	/* 이벤트 매니저 사용 준비*/
+	m_pEvent_Manager = CEvent_Manager::Create();
+	if (nullptr == m_pEvent_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -143,8 +149,25 @@ HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameOb
 	return m_pRenderer->Add_RenderGroup(eRenderID, pGameObject);
 }
 
+HRESULT CGameInstance::Add_Event(const wstring& strEventTag, function<void()> pFunction)
+{
+	if (nullptr == m_pEvent_Manager)
+		return E_FAIL;
+
+	return m_pEvent_Manager->Add_Event(strEventTag, pFunction);
+}
+
+HRESULT CGameInstance::Execute_Event(const wstring& strEventTag)
+{
+	if (nullptr == m_pEvent_Manager)
+		return E_FAIL;
+
+	return m_pEvent_Manager->Execute_Event(strEventTag);
+}
+
 void CGameInstance::Release_Manager()
 {
+	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);

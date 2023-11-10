@@ -24,6 +24,14 @@ HRESULT CBackGround::Initialize_Prototype()
 
 HRESULT CBackGround::Initialize(void* pArg)
 {
+	m_pGameInstance->Add_Event(TEXT("TEST1"), [this]() {	
+		this->Test1();
+	});
+	m_pGameInstance->Add_Event(TEXT("TEST1"), [this]() {
+		this->Test2();
+	});
+
+
 	return S_OK;
 }
 
@@ -35,6 +43,16 @@ void CBackGround::Priority_Tick(_float fTimeDelta)
 void CBackGround::Tick(_float fTimeDelta)
 {
 	int a = 10;
+
+	if (GetKeyState('1') & 0x8000)
+	{
+		m_pGameInstance->Execute_Event(TEXT("TEST1"));
+	}
+
+	if (GetKeyState('2') & 0x8000)
+	{
+		m_pGameInstance->Execute_Event(TEXT("TEST2"));
+	}
 }
 
 void CBackGround::Late_Tick(_float fTimeDelta)
@@ -48,6 +66,17 @@ HRESULT CBackGround::Render()
 	int a = 10;
 
 	return S_OK;
+}
+
+void CBackGround::Test1(void)
+{
+	int a = 10;
+	SetWindowText(g_hWnd, TEXT("TEST1입니다."));
+}
+
+void CBackGround::Test2()
+{
+	SetWindowText(g_hWnd, TEXT("TEST2입니다."));
 }
 
 CBackGround * CBackGround::Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
