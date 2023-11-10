@@ -11,10 +11,14 @@ private:
 
 public:
 	HRESULT	Initialize();
-	HRESULT	Add_Event(const wstring&, function<void()>);
+	HRESULT	Add_Event(const wstring& strEventTag, function<void()> pFunction);
+	HRESULT	Execute_Event(const wstring& strEventTag);
 
 private:
-	map<const wstring, function<void()>> m_mapEvent;
+	map<const wstring, class CEvent_Function*> m_mapEvent;
+
+private:
+	class CEvent_Function* Find_Event(const wstring& strEventTag);
 
 public:
 	static CEventManager*	Create();

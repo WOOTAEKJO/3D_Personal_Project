@@ -67,6 +67,9 @@
     <Filter Include="01.Utility\97. Manager\00. EventManager">
       <UniqueIdentifier>{3d9a1588-fa1a-4a87-9fe7-5f4dd8529512}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\97. Manager\00. EventManager\Event_Function">
+      <UniqueIdentifier>{29ed3d74-5532-406d-b574-0d1e0655704c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -126,8 +129,11 @@
     <ClInclude Include="..\Public\VIBuffer_Rect.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EventManager.h">
+    <ClInclude Include="..\Public\Event_Manager.h">
       <Filter>01.Utility\97. Manager\00. EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Event_Function.h">
+      <Filter>01.Utility\97. Manager\00. EventManager\Event_Function</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,8 +179,11 @@
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EventManager.cpp">
+    <ClCompile Include="..\Private\Event_Manager.cpp">
       <Filter>01.Utility\97. Manager\00. EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Event_Function.cpp">
+      <Filter>01.Utility\97. Manager\00. EventManager\Event_Function</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

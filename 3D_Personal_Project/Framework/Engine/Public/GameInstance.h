@@ -40,8 +40,13 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr);
+
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
+
+public: /* For.Event_Manager*/
+	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
+	HRESULT	Execute_Event(const wstring & strEventTag);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -49,6 +54,7 @@ private:
 	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
 	class CRenderer*				m_pRenderer = { nullptr };
+	class CEvent_Manager*			m_pEvent_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 public:
 	void Release_Manager();
