@@ -9,6 +9,8 @@ using namespace DirectX;
 #include <vector>
 #include <list>
 #include <map>
+#include <typeinfo>
+#include <functional>
 using namespace std;
 
 #include "Engine_Struct.h"
@@ -16,8 +18,6 @@ using namespace std;
 #include "Engine_Macro.h"
 #include "Engine_Typedef.h"
 using namespace Engine;
-
-
 
 
 
