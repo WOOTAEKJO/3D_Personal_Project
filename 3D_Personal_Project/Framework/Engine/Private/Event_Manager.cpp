@@ -12,6 +12,9 @@ HRESULT CEvent_Manager::Initialize()
 
 HRESULT CEvent_Manager::Add_Event(const wstring& strEventTag, function<void()> pFunction)
 {
+	if (pFunction == nullptr)
+		return E_FAIL;
+
 	CEvent_Function* pEventFunction = Find_Event(strEventTag);
 
 	if (pEventFunction == nullptr)

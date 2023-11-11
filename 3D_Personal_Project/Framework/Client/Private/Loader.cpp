@@ -5,6 +5,7 @@
 #include <process.h>
 
 #include "BackGround.h"
+#include "GameObject_Test.h"
 
 #include "StateMachine.h"
 
@@ -97,6 +98,10 @@ HRESULT CLoader::Loading_For_Logo_Level()
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_GameObject_Test"),
+		CGameObject_Test::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 #pragma region TEST

@@ -10,8 +10,12 @@ private:
 	virtual	~CAction() = default;
 public:
 	HRESULT	Initialize();
+	HRESULT	Add_Action(function<void()> pFunction);
+
+	void	Tick(_float fTimeDelta);
 
 private:
+	vector<function<void()>>	m_vecAction;
 
 public:
 	static	CAction* Create();
@@ -21,6 +25,6 @@ public:
 END
 
 /*
-	- 상태에 따라 행동들을 모아둔다.
-
+	- 행동들을 모아둔다.
+		- 함수들
 */

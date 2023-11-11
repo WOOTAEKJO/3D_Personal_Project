@@ -52,6 +52,9 @@
     <Filter Include="95. State\99.Test\01. Test2">
       <UniqueIdentifier>{625db7c8-4150-4c1b-8ac4-1067335adab8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99. Test">
+      <UniqueIdentifier>{d1ff858a-9de4-4a17-8faf-670dd06b6bf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -120,6 +123,9 @@
     <ClInclude Include="..\Public\State_Test2.h">
       <Filter>95. State\99.Test\01. Test2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameObject_Test.h">
+      <Filter>02.GameObjects\99. Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -175,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\State_Test2.cpp">
       <Filter>95. State\99.Test\01. Test2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameObject_Test.cpp">
+      <Filter>02.GameObjects\99. Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

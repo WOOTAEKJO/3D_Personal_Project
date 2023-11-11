@@ -11,6 +11,9 @@ HRESULT CTransition::Initialize()
 
 HRESULT CTransition::Add_Transition(function<bool()> pFunction, const wstring& strResultStateTag)
 {
+	if (pFunction == nullptr)
+		return E_FAIL;
+
 	function<bool()> pFFunction = Find_Transition(strResultStateTag);
 	if (pFFunction != nullptr)
 		return E_FAIL;

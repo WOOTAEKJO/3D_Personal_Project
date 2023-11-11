@@ -29,7 +29,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 
 HRESULT CLevel_Logo::Render()
 {
-	SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
+	//SetWindowText(g_hWnd, TEXT("로고레벨입니다."));
 
 	return S_OK;
 }
@@ -37,6 +37,9 @@ HRESULT CLevel_Logo::Render()
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
 		return E_FAIL;
 
 	return S_OK;

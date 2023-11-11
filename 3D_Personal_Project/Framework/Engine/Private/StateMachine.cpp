@@ -1,6 +1,7 @@
 #include "..\Public\StateMachine.h"
 #include "State.h"
 #include "Transition.h"
+#include "Action.h"
 
 CStateMachine::CStateMachine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
@@ -39,6 +40,9 @@ HRESULT CStateMachine::Add_State(const wstring& strStateTag, CState* pState)
 
 HRESULT CStateMachine::Add_Transition(const wstring& strStateTag, function<bool()> pFunction, const wstring& strResultStateTag)
 {
+	if (pFunction == nullptr)
+		return E_FAIL;
+
 	CTransition* pTransition = Find_Transition(strStateTag);
 
 	if (pTransition == nullptr)
@@ -47,12 +51,40 @@ HRESULT CStateMachine::Add_Transition(const wstring& strStateTag, function<bool(
 		if (pTransition == nullptr)
 			return E_FAIL;
 
-		pTransition->Add_Transition(pFunction, strResultStateTag);
+		if (FAILED(pTransition->Add_Transition(pFunction, strResultStateTag)))
+			return E_FAIL;
 
 		m_mapTransition.emplace(strStateTag, pTransition);
 	}
 	else {
-		pTransition->Add_Transition(pFunction, strResultStateTag);
+		if (FAILED(pTransition->Add_Transition(pFunction, strResultStateTag)))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CStateMachine::Add_Action(const wstring& strStateTag, TICKSTATE eTickType, function<void()> pFunction)
+{
+	if (pFunction == nullptr)
+		return E_FAIL;
+
+	CAction* pAction = Find_Action(strStateTag, eTickType);
+
+	if (pAction == nullptr)
+	{
+		pAction = CAction::Create();
+		if (pAction == nullptr)
+			return E_FAIL;
+
+		if (FAILED(pAction->Add_Action(pFunction)))
+			return E_FAIL;
+
+		m_mapAction[eTickType].emplace(strStateTag, pAction);
+	}
+	else {
+		if (FAILED(pAction->Add_Action(pFunction)))
+			return E_FAIL;
 	}
 
 	return S_OK;
@@ -63,8 +95,15 @@ void CStateMachine::Priority_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if(!Is_Change_State())
+	if (!Is_Change_State()) {
 		m_pCurrentState->State_Priority_Tick(fTimeDelta);
+		for (auto& iter : m_mapAction[TICKSTATE::PRIORITY_TICK]) {
+			if (iter.first == m_strCurrentStateTag) {
+				if (iter.second != nullptr)
+					iter.second->Tick(fTimeDelta);
+			}
+		}
+	}
 }
 
 void CStateMachine::Tick(_float fTimeDelta)
@@ -72,8 +111,15 @@ void CStateMachine::Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if (!Is_Change_State())
+	if (!Is_Change_State()) {
 		m_pCurrentState->State_Tick(fTimeDelta);
+		for (auto& iter : m_mapAction[TICKSTATE::TICK]) {
+			if (iter.first == m_strCurrentStateTag) {
+				if (iter.second != nullptr)
+					iter.second->Tick(fTimeDelta);
+			}
+		}
+	}
 }
 
 void CStateMachine::Late_Tick(_float fTimeDelta)
@@ -81,8 +127,15 @@ void CStateMachine::Late_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if (!Is_Change_State())
+	if (!Is_Change_State()) {
 		m_pCurrentState->State_Late_Tick(fTimeDelta);
+		for (auto& iter : m_mapAction[TICKSTATE::LATE_TICK]) {
+			if (iter.first == m_strCurrentStateTag) {
+				if (iter.second != nullptr)
+					iter.second->Tick(fTimeDelta);
+			}
+		}
+	}
 }
 
 HRESULT CStateMachine::Init_State(const wstring& strStateTag)
@@ -152,6 +205,16 @@ CTransition* CStateMachine::Find_Transition(const wstring& strStateTag)
 	return iter->second;
 }
 
+CAction* CStateMachine::Find_Action(const wstring& strStateTag, TICKSTATE eTickType)
+{
+	auto& iter = m_mapAction[eTickType].find(strStateTag);
+
+	if (iter == m_mapAction[eTickType].end())
+		return nullptr;
+
+	return iter->second;
+}
+
 CStateMachine* CStateMachine::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CStateMachine* pInstance = new CStateMachine(pDevice, pContext);
@@ -180,3 +243,4 @@ void CStateMachine::Free()
 {
 	__super::Free();
 }
+

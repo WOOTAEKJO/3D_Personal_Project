@@ -6,6 +6,9 @@ CEvent_Function::CEvent_Function()
 
 HRESULT CEvent_Function::Add_Function(function<void()> pFunction)
 {
+	if (pFunction == nullptr)
+		return E_FAIL;
+
 	m_vecFunction.push_back(pFunction);
 
 	return S_OK;
