@@ -15,7 +15,7 @@ public:
 	virtual	HRESULT	Initialize_ProtoType();
 	virtual	HRESULT	Initialize(void* pArg);
 
-public: /* 임시 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
+public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 	virtual void	Priority_Tick(_float fTimeDelta) {};
 	virtual void	Tick(_float fTimeDelta) {};
 	virtual void	Late_Tick(_float fTimeDelta) {};

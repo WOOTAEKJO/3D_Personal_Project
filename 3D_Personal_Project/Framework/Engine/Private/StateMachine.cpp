@@ -97,12 +97,11 @@ void CStateMachine::Priority_Tick(_float fTimeDelta)
 
 	if (!Is_Change_State()) {
 		m_pCurrentState->State_Priority_Tick(fTimeDelta);
-		for (auto& iter : m_mapAction[TICKSTATE::PRIORITY_TICK]) {
-			if (iter.first == m_strCurrentStateTag) {
-				if (iter.second != nullptr)
-					iter.second->Tick(fTimeDelta);
-			}
-		}
+	
+		CAction* pAction = Find_Action(m_strCurrentStateTag, TICKSTATE::PRIORITY_TICK);
+		if (pAction == nullptr)
+			return;
+		pAction->Tick(fTimeDelta);
 	}
 }
 
@@ -113,12 +112,11 @@ void CStateMachine::Tick(_float fTimeDelta)
 
 	if (!Is_Change_State()) {
 		m_pCurrentState->State_Tick(fTimeDelta);
-		for (auto& iter : m_mapAction[TICKSTATE::TICK]) {
-			if (iter.first == m_strCurrentStateTag) {
-				if (iter.second != nullptr)
-					iter.second->Tick(fTimeDelta);
-			}
-		}
+
+		CAction* pAction = Find_Action(m_strCurrentStateTag, TICKSTATE::TICK);
+		if (pAction == nullptr)
+			return;
+		pAction->Tick(fTimeDelta);
 	}
 }
 
@@ -129,12 +127,11 @@ void CStateMachine::Late_Tick(_float fTimeDelta)
 
 	if (!Is_Change_State()) {
 		m_pCurrentState->State_Late_Tick(fTimeDelta);
-		for (auto& iter : m_mapAction[TICKSTATE::LATE_TICK]) {
-			if (iter.first == m_strCurrentStateTag) {
-				if (iter.second != nullptr)
-					iter.second->Tick(fTimeDelta);
-			}
-		}
+
+		CAction* pAction = Find_Action(m_strCurrentStateTag, TICKSTATE::LATE_TICK);
+		if (pAction == nullptr)
+			return;
+		pAction->Tick(fTimeDelta);
 	}
 }
 

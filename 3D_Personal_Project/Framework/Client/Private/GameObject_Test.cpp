@@ -142,7 +142,7 @@ HRESULT CGameObject_Test::Add_Event()
 	return S_OK;
 }
 
-void CGameObject_Test::Event_Test1(void)
+void CGameObject_Test::Event_Test1()
 {
 	int a = 10;
 	SetWindowText(g_hWnd, TEXT("TEST1¿‘¥œ¥Ÿ."));

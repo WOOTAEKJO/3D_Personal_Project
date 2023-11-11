@@ -33,7 +33,7 @@ public:
 	HRESULT	Add_Event();
 
 public:
-	void	Event_Test1(void);
+	void	Event_Test1();
 	void	Event_Test2();
 
 public:
