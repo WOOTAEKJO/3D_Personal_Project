@@ -40,6 +40,18 @@
     <Filter Include="96. Manager\00. ImGuiMgr">
       <UniqueIdentifier>{b82c6a28-bf8b-4e23-8951-5997bf823805}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State">
+      <UniqueIdentifier>{0c9d683e-0066-45fa-8fdf-5c24b4594550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\99.Test">
+      <UniqueIdentifier>{003c3435-775a-4b58-b16e-b7610e111840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\99.Test\00. Test1">
+      <UniqueIdentifier>{372ca4cc-84e3-439a-b784-bc6eadca4245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\99.Test\01. Test2">
+      <UniqueIdentifier>{625db7c8-4150-4c1b-8ac4-1067335adab8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -102,6 +114,12 @@
     <ClInclude Include="..\Public\ImGuiMgr.h">
       <Filter>96. Manager\00. ImGuiMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\State_Test1.h">
+      <Filter>95. State\99.Test\00. Test1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\State_Test2.h">
+      <Filter>95. State\99.Test\01. Test2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -151,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGuiMgr.cpp">
       <Filter>96. Manager\00. ImGuiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Test1.cpp">
+      <Filter>95. State\99.Test\00. Test1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\State_Test2.cpp">
+      <Filter>95. State\99.Test\01. Test2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

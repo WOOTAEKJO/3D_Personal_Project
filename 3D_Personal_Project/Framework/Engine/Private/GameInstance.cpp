@@ -5,6 +5,8 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 
+#include "Component_Manager.h"
+
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -43,6 +45,15 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	if (nullptr == m_pEvent_Manager)
 		return E_FAIL;
 
+#pragma region TEST
+
+	/* 컴포넌트 매니저 사용 준비*/
+	m_pComponent_Manager = CComponent_Manager::Create();
+	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+#pragma endregion
+
 	return S_OK;
 }
 
@@ -54,6 +65,14 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pObject_Manager->Late_Tick(fTimeDelta);
+
+#pragma region TEST
+
+	m_pComponent_Manager->Priority_Tick(fTimeDelta);
+	m_pComponent_Manager->Tick(fTimeDelta);
+	m_pComponent_Manager->Late_Tick(fTimeDelta);
+
+#pragma endregion
 
 	m_pLevel_Manager->Tick(fTimeDelta);
 }
@@ -165,8 +184,30 @@ HRESULT CGameInstance::Execute_Event(const wstring& strEventTag)
 	return m_pEvent_Manager->Execute_Event(strEventTag);
 }
 
+HRESULT CGameInstance::Add_Component_ProtoType(const wstring& strProtoTypeTag, CComponent* pComponent)
+{
+	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+	return m_pComponent_Manager->Add_Component_ProtoType(strProtoTypeTag, pComponent);
+}
+
+CComponent* CGameInstance::Add_Component_Clone(const wstring& strProtoTypeTag, void* pArg)
+{
+	if (nullptr == m_pComponent_Manager)
+		return nullptr;
+
+	return m_pComponent_Manager->Add_Component_Clone(strProtoTypeTag, pArg);
+}
+
 void CGameInstance::Release_Manager()
 {
+#pragma region TEST
+
+	Safe_Release(m_pComponent_Manager);
+
+#pragma endregion
+
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);

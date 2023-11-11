@@ -48,6 +48,14 @@ public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
 	HRESULT	Execute_Event(const wstring & strEventTag);
 
+#pragma region TEST
+
+public: /* For.Component_Manager*/ /* 임시 테스를 위함 정쌤한테 아직 배우지 않음*/
+	HRESULT	Add_Component_ProtoType(const wstring & strProtoTypeTag, class CComponent* pComponent);
+	class CComponent*	Add_Component_Clone(const wstring & strProtoTypeTag, void* pArg = nullptr);
+
+#pragma endregion
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
@@ -56,6 +64,14 @@ private:
 	class CRenderer*				m_pRenderer = { nullptr };
 	class CEvent_Manager*			m_pEvent_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
+
+#pragma region TEST
+
+	class CComponent_Manager* m_pComponent_Manager = { nullptr };
+
+#pragma endregion
+
+
 public:
 	void Release_Manager();
 	static void Release_Engine();
