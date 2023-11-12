@@ -71,7 +71,6 @@ private:
 
 #pragma endregion
 
-
 public:
 	void Release_Manager();
 	static void Release_Engine();

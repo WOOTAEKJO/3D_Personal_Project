@@ -38,6 +38,7 @@ private:
 	map<const wstring, class CState*>		m_mapState;								// 상태들을 저장
 	map<const wstring, class CTransition*>	m_mapTransition;						// 조건들을 저장
 	map<const wstring, class CAction*>		m_mapAction[TICKSTATE::TICK_END];		// 행동들을 저장
+	map<const _uint, class CState*>			m_mapTest;
 
 private:
 	class CState*		Find_State(const wstring & strStateTag);

@@ -12,6 +12,8 @@ BEGIN(Client)
 
 class CGameObject_Test final : public CGameObject
 {
+public:
+	enum STATE {STATE1,STATE2,STATE_END};
 private:
 	CGameObject_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CGameObject_Test(const CGameObject_Test& rhs);
