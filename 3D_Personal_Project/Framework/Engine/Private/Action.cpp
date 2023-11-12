@@ -19,7 +19,7 @@ HRESULT CAction::Add_Action(function<void()> pFunction)
 	return S_OK;
 }
 
-void CAction::Tick(_float fTimeDelta)
+void CAction::Act()
 {
 	for (auto& iter : m_vecAction)
 		iter();
@@ -41,5 +41,4 @@ void CAction::Free()
 {
 	__super::Free();
 
-	
 }

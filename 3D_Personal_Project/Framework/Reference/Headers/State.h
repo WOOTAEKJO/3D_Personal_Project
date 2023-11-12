@@ -3,22 +3,27 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CState abstract : public CBase
+class ENGINE_DLL CState final : public CBase
 {
-protected:
+public:
+	enum STATE { ENTER,PRIORITY_TICK,TICK,LATE_TICK,EXIT,STATE_END };
+private:
 	CState();
 	virtual	~CState()=default;
 public:
 	virtual HRESULT	Initialize();
-	virtual void	State_Enter() = 0;
-	virtual void	State_Priority_Tick(_float fTimeDelta) = 0;
-	virtual void	State_Tick(_float fTimeDelta) = 0;
-	virtual void	State_Late_Tick(_float fTimeDelta) = 0;
-	virtual void	State_Exit() = 0;
-
-protected:
+	void	State_Enter();
+	void	State_Priority_Tick(_float fTimeDelta);
+	void	State_Tick(_float fTimeDelta);
+	void	State_Late_Tick(_float fTimeDelta);
+	void	State_Exit();
+public:
+	HRESULT	Add_Action(STATE eTickType, function<void()> pFunction);
+private:
+	vector<class CAction*> 	m_vecActions;	// state에 따라 구분되는 행동들을 가지고 있다.
 	
 public:
+	static	CState* Create();
 	virtual	void	Free() override;
 };
 
@@ -26,7 +31,7 @@ END
 
 /*
 	- 객체마다 서로 다른 상태들을 가지고 있다.
-	- 모든 상태들의 부모격 클래스
-	- 상태는 ENTER, UPDATE, EXIT, CHANGE를 가지고 있다.
+	- 상태는 ENTER, UPDATE, EXIT 를 가지고 있다.
+	- 상태 안에서 행동들을 가지고 있다.
 
 */

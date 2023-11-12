@@ -9,34 +9,34 @@ HRESULT CTransition::Initialize()
     return S_OK;
 }
 
-HRESULT CTransition::Add_Transition(function<bool()> pFunction, const wstring& strResultStateTag)
+HRESULT CTransition::Add_Transition(function<bool()> pFunction, const _uint& iResultStateID)
 {
 	if (pFunction == nullptr)
 		return E_FAIL;
 
-	function<bool()> pFFunction = Find_Transition(strResultStateTag);
+	function<bool()> pFFunction = Find_Transition(iResultStateID);
 	if (pFFunction != nullptr)
 		return E_FAIL;
 
-	m_mapTransition.emplace(strResultStateTag, pFunction);
+	m_mapTransition.emplace(iResultStateID, pFunction);
 
 	return S_OK;
 }
 
-bool CTransition::Is_Transition(wstring* strResultStateTag)
+bool CTransition::Is_Transition(_uint* iResultStateID)
 {
 	for (auto& iter : m_mapTransition){
 		if (iter.second()) {
-			*strResultStateTag = iter.first;
+			*iResultStateID = iter.first;
 			return true;
 		}
 	}
 	return false;
 }
 
-function<bool()> CTransition::Find_Transition(const wstring& strResultStateTag)
+function<bool()> CTransition::Find_Transition(const _uint& iResultStateID)
 {
-	auto& iter = m_mapTransition.find(strResultStateTag);
+	auto& iter = m_mapTransition.find(iResultStateID);
 
 	if (iter == m_mapTransition.end())
 		return nullptr;

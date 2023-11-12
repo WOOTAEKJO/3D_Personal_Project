@@ -2,9 +2,7 @@
 #include "..\Public\GameObject_Test.h"
 #include "GameInstance.h"
 #include "StateMachine.h"
-
-#include "State_Test1.h"
-#include "State_Test2.h"
+#include "StateCharge_Test.h"
 
 CGameObject_Test::CGameObject_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -30,17 +28,11 @@ HRESULT CGameObject_Test::Initialize(void* pArg)
 
 	if (FAILED(Add_Component()))
 		return E_FAIL;
-	if (FAILED(Add_State()))
-		return E_FAIL;
-	if (FAILED(Add_Action()))
-		return E_FAIL;
-	if (FAILED(Add_Transition()))
-		return E_FAIL;
 	if (FAILED(Add_Event()))
 		return E_FAIL;
+	if (FAILED(Init_ETC()))
+		return E_FAIL;
 	
-	m_pStateMachine->Init_State(TEXT("TEST1"));
-
 #pragma endregion
 
 	return S_OK;
@@ -82,48 +74,9 @@ HRESULT CGameObject_Test::Render()
 HRESULT CGameObject_Test::Add_Component()
 {
 	m_pStateMachine = dynamic_cast<CStateMachine*>(m_pGameInstance->Add_Component_Clone(TEXT("StateMachine")));
-
-	return S_OK;
-}
-
-HRESULT CGameObject_Test::Add_State()
-{
-	if (FAILED(m_pStateMachine->Add_State(TEXT("TEST1"), CState_Test1::Create())))
-		return E_FAIL;
-
-	if (FAILED(m_pStateMachine->Add_State(TEXT("TEST2"), CState_Test2::Create())))
+	if (m_pStateMachine == nullptr)
 		return E_FAIL;
 	
-	return S_OK;
-}
-
-HRESULT CGameObject_Test::Add_Action()
-{
-	if(FAILED(m_pStateMachine->Add_Action(TEXT("TEST1"), CStateMachine::TICKSTATE::TICK, [this]() {
-		this->Action_Test1();
-		})))
-		return E_FAIL;
-
-	if (FAILED(m_pStateMachine->Add_Action(TEXT("TEST2"), CStateMachine::TICKSTATE::TICK, [this]() {
-		this->Action_Test2();
-		})))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CGameObject_Test::Add_Transition()
-{
-	if(FAILED(m_pStateMachine->Add_Transition(TEXT("TEST1"), [this]()->bool {
-		return Transition_Test1();
-		}, TEXT("TEST2"))))
-		return E_FAIL;
-	
-	if (FAILED(m_pStateMachine->Add_Transition(TEXT("TEST2"), [this]()->bool {
-		return Transition_Test2();
-		}, TEXT("TEST1"))))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -139,6 +92,13 @@ HRESULT CGameObject_Test::Add_Event()
 		})))
 		return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CGameObject_Test::Init_ETC()
+{
+	m_pStateCharge = CStateCharge_Test::Create(this, m_pStateMachine);
+
 	return S_OK;
 }
 
@@ -208,5 +168,7 @@ CGameObject* CGameObject_Test::Clone(void* pArg)
 void CGameObject_Test::Free()
 {
 	__super::Free();
+	
+	Safe_Release(m_pStateCharge);
 }
 

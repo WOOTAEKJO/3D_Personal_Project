@@ -10,14 +10,15 @@ private:
 	virtual	~CTransition() = default;
 public:
 	HRESULT	Initialize();
-	HRESULT	Add_Transition(function<bool()> pFunction,const wstring& strResultStateTag);
-	bool	Is_Transition(wstring*	strResultStateTag);
+	HRESULT	Add_Transition(function<bool()> pFunction,const _uint& iResultStateID);
+	bool	Is_Transition(_uint* iResultStateID);
 private:
-	map<const wstring, function<bool()>>	m_mapTransition;
+	map<const _uint, function<bool()>>	m_mapTransition;
 private:
-	wstring					m_strResultStateTag;		// 조건에 맞는 상태를 나타냄
+	//wstring					m_strResultStateTag;		// 조건에 맞는 상태를 나타냄
+	//_uint					m_iResultStateID = { 0 };	// 조건에 맞는 상태를 나타냄
 private:
-	function<bool()>	Find_Transition(const wstring& strResultStateTag);
+	function<bool()>	Find_Transition(const _uint& iResultStateID);
 public:
 	static	CTransition* Create();
 	virtual	void	Free() override;

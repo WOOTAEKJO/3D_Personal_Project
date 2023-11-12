@@ -12,7 +12,7 @@ public:
 	HRESULT	Initialize();
 	HRESULT	Add_Action(function<void()> pFunction);
 
-	void	Tick(_float fTimeDelta);
+	void	Act();
 
 private:
 	vector<function<void()>>	m_vecAction;
