@@ -40,6 +40,7 @@ public:
 
 public:
 	void	Action_Test1();
+public:
 	void	Action_Test2();
 
 private:

@@ -93,11 +93,11 @@ HRESULT CStateCharge_Test::Add_State2()
 #pragma region 행동 설정
 
 	if (FAILED(m_pStateMachine->Add_Action(STATE::STATE2, CStateMachine::STATE::ENTER, [&]() {
-		
+		pOwner->Action_Test2();
 		})))
 		return E_FAIL;
 	if (FAILED(m_pStateMachine->Add_Action(STATE::STATE2, CStateMachine::STATE::PRIORITY_TICK, [&]() {
-		
+		pOwner->Action_Test2();
 		})))
 		return E_FAIL;
 	if (FAILED(m_pStateMachine->Add_Action(STATE::STATE2, CStateMachine::STATE::TICK, [&]() {
@@ -105,11 +105,11 @@ HRESULT CStateCharge_Test::Add_State2()
 		})))
 		return E_FAIL;
 	if (FAILED(m_pStateMachine->Add_Action(STATE::STATE2, CStateMachine::STATE::LATE_TICK, [&]() {
-		
+		pOwner->Action_Test2();
 		})))
 		return E_FAIL;
 	if (FAILED(m_pStateMachine->Add_Action(STATE::STATE2, CStateMachine::STATE::EXIT, [&]() {
-		
+		pOwner->Action_Test2();
 		})))
 		return E_FAIL;
 
