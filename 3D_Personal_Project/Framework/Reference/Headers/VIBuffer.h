@@ -25,11 +25,15 @@ protected:
 	D3D11_BUFFER_DESC		m_Buffer_Desc;		// 버퍼의 옵션을 설정하는 구조체
 	D3D11_SUBRESOURCE_DATA	m_SubResource_Data;	// 버퍼의 초기 값을 설정하는 구조체
 protected:
-	_uint			m_iVertexNum = { 0 };		// 정점 갯수
-	_uint			m_iVertexStride = { 0 };	// 정점 하나의 크기
+	_uint					m_iVertexNum = { 0 };			// 정점 갯수
+	_uint					m_iVertexStride = { 0 };		// 정점 하나의 크기
+	_uint					m_iVertexBuffersNum = { 0 };	// 버텍스 버퍼들의 갯수
 
-	_uint			m_iIndexNum = { 0 };		// 인덱스 갯수
-	_uint			m_iIndexStride = { 0 };		// 인덱스 하나의 크기
+	_uint					m_iIndexNum = { 0 };			// 인덱스 갯수
+	_uint					m_iIndexStride = { 0 };			// 인덱스 하나의 크기
+	DXGI_FORMAT				m_eIndexForMat = { };			// 인덱스 포맷 설정, 인덱스 하나의 크기
+	D3D_PRIMITIVE_TOPOLOGY	m_eTopology = { };				// 정점을 이용해서 어떻게 그릴지 설정하는 구조체
+
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;
 	virtual	void	Free() override;

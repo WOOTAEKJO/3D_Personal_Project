@@ -12,12 +12,14 @@ CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect& rhs)
 
 HRESULT CVIBuffer_Rect::Initialize_ProtoType()
 {
-
+	m_iVertexBuffersNum = 1;
 	m_iVertexNum = 4;
 	m_iVertexStride = sizeof(VERPOSTEX);
 
 	m_iIndexNum = 6;
 	m_iVertexStride = 2;
+	m_eIndexForMat = m_iVertexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
 	
