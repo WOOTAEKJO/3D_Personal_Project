@@ -3,33 +3,27 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CState final : public CBase
+class CGameObject;
+class CStateMachine;
+
+class ENGINE_DLL CState abstract : public CBase
 {
-public:
-	enum STATE { ENTER,PRIORITY_TICK,TICK,LATE_TICK,EXIT,STATE_END };
-private:
-	CState();
+protected:
+	CState(CStateMachine* pStateMachine);
 	virtual	~CState()=default;
 public:
-	virtual HRESULT	Initialize();
-	void	State_Enter();
-	void	State_Priority_Tick(_float fTimeDelta);
-	void	State_Tick(_float fTimeDelta);
-	void	State_Late_Tick(_float fTimeDelta);
-	void	State_Exit();
-public:
-	HRESULT	Add_Action(STATE eTickType, function<void()> pFunction);
-	HRESULT	Add_Transition(const _uint& iResultStateID, function<bool()> pFunction);
-public:
-	bool	Is_Transition(_uint* iResultStateID);
-private:
-	vector<class CAction*> 	m_vecActions;	// state에 따라 구분되는 행동들을 가지고 있다.
-	class CTransition*		m_pTransition = { nullptr };
+	virtual HRESULT	Initialize(CGameObject * pGameObject);
+	virtual void	State_Enter()=0;
+	virtual void	State_Priority_Tick(_float fTimeDelta) = 0;
+	virtual void	State_Tick(_float fTimeDelta) = 0;
+	virtual void	State_Late_Tick(_float fTimeDelta) = 0;
+	virtual void	State_Exit() = 0;
+
+protected:
+	CStateMachine*		m_pStateMachine = { nullptr };
 
 public:
-	static	CState* Create();
 	virtual	void	Free() override;
-
 };
 
 END

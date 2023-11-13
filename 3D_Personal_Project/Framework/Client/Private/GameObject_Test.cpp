@@ -2,7 +2,9 @@
 #include "..\Public\GameObject_Test.h"
 #include "GameInstance.h"
 #include "StateMachine.h"
-#include "StateCharge_Test.h"
+
+#include "Test_State1.h"
+#include "Test_State2.h"
 
 CGameObject_Test::CGameObject_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
@@ -31,7 +33,7 @@ HRESULT CGameObject_Test::Initialize(void* pArg)
 		return E_FAIL;
 	/*if (FAILED(Add_Event()))
 		return E_FAIL;*/
-	if (FAILED(Init_ETC()))
+	if (FAILED(Add_State()))
 		return E_FAIL;
 	
 #pragma endregion
@@ -46,8 +48,7 @@ void CGameObject_Test::Priority_Tick(_float fTimeDelta)
 
 void CGameObject_Test::Tick(_float fTimeDelta)
 {
-	m_pStateCharge;
-
+	
 	int a = 10;
 
 	/*if (GetKeyState('1') & 0x8000)
@@ -98,12 +99,17 @@ HRESULT CGameObject_Test::Add_Event()
 	return S_OK;
 }
 
-HRESULT CGameObject_Test::Init_ETC()
+HRESULT CGameObject_Test::Add_State()
 {
-	m_pStateCharge = CStateCharge_Test::Create(this, m_pStateMachine);
-	if (m_pStateCharge == nullptr)
+	if (FAILED(m_pStateMachine->Add_State(STATE::STATE1, CTest_State1::Create(this,m_pStateMachine))))
 		return E_FAIL;
 
+	if (FAILED(m_pStateMachine->Add_State(STATE::STATE2, CTest_State2::Create(this, m_pStateMachine))))
+		return E_FAIL;
+	
+	if (FAILED(m_pStateMachine->Init_State(STATE::STATE1)))
+		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -116,22 +122,6 @@ void CGameObject_Test::Event_Test2()
 
 {
 	SetWindowText(g_hWnd, TEXT("TEST2¿‘¥œ¥Ÿ."));
-}
-
-bool CGameObject_Test::Transition_Test1()
-{
-	if (GetKeyState('P') & 0x8000)
-		return true;
-
-	return false;
-}
-
-bool CGameObject_Test::Transition_Test2()
-{
-	if (GetKeyState('P') & 0x8000)
-		return true;
-
-	return false;
 }
 
 void CGameObject_Test::Action_Test1()
@@ -174,6 +164,5 @@ void CGameObject_Test::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pStateCharge);
 }
 

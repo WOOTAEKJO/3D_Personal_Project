@@ -49,6 +49,12 @@
     <Filter Include="95. StateCharge\99.Test">
       <UniqueIdentifier>{003c3435-775a-4b58-b16e-b7610e111840}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. StateCharge\99.Test\00. Test_State1">
+      <UniqueIdentifier>{3ad95cf9-90e6-4cfe-84f2-2ef55de41265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. StateCharge\99.Test\01. Test_State2">
+      <UniqueIdentifier>{1fcf2fb1-42e9-487d-945b-01500ef60bb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -114,11 +120,11 @@
     <ClInclude Include="..\Public\GameObject_Test.h">
       <Filter>02.GameObjects\99. Test</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StateCharge_Test.h">
-      <Filter>95. StateCharge\99.Test</Filter>
+    <ClInclude Include="..\Public\Test_State1.h">
+      <Filter>95. StateCharge\99.Test\00. Test_State1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\StateCharge.h">
-      <Filter>95. StateCharge</Filter>
+    <ClInclude Include="..\Public\Test_State2.h">
+      <Filter>95. StateCharge\99.Test\01. Test_State2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,11 +179,11 @@
     <ClCompile Include="..\Private\GameObject_Test.cpp">
       <Filter>02.GameObjects\99. Test</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StateCharge_Test.cpp">
-      <Filter>95. StateCharge\99.Test</Filter>
+    <ClCompile Include="..\Private\Test_State1.cpp">
+      <Filter>95. StateCharge\99.Test\00. Test_State1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\StateCharge.cpp">
-      <Filter>95. StateCharge</Filter>
+    <ClCompile Include="..\Private\Test_State2.cpp">
+      <Filter>95. StateCharge\99.Test\01. Test_State2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

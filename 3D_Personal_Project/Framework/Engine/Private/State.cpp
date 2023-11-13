@@ -2,120 +2,19 @@
 #include "Action.h"
 #include "Transition.h"
 
-CState::CState()
+CState::CState(CStateMachine* pStateMachine)
+	:m_pStateMachine(pStateMachine)
 {
-	m_vecActions.reserve(5);
 }
 
-HRESULT CState::Initialize()
+HRESULT CState::Initialize(CGameObject* pGameObject)
 {
-	for (size_t i = 0; i < CState::STATE::STATE_END; i++) {
-		CAction* pAction = CAction::Create();
-		if (pAction == nullptr)
-			return E_FAIL;
-		m_vecActions.push_back(pAction);
-	}
-
-	m_pTransition = CTransition::Create();
-	if (m_pTransition == nullptr)
-		return E_FAIL;
-
+	
     return S_OK;
 }
 
-void CState::State_Enter()
-{
-	auto& iter = m_vecActions[CState::STATE::ENTER];
-
-	if (iter != nullptr)
-		iter->Act();
-}
-
-void CState::State_Priority_Tick(_float fTimeDelta)
-{
-	auto& iter = m_vecActions[CState::STATE::PRIORITY_TICK];
-
-	if (iter != nullptr)
-		iter->Act();
-
-}
-
-void CState::State_Tick(_float fTimeDelta)
-{
-	auto& iter = m_vecActions[CState::STATE::TICK];
-
-	if (iter != nullptr)
-		iter->Act();
-}
-
-void CState::State_Late_Tick(_float fTimeDelta)
-{
-	auto& iter = m_vecActions[CState::STATE::LATE_TICK];
-
-	if (iter != nullptr)
-		iter->Act();
-}
-
-void CState::State_Exit()
-{
-	auto& iter = m_vecActions[CState::STATE::EXIT];
-
-	if (iter != nullptr)
-		iter->Act();
-}
-
-HRESULT CState::Add_Action(STATE eTickType, function<void()> pFunction)
-{
-	if (pFunction == nullptr||
-		m_vecActions[eTickType] == nullptr)
-		return E_FAIL;
-
-	if (FAILED(m_vecActions[eTickType]->Add_Action(pFunction)))
-		return E_FAIL;
-		
-	return S_OK;
-}
-
-HRESULT CState::Add_Transition(const _uint& iResultStateID, function<bool()> pFunction)
-{
-	if (m_pTransition == nullptr ||
-		pFunction == nullptr)
-		return E_FAIL;
-
-	if (FAILED(m_pTransition->Add_Transition(pFunction, iResultStateID)))
-		return E_FAIL;
-	
-	return S_OK;
-}
-
-bool CState::Is_Transition(_uint* iResultStateID)
-{
-	if (m_pTransition == nullptr)
-		return false;
-
-	return m_pTransition->Is_Transition(iResultStateID);
-}
-
-CState* CState::Create()
-{
-	CState* pInstance = new CState();
-
-	if (FAILED(pInstance->Initialize())) {
-		MSG_BOX("Failed to Created : CState");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
 
 void CState::Free()
 {
 	__super::Free();
-
-	for (auto& iter : m_vecActions)
-		Safe_Release(iter);
-	m_vecActions.clear();
-
-	Safe_Release(m_pTransition);
-	
 }

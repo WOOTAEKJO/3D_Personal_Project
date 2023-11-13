@@ -5,8 +5,6 @@ BEGIN(Engine)
 
 class ENGINE_DLL CStateMachine final : public CComponent
 {
-public:
-	enum STATE {ENTER,PRIORITY_TICK,TICK,LATE_TICK,EXIT,STATE_END};
 private:
 	CStateMachine(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CStateMachine(const CStateMachine& rhs);
@@ -17,9 +15,7 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	
 public:	
-	HRESULT	Add_State(const _uint& iStateID);
-	HRESULT	Add_Transition(const _uint& iStateID, const _uint& iResultStateID, function<bool()> pFunction);
-	HRESULT	Add_Action(const _uint& iStateID, STATE eStateType, function<void()> pFunction);
+	HRESULT	Add_State(const _uint& iStateID,class CState* pState);
 
 	virtual void	Priority_Tick(_float fTimeDelta) override;
 	virtual void	Tick(_float fTimeDelta) override;
@@ -28,14 +24,12 @@ public:
 	HRESULT	Init_State(const _uint& iStateID);
 	HRESULT	Set_State(const _uint& iStateID);
 
-	bool	Is_Change_State();
-	
 private:
 	class CState*			m_pCurrentState = { nullptr };	// 현재 상태
 	_uint					m_iCurrentStateID = { 0 };		// 현재 상태 아이디
 
 private:
-	map<const _uint, class CState*>			m_mapState;								// 상태들을 저장
+	map<const _uint, class CState*>			m_mapState;		// 상태들을 저장
 
 private:
 	class CState*		Find_State(const _uint& iStateID);

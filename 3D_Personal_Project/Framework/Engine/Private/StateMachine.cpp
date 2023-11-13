@@ -23,48 +23,16 @@ HRESULT CStateMachine::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CStateMachine::Add_State(const _uint& iStateID)
+HRESULT CStateMachine::Add_State(const _uint& iStateID, class CState* pState)
 {
-	CState* pState = Find_State(iStateID);
-
-	if (pState != nullptr)
+	if (pState == nullptr)
 		return E_FAIL;
 
-	pState = CState::Create();
-	if (pState == nullptr)
+	CState* pSState = Find_State(iStateID);
+	if (pSState != nullptr)
 		return E_FAIL;
 
 	m_mapState.emplace(iStateID, pState);
-
-	return S_OK;
-}
-
-HRESULT CStateMachine::Add_Transition(const _uint& iStateID, const _uint& iResultStateID, function<bool()> pFunction)
-{
-	if (pFunction == nullptr)
-		return E_FAIL;
-
-	CState* pState = Find_State(iStateID);
-	if (pState == nullptr)
-		return E_FAIL;
-
-	if (FAILED(pState->Add_Transition(iResultStateID, pFunction)))
-		return E_FAIL;
-	
-	return S_OK;
-}
-
-HRESULT CStateMachine::Add_Action(const _uint& iStateID, STATE eStateType, function<void()> pFunction)
-{
-	if (pFunction == nullptr)
-		return E_FAIL;
-
-	CState* pState = Find_State(iStateID);
-	if (pState == nullptr)
-		return E_FAIL;
-
-	if (FAILED(pState->Add_Action((CState::STATE)eStateType, pFunction)))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -74,9 +42,7 @@ void CStateMachine::Priority_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if (!Is_Change_State()) {
-		m_pCurrentState->State_Priority_Tick(fTimeDelta);
-	}
+	m_pCurrentState->State_Priority_Tick(fTimeDelta);
 }
 
 void CStateMachine::Tick(_float fTimeDelta)
@@ -84,9 +50,7 @@ void CStateMachine::Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if (!Is_Change_State()) {
-		m_pCurrentState->State_Tick(fTimeDelta);
-	}
+	m_pCurrentState->State_Tick(fTimeDelta);
 }
 
 void CStateMachine::Late_Tick(_float fTimeDelta)
@@ -94,9 +58,7 @@ void CStateMachine::Late_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	if (!Is_Change_State()) {
-		m_pCurrentState->State_Late_Tick(fTimeDelta);
-	}
+	m_pCurrentState->State_Late_Tick(fTimeDelta);
 }
 
 HRESULT CStateMachine::Init_State(const _uint& iStateID)
@@ -128,21 +90,6 @@ HRESULT CStateMachine::Set_State(const _uint& iStateID)
 	m_pCurrentState->State_Enter();
 
 	return S_OK;
-}
-
-bool CStateMachine::Is_Change_State()
-{
-	_uint		iResultStateID = 0;
-
-	if (m_pCurrentState == nullptr)
-		return false;
-
-	if (m_pCurrentState->Is_Transition(&iResultStateID)) {
-		Set_State(iResultStateID);
-		return true;
-	}
-	
-	return false;
 }
 
 CState* CStateMachine::Find_State(const _uint& iStateID)

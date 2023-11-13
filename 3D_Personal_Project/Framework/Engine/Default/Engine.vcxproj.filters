@@ -76,12 +76,6 @@
     <Filter Include="01.Utility\03. Component\98. StateMachine\00.State">
       <UniqueIdentifier>{faf044f6-5c99-413e-b745-d7deaddfc50e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03. Component\98. StateMachine\01.Action">
-      <UniqueIdentifier>{e7e55fbd-3564-4fe5-8329-b14ee00eed7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\03. Component\98. StateMachine\02. Transition">
-      <UniqueIdentifier>{a1d7161f-0f4b-4321-aebf-eac69e58091d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\03. Component\99. Component_Manager">
       <UniqueIdentifier>{6ae49cc5-4ee7-4e5d-b00b-a83751d8b9eb}</UniqueIdentifier>
     </Filter>
@@ -156,12 +150,6 @@
     <ClInclude Include="..\Public\State.h">
       <Filter>01.Utility\03. Component\98. StateMachine\00.State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Action.h">
-      <Filter>01.Utility\03. Component\98. StateMachine\01.Action</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Transition.h">
-      <Filter>01.Utility\03. Component\98. StateMachine\02. Transition</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Component_Manager.h">
       <Filter>01.Utility\03. Component\99. Component_Manager</Filter>
     </ClInclude>
@@ -220,12 +208,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\State.cpp">
       <Filter>01.Utility\03. Component\98. StateMachine\00.State</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Action.cpp">
-      <Filter>01.Utility\03. Component\98. StateMachine\01.Action</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Transition.cpp">
-      <Filter>01.Utility\03. Component\98. StateMachine\02. Transition</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Component_Manager.cpp">
       <Filter>01.Utility\03. Component\99. Component_Manager</Filter>
