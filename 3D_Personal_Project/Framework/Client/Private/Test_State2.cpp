@@ -3,8 +3,7 @@
 #include "StateMachine.h"
 #include "GameObject_Test.h"
 
-CTest_State2::CTest_State2(CStateMachine* pStateMachine)
-	:CState(pStateMachine)
+CTest_State2::CTest_State2()
 {
 }
 
@@ -22,25 +21,30 @@ void CTest_State2::State_Enter()
 	int a = 0;
 }
 
-void CTest_State2::State_Priority_Tick(_float fTimeDelta)
+_uint CTest_State2::State_Priority_Tick(_float fTimeDelta)
 {
 	int a = 0;
+
+	return m_iStateID;
 }
 
-void CTest_State2::State_Tick(_float fTimeDelta)
+_uint CTest_State2::State_Tick(_float fTimeDelta)
 {
 	m_pOwner->Action_Test2();
+
+	return m_iStateID;
 }
 
-void CTest_State2::State_Late_Tick(_float fTimeDelta)
+_uint CTest_State2::State_Late_Tick(_float fTimeDelta)
 {
 	int a = 0;
 
 	if (GetKeyState('P') & 0x8000)
 	{
-		m_pStateMachine->Set_State(CGameObject_Test::STATE::STATE1);
-		return;
+		return CGameObject_Test::STATE::STATE1;
 	}
+
+	return m_iStateID;
 }
 
 void CTest_State2::State_Exit()
@@ -48,9 +52,9 @@ void CTest_State2::State_Exit()
 	int a = 0;
 }
 
-CTest_State2* CTest_State2::Create(CGameObject* pGameObject, CStateMachine* pStateMachine)
+CTest_State2* CTest_State2::Create(CGameObject* pGameObject)
 {
-	CTest_State2* pInstance = new CTest_State2(pStateMachine);
+	CTest_State2* pInstance = new CTest_State2();
 
 	if (FAILED(pInstance->Initialize(pGameObject)))
 	{

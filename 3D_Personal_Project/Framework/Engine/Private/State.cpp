@@ -2,8 +2,7 @@
 #include "Action.h"
 #include "Transition.h"
 
-CState::CState(CStateMachine* pStateMachine)
-	:m_pStateMachine(pStateMachine)
+CState::CState()
 {
 }
 

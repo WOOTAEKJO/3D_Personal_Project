@@ -24,6 +24,8 @@ public:
 	HRESULT	Init_State(const _uint& iStateID);
 	HRESULT	Set_State(const _uint& iStateID);
 
+	void	Is_Change_State(const _uint & iStateID);
+
 private:
 	class CState*			m_pCurrentState = { nullptr };	// 현재 상태
 	_uint					m_iCurrentStateID = { 0 };		// 현재 상태 아이디

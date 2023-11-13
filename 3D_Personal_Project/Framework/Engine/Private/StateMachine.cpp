@@ -32,6 +32,7 @@ HRESULT CStateMachine::Add_State(const _uint& iStateID, class CState* pState)
 	if (pSState != nullptr)
 		return E_FAIL;
 
+	pState->Set_StateID(iStateID);
 	m_mapState.emplace(iStateID, pState);
 
 	return S_OK;
@@ -42,7 +43,7 @@ void CStateMachine::Priority_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	m_pCurrentState->State_Priority_Tick(fTimeDelta);
+	Is_Change_State(m_pCurrentState->State_Priority_Tick(fTimeDelta));
 }
 
 void CStateMachine::Tick(_float fTimeDelta)
@@ -50,7 +51,7 @@ void CStateMachine::Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	m_pCurrentState->State_Tick(fTimeDelta);
+	Is_Change_State(m_pCurrentState->State_Tick(fTimeDelta));
 }
 
 void CStateMachine::Late_Tick(_float fTimeDelta)
@@ -58,7 +59,7 @@ void CStateMachine::Late_Tick(_float fTimeDelta)
 	if (m_pCurrentState == nullptr)
 		return;
 
-	m_pCurrentState->State_Late_Tick(fTimeDelta);
+	Is_Change_State(m_pCurrentState->State_Late_Tick(fTimeDelta));
 }
 
 HRESULT CStateMachine::Init_State(const _uint& iStateID)
@@ -90,6 +91,14 @@ HRESULT CStateMachine::Set_State(const _uint& iStateID)
 	m_pCurrentState->State_Enter();
 
 	return S_OK;
+}
+
+void CStateMachine::Is_Change_State(const _uint& iStateID)
+{
+	if (m_iCurrentStateID != iStateID)
+	{
+		Set_State(iStateID);
+	}
 }
 
 CState* CStateMachine::Find_State(const _uint& iStateID)

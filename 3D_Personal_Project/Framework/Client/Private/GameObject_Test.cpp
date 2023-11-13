@@ -101,10 +101,10 @@ HRESULT CGameObject_Test::Add_Event()
 
 HRESULT CGameObject_Test::Add_State()
 {
-	if (FAILED(m_pStateMachine->Add_State(STATE::STATE1, CTest_State1::Create(this,m_pStateMachine))))
+	if (FAILED(m_pStateMachine->Add_State(STATE::STATE1, CTest_State1::Create(this))))
 		return E_FAIL;
 
-	if (FAILED(m_pStateMachine->Add_State(STATE::STATE2, CTest_State2::Create(this, m_pStateMachine))))
+	if (FAILED(m_pStateMachine->Add_State(STATE::STATE2, CTest_State2::Create(this))))
 		return E_FAIL;
 	
 	if (FAILED(m_pStateMachine->Init_State(STATE::STATE1)))
@@ -163,6 +163,5 @@ CGameObject* CGameObject_Test::Clone(void* pArg)
 void CGameObject_Test::Free()
 {
 	__super::Free();
-
 }
 
