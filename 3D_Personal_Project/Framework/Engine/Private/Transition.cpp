@@ -59,4 +59,8 @@ CTransition* CTransition::Create()
 void CTransition::Free()
 {
     __super::Free();
+
+	/*for (auto& iter : m_mapTransition)
+		Safe_Release(iter.second);*/
+	m_mapTransition.clear();
 }

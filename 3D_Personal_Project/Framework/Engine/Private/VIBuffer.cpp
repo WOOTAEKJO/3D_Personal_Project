@@ -38,7 +38,7 @@ HRESULT CVIBuffer::Bind_Buffer()
 	/*m_pContext->IASetVertexBuffers();
 	m_pContext->IASetIndexBuffer();
 	m_pContext->IASetPrimitiveTopology();*/
-
+	
 	return S_OK;
 }
 

@@ -1,5 +1,6 @@
 #include "..\Public\State.h"
 #include "Action.h"
+#include "Transition.h"
 
 CState::CState()
 {
@@ -14,6 +15,10 @@ HRESULT CState::Initialize()
 			return E_FAIL;
 		m_vecActions.push_back(pAction);
 	}
+
+	m_pTransition = CTransition::Create();
+	if (m_pTransition == nullptr)
+		return E_FAIL;
 
     return S_OK;
 }
@@ -71,6 +76,26 @@ HRESULT CState::Add_Action(STATE eTickType, function<void()> pFunction)
 	return S_OK;
 }
 
+HRESULT CState::Add_Transition(const _uint& iResultStateID, function<bool()> pFunction)
+{
+	if (m_pTransition == nullptr ||
+		pFunction == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pTransition->Add_Transition(pFunction, iResultStateID)))
+		return E_FAIL;
+	
+	return S_OK;
+}
+
+bool CState::Is_Transition(_uint* iResultStateID)
+{
+	if (m_pTransition == nullptr)
+		return false;
+
+	return m_pTransition->Is_Transition(iResultStateID);
+}
+
 CState* CState::Create()
 {
 	CState* pInstance = new CState();
@@ -90,4 +115,7 @@ void CState::Free()
 	for (auto& iter : m_vecActions)
 		Safe_Release(iter);
 	m_vecActions.clear();
+
+	Safe_Release(m_pTransition);
+	
 }

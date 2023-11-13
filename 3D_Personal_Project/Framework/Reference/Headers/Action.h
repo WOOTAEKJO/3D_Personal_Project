@@ -15,8 +15,8 @@ public:
 	void	Act();
 
 private:
-	vector<function<void()>>	m_vecAction;
-
+	vector<function<void()>>			m_vecAction;
+	
 public:
 	static	CAction* Create();
 	virtual	void	Free() override;

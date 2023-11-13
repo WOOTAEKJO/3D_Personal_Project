@@ -19,12 +19,17 @@ public:
 	void	State_Exit();
 public:
 	HRESULT	Add_Action(STATE eTickType, function<void()> pFunction);
+	HRESULT	Add_Transition(const _uint& iResultStateID, function<bool()> pFunction);
+public:
+	bool	Is_Transition(_uint* iResultStateID);
 private:
 	vector<class CAction*> 	m_vecActions;	// state에 따라 구분되는 행동들을 가지고 있다.
-	
+	class CTransition*		m_pTransition = { nullptr };
+
 public:
 	static	CState* Create();
 	virtual	void	Free() override;
+
 };
 
 END

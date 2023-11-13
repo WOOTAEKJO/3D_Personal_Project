@@ -91,4 +91,5 @@ void CComponent_Manager::Free()
 	for (auto& iter : m_vecClone)
 		Safe_Release(iter);
 	m_vecClone.clear();
+
 }

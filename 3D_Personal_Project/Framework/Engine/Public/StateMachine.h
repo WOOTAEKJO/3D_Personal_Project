@@ -36,11 +36,9 @@ private:
 
 private:
 	map<const _uint, class CState*>			m_mapState;								// 상태들을 저장
-	map<const _uint, class CTransition*>	m_mapTransition;						// 조건들을 저장
 
 private:
 	class CState*		Find_State(const _uint& iStateID);
-	class CTransition*	Find_Transition(const _uint& iStateID);
 
 public:
 	static	CStateMachine* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

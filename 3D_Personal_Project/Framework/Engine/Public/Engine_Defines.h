@@ -2,6 +2,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "Effects11\d3dx11effect.h"
 using namespace DirectX;
 
 #include <unordered_map>

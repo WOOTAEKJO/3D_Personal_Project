@@ -167,8 +167,9 @@ CGameObject* CGameObject_Test::Clone(void* pArg)
 
 void CGameObject_Test::Free()
 {
+	Safe_Release(m_pStateCharge);
+
 	__super::Free();
 	
-	Safe_Release(m_pStateCharge);
 }
 

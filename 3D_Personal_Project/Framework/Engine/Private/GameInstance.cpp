@@ -202,14 +202,13 @@ CComponent* CGameInstance::Add_Component_Clone(const wstring& strProtoTypeTag, v
 
 void CGameInstance::Release_Manager()
 {
+	Safe_Release(m_pEvent_Manager);
+	Safe_Release(m_pObject_Manager);
 #pragma region TEST
 
 	Safe_Release(m_pComponent_Manager);
 
 #pragma endregion
-
-	Safe_Release(m_pEvent_Manager);
-	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);

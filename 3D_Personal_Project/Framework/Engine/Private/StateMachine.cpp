@@ -25,7 +25,6 @@ HRESULT CStateMachine::Initialize(void* pArg)
 
 HRESULT CStateMachine::Add_State(const _uint& iStateID)
 {
-	
 	CState* pState = Find_State(iStateID);
 
 	if (pState != nullptr)
@@ -45,24 +44,13 @@ HRESULT CStateMachine::Add_Transition(const _uint& iStateID, const _uint& iResul
 	if (pFunction == nullptr)
 		return E_FAIL;
 
-	CTransition* pTransition = Find_Transition(iStateID);
+	CState* pState = Find_State(iStateID);
+	if (pState == nullptr)
+		return E_FAIL;
 
-	if (pTransition == nullptr)
-	{
-		pTransition = CTransition::Create();
-		if (pTransition == nullptr)
-			return E_FAIL;
-
-		if (FAILED(pTransition->Add_Transition(pFunction, iResultStateID)))
-			return E_FAIL;
-
-		m_mapTransition.emplace(iStateID, pTransition);
-	}
-	else {
-		if (FAILED(pTransition->Add_Transition(pFunction, iResultStateID)))
-			return E_FAIL;
-	}
-
+	if (FAILED(pState->Add_Transition(iResultStateID, pFunction)))
+		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -146,11 +134,10 @@ bool CStateMachine::Is_Change_State()
 {
 	_uint		iResultStateID = 0;
 
-	CTransition* pTransition = Find_Transition(m_iCurrentStateID);
-	if (pTransition == nullptr)
+	if (m_pCurrentState == nullptr)
 		return false;
 
-	if (pTransition->Is_Transition(&iResultStateID)) {
+	if (m_pCurrentState->Is_Transition(&iResultStateID)) {
 		Set_State(iResultStateID);
 		return true;
 	}
@@ -163,16 +150,6 @@ CState* CStateMachine::Find_State(const _uint& iStateID)
 	auto& iter = m_mapState.find(iStateID);
 
 	if (iter == m_mapState.end())
-		return nullptr;
-
-	return iter->second;
-}
-
-CTransition* CStateMachine::Find_Transition(const _uint& iStateID)
-{
-	auto& iter = m_mapTransition.find(iStateID);
-
-	if (iter == m_mapTransition.end())
 		return nullptr;
 
 	return iter->second;
@@ -209,9 +186,5 @@ void CStateMachine::Free()
 	for (auto& iter : m_mapState)
 		Safe_Release(iter.second);
 	m_mapState.clear();
-
-	for (auto& iter : m_mapTransition)
-		Safe_Release(iter.second);
-	m_mapTransition.clear();
 }
 
