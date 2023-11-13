@@ -33,6 +33,7 @@ protected:
 protected:
 	_bool						m_isCloned = { false };
 	// 클론인지 아닌지를 판단
+	
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

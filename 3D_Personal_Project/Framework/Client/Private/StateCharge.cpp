@@ -7,8 +7,8 @@ CStateCharge::CStateCharge(CGameObject* pOwner, CStateMachine* pStateManchine)
 	:m_pOwner(pOwner),
 	m_pStateMachine(pStateManchine)
 {
-	Safe_AddRef(m_pOwner);
-	Safe_AddRef(m_pStateMachine);
+	//Safe_AddRef(m_pOwner);
+	//Safe_AddRef(m_pStateMachine);
 }
 
 HRESULT CStateCharge::Initialize()
@@ -20,6 +20,6 @@ void CStateCharge::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pOwner);
-	Safe_Release(m_pStateMachine);
+	//Safe_Release(m_pOwner);
+	//Safe_Release(m_pStateMachine);
 }

@@ -150,6 +150,7 @@ void CObject_Manager::Free()
 
 	for (size_t i = 0; i < m_iNumLevel; i++) {
 		for (auto& pLayer : m_mapLayer[i]) {
+
 			Safe_Release(pLayer.second);
 		}
 		m_mapLayer[i].clear();

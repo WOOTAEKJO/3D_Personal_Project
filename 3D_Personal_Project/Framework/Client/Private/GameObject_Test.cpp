@@ -13,6 +13,7 @@ CGameObject_Test::CGameObject_Test(ID3D11Device* pDevice, ID3D11DeviceContext* p
 CGameObject_Test::CGameObject_Test(const CGameObject_Test& rhs)
 	: CGameObject(rhs)
 {
+
 }
 
 HRESULT CGameObject_Test::Initialize_Prototype()
@@ -28,8 +29,8 @@ HRESULT CGameObject_Test::Initialize(void* pArg)
 
 	if (FAILED(Add_Component()))
 		return E_FAIL;
-	if (FAILED(Add_Event()))
-		return E_FAIL;
+	/*if (FAILED(Add_Event()))
+		return E_FAIL;*/
 	if (FAILED(Init_ETC()))
 		return E_FAIL;
 	
@@ -45,6 +46,8 @@ void CGameObject_Test::Priority_Tick(_float fTimeDelta)
 
 void CGameObject_Test::Tick(_float fTimeDelta)
 {
+	m_pStateCharge;
+
 	int a = 10;
 
 	/*if (GetKeyState('1') & 0x8000)
@@ -98,6 +101,8 @@ HRESULT CGameObject_Test::Add_Event()
 HRESULT CGameObject_Test::Init_ETC()
 {
 	m_pStateCharge = CStateCharge_Test::Create(this, m_pStateMachine);
+	if (m_pStateCharge == nullptr)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -167,9 +172,8 @@ CGameObject* CGameObject_Test::Clone(void* pArg)
 
 void CGameObject_Test::Free()
 {
-	Safe_Release(m_pStateCharge);
-
 	__super::Free();
-	
+
+	Safe_Release(m_pStateCharge);
 }
 

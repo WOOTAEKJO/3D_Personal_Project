@@ -10,15 +10,14 @@ CStateCharge_Test::CStateCharge_Test(CGameObject* pOwner, CStateMachine* pStateM
 
 HRESULT CStateCharge_Test::Initialize()
 {
-	/*if (FAILED(Add_State1()))
+	if (FAILED(Add_State1()))
 		return E_FAIL;
 
 	if (FAILED(Add_State2()))
 		return E_FAIL;
 
-
 	if (FAILED(m_pStateMachine->Init_State(STATE::STATE1)))
-		return E_FAIL;*/
+		return E_FAIL;
 	
 	return S_OK;
 }
