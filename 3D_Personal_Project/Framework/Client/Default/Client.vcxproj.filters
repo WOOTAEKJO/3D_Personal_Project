@@ -55,6 +55,9 @@
     <Filter Include="95. StateCharge\99.Test\01. Test_State2">
       <UniqueIdentifier>{1fcf2fb1-42e9-487d-945b-01500ef60bb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="94. Shader">
+      <UniqueIdentifier>{c0cbb75d-9771-4660-9b58-950ec7f6b3b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -203,5 +206,10 @@
     <Text Include="ReadMe.txt">
       <Filter>98.Default</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

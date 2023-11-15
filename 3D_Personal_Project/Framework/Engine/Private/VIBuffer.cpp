@@ -67,10 +67,16 @@ HRESULT CVIBuffer::Bind_Buffer()
 	/* 정점의 구조체 안에 멤버 변수마다 쉐이더에 어떻게 넣어줄지를 설정하는 구조체*/
 	/* 지금 사용하는 정점 구조체는 멤버 변수가 2개. 그래서 2개를 배열에 넣어줬다.*/
 	D3D10_INPUT_ELEMENT_DESC	Elements[] = {
-		{},
-		{}
+		{"POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D10_INPUT_PER_VERTEX_DATA,0},
+		{"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D10_INPUT_PER_VERTEX_DATA,0}
 	};
-
+	LPCSTR SemanticName;
+	UINT SemanticIndex;
+	DXGI_FORMAT Format;
+	UINT InputSlot;
+	UINT AlignedByteOffset;
+	D3D10_INPUT_CLASSIFICATION InputSlotClass;
+	UINT InstanceDataStepRate;
 	/*m_pDevice->CreateInputLayout(Elements);
 	m_pContext->IASetInputLayout();*/
 	
