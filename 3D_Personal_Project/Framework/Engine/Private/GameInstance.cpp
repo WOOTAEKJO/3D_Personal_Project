@@ -60,14 +60,6 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 
-#pragma region TEST
-
-	m_pComponent_Manager->Priority_Tick(fTimeDelta);
-	m_pComponent_Manager->Tick(fTimeDelta);
-	m_pComponent_Manager->Late_Tick(fTimeDelta);
-
-#pragma endregion
-
 	m_pLevel_Manager->Tick(fTimeDelta);
 }
 

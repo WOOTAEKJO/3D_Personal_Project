@@ -35,14 +35,29 @@ HRESULT CGameObject::Initialize(void* pArg)
 
 void CGameObject::Priority_Tick(_float fTimeDelta)
 {
+	for (auto& iter : m_vecUpdate_Component)
+	{
+		if (iter != nullptr)
+			iter->Priority_Tick(fTimeDelta);
+	}
 }
 
 void CGameObject::Tick(_float fTimeDelta)
 {
+	for (auto& iter : m_vecUpdate_Component)
+	{
+		if (iter != nullptr)
+			iter->Tick(fTimeDelta);
+	}
 }
 
 void CGameObject::Late_Tick(_float fTimeDelta)
 {
+	for (auto& iter : m_vecUpdate_Component)
+	{
+		if (iter != nullptr)
+			iter->Late_Tick(fTimeDelta);
+	}
 }
 
 HRESULT CGameObject::Render()
@@ -53,6 +68,10 @@ HRESULT CGameObject::Render()
 void CGameObject::Free()
 {
 	__super::Free();
+
+	for (auto& iter : m_vecUpdate_Component)
+		Safe_Release(iter);
+	m_vecUpdate_Component.clear();
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

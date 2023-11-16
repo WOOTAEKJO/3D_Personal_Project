@@ -31,6 +31,9 @@ protected:
 	class CGameInstance*		m_pGameInstance = { nullptr };
 
 protected:
+	vector<class CComponent*>	m_vecUpdate_Component;
+	// 업데이트가 필요한 컴포넌트
+protected:
 	_bool						m_isCloned = { false };
 	// 클론인지 아닌지를 판단
 	

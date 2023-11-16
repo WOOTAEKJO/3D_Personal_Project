@@ -43,6 +43,7 @@ HRESULT CGameObject_Test::Initialize(void* pArg)
 void CGameObject_Test::Priority_Tick(_float fTimeDelta)
 {
 	int a = 10;
+	CGameObject::Priority_Tick(fTimeDelta);
 }
 
 void CGameObject_Test::Tick(_float fTimeDelta)
@@ -59,12 +60,14 @@ void CGameObject_Test::Tick(_float fTimeDelta)
 	{
 		m_pGameInstance->Execute_Event(TEXT("TEST2"));
 	}*/
+	CGameObject::Tick(fTimeDelta);
 }
 
 void CGameObject_Test::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDERGROUP::RENDER_PRIORITY, this)))
 		return;
+	CGameObject::Late_Tick(fTimeDelta);
 }
 
 HRESULT CGameObject_Test::Render()
@@ -80,8 +83,9 @@ HRESULT CGameObject_Test::Add_Component()
 		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC,TEXT("Prototype_Component_StateMachine")));
 	if (m_pStateMachine == nullptr)
 		return E_FAIL;
+	m_vecUpdate_Component.push_back(m_pStateMachine);
 
-	m_pVIBuffer_Rect = dynamic_cast<CVIBuffer_Rect*>(
+	/*m_pVIBuffer_Rect = dynamic_cast<CVIBuffer_Rect*>(
 		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")));
 	if (m_pVIBuffer_Rect == nullptr)
 		return E_FAIL;
@@ -89,7 +93,7 @@ HRESULT CGameObject_Test::Add_Component()
 	m_pShader = dynamic_cast<CShader*>(
 		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX")));
 	if (m_pShader == nullptr)
-		return E_FAIL;
+		return E_FAIL;*/
 	
 	return S_OK;
 }

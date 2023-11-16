@@ -40,29 +40,8 @@ CComponent* CComponent_Manager::Add_Component_Clone(const _uint& iLevelIndex, co
 	CComponent* pClone = pComponent->Clone(pArg);
 	if (pClone == nullptr)
 		return nullptr;
-
-	m_vecClone.push_back(pClone);
 	
 	return pClone;
-}
-
-void CComponent_Manager::Priority_Tick(_float fTimeDelta)
-{
-	for (auto& iter : m_vecClone)
-		iter->Priority_Tick(fTimeDelta);
-		
-}
-
-void CComponent_Manager::Tick(_float fTimeDelta)
-{
-	for (auto& iter : m_vecClone)
-		iter->Tick(fTimeDelta);
-}
-
-void CComponent_Manager::Late_Tick(_float fTimeDelta)
-{
-	for (auto& iter : m_vecClone)
-		iter->Late_Tick(fTimeDelta);
 }
 
 CComponent* CComponent_Manager::Find_Com_ProtoType(const _uint& iLevelIndex, const wstring& strProtoTypeTag)
@@ -99,9 +78,4 @@ void CComponent_Manager::Free()
 	}
 
 	Safe_Delete_Array(m_mapCom_ProtoType);
-
-	for (auto& iter : m_vecClone)
-		Safe_Release(iter);
-	m_vecClone.clear();
-
 }
