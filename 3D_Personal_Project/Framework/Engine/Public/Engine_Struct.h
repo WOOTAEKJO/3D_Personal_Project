@@ -13,10 +13,15 @@ namespace Engine
 
 	}GRAPHIC_DESC;
 
-	typedef struct tagVertex_Position_TexCoord
+	typedef struct ENGINE_DLL tagVertex_Position_TexCoord
 	{
 		XMFLOAT3	fPosition;
 		XMFLOAT2	fTexCoord;
-	}VERPOSTEX;
+
+		static const unsigned int	iElementsNum = 2;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+		// 정점의 정보 구조체의 멤버 변수마다 옵션을 설정하는 구조체 배열
+		// 정점 구조체의 멤버변수는 2개이므로 배열의 갯수도 2이다.
+	}VTXPOSTEX;
 
 }

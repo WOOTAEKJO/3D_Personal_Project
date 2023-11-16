@@ -104,13 +104,6 @@ HRESULT CLoader::Loading_For_Logo_Level()
 		CGameObject_Test::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
-#pragma region TEST
-
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(TEXT("StateMachine"), CStateMachine::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-#pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;

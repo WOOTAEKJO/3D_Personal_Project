@@ -11,17 +11,22 @@ private:
 	virtual	~CShader() = default;
 		
 public:
-	HRESULT	Initialize_ProtoType(const wstring& strShaderFilePath);
+	HRESULT	Initialize_ProtoType(const wstring& strShaderFilePath,const D3D11_INPUT_ELEMENT_DESC * pElement, const _uint & iElementNum);
 	virtual	HRESULT	Initialize(void* pArg) override;
+public:
+	HRESULT	Begin(_uint iPassIndex);
 
 private:
 	ID3DX11Effect*		m_pEffect = { nullptr };
 	/*
 		- 쉐이더 하나를 연결해서 이 변수로 쉐이더를 사용
 	*/
+	D3DX11_TECHNIQUE_DESC		m_Technique = {};	// technique에 정보를 저장할 구조체 변수
+	vector<ID3D11InputLayout*>	m_vecInputLayout;
+	// pass를 이용해서 만든 InputLayout들을 보관할 벡터
 
 public:
-	static	CShader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,const wstring& strShaderFilePath);
+	static	CShader*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,const wstring& strShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElement, const _uint& iElementNum);
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	void		Free() override;
 };

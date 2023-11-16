@@ -5,6 +5,8 @@
 BEGIN(Engine)
 
 class CStateMachine;
+class CVIBuffer_Rect;
+class CShader;
 
 END
 
@@ -41,7 +43,9 @@ public:
 	void	Action_Test2();
 
 private:
-	CStateMachine* m_pStateMachine = { nullptr };
+	CStateMachine*		m_pStateMachine = { nullptr };
+	CVIBuffer_Rect*		m_pVIBuffer_Rect = { nullptr };
+	CShader*			m_pShader = { nullptr };
 public:
 	/* 원형객체를 생성한다. */
 	static CGameObject_Test* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

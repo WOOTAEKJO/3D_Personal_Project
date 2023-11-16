@@ -14,11 +14,11 @@ HRESULT CVIBuffer_Rect::Initialize_ProtoType()
 {
 	m_iVertexBuffersNum = 1;
 	m_iVertexNum = 4;
-	m_iVertexStride = sizeof(VERPOSTEX);
+	m_iVertexStride = sizeof(VTXPOSTEX);
 
 	m_iIndexNum = 6;
-	m_iVertexStride = 2;
-	m_eIndexForMat = m_iVertexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
+	m_iIndexStride = 2;
+	m_eIndexForMat = m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
@@ -32,7 +32,7 @@ HRESULT CVIBuffer_Rect::Initialize_ProtoType()
 
 	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
 
-	VERPOSTEX* pVerpostex = new VERPOSTEX[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
+	VTXPOSTEX* pVerpostex = new VTXPOSTEX[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
 
 	pVerpostex[0].fPosition = _float3(-0.5f, 0.5f, 0.f);
 	pVerpostex[0].fTexCoord = _float2(0.f, 0.f);
@@ -76,7 +76,7 @@ HRESULT CVIBuffer_Rect::Initialize_ProtoType()
 
 	m_SubResource_Data.pSysMem = pIndex;
 
-	if (FAILED(Create_Buffer(&m_pVB)))
+	if (FAILED(Create_Buffer(&m_pIB)))
 		return E_FAIL;
 
 	Safe_Delete_Array(pIndex);
@@ -106,7 +106,7 @@ CComponent* CVIBuffer_Rect::Clone(void* pArg)
 	CVIBuffer_Rect* pInstance = new CVIBuffer_Rect(*this);
 
 	if (FAILED(pInstance->Initialize(pArg))) {
-		MSG_BOX("Failed to Created : CVIBuffer_Rect");
+		MSG_BOX("Failed to Cloned : CVIBuffer_Rect");
 		Safe_Release(pInstance);
 	}
 

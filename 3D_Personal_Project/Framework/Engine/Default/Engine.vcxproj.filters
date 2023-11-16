@@ -221,5 +221,8 @@
     <ClCompile Include="..\Private\Shader.cpp">
       <Filter>01.Utility\03. Component\01. Shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Engine_Struct.cpp">
+      <Filter>99.Defines</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

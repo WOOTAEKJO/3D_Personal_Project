@@ -29,6 +29,9 @@ private:
 	ImGuiIO* io = nullptr;
 private:
 	HRESULT Open_Level(LEVEL eStartLevelID);
+	
+private:
+	HRESULT	Ready_ProtoType_Component_ForStaticLevel();
 
 public:
 	static CMainApp* Create();

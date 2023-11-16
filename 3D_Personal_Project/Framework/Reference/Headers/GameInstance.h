@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer.h"
+#include "Component_Manager.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -48,13 +49,9 @@ public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
 	HRESULT	Execute_Event(const wstring & strEventTag);
 
-#pragma region TEST
-
-public: /* For.Component_Manager*/ /* 임시 테스를 위함 정쌤한테 아직 배우지 않음*/
-	HRESULT	Add_Component_ProtoType(const wstring & strProtoTypeTag, class CComponent* pComponent);
-	class CComponent*	Add_Component_Clone(const wstring & strProtoTypeTag, void* pArg = nullptr);
-
-#pragma endregion
+public: /* For.Component_Manager*/
+	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring & strProtoTypeTag, class CComponent* pComponent);
+	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -63,13 +60,8 @@ private:
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
 	class CRenderer*				m_pRenderer = { nullptr };
 	class CEvent_Manager*			m_pEvent_Manager = { nullptr };
+	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
-
-#pragma region TEST
-
-	class CComponent_Manager* m_pComponent_Manager = { nullptr };
-
-#pragma endregion
 
 public:
 	void Release_Manager();

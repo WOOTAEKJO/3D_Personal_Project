@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "Effects11\d3dx11effect.h"
+#include <d3dcompiler.h>
 using namespace DirectX;
 
 #include <unordered_map>
@@ -14,9 +15,9 @@ using namespace DirectX;
 #include <functional>
 using namespace std;
 
+#include "Engine_Macro.h"
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
-#include "Engine_Macro.h"
 #include "Engine_Typedef.h"
 using namespace Engine;
 

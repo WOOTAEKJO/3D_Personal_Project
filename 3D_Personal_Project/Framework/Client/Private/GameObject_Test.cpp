@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\GameObject_Test.h"
 #include "GameInstance.h"
-#include "StateMachine.h"
 
 #include "Test_State1.h"
 #include "Test_State2.h"
@@ -77,8 +76,19 @@ HRESULT CGameObject_Test::Render()
 
 HRESULT CGameObject_Test::Add_Component()
 {
-	m_pStateMachine = dynamic_cast<CStateMachine*>(m_pGameInstance->Add_Component_Clone(TEXT("StateMachine")));
+	m_pStateMachine = dynamic_cast<CStateMachine*>(
+		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC,TEXT("Prototype_Component_StateMachine")));
 	if (m_pStateMachine == nullptr)
+		return E_FAIL;
+
+	m_pVIBuffer_Rect = dynamic_cast<CVIBuffer_Rect*>(
+		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")));
+	if (m_pVIBuffer_Rect == nullptr)
+		return E_FAIL;
+
+	m_pShader = dynamic_cast<CShader*>(
+		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX")));
+	if (m_pShader == nullptr)
 		return E_FAIL;
 	
 	return S_OK;

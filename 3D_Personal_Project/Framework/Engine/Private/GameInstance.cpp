@@ -5,8 +5,6 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 
-#include "Component_Manager.h"
-
 IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
@@ -45,14 +43,10 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	if (nullptr == m_pEvent_Manager)
 		return E_FAIL;
 
-#pragma region TEST
-
 	/* 컴포넌트 매니저 사용 준비*/
-	m_pComponent_Manager = CComponent_Manager::Create();
+	m_pComponent_Manager = CComponent_Manager::Create(iNumLevels);
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
-
-#pragma endregion
 
 	return S_OK;
 }
@@ -184,20 +178,20 @@ HRESULT CGameInstance::Execute_Event(const wstring& strEventTag)
 	return m_pEvent_Manager->Execute_Event(strEventTag);
 }
 
-HRESULT CGameInstance::Add_Component_ProtoType(const wstring& strProtoTypeTag, CComponent* pComponent)
+HRESULT CGameInstance::Add_Component_ProtoType(const _uint& iLevelIndex, const wstring& strProtoTypeTag, CComponent* pComponent)
 {
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	return m_pComponent_Manager->Add_Component_ProtoType(strProtoTypeTag, pComponent);
+	return m_pComponent_Manager->Add_Component_ProtoType(iLevelIndex, strProtoTypeTag, pComponent);
 }
 
-CComponent* CGameInstance::Add_Component_Clone(const wstring& strProtoTypeTag, void* pArg)
+CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const wstring& strProtoTypeTag, void* pArg)
 {
 	if (nullptr == m_pComponent_Manager)
 		return nullptr;
 
-	return m_pComponent_Manager->Add_Component_Clone(strProtoTypeTag, pArg);
+	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
 }
 
 void CGameInstance::Release_Manager()
