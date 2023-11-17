@@ -31,11 +31,19 @@ protected:
 	class CGameInstance*		m_pGameInstance = { nullptr };
 
 protected:
-	vector<class CComponent*>	m_vecUpdate_Component;
-	// 업데이트가 필요한 컴포넌트
+	class CTransform*			m_pTransformCom = { nullptr };
+
+protected:
+	map<const wstring, class CComponent*>	m_mapComponent;
+
 protected:
 	_bool						m_isCloned = { false };
 	// 클론인지 아닌지를 판단
+
+protected:
+	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,
+		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
+	class CComponent* Find_Component(const wstring & strComTag);
 	
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

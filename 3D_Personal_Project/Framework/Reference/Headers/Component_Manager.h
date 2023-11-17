@@ -2,6 +2,7 @@
 #include "VIBuffer_Rect.h"
 #include "Shader.h"
 #include "StateMachine.h"
+#include "Transform.h"
 
 BEGIN(Engine)
 
@@ -15,7 +16,8 @@ public:
 	HRESULT	Initialize(const _uint& iLevelNum);
 	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring& strProtoTypeTag, class CComponent* pComponent);
 	class CComponent*	Add_Component_Clone(const _uint& iLevelIndex, const wstring& strProtoTypeTag,void* pArg);
-	
+	void	Clear(_uint iLevelIndex);
+
 private:
 	map<const wstring, class CComponent*>* m_mapCom_ProtoType;
 	typedef	map<const wstring, class CComponent*> PROTOTYPE;

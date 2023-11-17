@@ -15,6 +15,11 @@ using namespace DirectX;
 #include <functional>
 using namespace std;
 
+namespace Engine
+{
+	static const wchar_t* g_pTransformTag = TEXT("Com_Transform");
+}
+
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
 #include "Engine_Function.h"

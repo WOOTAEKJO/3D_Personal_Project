@@ -82,6 +82,9 @@
     <Filter Include="01.Utility\03. Component\01. Shader">
       <UniqueIdentifier>{05e239d6-4421-4251-bc2c-53aca207b6be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\02. Transform">
+      <UniqueIdentifier>{81a5fb6d-7c5f-4f45-b150-afc0d54b9ff9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="..\Public\Shader.h">
       <Filter>01.Utility\03. Component\01. Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Transform.h">
+      <Filter>01.Utility\03. Component\02. Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -223,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Engine_Struct.cpp">
       <Filter>99.Defines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Transform.cpp">
+      <Filter>01.Utility\03. Component\02. Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

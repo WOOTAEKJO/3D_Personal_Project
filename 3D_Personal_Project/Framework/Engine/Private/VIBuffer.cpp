@@ -6,8 +6,13 @@ CVIBuffer::CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CVIBuffer::CVIBuffer(const CVIBuffer& rhs)
-	:CComponent(rhs),m_pVB(rhs.m_pVB),m_pIB(rhs.m_pIB)
+	:CComponent(rhs),m_pVB(rhs.m_pVB),m_pIB(rhs.m_pIB),
+	m_iVertexNum(rhs.m_iVertexNum), m_iVertexStride(rhs.m_iVertexStride),
+	m_iVertexBuffersNum(rhs.m_iVertexBuffersNum), m_iIndexNum(rhs.m_iIndexNum),
+	m_iIndexStride(rhs.m_iIndexStride), m_eIndexForMat(rhs.m_eIndexForMat),
+	m_eTopology(rhs.m_eTopology)
 {
+	
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);
 }

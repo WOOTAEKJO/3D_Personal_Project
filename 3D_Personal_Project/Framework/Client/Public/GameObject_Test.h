@@ -31,7 +31,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	HRESULT	Add_Component();
+	HRESULT	Ready_Component();
 	HRESULT	Add_Event();
 	HRESULT	Add_State();
 
@@ -43,9 +43,13 @@ public:
 	void	Action_Test2();
 
 private:
-	CStateMachine*		m_pStateMachine = { nullptr };
-	CVIBuffer_Rect*		m_pVIBuffer_Rect = { nullptr };
-	CShader*			m_pShader = { nullptr };
+	CStateMachine*		m_pStateMachineCom = { nullptr };
+	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
+	CShader*			m_pShaderCom = { nullptr };
+
+private:
+	HRESULT	Bind_ShaderResources();
+
 public:
 	/* 원형객체를 생성한다. */
 	static CGameObject_Test* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

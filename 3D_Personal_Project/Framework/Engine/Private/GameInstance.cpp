@@ -79,10 +79,13 @@ HRESULT CGameInstance::Render_Engine()
 
 void CGameInstance::Clear(_uint iLevelIndex)
 {
-	if (m_pObject_Manager == nullptr)
+	if (m_pObject_Manager == nullptr||
+		m_pComponent_Manager == nullptr)
 		return;
 
+	m_pComponent_Manager->Clear(iLevelIndex);
 	m_pObject_Manager->Clear(iLevelIndex);
+
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)

@@ -44,6 +44,16 @@ CComponent* CComponent_Manager::Add_Component_Clone(const _uint& iLevelIndex, co
 	return pClone;
 }
 
+void CComponent_Manager::Clear(_uint iLevelIndex)
+{
+	if (iLevelIndex >= m_iLevelNum)
+		return;
+
+	for (auto& iter : m_mapCom_ProtoType[iLevelIndex])
+		Safe_Release(iter.second);
+	m_mapCom_ProtoType[iLevelIndex].clear();
+}
+
 CComponent* CComponent_Manager::Find_Com_ProtoType(const _uint& iLevelIndex, const wstring& strProtoTypeTag)
 {
 	auto& iter = m_mapCom_ProtoType[iLevelIndex].find(strProtoTypeTag);

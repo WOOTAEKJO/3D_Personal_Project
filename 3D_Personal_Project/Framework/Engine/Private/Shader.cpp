@@ -89,6 +89,21 @@ HRESULT CShader::Begin(_uint iPassIndex)
 	return S_OK;
 }
 
+HRESULT CShader::Bind_Matrix(const _char* pMatrixName, const _float4x4* pMatrix)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pMatrixName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
+	if (pMatrixVariable == nullptr)
+		return E_FAIL;
+
+	pMatrixVariable->SetMatrix((_float*)pMatrix);
+
+	return S_OK;
+}
+
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElement, const _uint& iElementNum)
 {
 	CShader* pInstance = new CShader(pDevice, pContext);
@@ -117,8 +132,8 @@ void CShader::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pEffect);
-
 	for (auto& iter : m_vecInputLayout)
 		Safe_Release(iter);
+
+	Safe_Release(m_pEffect);
 }

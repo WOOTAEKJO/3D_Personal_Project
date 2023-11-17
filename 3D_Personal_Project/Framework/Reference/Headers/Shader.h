@@ -15,6 +15,7 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 public:
 	HRESULT	Begin(_uint iPassIndex);
+	HRESULT	Bind_Matrix(const _char* pMatrixName, const _float4x4* pMatrix);
 
 private:
 	ID3DX11Effect*		m_pEffect = { nullptr };

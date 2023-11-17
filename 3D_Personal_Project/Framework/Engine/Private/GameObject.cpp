@@ -30,33 +30,43 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize(void* pArg)
 {
+	m_pTransformCom = CTransform::Create(m_pDevice,m_pContext);
+	if (m_pTransformCom == nullptr)
+		return E_FAIL;
+
+	if (Find_Component(g_pTransformTag) != nullptr)
+		return E_FAIL;
+
+	m_mapComponent.emplace(g_pTransformTag, m_pTransformCom);
+	Safe_AddRef(m_pTransformCom);
+	
 	return S_OK;
 }
 
 void CGameObject::Priority_Tick(_float fTimeDelta)
 {
-	for (auto& iter : m_vecUpdate_Component)
+	for (auto& iter : m_mapComponent)
 	{
-		if (iter != nullptr)
-			iter->Priority_Tick(fTimeDelta);
+		if (iter.second != nullptr)
+			iter.second->Priority_Tick(fTimeDelta);
 	}
 }
 
 void CGameObject::Tick(_float fTimeDelta)
 {
-	for (auto& iter : m_vecUpdate_Component)
+	for (auto& iter : m_mapComponent)
 	{
-		if (iter != nullptr)
-			iter->Tick(fTimeDelta);
+		if (iter.second != nullptr)
+			iter.second->Tick(fTimeDelta);
 	}
 }
 
 void CGameObject::Late_Tick(_float fTimeDelta)
 {
-	for (auto& iter : m_vecUpdate_Component)
+	for (auto& iter : m_mapComponent)
 	{
-		if (iter != nullptr)
-			iter->Late_Tick(fTimeDelta);
+		if (iter.second != nullptr)
+			iter.second->Late_Tick(fTimeDelta);
 	}
 }
 
@@ -65,13 +75,44 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)
+{
+	CComponent* pComponent = Find_Component(strComTag);
+	if (pComponent != nullptr)
+		return E_FAIL;
+
+	CComponent* Clone = m_pGameInstance->Add_Component_Clone(iLevelIndex, strPrototypeTag, pArg);
+	if (Clone == nullptr)
+		return E_FAIL;
+
+	*pOut = Clone;
+
+	m_mapComponent.emplace(strComTag, Clone);
+
+	Safe_AddRef(Clone);
+
+	return S_OK;
+}
+
+CComponent* CGameObject::Find_Component(const wstring& strComTag)
+{
+	auto& iter = m_mapComponent.find(strComTag);
+
+	if (iter == m_mapComponent.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();
 
-	for (auto& iter : m_vecUpdate_Component)
-		Safe_Release(iter);
-	m_vecUpdate_Component.clear();
+	Safe_Release(m_pTransformCom);
+
+	for (auto& iter : m_mapComponent)
+		Safe_Release(iter.second);
+	m_mapComponent.clear();
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

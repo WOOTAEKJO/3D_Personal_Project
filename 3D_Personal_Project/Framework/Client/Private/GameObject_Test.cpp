@@ -25,10 +25,11 @@ HRESULT CGameObject_Test::Initialize_Prototype()
 
 HRESULT CGameObject_Test::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 
 #pragma region TEST
 
-	if (FAILED(Add_Component()))
+	if (FAILED(Ready_Component()))
 		return E_FAIL;
 	/*if (FAILED(Add_Event()))
 		return E_FAIL;*/
@@ -72,28 +73,33 @@ void CGameObject_Test::Late_Tick(_float fTimeDelta)
 
 HRESULT CGameObject_Test::Render()
 {
-	int a = 10;
+	Bind_ShaderResources();
+
+	m_pShaderCom->Begin(0);
+
+	m_pVIBufferCom->Bind_Buffer();
+
+	m_pVIBufferCom->Render();
 
 	return S_OK;
 }
 
-HRESULT CGameObject_Test::Add_Component()
+HRESULT CGameObject_Test::Ready_Component()
 {
-	m_pStateMachine = dynamic_cast<CStateMachine*>(
-		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC,TEXT("Prototype_Component_StateMachine")));
-	if (m_pStateMachine == nullptr)
-		return E_FAIL;
-	m_vecUpdate_Component.push_back(m_pStateMachine);
-
-	/*m_pVIBuffer_Rect = dynamic_cast<CVIBuffer_Rect*>(
-		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect")));
-	if (m_pVIBuffer_Rect == nullptr)
+	/* For.Com_StateMachine*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
+		TEXT("Com_StateMachine"), reinterpret_cast<CComponent**>(&m_pStateMachineCom))))
 		return E_FAIL;
 
-	m_pShader = dynamic_cast<CShader*>(
-		m_pGameInstance->Add_Component_Clone(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX")));
-	if (m_pShader == nullptr)
-		return E_FAIL;*/
+	/* For.Com_VIBuffer*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		return E_FAIL;
+
+	/* For.Com_Shader*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		return E_FAIL;
 	
 	return S_OK;
 }
@@ -115,13 +121,13 @@ HRESULT CGameObject_Test::Add_Event()
 
 HRESULT CGameObject_Test::Add_State()
 {
-	if (FAILED(m_pStateMachine->Add_State(STATE::STATE1, CTest_State1::Create(this))))
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::STATE1, CTest_State1::Create(this))))
 		return E_FAIL;
 
-	if (FAILED(m_pStateMachine->Add_State(STATE::STATE2, CTest_State2::Create(this))))
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::STATE2, CTest_State2::Create(this))))
 		return E_FAIL;
 	
-	if (FAILED(m_pStateMachine->Init_State(STATE::STATE1)))
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::STATE1)))
 		return E_FAIL;
 	
 	return S_OK;
@@ -146,6 +152,24 @@ void CGameObject_Test::Action_Test1()
 void CGameObject_Test::Action_Test2()
 {
 	SetWindowText(g_hWnd, TEXT("상태2 행동입니다."));
+}
+
+HRESULT CGameObject_Test::Bind_ShaderResources()
+{
+	_float4x4	mat;
+
+	XMStoreFloat4x4(&mat, XMMatrixIdentity());
+	
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &mat)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &mat)))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &mat)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CGameObject_Test* CGameObject_Test::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -177,5 +201,9 @@ CGameObject* CGameObject_Test::Clone(void* pArg)
 void CGameObject_Test::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pStateMachineCom);
+	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pShaderCom);
 }
 
