@@ -85,6 +85,30 @@
     <Filter Include="01.Utility\03. Component\02. Transform">
       <UniqueIdentifier>{81a5fb6d-7c5f-4f45-b150-afc0d54b9ff9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI">
+      <UniqueIdentifier>{9f4e2052-d0ba-438c-ada5-88f00dcfe501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\00. BlackBoard">
+      <UniqueIdentifier>{cb2cb392-1cfa-4556-8601-70d9ec446539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node">
+      <UniqueIdentifier>{5af86eab-c38f-4042-9199-bd035e524c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\00. Composite">
+      <UniqueIdentifier>{43c0a938-fc83-49da-ba5a-474bdd5bbfb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\01. Decorator">
+      <UniqueIdentifier>{7d74a961-f89d-4084-902a-557193f84c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\02. Leaf">
+      <UniqueIdentifier>{407e6660-7d0d-4a34-9e39-8c6ccc9cd88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\03. BehaviorTree">
+      <UniqueIdentifier>{37e42a07-a13e-4a84-ad57-32b1981d1945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\02. Builder">
+      <UniqueIdentifier>{9e2afa65-4d83-4640-8918-1ea00c783cb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -165,6 +189,27 @@
     <ClInclude Include="..\Public\Transform.h">
       <Filter>01.Utility\03. Component\02. Transform</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AICom.h">
+      <Filter>01.Utility\03. Component\97. AI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Node.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BlackBoard.h">
+      <Filter>01.Utility\03. Component\97. AI\00. BlackBoard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Composite.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Decorator.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Leaf.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\02. Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BehaviorTree.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\03. BehaviorTree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -232,6 +277,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\Transform.cpp">
       <Filter>01.Utility\03. Component\02. Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AICom.cpp">
+      <Filter>01.Utility\03. Component\97. AI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Node.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BlackBoard.cpp">
+      <Filter>01.Utility\03. Component\97. AI\00. BlackBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Composite.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Decorator.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Leaf.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\02. Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BehaviorTree.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\03. BehaviorTree</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
