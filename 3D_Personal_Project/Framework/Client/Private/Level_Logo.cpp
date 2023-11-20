@@ -4,6 +4,7 @@
 
 #include "Level_Loading.h"
 
+#include "BackGround.h"
 
 CLevel_Logo::CLevel_Logo(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -36,11 +37,20 @@ HRESULT CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"))))
+	CBackGround::BACKGROUND_DESC BackGroundDesc = {};
+
+	BackGroundDesc.fX = Client::g_iWinSizeX * 0.5f;
+	BackGroundDesc.fY = Client::g_iWinSizeY * 0.5f;
+	BackGroundDesc.fSizeX = g_iWinSizeX;
+	BackGroundDesc.fSizeY = g_iWinSizeY;
+	BackGroundDesc.fSpeedPerSec = 10.f;
+	BackGroundDesc.fRotationPerSec = XMConvertToRadians(90.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"),&BackGroundDesc)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
-		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
+		return E_FAIL;*/
 
 	return S_OK;
 }

@@ -70,7 +70,7 @@ HRESULT CMainApp::Render()
 
 	/*bool bDemo = true;
 	ImGui::ShowDemoWindow(&bDemo);*/
-	CImGuiMgr::GetInstance()->Tool();
+	//CImGuiMgr::GetInstance()->Tool();
 
 	ImGui::Render();
 

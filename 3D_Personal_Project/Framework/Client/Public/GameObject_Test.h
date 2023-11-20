@@ -31,13 +31,9 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	HRESULT	Ready_Component();
-	HRESULT	Add_Event();
-	HRESULT	Add_State();
-
-public:
 	void	Event_Test1();
 	void	Event_Test2();
+
 public:
 	void	Action_Test1();
 	void	Action_Test2();
@@ -49,6 +45,9 @@ private:
 
 private:
 	HRESULT	Bind_ShaderResources();
+	HRESULT	Ready_Component();
+	HRESULT	Add_Event();
+	HRESULT	Add_State();
 
 public:
 	/* 원형객체를 생성한다. */

@@ -30,7 +30,13 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize(void* pArg)
 {
-	m_pTransformCom = CTransform::Create(m_pDevice,m_pContext);
+	
+	GAMEOBJECT_DESC GameObject_Desc = {};
+
+	if (pArg != nullptr)
+		GameObject_Desc = *(GAMEOBJECT_DESC*)pArg;
+
+	m_pTransformCom = CTransform::Create(m_pDevice,m_pContext, GameObject_Desc.fSpeedPerSec, GameObject_Desc.fRotationPerSec);
 	if (m_pTransformCom == nullptr)
 		return E_FAIL;
 

@@ -6,6 +6,17 @@ BEGIN(Engine)
 
 class ENGINE_DLL CGameObject abstract : public CBase
 { // 클라이언트에서 상속받아야 하기 때문에 클라이언트가 알고 있어야 한다. ENGINE_DLL 사용
+public:
+	typedef	struct tagGameObjectDesc
+	{
+		tagGameObjectDesc() {}
+		tagGameObjectDesc(_float fSpeed, _float fRotation) :fSpeedPerSec(fSpeed),fRotationPerSec(fRotation) {}
+
+		_float	fSpeedPerSec = 0.f;
+		_float	fRotationPerSec = 0.f;
+
+	}GAMEOBJECT_DESC;
+
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	// 원본을 생성할 때 디바이스들을 받아오는 생성자
