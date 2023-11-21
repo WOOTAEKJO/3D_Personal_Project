@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CSucceeder final : public CDecorator
+class ENGINE_DLL CSucceeder final : public CDecorator
 {
 private:
 	CSucceeder();

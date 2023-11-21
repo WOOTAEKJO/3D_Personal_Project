@@ -18,4 +18,6 @@ HRESULT CDecorator::Add_Child(CNode* pChild)
 void CDecorator::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pChild);
 }

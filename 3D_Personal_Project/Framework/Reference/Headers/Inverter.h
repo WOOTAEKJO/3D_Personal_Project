@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CInverter final :public CDecorator
+class ENGINE_DLL CInverter final :public CDecorator
 {
 private:
 	CInverter();

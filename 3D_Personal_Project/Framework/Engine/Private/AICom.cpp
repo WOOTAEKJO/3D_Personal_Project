@@ -1,4 +1,5 @@
 #include "..\Public\AICom.h"
+#include "AICom.h"
 
 CAICom::CAICom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
@@ -17,7 +18,42 @@ HRESULT CAICom::Initialize_ProtoType()
 
 HRESULT CAICom::Initialize(void* pArg)
 {
+	
+	AIDESC* pAIDesc = (AIDESC*)pArg;
+	if (pAIDesc == nullptr)
+		return E_FAIL;
+
+	for (_uint i = 0; i < pAIDesc->iNodeNum; i++)
+	{
+		if (pAIDesc->ppNodes[i] != nullptr)
+		{
+			m_mapTree.emplace(pAIDesc->pstrNodeTags[i], pAIDesc->ppNodes[i]);
+		}
+	}
+
 	return S_OK;
+}
+
+HRESULT CAICom::Set_Tree(const wstring& strTreeTag)
+{
+	CNode* pTree = Find_Tree(strTreeTag);
+	if (pTree == nullptr)
+		return E_FAIL;
+
+	m_pCurrentTree = pTree;
+	Safe_AddRef(m_pCurrentTree);
+
+	return S_OK;
+}
+
+CNode* CAICom::Find_Tree(const wstring& strTreeTag)
+{
+	auto& iter = m_mapTree.find(strTreeTag);
+
+	if (iter == m_mapTree.end())
+		return nullptr;
+
+	return iter->second;
 }
 
 CAICom* CAICom::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -47,4 +83,10 @@ CComponent* CAICom::Clone(void* pArg)
 void CAICom::Free()
 {
 	__super::Free();
+
+	for (auto& iter : m_mapTree)
+		Safe_Release(iter.second);
+	m_mapTree.clear();
+
+	Safe_Release(m_pCurrentTree);
 }

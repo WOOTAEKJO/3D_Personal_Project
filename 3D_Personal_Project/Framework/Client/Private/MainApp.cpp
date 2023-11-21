@@ -82,7 +82,6 @@ HRESULT CMainApp::Render()
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-
 	// Update and Render additional Platform Windows
 	if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
@@ -125,6 +124,11 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	/* For.Prototype_Component_StateMachine*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_STATIC, TEXT("Prototype_Component_StateMachine"),
 		CStateMachine::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_AI*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_STATIC, TEXT("Prototype_Component_AI"),
+		CAICom::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	return S_OK;

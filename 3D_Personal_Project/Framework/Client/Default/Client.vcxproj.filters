@@ -49,14 +49,23 @@
     <Filter Include="95. State">
       <UniqueIdentifier>{0c9d683e-0066-45fa-8fdf-5c24b4594550}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test">
+    <Filter Include="95. State\00. StatMachine_State">
+      <UniqueIdentifier>{bac87846-2803-44ec-9bc7-dbc904e9d306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\99.Test">
       <UniqueIdentifier>{003c3435-775a-4b58-b16e-b7610e111840}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test\00. Test_State1">
+    <Filter Include="95. State\00. StatMachine_State\99.Test\00. Test_State1">
       <UniqueIdentifier>{3ad95cf9-90e6-4cfe-84f2-2ef55de41265}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test\01. Test_State2">
+    <Filter Include="95. State\00. StatMachine_State\99.Test\01. Test_State2">
       <UniqueIdentifier>{1fcf2fb1-42e9-487d-945b-01500ef60bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State">
+      <UniqueIdentifier>{8ae28fda-72d2-4a8c-9298-9ccdd4a2fe24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\99. TestAction">
+      <UniqueIdentifier>{1f58f71f-0fac-4d88-9ba0-1a4b7c285278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -124,10 +133,13 @@
       <Filter>02.GameObjects\99. Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_State1.h">
-      <Filter>95. State\99.Test\00. Test_State1</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\00. Test_State1</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_State2.h">
-      <Filter>95. State\99.Test\01. Test_State2</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\01. Test_State2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestAction.h">
+      <Filter>95. State\01. Tree_State\99. TestAction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,10 +195,13 @@
       <Filter>02.GameObjects\99. Test</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_State1.cpp">
-      <Filter>95. State\99.Test\00. Test_State1</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\00. Test_State1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_State2.cpp">
-      <Filter>95. State\99.Test\01. Test_State2</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\01. Test_State2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestAction.cpp">
+      <Filter>95. State\01. Tree_State\99. TestAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

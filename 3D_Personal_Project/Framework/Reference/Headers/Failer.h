@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CFailer final : public CDecorator
+class ENGINE_DLL CFailer final : public CDecorator
 {
 private:
 	CFailer();

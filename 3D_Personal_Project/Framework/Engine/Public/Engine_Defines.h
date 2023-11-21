@@ -18,6 +18,7 @@ using namespace DirectX;
 #include <unordered_map>
 #include <typeinfo>
 #include <functional>
+#include <iostream>
 using namespace std;
 
 namespace Engine

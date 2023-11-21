@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CNode abstract : public CBase
+class ENGINE_DLL CNode abstract : public CBase
 {
 public:
 	enum STATUS {INVALID, SUCCESS, FAILURE, RUNNING, STATUS_END};
@@ -38,5 +38,4 @@ END
 	- 노드들은 초기화, 업데이트, 터미네이트 함수를 가지고 있다.
 	- 상태를 열거체로 만들어서 사용
 	- 블랙보드를 생성하고 추가하는 함수는 만들 예정
-
 */

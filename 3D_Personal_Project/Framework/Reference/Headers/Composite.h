@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CComposite abstract : public CNode
+class ENGINE_DLL CComposite abstract : public CNode
 {
 protected:
 	CComposite();

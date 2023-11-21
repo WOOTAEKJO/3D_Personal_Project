@@ -130,6 +130,15 @@
     <Filter Include="01.Utility\03. Component\03. Texture">
       <UniqueIdentifier>{0cd8a269-109b-4c0f-99a5-105e848196cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\02. Builder\00. Builder">
+      <UniqueIdentifier>{83245d01-a085-4157-b5ae-a99ae2748450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\02. Builder\01. CompositeBuilder">
+      <UniqueIdentifier>{cf474848-6b84-4ba5-8fbb-78466dd0cd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\02. Builder\02. DecoratorBuilder">
+      <UniqueIdentifier>{2c0fe731-2c45-4f29-b4d5-a173db264906}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -252,6 +261,15 @@
     <ClInclude Include="..\Public\Texture.h">
       <Filter>01.Utility\03. Component\03. Texture</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Builder.h">
+      <Filter>01.Utility\03. Component\97. AI\02. Builder\00. Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CompositeBuilder.h">
+      <Filter>01.Utility\03. Component\97. AI\02. Builder\01. CompositeBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DecoratorBuilder.h">
+      <Filter>01.Utility\03. Component\97. AI\02. Builder\02. DecoratorBuilder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -361,6 +379,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Texture.cpp">
       <Filter>01.Utility\03. Component\03. Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Builder.cpp">
+      <Filter>01.Utility\03. Component\97. AI\02. Builder\00. Builder</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

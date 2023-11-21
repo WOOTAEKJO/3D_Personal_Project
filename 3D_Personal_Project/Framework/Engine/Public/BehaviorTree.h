@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CBehaviorTree final : public CNode
+class ENGINE_DLL CBehaviorTree final : public CNode
 {
 private:
 	CBehaviorTree();

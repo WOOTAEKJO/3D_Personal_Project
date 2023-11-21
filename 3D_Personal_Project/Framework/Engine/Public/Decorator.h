@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CDecorator abstract : public CNode
+class ENGINE_DLL CDecorator abstract : public CNode
 {
 protected:
 	CDecorator();

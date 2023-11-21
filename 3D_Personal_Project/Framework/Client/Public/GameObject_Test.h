@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CStateMachine;
 class CVIBuffer_Rect;
 class CShader;
+class CAICom;
 
 END
 
@@ -42,12 +43,17 @@ private:
 	CStateMachine*		m_pStateMachineCom = { nullptr };
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
+	CAICom*				m_pAICom = { nullptr };
+
+private:
+	//CBehaviorTree*				m_pTree = { nullptr };
 
 private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
 	HRESULT	Add_Event();
 	HRESULT	Add_State();
+	HRESULT	Ready_Tree();
 
 public:
 	/* 원형객체를 생성한다. */
