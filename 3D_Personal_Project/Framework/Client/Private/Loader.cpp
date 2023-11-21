@@ -25,6 +25,10 @@ _uint APIENTRY LoadingThread(void* pArg)
 {
 	// APIENTRY -> __stdcall
 
+	CoInitializeEx(nullptr, 0);
+	// 컴객체를 초기화하는 함수
+	//	다른 쓰레드에서 메인 쓰레드가 사용하던 컴 객체를 사용할 때 컴 객체를 초기화하고 사용해야 한다.
+
 	CLoader*		pLoader = (CLoader*)pArg;
 	// 인자로 받은 Loader 객체
 
@@ -90,7 +94,11 @@ HRESULT CLoader::Loading_For_Logo_Level()
 {
 	/* 로고 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
-	
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Default%d.jpg"), 2))))
+		return E_FAIL;
+		
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));

@@ -18,7 +18,7 @@ public:
 	HRESULT	Add_Children(CNode* pChildNode);
 
 protected:
-	vector<CNode*> m_vecChildren;
+	vector<CNode*>				m_vecChildren;
 	vector<CNode*>::iterator	m_iter;
 
 public:

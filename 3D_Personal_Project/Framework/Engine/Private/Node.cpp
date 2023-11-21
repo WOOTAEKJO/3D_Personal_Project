@@ -5,6 +5,11 @@ CNode::CNode()
 {
 }
 
+CNode::CNode(CBlackBoard* pBlackBoard)
+	:m_pBlackBoard(pBlackBoard)
+{
+}
+
 CNode::STATUS CNode::Tick()
 {
 	if (m_eStatus != STATUS::RUNNING)

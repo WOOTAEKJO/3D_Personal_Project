@@ -109,6 +109,27 @@
     <Filter Include="01.Utility\03. Component\97. AI\02. Builder">
       <UniqueIdentifier>{9e2afa65-4d83-4640-8918-1ea00c783cb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\00. Composite\00. Selector">
+      <UniqueIdentifier>{91816c7c-9a32-40e7-bc8c-0b0a930f3122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\00. Composite\01. Sequence">
+      <UniqueIdentifier>{87db53a3-08ef-4cbf-a153-77a15ceea6b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\01. Decorator\00. Succeeder">
+      <UniqueIdentifier>{9b0c9739-b7e6-4ea4-8794-3722c9dc7f07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\01. Decorator\01. Failer">
+      <UniqueIdentifier>{c0722be4-5421-429d-8dd6-98fff2da2413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\01. Decorator\02. Inverter">
+      <UniqueIdentifier>{2e6b82f1-300c-457e-9b53-e69833732a32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\97. AI\01. Node\01. Decorator\03. Repeator">
+      <UniqueIdentifier>{955e3a46-b9ff-4e35-9dfd-6a6553f5006f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\03. Texture">
+      <UniqueIdentifier>{0cd8a269-109b-4c0f-99a5-105e848196cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -210,6 +231,27 @@
     <ClInclude Include="..\Public\BehaviorTree.h">
       <Filter>01.Utility\03. Component\97. AI\01. Node\03. BehaviorTree</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Selector.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite\00. Selector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sequence.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite\01. Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Succeeder.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\00. Succeeder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Failer.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\01. Failer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Inverter.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\02. Inverter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Repeator.h">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\03. Repeator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Texture.h">
+      <Filter>01.Utility\03. Component\03. Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -298,6 +340,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\BehaviorTree.cpp">
       <Filter>01.Utility\03. Component\97. AI\01. Node\03. BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Selector.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite\00. Selector</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sequence.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\00. Composite\01. Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Succeeder.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\00. Succeeder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Failer.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\01. Failer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Inverter.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\02. Inverter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Repeator.cpp">
+      <Filter>01.Utility\03. Component\97. AI\01. Node\01. Decorator\03. Repeator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Texture.cpp">
+      <Filter>01.Utility\03. Component\03. Texture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

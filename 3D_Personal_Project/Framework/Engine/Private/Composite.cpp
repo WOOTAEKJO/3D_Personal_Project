@@ -6,6 +6,11 @@ CComposite::CComposite()
 
 HRESULT CComposite::Add_Children(CNode* pChildNode)
 {
+	if (pChildNode == nullptr)
+		return E_FAIL;
+
+	m_vecChildren.push_back(pChildNode);
+
 	return S_OK;
 }
 

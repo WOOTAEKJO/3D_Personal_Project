@@ -6,6 +6,12 @@ CDecorator::CDecorator()
 
 HRESULT CDecorator::Add_Child(CNode* pChild)
 {
+	if (pChild == nullptr)
+		return E_FAIL;
+
+	if (m_pChild == nullptr)
+		m_pChild = pChild;
+
 	return S_OK;
 }
 

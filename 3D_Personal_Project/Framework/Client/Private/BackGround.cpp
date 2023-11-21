@@ -100,6 +100,11 @@ HRESULT CBackGround::Ready_Component()
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
+	/* For.Com_Texture*/
+	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -112,6 +117,10 @@ HRESULT CBackGround::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_ViewMatrix)))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_ProjMatrix)))
+		return E_FAIL;
+	/*if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 0)))
+		return E_FAIL;*/
+	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
 		return E_FAIL;
 
 	return S_OK;
@@ -149,5 +158,6 @@ void CBackGround::Free()
 
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pTextureCom);
 }
 

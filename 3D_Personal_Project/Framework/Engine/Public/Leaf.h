@@ -7,6 +7,7 @@ class CLeaf abstract : public CNode
 {
 protected:
 	CLeaf();
+	CLeaf(class CBlackBoard* pBlackBoard);
 	virtual	~CLeaf() = default;
 
 public:

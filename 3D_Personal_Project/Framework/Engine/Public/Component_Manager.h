@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "StateMachine.h"
 #include "Transform.h"
+#include "Texture.h"
 
 BEGIN(Engine)
 

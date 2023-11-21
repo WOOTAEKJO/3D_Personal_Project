@@ -7,6 +7,7 @@ BEGIN(Engine)
 
 class CVIBuffer_Rect;
 class CShader;
+class CTexture;
 
 END
 
@@ -40,6 +41,7 @@ public:
 private:
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
+	CTexture*			m_pTextureCom = { nullptr };
 
 private:
 	_float	m_fX = { 0.f };

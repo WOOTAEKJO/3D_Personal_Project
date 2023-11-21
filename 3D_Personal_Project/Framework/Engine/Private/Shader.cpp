@@ -104,6 +104,51 @@ HRESULT CShader::Bind_Matrix(const _char* pMatrixName, const _float4x4* pMatrix)
 	return S_OK;
 }
 
+HRESULT CShader::Bind_Matrixes(const _char* pMatrixName, const _float4x4* pMatrix, const _uint& iMatrixNum)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pMatrixName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
+	if (pMatrixVariable == nullptr)
+		return E_FAIL;
+
+	pMatrixVariable->SetMatrixArray((_float*)pMatrix,0, iMatrixNum);
+
+	return S_OK;
+}
+
+HRESULT CShader::Bind_SRV(const _char* pTextureName, ID3D11ShaderResourceView* pSRV)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pTextureName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	ID3DX11EffectShaderResourceVariable* pShaderVariable = pVariable->AsShaderResource();
+	if (pShaderVariable == nullptr)
+		return E_FAIL;
+
+	pShaderVariable->SetResource(pSRV);
+
+	return S_OK;
+}
+
+HRESULT CShader::Bind_SRVS(const _char* pTextureName, ID3D11ShaderResourceView** pSRV, const _uint& iSRVNum)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pTextureName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	ID3DX11EffectShaderResourceVariable* pShaderVariable = pVariable->AsShaderResource();
+	if (pShaderVariable == nullptr)
+		return E_FAIL;
+
+	pShaderVariable->SetResourceArray(pSRV, 0, iSRVNum);
+
+	return S_OK;
+}
+
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElement, const _uint& iElementNum)
 {
 	CShader* pInstance = new CShader(pDevice, pContext);

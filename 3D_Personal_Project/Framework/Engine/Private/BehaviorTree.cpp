@@ -1,7 +1,15 @@
 #include "..\Public\BehaviorTree.h"
+#include "BlackBoard.h"
 
 CBehaviorTree::CBehaviorTree()
 {
+	m_pBlackBoard = CBlackBoard::Create();
+}
+
+CBehaviorTree::CBehaviorTree(CNode* pRoot)
+	:m_pRoot(pRoot)
+{
+	Safe_AddRef(m_pRoot);
 }
 
 HRESULT CBehaviorTree::Initialize()
@@ -11,7 +19,7 @@ HRESULT CBehaviorTree::Initialize()
 
 CNode::STATUS CBehaviorTree::Update()
 {
-	return STATUS();
+	return m_pRoot->Tick();
 }
 
 HRESULT CBehaviorTree::Terminate(STATUS eStatus)
@@ -35,5 +43,4 @@ void CBehaviorTree::Free()
 {
 	__super::Free();
 	Safe_Release(m_pRoot);
-
 }
