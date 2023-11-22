@@ -164,7 +164,7 @@ HRESULT CGameObject_Test::Ready_Tree()
 		TEXT("Com_AI"), reinterpret_cast<CComponent**>(&m_pAICom), &AIDesc)))
 		return E_FAIL;
 
-	m_pAICom->Set_Tree(TEXT("AI2"));
+	m_pAICom->Set_Tree(TEXT("AI1"));
 	
 	return S_OK;
 }
@@ -241,6 +241,7 @@ void CGameObject_Test::Free()
 	Safe_Release(m_pStateMachineCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
-	//Safe_Release(m_pTree);
+	Safe_Release(m_pAICom);
+
 }
 

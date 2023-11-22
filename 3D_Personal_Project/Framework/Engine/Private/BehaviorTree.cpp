@@ -43,4 +43,6 @@ void CBehaviorTree::Free()
 {
 	__super::Free();
 	Safe_Release(m_pRoot);
+	//Safe_Release(m_pRoot);
+	//Safe_Release(m_pBlackBoard);
 }

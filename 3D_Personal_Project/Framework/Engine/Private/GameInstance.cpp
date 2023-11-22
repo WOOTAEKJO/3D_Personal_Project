@@ -199,9 +199,6 @@ void CGameInstance::Release_Manager()
 
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
-
-
-
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);

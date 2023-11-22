@@ -20,10 +20,11 @@ public:
 	CDecoratorBuilder() {}
 	CDecoratorBuilder(Parent* pParent, class CDecorator* pNode):m_pParent(pParent), m_pNode(pNode)
 	{
-		Safe_AddRef(m_pNode);
+		//Safe_AddRef(m_pNode);
 	}
-	virtual	~CDecoratorBuilder() {
-		Safe_Release(m_pNode);
+	virtual	~CDecoratorBuilder() 
+	{
+		//Safe_Release(m_pNode);
 	}
 
 public:

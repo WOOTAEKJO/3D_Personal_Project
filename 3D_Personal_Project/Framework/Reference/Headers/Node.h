@@ -19,8 +19,7 @@ public:
 	STATUS	Tick();
 
 public:
-	void	Set_BlackBoard(class CBlackBoard* pBlackBoard)
-	{	m_pBlackBoard = pBlackBoard;	}
+	void	Set_BlackBoard(class CBlackBoard* pBlackBoard);
 	class CBlackBoard* Get_BlackBoard() { return m_pBlackBoard; }
 
 protected:

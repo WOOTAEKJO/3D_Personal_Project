@@ -34,6 +34,12 @@ HRESULT CAICom::Initialize(void* pArg)
 	return S_OK;
 }
 
+void	CAICom::Tick(_float fTimeDelta)
+{
+	if (m_pCurrentTree != nullptr)
+		m_pCurrentTree->Tick();
+}
+
 HRESULT CAICom::Set_Tree(const wstring& strTreeTag)
 {
 	CNode* pTree = Find_Tree(strTreeTag);
@@ -84,9 +90,10 @@ void CAICom::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pCurrentTree);
+
 	for (auto& iter : m_mapTree)
 		Safe_Release(iter.second);
 	m_mapTree.clear();
 
-	Safe_Release(m_pCurrentTree);
 }

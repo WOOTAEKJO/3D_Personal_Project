@@ -18,11 +18,13 @@ class ENGINE_DLL CCompositeBuilder
 {
 public:
 	CCompositeBuilder() {}
-	CCompositeBuilder(Parent* pParent, class CComposite* pNode) : m_pParent(pParent), m_pNode(pNode) {
-		Safe_AddRef(m_pNode);
+	CCompositeBuilder(Parent* pParent, class CComposite* pNode) : m_pParent(pParent), m_pNode(pNode) 
+	{
+		//Safe_AddRef(m_pNode);
 	}
-	virtual	~CCompositeBuilder() {
-		Safe_Release(m_pNode);
+	virtual	~CCompositeBuilder() 
+	{
+		//Safe_Release(m_pNode);
 	}
 
 public:

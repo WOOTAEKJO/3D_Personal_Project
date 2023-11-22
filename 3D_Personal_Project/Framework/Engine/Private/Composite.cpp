@@ -10,6 +10,7 @@ HRESULT CComposite::Add_Children(CNode* pChildNode)
 		return E_FAIL;
 
 	m_vecChildren.push_back(pChildNode);
+	//Safe_AddRef(pChildNode);
 
 	return S_OK;
 }

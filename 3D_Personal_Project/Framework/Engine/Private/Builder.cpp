@@ -16,7 +16,6 @@ CNode* CBuilder::Build()
         return nullptr;
 
     m_pTree->Set_Root(m_pRoot);
-    //Safe_AddRef(m_pRoot);
 
     return m_pTree;
 }
