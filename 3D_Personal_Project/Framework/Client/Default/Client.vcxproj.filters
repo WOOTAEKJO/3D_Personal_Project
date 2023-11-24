@@ -70,6 +70,12 @@
     <Filter Include="02.GameObjects\01. Terrain">
       <UniqueIdentifier>{080be7b5-4f70-4d7a-b91c-2477aa2d82d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window">
+      <UniqueIdentifier>{2a34bfab-f31f-4bc6-8c02-c775cab1e40f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test">
+      <UniqueIdentifier>{45e97c2f-1f56-43ce-96e8-43b9c4903a89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -147,6 +153,12 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02.GameObjects\01. Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Win_Test.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -211,6 +223,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Terrain.cpp">
       <Filter>02.GameObjects\01. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Win_Test.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
