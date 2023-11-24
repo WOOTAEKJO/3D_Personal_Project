@@ -118,7 +118,7 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 
 	/* For.Prototype_Component_Shader_VTXPOSTEX*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX"),
-		CShader::Create(m_pDevice,m_pContext,TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsl"),VTXPOSTEX::Elements,VTXPOSTEX::iElementsNum))))
+		CShader::Create(m_pDevice,m_pContext,TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsli"),VTXPOSTEX::Elements,VTXPOSTEX::iElementsNum))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_StateMachine*/

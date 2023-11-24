@@ -223,8 +223,8 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
       <Filter>94. Shader</Filter>
-    </FxCompile>
+    </None>
   </ItemGroup>
 </Project>
