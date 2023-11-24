@@ -23,7 +23,7 @@ private:
 	_uint							  m_iTextureNum = { 0 };
 
 public:
-	static CTexture*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strTextureAddress, const _uint& iTextureNum );
+	static CTexture*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strTextureAddress, const _uint& iTextureNum = 1 );
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	 void		Free() override;
 };

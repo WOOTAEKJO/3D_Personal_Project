@@ -194,6 +194,7 @@
     <ClInclude Include="..\public\Level_Logo.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
+    <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\TestAction.h" />
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="..\private\Level_Logo.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
+    <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\TestAction.cpp" />
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
@@ -237,6 +239,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli" />
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -28,9 +28,6 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{f4ef5773-1c76-425c-b19e-509c54dbffe7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\BackGround">
-      <UniqueIdentifier>{65412f73-5474-4ca5-9ebb-a4726e9a606b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97. ImGui">
       <UniqueIdentifier>{49384f32-cdba-4959-9c8a-6d7f24a83884}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,12 @@
     <Filter Include="95. State\01. Tree_State\99. TestAction">
       <UniqueIdentifier>{1f58f71f-0fac-4d88-9ba0-1a4b7c285278}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00. BackGround">
+      <UniqueIdentifier>{65412f73-5474-4ca5-9ebb-a4726e9a606b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01. Terrain">
+      <UniqueIdentifier>{080be7b5-4f70-4d7a-b91c-2477aa2d82d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -100,7 +103,7 @@
       <Filter>01.Levels\99.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\00. BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imconfig.h">
       <Filter>97. ImGui</Filter>
@@ -141,6 +144,9 @@
     <ClInclude Include="..\Public\TestAction.h">
       <Filter>95. State\01. Tree_State\99. TestAction</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObjects\01. Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -165,7 +171,7 @@
       <Filter>01.Levels\99.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\00. BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui.cpp">
       <Filter>97. ImGui</Filter>
@@ -203,6 +209,9 @@
     <ClCompile Include="..\Private\TestAction.cpp">
       <Filter>95. State\01. Tree_State\99. TestAction</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObjects\01. Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -224,6 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
+      <Filter>94. Shader</Filter>
+    </None>
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
       <Filter>94. Shader</Filter>
     </None>
   </ItemGroup>
