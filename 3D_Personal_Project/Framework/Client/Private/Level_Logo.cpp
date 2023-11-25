@@ -46,11 +46,11 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 	BackGroundDesc.fSpeedPerSec = 10.f;
 	BackGroundDesc.fRotationPerSec = XMConvertToRadians(90.f);
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"),&BackGroundDesc)))
-		return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"),&BackGroundDesc)))
 		return E_FAIL;*/
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CRepeator final : public CDecorator
+class ENGINE_DLL CRepeator final : public CDecorator
 {
 private:
 	CRepeator();

@@ -5,6 +5,10 @@
 #include "Test_State1.h"
 #include "Test_State2.h"
 
+#include "BehaviorTree.h"
+
+#include "TestAction.h"
+
 CGameObject_Test::CGameObject_Test(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	: CGameObject(pDevice, pContext)
 {
@@ -33,8 +37,8 @@ HRESULT CGameObject_Test::Initialize(void* pArg)
 		return E_FAIL;
 	/*if (FAILED(Add_Event()))
 		return E_FAIL;*/
-	if (FAILED(Add_State()))
-		return E_FAIL;
+	/*if (FAILED(Add_State()))
+		return E_FAIL;*/
 	
 #pragma endregion
 
@@ -100,6 +104,9 @@ HRESULT CGameObject_Test::Ready_Component()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Tree()))
+		return E_FAIL;
 	
 	return S_OK;
 }
@@ -129,6 +136,35 @@ HRESULT CGameObject_Test::Add_State()
 	
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::STATE1)))
 		return E_FAIL;
+	
+	return S_OK;
+}
+
+HRESULT CGameObject_Test::Ready_Tree()
+{
+
+	CAICom::AIDESC AIDesc = {};
+
+	CNode* pNodes[] = {
+		CBuilder().Leaf<CTestAction>().Build(),
+		CBuilder().Composite<CSequence>().Leaf<CTestAction>().End().Build(),
+		CBuilder().Decorator<CSucceeder>().Leaf<CTestAction>().End().Build()
+	};
+
+	wstring	pString[] = {
+		TEXT("AI1"),TEXT("AI2"),TEXT("AI3")
+	};
+
+	AIDesc.ppNodes = pNodes;
+	AIDesc.pstrNodeTags = pString;
+	AIDesc.iNodeNum = 3;
+	
+	/* For.Com_AI*/
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_AI"),
+		TEXT("Com_AI"), reinterpret_cast<CComponent**>(&m_pAICom), &AIDesc)))
+		return E_FAIL;
+
+	m_pAICom->Set_Tree(TEXT("AI1"));
 	
 	return S_OK;
 }
@@ -205,5 +241,7 @@ void CGameObject_Test::Free()
 	Safe_Release(m_pStateMachineCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pAICom);
+
 }
 

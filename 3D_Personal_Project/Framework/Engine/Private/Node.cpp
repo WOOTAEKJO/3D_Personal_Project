@@ -8,6 +8,7 @@ CNode::CNode()
 CNode::CNode(CBlackBoard* pBlackBoard)
 	:m_pBlackBoard(pBlackBoard)
 {
+	//Safe_AddRef(m_pBlackBoard);
 }
 
 CNode::STATUS CNode::Tick()
@@ -25,6 +26,15 @@ CNode::STATUS CNode::Tick()
 	}
 
 	return m_eStatus;
+}
+
+void	CNode::Set_BlackBoard(class CBlackBoard* pBlackBoard)
+{
+	if (pBlackBoard == nullptr)
+		return;
+
+	m_pBlackBoard = pBlackBoard;
+	Safe_AddRef(m_pBlackBoard);
 }
 
 void CNode::Free()

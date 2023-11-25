@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CSelector final : public CComposite
+class ENGINE_DLL CSelector final : public CComposite
 {
 private:
 	CSelector();

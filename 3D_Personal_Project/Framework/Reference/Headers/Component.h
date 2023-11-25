@@ -21,8 +21,11 @@ public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 	virtual void	Late_Tick(_float fTimeDelta) {};
 
 protected:
-	ID3D11Device* m_pDevice = { nullptr };
-	ID3D11DeviceContext* m_pContext = { nullptr };
+	ID3D11Device*			m_pDevice = { nullptr };
+	ID3D11DeviceContext*	m_pContext = { nullptr };
+
+protected:
+	class CGameInstance*	m_pGameInstance = { nullptr };
 
 protected:
 	bool		m_bClone = { false };

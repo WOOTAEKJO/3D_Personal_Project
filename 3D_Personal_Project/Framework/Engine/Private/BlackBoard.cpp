@@ -151,6 +151,7 @@ void CBlackBoard::Free()
 	__super::Free();
 
 	Safe_Release(m_pOwner);
+	Safe_Release(m_pTarget);
 
 	m_umapBools.clear();
 	m_umapInts.clear();

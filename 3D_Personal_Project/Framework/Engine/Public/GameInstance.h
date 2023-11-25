@@ -53,6 +53,10 @@ public: /* For.Component_Manager*/
 	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring & strProtoTypeTag, class CComponent* pComponent);
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
+public: /* For.Mouse_Manager*/
+	void	Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd);
+	_bool	Intersect(_float3 * pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
@@ -61,6 +65,7 @@ private:
 	class CRenderer*				m_pRenderer = { nullptr };
 	class CEvent_Manager*			m_pEvent_Manager = { nullptr };
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
+	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 public:

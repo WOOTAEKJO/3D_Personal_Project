@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CBehaviorTree final : public CNode
+class ENGINE_DLL CBehaviorTree final : public CNode
 {
 private:
 	CBehaviorTree();
@@ -16,7 +16,10 @@ public:
 	virtual	HRESULT	Terminate(STATUS eStatus) override;
 
 public:
-	void	Set_Root(CNode* pRoot) { m_pRoot = pRoot; }
+	void	Set_Root(CNode* pRoot) { 
+		m_pRoot = pRoot;
+		//Safe_AddRef(m_pRoot);
+	}
 
 private:
 	CNode*	m_pRoot = { nullptr };

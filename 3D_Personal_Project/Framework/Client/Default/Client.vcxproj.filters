@@ -28,9 +28,6 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{f4ef5773-1c76-425c-b19e-509c54dbffe7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\BackGround">
-      <UniqueIdentifier>{65412f73-5474-4ca5-9ebb-a4726e9a606b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97. ImGui">
       <UniqueIdentifier>{49384f32-cdba-4959-9c8a-6d7f24a83884}</UniqueIdentifier>
     </Filter>
@@ -49,14 +46,35 @@
     <Filter Include="95. State">
       <UniqueIdentifier>{0c9d683e-0066-45fa-8fdf-5c24b4594550}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test">
+    <Filter Include="95. State\00. StatMachine_State">
+      <UniqueIdentifier>{bac87846-2803-44ec-9bc7-dbc904e9d306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\99.Test">
       <UniqueIdentifier>{003c3435-775a-4b58-b16e-b7610e111840}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test\00. Test_State1">
+    <Filter Include="95. State\00. StatMachine_State\99.Test\00. Test_State1">
       <UniqueIdentifier>{3ad95cf9-90e6-4cfe-84f2-2ef55de41265}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\99.Test\01. Test_State2">
+    <Filter Include="95. State\00. StatMachine_State\99.Test\01. Test_State2">
       <UniqueIdentifier>{1fcf2fb1-42e9-487d-945b-01500ef60bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State">
+      <UniqueIdentifier>{8ae28fda-72d2-4a8c-9298-9ccdd4a2fe24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\99. TestAction">
+      <UniqueIdentifier>{1f58f71f-0fac-4d88-9ba0-1a4b7c285278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00. BackGround">
+      <UniqueIdentifier>{65412f73-5474-4ca5-9ebb-a4726e9a606b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01. Terrain">
+      <UniqueIdentifier>{080be7b5-4f70-4d7a-b91c-2477aa2d82d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window">
+      <UniqueIdentifier>{2a34bfab-f31f-4bc6-8c02-c775cab1e40f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test">
+      <UniqueIdentifier>{45e97c2f-1f56-43ce-96e8-43b9c4903a89}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -91,7 +109,7 @@
       <Filter>01.Levels\99.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\00. BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\imconfig.h">
       <Filter>97. ImGui</Filter>
@@ -124,10 +142,22 @@
       <Filter>02.GameObjects\99. Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_State1.h">
-      <Filter>95. State\99.Test\00. Test_State1</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\00. Test_State1</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Test_State2.h">
-      <Filter>95. State\99.Test\01. Test_State2</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\01. Test_State2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TestAction.h">
+      <Filter>95. State\01. Tree_State\99. TestAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain.h">
+      <Filter>02.GameObjects\01. Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ImGui_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Win_Test.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -153,7 +183,7 @@
       <Filter>01.Levels\99.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\00. BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\imgui.cpp">
       <Filter>97. ImGui</Filter>
@@ -183,10 +213,22 @@
       <Filter>02.GameObjects\99. Test</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_State1.cpp">
-      <Filter>95. State\99.Test\00. Test_State1</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\00. Test_State1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Test_State2.cpp">
-      <Filter>95. State\99.Test\01. Test_State2</Filter>
+      <Filter>95. State\00. StatMachine_State\99.Test\01. Test_State2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TestAction.cpp">
+      <Filter>95. State\01. Tree_State\99. TestAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain.cpp">
+      <Filter>02.GameObjects\01. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Win_Test.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,8 +250,14 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
       <Filter>94. Shader</Filter>
-    </FxCompile>
+    </None>
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
+      <Filter>94. Shader</Filter>
+    </None>
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
+      <Filter>94. Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

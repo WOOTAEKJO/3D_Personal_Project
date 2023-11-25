@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CSequence final : public CComposite
+class ENGINE_DLL CSequence final : public CComposite
 {
 private:
 	CSequence();

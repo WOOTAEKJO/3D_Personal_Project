@@ -11,6 +11,7 @@ HRESULT CDecorator::Add_Child(CNode* pChild)
 
 	if (m_pChild == nullptr)
 		m_pChild = pChild;
+	//Safe_AddRef(m_pChild);
 
 	return S_OK;
 }
@@ -18,4 +19,6 @@ HRESULT CDecorator::Add_Child(CNode* pChild)
 void CDecorator::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pChild);
 }

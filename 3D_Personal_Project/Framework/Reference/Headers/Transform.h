@@ -39,6 +39,8 @@ public:
 			XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_matWorldMatrix).r[STATE::STATE_LOOK])));
 	}
 
+	_matrix	Get_WorldMatrix() { return XMLoadFloat4x4(&m_matWorldMatrix); }
+
 public: /* 카메라에 사용*/
 	void	Go_Straight(_float fTimeDelta);
 	void	Go_Left(_float fTimeDelta);
