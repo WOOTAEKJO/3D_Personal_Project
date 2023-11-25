@@ -199,6 +199,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\Public\Leaf.h" />
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
+    <ClInclude Include="..\Public\Mouse_Manager.h" />
     <ClInclude Include="..\Public\Node.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\Renderer.h" />
@@ -214,6 +215,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\Transform.h" />
     <ClInclude Include="..\Public\VIBuffer.h" />
+    <ClInclude Include="..\Public\VIBuffer_DTerrain.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
   </ItemGroup>
@@ -239,6 +241,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\Private\Leaf.cpp" />
     <ClCompile Include="..\private\Level.cpp" />
     <ClCompile Include="..\private\Level_Manager.cpp" />
+    <ClCompile Include="..\Private\Mouse_Manager.cpp" />
     <ClCompile Include="..\Private\Node.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
@@ -254,6 +257,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />
     <ClCompile Include="..\Private\VIBuffer.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_DTerrain.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
   </ItemGroup>

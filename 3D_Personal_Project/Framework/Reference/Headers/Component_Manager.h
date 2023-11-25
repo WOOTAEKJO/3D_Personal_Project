@@ -1,6 +1,7 @@
 #pragma once
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Terrain.h"
+#include "VIBuffer_DTerrain.h"
 #include "Shader.h"
 #include "StateMachine.h"
 #include "Transform.h"

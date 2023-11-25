@@ -245,6 +245,7 @@
   <ItemGroup>
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli" />
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli" />
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

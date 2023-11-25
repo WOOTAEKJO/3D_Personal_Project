@@ -136,12 +136,22 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Height1.bmp")))))
 		return E_FAIL;
-	
+
+	/* For.Prototype_Component_VIBuffer_DTerrain*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+		CVIBuffer_DTerrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
 	/* For.Prototype_Component_Shader_VTXNORTEX*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsli"), VTXNORTEX::Elements, VTXNORTEX::iElementsNum))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_VTXTBN*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsli"), VTXTBN::Elements, VTXTBN::iElementsNum))))
 		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));

@@ -26,6 +26,10 @@ HRESULT CTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(XMVectorSet(0.f, 30.f, 0.f, 1.f), XMVectorSet(100.f, 0.f, 100.f, 1.f),
+		XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+	XMStoreFloat4x4(&m_matProj, XMMatrixPerspectiveFovLH(XMConvertToRadians(30.f), (_float)g_iWinSizeX / (_float)g_iWinSizeY, 0.2f, 1000.f));
+
 	return S_OK;
 }
 
@@ -35,6 +39,14 @@ void CTerrain::Priority_Tick(_float fTimeDelta)
 
 void CTerrain::Tick(_float fTimeDelta)
 {
+	
+	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		m_pGameInstance->Update_Mouse(m_matView, m_matProj, g_hWnd);
+		_float3	vMousePos;
+		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix());
+		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 5.f, 5.f, 1.f);
+	}
 }
 
 void CTerrain::Late_Tick(_float fTimeDelta)
@@ -59,17 +71,12 @@ HRESULT CTerrain::Render()
 
 HRESULT CTerrain::Bind_ShaderResources()
 {
-	_float4x4	matView, mavProj;
-
-	XMStoreFloat4x4(&matView, XMMatrixLookAtLH(XMVectorSet(0.f, 30.f, 0.f, 1.f), XMVectorSet(300.f, 0.f, 300.f, 1.f),
-		XMVectorSet(0.f, 1.f, 0.f, 0.f)));
-	XMStoreFloat4x4(&mavProj, XMMatrixPerspectiveFovLH(XMConvertToRadians(30.f), (_float)g_iWinSizeX / (_float)g_iWinSizeY, 0.2f, 1000.f));
-
+	
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &matView)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_matView)))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &mavProj)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_matProj)))
 		return E_FAIL;
 	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
 		return E_FAIL;
@@ -79,13 +86,28 @@ HRESULT CTerrain::Bind_ShaderResources()
 
 HRESULT CTerrain::Ready_Component()
 {
+	///* For.Com_VIBuffer*/
+	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	//	return E_FAIL;
+
+	///* For.Com_Shader*/
+	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
+	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+	//	return E_FAIL;
+
+	CVIBuffer_DTerrain::DTERRAINDESC tDTerrainDesc;
+
+	tDTerrainDesc.iVerticesXNum = 500;
+	tDTerrainDesc.iVerticesZNum = 500;
+
 	/* For.Com_VIBuffer*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
 		return E_FAIL;
 
 	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 

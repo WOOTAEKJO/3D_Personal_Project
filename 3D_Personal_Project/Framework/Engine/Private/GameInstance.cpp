@@ -4,6 +4,7 @@
 #include "Level_Manager.h"
 #include "Object_Manager.h"
 #include "Event_Manager.h"
+#include "Mouse_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -46,6 +47,12 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	/* 컴포넌트 매니저 사용 준비*/
 	m_pComponent_Manager = CComponent_Manager::Create(iNumLevels);
 	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+	/* 마우스 매니저 사용 준비*/
+
+	m_pMouse_Manager = CMouse_Manager::Create();
+	if (nullptr == m_pMouse_Manager)
 		return E_FAIL;
 
 	return S_OK;
@@ -189,14 +196,27 @@ CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const w
 	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
 }
 
+void CGameInstance::Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd)
+{
+	if (nullptr == m_pMouse_Manager)
+		return;
+
+	return m_pMouse_Manager->Update_Mouse(matView, matProj, hWnd);
+}
+
+_bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
+{
+	if (nullptr == m_pMouse_Manager)
+		return false;
+
+	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
+}
+
 void CGameInstance::Release_Manager()
 {
-#pragma region TEST
 
+	Safe_Release(m_pMouse_Manager);
 	Safe_Release(m_pComponent_Manager);
-
-#pragma endregion
-
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pLevel_Manager);

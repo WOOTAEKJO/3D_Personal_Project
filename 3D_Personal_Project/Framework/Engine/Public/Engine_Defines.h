@@ -7,6 +7,9 @@
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
 
+#include <DirectXMath.h>
+#include "DirectXTK/SimpleMath.h"
+
 #include <d3dcompiler.h>
 using namespace DirectX;
 

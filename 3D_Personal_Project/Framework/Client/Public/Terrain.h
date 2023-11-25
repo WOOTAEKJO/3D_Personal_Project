@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CVIBuffer_Rect;
+class CVIBuffer_DTerrain;
 class CShader;
 class CTexture;
 
@@ -27,9 +27,13 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
+
+private:
+	_float4x4	m_matView;
+	_float4x4	m_matProj;
 
 private:
 	HRESULT	Bind_ShaderResources();

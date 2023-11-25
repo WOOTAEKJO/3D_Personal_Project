@@ -256,5 +256,8 @@
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
       <Filter>94. Shader</Filter>
     </None>
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
+      <Filter>94. Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
