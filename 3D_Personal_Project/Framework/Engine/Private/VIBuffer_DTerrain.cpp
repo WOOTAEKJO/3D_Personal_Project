@@ -126,12 +126,15 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 	if (FAILED(m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource)))
 		return;
 	
+	XMINT2	iPickIndex = { (_int)(fMousePos.m128_f32[0]), (_int)(fMousePos.m128_f32[2]) };
+	_int	iRoundIndex = (_int)(fRadious);
+
 	XMINT2	iBeginIndex, iEndIndex;
-	iBeginIndex.x = (0 > ((_int)(fMousePos.m128_f32[0]) - (_int)fRadious)) ? 0 : (_int)(fMousePos.m128_f32[0]) - (_int)fRadious;
-	iBeginIndex.y = (0 > ((_int)(fMousePos.m128_f32[2]) - (_int)fRadious)) ? 0 : (_int)(fMousePos.m128_f32[2]) - (_int)fRadious;
+	iBeginIndex.x = (0 > (iPickIndex.x - iRoundIndex)) ? 0 : (iPickIndex.x - iRoundIndex);
+	iBeginIndex.y = (0 > (iPickIndex.y - iRoundIndex)) ? 0 : (iPickIndex.y - iRoundIndex);
 	 
-	iEndIndex.x = m_iNumVerticesX < ((_int)(fMousePos.m128_f32[0]) + (_int)fRadious) ? m_iNumVerticesX : (_int)(fMousePos.m128_f32[0]) + (_int)fRadious;
-	iEndIndex.y = m_iNumVerticesZ < ((_int)(fMousePos.m128_f32[2]) + (_int)fRadious) ? m_iNumVerticesZ : (_int)(fMousePos.m128_f32[2]) + (_int)fRadious;
+	iEndIndex.x = m_iNumVerticesX < (iPickIndex.x + iRoundIndex) ? m_iNumVerticesX : (iPickIndex.x + iRoundIndex);
+	iEndIndex.y = m_iNumVerticesZ < (iPickIndex.y + iRoundIndex) ? m_iNumVerticesZ : (iPickIndex.y + iRoundIndex);
 
 	for (_uint i = iBeginIndex.y; i < iEndIndex.y; i++) {
 		for (_uint j = iBeginIndex.x; j < iEndIndex.x; j++) {
@@ -145,13 +148,11 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 				continue;
 
 			//_float fH = fHeight * fabsf(fSharpness - pow((fLength / fRadious), 2.f));
-			_float fH = fHeight * fabsf(1.f - pow((fLength / fRadious), 2.f));
+			//_float fH = fHeight * (1.f - pow((fLength / fRadious), 2.f));
+			_float fH = fHeight * pow(1.f - (fLength / fRadious), 2.f* fSharpness*3.f);
 
-			((VTXTBN*)(SubResource.pData))[iIndex].fPosition.y += fH;
+			((VTXTBN*)(SubResource.pData))[iIndex].fPosition.y = fH;
 			m_vecVertexInfo[iIndex].fPosition = ((VTXTBN*)(SubResource.pData))[iIndex].fPosition;
-
-			//m_vecVertexInfo[iIndex].fPosition.y += fH;
-
 		}
 	}
 
@@ -165,7 +166,13 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 				iIndex + 1, iIndex
 			};
 
-			XMVECTOR	vVec1, vVec2, vNormal;
+			if (i == (m_iNumVerticesZ - 1) || j == (m_iNumVerticesX - 1))
+				continue;		// 맨 오른쪽과 맨 위쪽을 예외처리
+
+			// 노멀 벡터(법선 벡터)
+			// 처음 초기화한 값이 0.f, 1.f, 0.f 인 것을 잊지말자
+			// 나중에 문제 생기면 바꿔줘야함
+			_vector	vVec1, vVec2, vNormal;
 
 			vVec1 = XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fPosition);
 			vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fPosition);
@@ -198,6 +205,20 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 			XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal) += vNormal;
 			XMStoreFloat3(&m_vecVertexInfo[iIndices[3]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal)));
 			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[3]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal)));
+
+			// 탄젠트 벡터(접선 벡터)
+			_float3	vTangent;
+			XMStoreFloat3(&vTangent, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndex].fPosition)));
+			
+			m_vecVertexInfo[iIndex].fTangent = vTangent;
+			((VTXTBN*)(SubResource.pData))[iIndex].fTangent = vTangent;
+
+			// 바이 노멀 벡터(종법선 벡터)
+			_float3	vBinormal;
+			XMStoreFloat3(&vBinormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndex].fPosition)));
+
+			m_vecVertexInfo[iIndex].fBinormal = vBinormal;
+			((VTXTBN*)(SubResource.pData))[iIndex].fBinormal = vBinormal;
 		}
 	}
 
