@@ -21,9 +21,15 @@ HRESULT CLevel_Logo::Initialize()
 
 void CLevel_Logo::Tick(_float fTimeDelta)
 {
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (GetKeyState('1') & 0x8000)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING,CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_GAMEPLAY))))
+			return;
+	}
+
+	if (GetKeyState('2') & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_TOOL))))
 			return;
 	}
 }
@@ -46,11 +52,11 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 	BackGroundDesc.fSpeedPerSec = 10.f;
 	BackGroundDesc.fRotationPerSec = XMConvertToRadians(90.f);
 
-	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"),&BackGroundDesc)))
-		return E_FAIL;*/
-
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_BackGround"),&BackGroundDesc)))
 		return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOGO, strLayerTag, TEXT("Prototype_GameObject_GameObject_Test"))))
+		return E_FAIL;*/
 
 	return S_OK;
 }

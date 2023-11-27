@@ -110,6 +110,20 @@ CComponent* CGameObject::Find_Component(const wstring& strComTag)
 	return iter->second;
 }
 
+HRESULT CGameObject::Delete_Component(const wstring& strComTag)
+{
+	auto& iter = m_mapComponent.find(strComTag);
+
+	if (iter == m_mapComponent.end())
+		return E_FAIL;
+
+	Safe_Release(iter->second);
+
+	m_mapComponent.erase(strComTag);
+
+	return S_OK;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();

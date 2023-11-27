@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\MainApp.h"
 
-#include "ImGuiMgr.h"
-
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
@@ -31,9 +29,6 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
-	if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -51,9 +46,6 @@ HRESULT CMainApp::Render()
 
 	/* 그려야할 모델들을 그리낟.*/	
 	m_pGameInstance->Render_Engine();
-
-	if (FAILED(CImGuiMgr::GetInstance()->Render()))
-		return E_FAIL;
 
 	m_pGameInstance->Present();
 
@@ -116,8 +108,6 @@ void CMainApp::Free()
 {
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
-
-	CImGuiMgr::GetInstance()->DestroyInstance();
 
 	/*  내 멤버를 정리하면. */
 	Safe_Release(m_pGameInstance);

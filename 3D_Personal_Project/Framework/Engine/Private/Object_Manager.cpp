@@ -30,7 +30,7 @@ HRESULT CObject_Manager::Add_ProtoType(const wstring& strProtoTypeTag, CGameObje
 	return S_OK;
 }
 
-HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag, void* pArg)
+HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag, CGameObject** ppOut, void* pArg)
 {
 	CGameObject* pProtoType = Find_ProtoType(strProtoTypeTag);
 	if (pProtoType == nullptr)
@@ -58,7 +58,11 @@ HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag
 	else {
 		pLayer->Add_GameObject(pClone);
 	}
-		
+
+	if (ppOut != nullptr) {
+		*ppOut = pClone;
+	}
+	
 	return S_OK;
 }
 

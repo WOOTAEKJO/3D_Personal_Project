@@ -10,14 +10,14 @@ private:
 	virtual	~CWin_Test() = default;
 
 public:
-	virtual	HRESULT	Initialize() override;
+	virtual	HRESULT	Initialize(void* pArg) override;
 	virtual	void	Tick() override;
 	virtual	HRESULT	Render() override;
 
 private:
 
 public:
-	static	CWin_Test*	Create();
+	static	CWin_Test*	Create(void* pArg);
 	virtual	void		Free() override;
 };
 

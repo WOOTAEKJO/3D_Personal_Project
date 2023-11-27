@@ -55,7 +55,8 @@ protected:
 	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,
 		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
 	class CComponent* Find_Component(const wstring & strComTag);
-	
+	HRESULT Delete_Component(const wstring& strComTag);
+
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free() override;

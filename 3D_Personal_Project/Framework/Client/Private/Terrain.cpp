@@ -35,13 +35,13 @@ void CTerrain::Priority_Tick(_float fTimeDelta)
 
 void CTerrain::Tick(_float fTimeDelta)
 {
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	/*if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
 		m_pGameInstance->Update_Mouse(g_hWnd);
 		_float3	vMousePos;
 		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
 		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 10.f, 10.f, 0.f);
-	}
+	}*/
 }
 
 void CTerrain::Late_Tick(_float fTimeDelta)

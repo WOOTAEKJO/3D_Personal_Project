@@ -153,12 +153,12 @@ HRESULT CGameInstance::Add_ProtoType(const wstring& strProtoTypeTag, CGameObject
 	return m_pObject_Manager->Add_ProtoType(strProtoTypeTag, pGameObeject);
 }
 
-HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag, void* pArg)
+HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag, void* pArg, CGameObject** ppOut)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
-	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, pArg);
+	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, ppOut, pArg);
 }
 
 HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameObject* pGameObject)
