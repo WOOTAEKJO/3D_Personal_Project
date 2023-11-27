@@ -52,8 +52,8 @@ HRESULT CMainApp::Render()
 	/* ±×·Á¾ßÇÒ ¸ğµ¨µéÀ» ±×¸®³®.*/	
 	m_pGameInstance->Render_Engine();
 
-	/*if (FAILED(CImGuiMgr::GetInstance()->Render()))
-		return E_FAIL;*/
+	if (FAILED(CImGuiMgr::GetInstance()->Render()))
+		return E_FAIL;
 
 	m_pGameInstance->Present();
 

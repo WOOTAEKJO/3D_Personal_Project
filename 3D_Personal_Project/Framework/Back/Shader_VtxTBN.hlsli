@@ -13,7 +13,7 @@ sampler		DefaultSampler = sampler_state
 struct VS_IN
 {
 	float3	vPosition : POSITION;
-	float3  vTanget : TANGET;
+	float3  vTanget : TANGENT;
 	float3	vBinormal : BINORMAL;
 	float3	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
