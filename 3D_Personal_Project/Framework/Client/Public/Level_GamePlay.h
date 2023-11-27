@@ -17,6 +17,7 @@ public:
 	virtual HRESULT Render() override;
 public:
 	HRESULT	Ready_Layer_BackGround(const wstring& strLayerTag);
+	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	
 public:
 	static CLevel_GamePlay* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

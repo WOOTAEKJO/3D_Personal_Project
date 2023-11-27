@@ -50,9 +50,13 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 		return E_FAIL;
 
 	/* 마우스 매니저 사용 준비*/
-
 	m_pMouse_Manager = CMouse_Manager::Create();
 	if (nullptr == m_pMouse_Manager)
+		return E_FAIL;
+
+	/* 파이프라인 사용 준비*/
+	m_pPipeLine = CPipeLine::Create();
+	if (nullptr == m_pPipeLine)
 		return E_FAIL;
 
 	return S_OK;
@@ -65,6 +69,7 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 	m_pObject_Manager->Tick(fTimeDelta);
+	m_pPipeLine->Tick();
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 
 	m_pLevel_Manager->Tick(fTimeDelta);
@@ -196,12 +201,12 @@ CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const w
 	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
 }
 
-void CGameInstance::Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd)
+void CGameInstance::Update_Mouse(HWND hWnd)
 {
 	if (nullptr == m_pMouse_Manager)
 		return;
 
-	return m_pMouse_Manager->Update_Mouse(matView, matProj, hWnd);
+	return m_pMouse_Manager->Update_Mouse(hWnd);
 }
 
 _bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
@@ -212,13 +217,69 @@ _bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvect
 	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
 }
 
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine->Set_Transform(eState, matMatrix);
+}
+
+void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix matMatrix)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine->Set_Transform(eState, matMatrix);
+}
+
+_float4x4 CGameInstance::Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return _float4x4();
+
+	return m_pPipeLine->Get_Transform_Float4x4(eState);
+}
+
+_matrix CGameInstance::Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return XMMatrixIdentity();
+
+	return m_pPipeLine->Get_Transform_Matrix(eState);
+}
+
+_float4x4 CGameInstance::Get_Transform_Float4x4_Inverse(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return _float4x4();
+
+	return m_pPipeLine->Get_Transform_Float4x4_Inverse(eState);
+}
+
+_matrix CGameInstance::Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return XMMatrixIdentity();
+
+	return m_pPipeLine->Get_Transform_Matrix_Inverse(eState);
+}
+
+_float4 CGameInstance::Get_Camera_Pos()
+{
+	if (nullptr == m_pPipeLine)
+		return _float4();
+
+	return m_pPipeLine->Get_Camera_Pos();
+}
+
 void CGameInstance::Release_Manager()
 {
-
+	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pMouse_Manager);
-	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);

@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 #include "Component_Manager.h"
+#include "PipeLine.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -54,8 +55,17 @@ public: /* For.Component_Manager*/
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
 public: /* For.Mouse_Manager*/
-	void	Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd);
+	void	Update_Mouse(HWND hWnd);
 	_bool	Intersect(_float3 * pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+
+public: /* For.PipeLine*/
+	void	Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix);
+	void	Set_Transform(CPipeLine::TRANSFORMSTATE eState, _fmatrix matMatrix);
+	_float4x4 Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE eState);
+	_matrix	Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE eState);
+	_float4x4	Get_Transform_Float4x4_Inverse(CPipeLine::TRANSFORMSTATE eState);
+	_matrix		Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eState);
+	_float4		Get_Camera_Pos();
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -66,6 +76,7 @@ private:
 	class CEvent_Manager*			m_pEvent_Manager = { nullptr };
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
+	class CPipeLine*				m_pPipeLine = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 public:

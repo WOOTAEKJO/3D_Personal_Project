@@ -39,7 +39,14 @@ public:
 			XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_matWorldMatrix).r[STATE::STATE_LOOK])));
 	}
 
-	_matrix	Get_WorldMatrix() { return XMLoadFloat4x4(&m_matWorldMatrix); }
+	_float4x4	Get_WorldMatrix_Float4x4() { return m_matWorldMatrix; }
+	_matrix	Get_WorldMatrix_Matrix() { return XMLoadFloat4x4(&m_matWorldMatrix); }
+	_float4x4	Get_WorldMatrix_Inverse_Float4x4() { 
+		_float4x4 matWorld;
+		XMStoreFloat4x4(&matWorld,XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_matWorldMatrix)));
+		return matWorld; }
+	_matrix	Get_WorldMatrix_Inverse_Matrix() { 
+		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_matWorldMatrix)); }
 
 public: /* 카메라에 사용*/
 	void	Go_Straight(_float fTimeDelta);

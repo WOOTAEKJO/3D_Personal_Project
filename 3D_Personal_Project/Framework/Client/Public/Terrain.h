@@ -32,10 +32,6 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 
 private:
-	_float4x4	m_matView;
-	_float4x4	m_matProj;
-
-private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
 
