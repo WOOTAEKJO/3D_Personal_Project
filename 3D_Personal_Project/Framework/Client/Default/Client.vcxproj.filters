@@ -250,13 +250,13 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
       <Filter>94. Shader</Filter>
     </None>
     <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
       <Filter>94. Shader</Filter>
     </None>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
+    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
       <Filter>94. Shader</Filter>
     </None>
   </ItemGroup>
