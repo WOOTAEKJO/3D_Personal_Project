@@ -43,12 +43,6 @@
     <Filter Include="01.Utility\02.GameObjects">
       <UniqueIdentifier>{19362af7-6b13-40d7-b09b-b9fca9d0014e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\02.GameObjects\Manager">
-      <UniqueIdentifier>{7d4ecf17-1079-455f-9cb1-c355a2ff9677}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\02.GameObjects\Manager\Layer">
-      <UniqueIdentifier>{94e7b571-1301-4bc2-b76d-0e6e2755487c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\98. Renderer">
       <UniqueIdentifier>{627c5d1c-30de-47db-beef-3128561dce74}</UniqueIdentifier>
     </Filter>
@@ -148,6 +142,18 @@
     <Filter Include="01.Utility\97. Manager\01. MouseManager">
       <UniqueIdentifier>{3fa91b7a-605f-4f94-9ced-801d8527d10a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.GameObjects\00. Manager">
+      <UniqueIdentifier>{7d4ecf17-1079-455f-9cb1-c355a2ff9677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObjects\00. Manager\Layer">
+      <UniqueIdentifier>{94e7b571-1301-4bc2-b76d-0e6e2755487c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.GameObjects\01. Camera">
+      <UniqueIdentifier>{f1bfb588-63f0-46c5-8791-9f586ab16a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\04. PipeLine">
+      <UniqueIdentifier>{fcbb9cb1-6a03-447f-ba82-4d9ff8a4c3bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -190,10 +196,10 @@
       <Filter>01.Utility\02.GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Layer.h">
-      <Filter>01.Utility\02.GameObjects\Manager\Layer</Filter>
+      <Filter>01.Utility\02.GameObjects\00. Manager\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Object_Manager.h">
-      <Filter>01.Utility\02.GameObjects\Manager</Filter>
+      <Filter>01.Utility\02.GameObjects\00. Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Renderer.h">
       <Filter>01.Utility\98. Renderer</Filter>
@@ -288,6 +294,12 @@
     <ClInclude Include="..\Public\Mouse_Manager.h">
       <Filter>01.Utility\97. Manager\01. MouseManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera.h">
+      <Filter>01.Utility\02.GameObjects\01. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PipeLine.h">
+      <Filter>01.Utility\04. PipeLine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -315,10 +327,10 @@
       <Filter>01.Utility\02.GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Layer.cpp">
-      <Filter>01.Utility\02.GameObjects\Manager\Layer</Filter>
+      <Filter>01.Utility\02.GameObjects\00. Manager\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Object_Manager.cpp">
-      <Filter>01.Utility\02.GameObjects\Manager</Filter>
+      <Filter>01.Utility\02.GameObjects\00. Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Renderer.cpp">
       <Filter>01.Utility\98. Renderer</Filter>
@@ -409,6 +421,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mouse_Manager.cpp">
       <Filter>01.Utility\97. Manager\01. MouseManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera.cpp">
+      <Filter>01.Utility\02.GameObjects\01. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PipeLine.cpp">
+      <Filter>01.Utility\04. PipeLine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -76,6 +76,12 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test">
       <UniqueIdentifier>{45e97c2f-1f56-43ce-96e8-43b9c4903a89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02. Camera">
+      <UniqueIdentifier>{4700ea63-7c21-4aec-8d72-c5ddf251871d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02. Camera\00. DynamicCamera">
+      <UniqueIdentifier>{1bf4af10-5513-466f-a220-9b27e556b546}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -159,6 +165,9 @@
     <ClInclude Include="..\Public\Win_Test.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DynamicCamera.h">
+      <Filter>02.GameObjects\02. Camera\00. DynamicCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -229,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Win_Test.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DynamicCamera.cpp">
+      <Filter>02.GameObjects\02. Camera\00. DynamicCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

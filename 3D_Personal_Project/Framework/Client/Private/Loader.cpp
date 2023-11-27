@@ -6,6 +6,7 @@
 
 #include "BackGround.h"
 #include "Terrain.h"
+#include "DynamicCamera.h"
 #include "GameObject_Test.h"
 
 #include "StateMachine.h"
@@ -158,6 +159,10 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	
 	/* For.Prototype_GameObject_Terrain*/
 	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DynamicCamera*/
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

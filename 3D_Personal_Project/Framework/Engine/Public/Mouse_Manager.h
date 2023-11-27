@@ -11,8 +11,11 @@ private:
 
 public:
 	HRESULT	Initialize();
-	void	Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd);
+	void	Update_Mouse(HWND hWnd);
 	_bool	Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+
+private:
+	class CGameInstance* m_pGameInstance = { nullptr };
 
 private:
 	RAY		m_pRay;

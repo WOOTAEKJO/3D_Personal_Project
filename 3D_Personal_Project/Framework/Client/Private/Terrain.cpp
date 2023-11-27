@@ -26,10 +26,6 @@ HRESULT CTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(XMVectorSet(0.f, 30.f, 0.f, 1.f), XMVectorSet(100.f, 0.f, 100.f, 1.f),
-		XMVectorSet(0.f, 1.f, 0.f, 0.f)));
-	XMStoreFloat4x4(&m_matProj, XMMatrixPerspectiveFovLH(XMConvertToRadians(30.f), (_float)g_iWinSizeX / (_float)g_iWinSizeY, 0.2f, 1000.f));
-
 	return S_OK;
 }
 
@@ -41,10 +37,10 @@ void CTerrain::Tick(_float fTimeDelta)
 {
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
-		m_pGameInstance->Update_Mouse(m_matView, m_matProj, g_hWnd);
+		m_pGameInstance->Update_Mouse(g_hWnd);
 		_float3	vMousePos;
-		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix());
-		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 10.f, 10.f, 0.13f);
+		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
+		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 10.f, 10.f, 0.f);
 	}
 }
 
@@ -73,9 +69,11 @@ HRESULT CTerrain::Bind_ShaderResources()
 	
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_matView)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance
+	->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW))))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_matProj)))
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
+		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
 		return E_FAIL;

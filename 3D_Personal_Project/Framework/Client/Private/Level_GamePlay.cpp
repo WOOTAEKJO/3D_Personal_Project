@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Level_GamePlay.h"
 
+#include "DynamicCamera.h"
+
 #include "GameInstance.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -13,7 +15,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
 		return E_FAIL;
 
-	return S_OK;
+	if (FAILED(Ready_Layer_Camera(TEXT("Camera"))))
+		return E_FAIL;
+
+	return S_OK; 
 }
 
 void CLevel_GamePlay::Tick(_float fTimeDelta)
@@ -32,6 +37,27 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Terrain"))))
 		return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
+{
+	
+	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
+
+	DynamicCameraDesc.fMouseSensitivity = 0.5f;
+	DynamicCameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
+	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);
+	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
+	DynamicCameraDesc.fNear = 0.1f;
+	DynamicCameraDesc.fFar = 1000.f;
+	DynamicCameraDesc.fSpeedPerSec = 20.f;
+	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_DynamicCamera"), &DynamicCameraDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

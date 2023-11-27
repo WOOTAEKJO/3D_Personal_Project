@@ -1,7 +1,10 @@
 #include "..\Public\Mouse_Manager.h"
+#include "GameInstance.h"
 
 CMouse_Manager::CMouse_Manager()
+	:m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CMouse_Manager::Initialize()
@@ -9,7 +12,7 @@ HRESULT CMouse_Manager::Initialize()
     return S_OK;
 }
 
-void CMouse_Manager::Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWnd)
+void CMouse_Manager::Update_Mouse(HWND hWnd)
 {
 	POINT	ptCursor;
 	RECT	rcClient;
@@ -17,11 +20,14 @@ void CMouse_Manager::Update_Mouse(_float4x4 matView, _float4x4 matProj, HWND hWn
 	ScreenToClient(hWnd, &ptCursor);
 	GetClientRect(hWnd, &rcClient);
 
+	_matrix	matView = m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::VIEW);
+	_matrix	matProj = m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::PROJ);
+
 	_float3		vCursor(2.f * ptCursor.x / rcClient.right - 1.f, -2.f * ptCursor.y / rcClient.bottom + 1.f, 0.f);
 
-	XMStoreFloat3(&m_pRay.vOrigin, XMVector3TransformCoord(XMVectorSet(0.f, 0.f, 0.f, 1.f), XMMatrixInverse(nullptr, XMLoadFloat4x4(&matView))));
-	XMStoreFloat3(&m_pRay.vDir, XMVector3Normalize(XMVector3TransformNormal(XMVector3TransformCoord(XMLoadFloat3(&vCursor), XMMatrixInverse(nullptr, XMLoadFloat4x4(&matProj))),
-		XMMatrixInverse(nullptr, XMLoadFloat4x4(&matView)))));
+	XMStoreFloat3(&m_pRay.vOrigin, XMVector3TransformCoord(XMVectorSet(0.f, 0.f, 0.f, 1.f), XMMatrixInverse(nullptr, matView)));
+	XMStoreFloat3(&m_pRay.vDir, XMVector3Normalize(XMVector3TransformNormal(XMVector3TransformCoord(XMLoadFloat3(&vCursor), XMMatrixInverse(nullptr, matProj)),
+		XMMatrixInverse(nullptr, matView))));
 	m_pRay.fLength = 0.f;
 }
 
@@ -59,4 +65,6 @@ CMouse_Manager* CMouse_Manager::Create()
 void CMouse_Manager::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pGameInstance);
 }
