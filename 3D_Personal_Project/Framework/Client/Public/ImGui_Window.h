@@ -1,8 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
+//#include "imgui.h"
+//#include "imgui_impl_win32.h"
+//#include "imgui_impl_dx11.h"
 #include "Base.h"
 #include "ImGuiMgr.h"
 

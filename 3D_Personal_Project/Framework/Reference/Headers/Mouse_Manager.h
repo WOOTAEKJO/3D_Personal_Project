@@ -14,6 +14,7 @@ public:
 	void	Update_Mouse();
 	_bool	Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
 	
+
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
 
