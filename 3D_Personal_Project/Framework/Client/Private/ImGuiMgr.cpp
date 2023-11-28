@@ -9,6 +9,11 @@
 
 #include "GameInstance.h"
 
+#include "Terrain_Window.h"
+#include "ImGui_Window.h"
+
+#include "Terrain_Demo.h"
+
 IMPLEMENT_SINGLETON(CImGuiMgr)
 
 CImGuiMgr::CImGuiMgr() 
@@ -44,7 +49,21 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
+    if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL,TEXT("BackGround"),
+        TEXT("Prototype_GameObject_Terrain_Demo"), nullptr,reinterpret_cast<CGameObject**>(&m_pTerrain))))
+        return E_FAIL;
+    Safe_AddRef(m_pTerrain);
+
 	return S_OK;
+}
+
+void CImGuiMgr::Tick()
+{
+    for (auto& iter : m_vecWindow) {
+        if (iter != nullptr) {
+            iter->Tick();
+        }
+    }
 }
 
 HRESULT CImGuiMgr::Render()
@@ -98,69 +117,48 @@ HRESULT CImGuiMgr::Render()
 
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("File"))
+		if (ImGui::BeginMenu("Terrain"))
 		{
-			if (ImGui::MenuItem("Save"))
+			/*if (ImGui::MenuItem("Save"))
 			{
+			}*/
 
+            Set_Terrain_Edit();
 
-			}
-			ImGui::EndMenu();
+            ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("View"))
+		if (ImGui::BeginMenu("Object"))
 		{
-			if (ImGui::MenuItem("PhysX_Collider", "PgUp"))
-			{
-				
-			}
-			ImGui::EndMenu();
+			
+            ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Level"))
+		if (ImGui::BeginMenu("Camera"))
 		{
-			if (ImGui::MenuItem("-1. Loading"))
-			{
-				
-			}
-
-			if (ImGui::MenuItem("00. Logo"))
-			{
-				
-			}
-
-			if (ImGui::MenuItem("01. GamePlay"))
-			{
-				
-			}
-
-			ImGui::EndMenu();
+			
+            ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Editer"))
+		if (ImGui::BeginMenu("UI"))
 		{
-			if (ImGui::MenuItem("Scene Editer"))
-			{
-				
-			}
-
-			if (ImGui::MenuItem("Effect Editer"))
-			{
-				
-			}
-
-			if (ImGui::MenuItem("Model Editer"))
-			{
-				
-			}
-
-			ImGui::EndMenu();
+			
+            ImGui::EndMenu();
 		}
+
+        if (ImGui::BeginMenu("Effect"))
+        {
+
+            ImGui::EndMenu();
+        }
 
 		ImGui::EndMainMenuBar();
 	}
 
-    Tool();
+    for (size_t i = 0; i < m_vecWindow.size(); i++)
+    {
+        m_vecWindow[i]->Render();
+    }
 
     ImGui::Render();
 
@@ -169,50 +167,59 @@ HRESULT CImGuiMgr::Render()
     return S_OK;
 }
 
-void CImGuiMgr::Tool()
+HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
 {
-    ImGuiWindowFlags window_flags = 0;
-    window_flags |= ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize;
-    ImVec4 vBackGroundColor = ImVec4(1.f,1.f,1.f,1.f);
-    ImVec2 vWinSize = {300.f,500.f};
-    string strName = "TEST";
-    
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, vBackGroundColor);
+    if (m_pTerrain == nullptr)
+        return E_FAIL;
 
-    ImGui::SetNextWindowSize(vWinSize, 0);
+    if (FAILED(m_pTerrain->Create_DynamicBuffer(iX, iZ)))
+        return E_FAIL;
 
-    ImGui::Begin(strName.c_str(), 0, window_flags);
+    return S_OK;
+}
 
-    ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+HRESULT CImGuiMgr::Delete_HeightMap()
+{
+    if (m_pTerrain == nullptr)
+        return E_FAIL;
 
-    ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("TEST", tab_bar_flags))
-    {
-        if (ImGui::BeginTabItem("Test1"))
-        {
-            
+    if (FAILED(m_pTerrain->Delete_DynamicBuffer()))
+        return E_FAIL;
 
-            ImGui::EndTabItem();
-        }
+    return S_OK;
+}
 
-        if (ImGui::BeginTabItem("Test2"))
-        {
-           
+HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
+{
+    if (m_pTerrain == nullptr)
+        return E_FAIL;
 
-            ImGui::EndTabItem();
-        }
+    if (FAILED(m_pTerrain->Set_Control_Variable(pArg)))
+        return E_FAIL;
 
-        ImGui::EndTabBar();
-    }
+    return S_OK;
+}
 
+void CImGuiMgr::Set_Terrain_Edit()
+{
+    CTerrain_Window::IMGUIWINDESC ImGuiWinDesc;
 
-    ImGui::PopStyleColor();
+    ImGuiWinDesc.strName = "Terrain";
+    ImGuiWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+    ImGuiWinDesc.vWinSize = ImVec2(300, 500);
 
-    ImGui::End();
+    m_vecWindow.push_back(CTerrain_Window::Create(&ImGuiWinDesc));
 }
 
 void CImGuiMgr::Free()
 {
+    Safe_Release(m_pTerrain);
+
+    for (auto& iter : m_vecWindow)
+        Safe_Release(iter);
+    m_vecWindow.clear();
+
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();

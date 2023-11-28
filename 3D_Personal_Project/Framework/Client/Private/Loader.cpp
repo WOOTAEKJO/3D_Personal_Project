@@ -9,7 +9,7 @@
 #include "DynamicCamera.h"
 #include "GameObject_Test.h"
 
-#include "StateMachine.h"
+#include "Terrain_Demo.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -81,6 +81,9 @@ HRESULT CLoader::Loading()
 	case LEVEL_GAMEPLAY:		
 		hr = Loading_For_GamePlay_Level();
 		break;
+	case LEVEL_TOOL:
+		hr = Loading_For_Tool_Level();
+		break;
 	}
 
 	if (FAILED(hr))
@@ -128,7 +131,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	/* For.Prototype_Component_Texture_Terrain*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Tile0.jpg")))))
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Tile%d.dds"),2))))
 		return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
@@ -147,14 +150,14 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	/* For.Prototype_Component_Shader_VTXNORTEX*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsli"), VTXNORTEX::Elements, VTXNORTEX::iElementsNum))))
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxNorTex.hlsli"), VTXNORTEX::Elements, VTXNORTEX::iElementsNum))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VTXTBN*/
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
 		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsli"), VTXTBN::Elements, VTXTBN::iElementsNum))))
 		return E_FAIL;
-	
+
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	
 	/* For.Prototype_GameObject_Terrain*/
@@ -165,6 +168,48 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 	
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_Tool_Level()
+{
+	/* 게임플레이 레벨에 필요한 자원을 로드하자. */
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
+
+	/* For.Prototype_Component_Texture_Terrain*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Tile%d.dds"),2))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
+
+	/* For.Prototype_Component_VIBuffer_DTerrain*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+		CVIBuffer_DTerrain::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
+
+	/* For.Prototype_Component_Shader_VTXTBN*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsli"), VTXTBN::Elements, VTXTBN::iElementsNum))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
+
+	/* For.Prototype_GameObject_Terrain_Demo*/
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_Terrain_Demo"),
+		CTerrain_Demo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_DynamicCamera*/
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;

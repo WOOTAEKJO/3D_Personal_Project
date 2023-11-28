@@ -38,10 +38,10 @@ HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 		{
 			_uint iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].fPosition = _float3(j, 0.f / 10.f, i);
+			pVertices[iIndex].fPosition = _float3(j, 0.f, i);
 			pVertices[iIndex].fTangent = _float3(1.f, 0.f, 0.f);
-			pVertices[iIndex].fBinormal = _float3(0.f, 1.f, 0.f);
-			pVertices[iIndex].fNormal = _float3(0.f, 0.f, 1.f);
+			pVertices[iIndex].fBinormal = _float3(0.f, 0.f, 1.f);
+			pVertices[iIndex].fNormal = _float3(0.f, 1.f, 0.f);
 			pVertices[iIndex].fTexCoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			
 			m_vecVertexInfo.push_back(pVertices[iIndex]);
@@ -178,33 +178,33 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 			vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fPosition);
 			vNormal = XMVector3Cross(vVec1, vVec2);
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[0]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[0]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[0]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[0]].fNormal, XMVector3Normalize(vNormal));
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[1]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[1]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[1]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[1]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[1]].fNormal, XMVector3Normalize(vNormal));
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[2]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[2]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[2]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[2]].fNormal, XMVector3Normalize(vNormal));
 
 			vVec1 = XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fPosition);
 			vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fPosition) - XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fPosition);
 			vNormal = XMVector3Cross(vVec1, vVec2);
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[0]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[0]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[0]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[0]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[0]].fNormal, XMVector3Normalize(vNormal));
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[2]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[2]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[2]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[2]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[2]].fNormal, XMVector3Normalize(vNormal));
 
-			XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal) += vNormal;
-			XMStoreFloat3(&m_vecVertexInfo[iIndices[3]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal)));
-			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[3]].fNormal, XMVector3Normalize(XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal)));
+			vNormal = XMLoadFloat3(&m_vecVertexInfo[iIndices[3]].fNormal) + vNormal;
+			XMStoreFloat3(&m_vecVertexInfo[iIndices[3]].fNormal, XMVector3Normalize(vNormal));
+			XMStoreFloat3(&((VTXTBN*)(SubResource.pData))[iIndices[3]].fNormal, XMVector3Normalize(vNormal));
 
 			// ≈∫¡®∆Æ ∫§≈Õ(¡¢º± ∫§≈Õ)
 			_float3	vTangent;

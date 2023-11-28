@@ -12,7 +12,7 @@ private:
 public: 
 	HRESULT	Initialize(_uint iNumLevel); // 여기서 사본객체보관 컨테이너 동적배열
 	HRESULT	Add_ProtoType(const wstring& strProtoTypeTag,class CGameObject* pGameObeject);
-	HRESULT	Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag,void* pArg);
+	HRESULT	Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, const wstring& strProtoTypeTag, CGameObject** ppOut, void* pArg);
 	void	Priority_Tick(_float fTimeDelta);
 	void	Tick(_float fTimeDelta);
 	void	Late_Tick(_float fTimeDelta);

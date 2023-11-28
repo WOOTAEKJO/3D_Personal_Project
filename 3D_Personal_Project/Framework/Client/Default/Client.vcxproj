@@ -194,13 +194,15 @@
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
+    <ClInclude Include="..\Public\Level_Tool.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Terrain.h" />
+    <ClInclude Include="..\Public\Terrain_Demo.h" />
+    <ClInclude Include="..\Public\Terrain_Window.h" />
     <ClInclude Include="..\Public\TestAction.h" />
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
-    <ClInclude Include="..\Public\Win_Test.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -222,13 +224,15 @@
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />
+    <ClCompile Include="..\Private\Level_Tool.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
+    <ClCompile Include="..\Private\Terrain_Demo.cpp" />
+    <ClCompile Include="..\Private\Terrain_Window.cpp" />
     <ClCompile Include="..\Private\TestAction.cpp" />
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
-    <ClCompile Include="..\Private\Win_Test.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

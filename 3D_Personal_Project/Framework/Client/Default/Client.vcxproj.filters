@@ -73,14 +73,23 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window">
       <UniqueIdentifier>{2a34bfab-f31f-4bc6-8c02-c775cab1e40f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test">
-      <UniqueIdentifier>{45e97c2f-1f56-43ce-96e8-43b9c4903a89}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02. Camera">
       <UniqueIdentifier>{4700ea63-7c21-4aec-8d72-c5ddf251871d}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02. Camera\00. DynamicCamera">
       <UniqueIdentifier>{1bf4af10-5513-466f-a220-9b27e556b546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo">
+      <UniqueIdentifier>{328f5b1e-8e06-41d8-a546-79690d9ef60b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\00. Terrain">
+      <UniqueIdentifier>{2ce697e0-d493-4b05-956a-209a3b41de42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\98. Tool">
+      <UniqueIdentifier>{355bc8f2-fec5-4df6-a523-a62e10252c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window">
+      <UniqueIdentifier>{796bacf9-694a-4c84-9f29-d13cfcdfb860}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,11 +171,17 @@
     <ClInclude Include="..\Public\ImGui_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Win_Test.h">
-      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\DynamicCamera.h">
       <Filter>02.GameObjects\02. Camera\00. DynamicCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain_Demo.h">
+      <Filter>02.GameObjects\98. Demo\00. Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Tool.h">
+      <Filter>01.Levels\98. Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Terrain_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,11 +251,17 @@
     <ClCompile Include="..\Private\ImGui_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Win_Test.cpp">
-      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\99.Win_Test</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\DynamicCamera.cpp">
       <Filter>02.GameObjects\02. Camera\00. DynamicCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\00. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Tool.cpp">
+      <Filter>01.Levels\98. Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Terrain_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

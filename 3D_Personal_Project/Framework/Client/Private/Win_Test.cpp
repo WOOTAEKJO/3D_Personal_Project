@@ -5,7 +5,7 @@ CWin_Test::CWin_Test()
 {
 }
 
-HRESULT CWin_Test::Initialize()
+HRESULT CWin_Test::Initialize(void* pArg)
 {
 	//ImGuiWindowFlags windowFlags = 0;
 
@@ -22,11 +22,11 @@ HRESULT CWin_Test::Render()
 	return S_OK;
 }
 
-CWin_Test* CWin_Test::Create()
+CWin_Test* CWin_Test::Create(void* pArg)
 {
 	CWin_Test* pInstance = new CWin_Test();
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(pArg)))
 	{
 		MSG_BOX("Failed to Created : CWin_Test");
 		Safe_Release(pInstance);

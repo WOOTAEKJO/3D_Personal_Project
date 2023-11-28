@@ -33,6 +33,7 @@ public:
 	HRESULT Loading();
 	HRESULT Loading_For_Logo_Level();
 	HRESULT Loading_For_GamePlay_Level();
+	HRESULT Loading_For_Tool_Level();
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
