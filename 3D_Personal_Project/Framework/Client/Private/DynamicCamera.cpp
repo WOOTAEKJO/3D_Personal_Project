@@ -38,24 +38,38 @@ void CDynamicCamera::Priority_Tick(_float fTimeDelta)
 
 void CDynamicCamera::Tick(_float fTimeDelta)
 {
-	if (GetAsyncKeyState('A') & 0x8000)
+
+	if (m_pGameInstance->Key_Pressing(DIK_A))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
 	}
 
-	if (GetAsyncKeyState('D') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_D))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
 	}
 
-	if (GetAsyncKeyState('W') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_W))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
 
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (m_pGameInstance->Key_Pressing(DIK_S))
 	{
 		m_pTransformCom->Go_BackWard(fTimeDelta);
+	}
+
+	_long MouseMove = 0;
+
+	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fMouseSensitivity * MouseMove * fTimeDelta);
+	}
+
+	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	{
+		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE::STATE_RIGHT),
+			m_fMouseSensitivity * MouseMove * fTimeDelta);
 	}
 
 	__super::Tick(fTimeDelta);

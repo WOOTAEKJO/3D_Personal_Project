@@ -5,6 +5,7 @@
 BEGIN(Engine)
 
 class CVIBuffer_DTerrain;
+class CVIBuffer_Terrain;
 class CShader;
 class CTexture;
 
@@ -27,7 +28,7 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
+	CVIBuffer_Terrain* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 

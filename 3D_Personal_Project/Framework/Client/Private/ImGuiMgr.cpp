@@ -57,6 +57,15 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 	return S_OK;
 }
 
+void CImGuiMgr::Tick()
+{
+    for (auto& iter : m_vecWindow) {
+        if (iter != nullptr) {
+            iter->Tick();
+        }
+    }
+}
+
 HRESULT CImGuiMgr::Render()
 {
 #pragma region µµÅ·
@@ -175,6 +184,17 @@ HRESULT CImGuiMgr::Delete_HeightMap()
         return E_FAIL;
 
     if (FAILED(m_pTerrain->Delete_DynamicBuffer()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
+{
+    if (m_pTerrain == nullptr)
+        return E_FAIL;
+
+    if (FAILED(m_pTerrain->Set_Control_Variable(pArg)))
         return E_FAIL;
 
     return S_OK;

@@ -12,10 +12,11 @@ private:
 public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 	virtual	void	Tick() override;
-	virtual	HRESULT	Render() override;	
+	virtual	HRESULT	Render() override;
 
 private:
 	_int	m_iVertices_Size[2] = {3,3};
+	_int	m_iHeight_Control[3] = {};
 
 private:
 	void	HeightMap();

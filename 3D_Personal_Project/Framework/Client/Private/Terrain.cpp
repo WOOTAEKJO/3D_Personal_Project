@@ -37,7 +37,7 @@ void CTerrain::Tick(_float fTimeDelta)
 {
 	/*if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
-		m_pGameInstance->Update_Mouse(g_hWnd);
+		m_pGameInstance->Update_Mouse();
 		_float3	vMousePos;
 		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
 		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 10.f, 10.f, 0.f);
@@ -75,7 +75,7 @@ HRESULT CTerrain::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 
 	return S_OK;
@@ -83,28 +83,29 @@ HRESULT CTerrain::Bind_ShaderResources()
 
 HRESULT CTerrain::Ready_Component()
 {
+	
+	//CVIBuffer_DTerrain::DTERRAINDESC tDTerrainDesc;
+
+	//tDTerrainDesc.iVerticesXNum = 300;
+	//tDTerrainDesc.iVerticesZNum = 300;
+
 	///* For.Com_VIBuffer*/
-	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
 	//	return E_FAIL;
 
 	///* For.Com_Shader*/
-	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
+	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
 	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 	//	return E_FAIL;
 
-	CVIBuffer_DTerrain::DTERRAINDESC tDTerrainDesc;
-
-	tDTerrainDesc.iVerticesXNum = 500;
-	tDTerrainDesc.iVerticesZNum = 500;
-
 	/* For.Com_VIBuffer*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
 	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 

@@ -2,6 +2,8 @@
 #include "..\Public\Terrain_Demo.h"
 #include "GameInstance.h"
 
+#include "ImGuiMgr.h"
+
 CTerrain_Demo::CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -37,9 +39,11 @@ void CTerrain_Demo::Tick(_float fTimeDelta)
 	if (m_pVIBufferCom == nullptr)
 		return;
 
+	CImGuiMgr::GetInstance()->Tick();
+
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
 	{
-		m_pGameInstance->Update_Mouse(g_hWnd);
+		m_pGameInstance->Update_Mouse();
 		_float3	vMousePos;
 		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
 		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
@@ -105,6 +109,20 @@ HRESULT CTerrain_Demo::Delete_DynamicBuffer()
 	return S_OK;
 }
 
+HRESULT CTerrain_Demo::Set_Control_Variable(void* pArg)
+{
+	if (pArg == nullptr)
+		return E_FAIL;
+
+	TERRAINDEMOVALUE* pVariable = (TERRAINDEMOVALUE*)pArg;
+
+	m_fRadius = pVariable->fRadius;
+	m_fHeight = pVariable->fHeight;
+	m_fSharpness = pVariable->fSharpness;
+
+	return S_OK;
+}
+
 HRESULT CTerrain_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
@@ -115,7 +133,7 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 
 	return S_OK;

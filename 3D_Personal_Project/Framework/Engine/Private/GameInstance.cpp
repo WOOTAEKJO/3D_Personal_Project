@@ -1,5 +1,6 @@
 #include "..\Public\GameInstance.h"
 #include "Graphic_Device.h"
+#include "Input_Device.h"
 #include "TImer_Manager.h"
 #include "Level_Manager.h"
 #include "Object_Manager.h"
@@ -12,11 +13,16 @@ CGameInstance::CGameInstance()
 {
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
 {
 	/* 그래픽 디바이스를 초기화 하자.*/
 	m_pGraphic_Device = CGraphic_Device::Create(GraphicDesc, ppDevice, ppContext);
 	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	/* 인풋 디바이스를 준비*/
+	m_pInput_Device = CInput_Device::Create(hInst, GraphicDesc.hWnd);
+	if (nullptr == m_pInput_Device)
 		return E_FAIL;
 
 	/* 타이머를 사용할 준비를 하자. */
@@ -50,7 +56,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 		return E_FAIL;
 
 	/* 마우스 매니저 사용 준비*/
-	m_pMouse_Manager = CMouse_Manager::Create();
+	m_pMouse_Manager = CMouse_Manager::Create(GraphicDesc.hWnd);
 	if (nullptr == m_pMouse_Manager)
 		return E_FAIL;
 
@@ -66,13 +72,18 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	if (nullptr == m_pLevel_Manager || nullptr == m_pObject_Manager)
 		return;
+	m_pInput_Device->Update_InputDev();
 
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
+
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pPipeLine->Tick();
-	m_pObject_Manager->Late_Tick(fTimeDelta);
 
+	m_pObject_Manager->Late_Tick(fTimeDelta);
+	
 	m_pLevel_Manager->Tick(fTimeDelta);
+
+	m_pInput_Device->LateUpdate_InputDev();
 }
 
 HRESULT CGameInstance::Render_Engine()
@@ -119,6 +130,78 @@ HRESULT CGameInstance::Present()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 	return m_pGraphic_Device->Present();
+}
+
+_byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIKeyState(byKeyID);
+}
+
+_byte CGameInstance::Get_DIMouseState(MOUSEKEYSTATE eMouse)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseState(eMouse);
+}
+
+_long CGameInstance::Get_DIMouseMove(MOUSEMOVESTATE eMouseState)
+{
+	if (nullptr == m_pInput_Device)
+		return 0;
+
+	return m_pInput_Device->Get_DIMouseMove(eMouseState);
+}
+
+bool CGameInstance::Key_Pressing(_ubyte byKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Key_Pressing(byKeyID);
+}
+
+bool CGameInstance::Key_Down(_ubyte byKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Key_Down(byKeyID);
+}
+
+bool CGameInstance::Key_Up(_ubyte byKeyID)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Key_Up(byKeyID);
+}
+
+bool CGameInstance::Mouse_Pressing(MOUSEKEYSTATE eMouse)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Pressing(eMouse);
+}
+
+bool CGameInstance::Mouse_Down(MOUSEKEYSTATE eMouse)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Down(eMouse);
+}
+
+bool CGameInstance::Mouse_Up(MOUSEKEYSTATE eMouse)
+{
+	if (nullptr == m_pInput_Device)
+		return false;
+
+	return m_pInput_Device->Mouse_Up(eMouse);
 }
 
 HRESULT CGameInstance::Add_Timer(const wstring & strTimeTag)
@@ -201,12 +284,12 @@ CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const w
 	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
 }
 
-void CGameInstance::Update_Mouse(HWND hWnd)
+void CGameInstance::Update_Mouse()
 {
 	if (nullptr == m_pMouse_Manager)
 		return;
 
-	return m_pMouse_Manager->Update_Mouse(hWnd);
+	return m_pMouse_Manager->Update_Mouse();
 }
 
 _bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
@@ -283,6 +366,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);
 }
 

@@ -114,7 +114,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11d.lib;DirectXTKd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -160,7 +160,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;Effects11.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;dinput8.lib;dxguid.lib;Effects11.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -195,6 +195,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\public\GameInstance.h" />
     <ClInclude Include="..\Public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />
+    <ClInclude Include="..\Public\Input_Device.h" />
     <ClInclude Include="..\Public\Inverter.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Leaf.h" />
@@ -239,6 +240,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\private\GameInstance.cpp" />
     <ClCompile Include="..\Private\GameObject.cpp" />
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
+    <ClCompile Include="..\Private\Input_Device.cpp" />
     <ClCompile Include="..\Private\Inverter.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Leaf.cpp" />

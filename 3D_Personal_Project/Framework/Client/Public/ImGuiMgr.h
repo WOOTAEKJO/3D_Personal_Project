@@ -22,11 +22,13 @@ private:
 
 public:
 	HRESULT		Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	void		Tick();
 	HRESULT		Render();
 
-public:
+public: /* For. Terrain*/
 	HRESULT		Create_HeightMap(_uint iX, _uint iZ);
 	HRESULT		Delete_HeightMap();
+	HRESULT		Set_Control_Variable(void* pArg);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

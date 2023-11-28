@@ -14,6 +14,15 @@ BEGIN(Client)
 
 class CTerrain_Demo final : public CGameObject
 {
+public:
+	typedef struct tagTerrainDemoValue
+	{
+		_float fRadius;
+		_float fHeight;
+		_float fSharpness;
+
+	}TERRAINDEMOVALUE;
+
 private:
 	CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTerrain_Demo(const CTerrain_Demo& rhs);
@@ -29,6 +38,7 @@ public:
 public:
 	HRESULT	Create_DynamicBuffer(_uint iVerticesXNum = 3, _uint iVerticesZNum = 3);
 	HRESULT	Delete_DynamicBuffer();
+	HRESULT	Set_Control_Variable(void* pArg);
 
 private:
 	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };

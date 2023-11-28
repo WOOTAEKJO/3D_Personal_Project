@@ -52,7 +52,7 @@ HRESULT CLevel_Tool::Ready_Layer_Camera(const wstring& strLayerTag)
 
 	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
 
-	DynamicCameraDesc.fMouseSensitivity = 0.5f;
+	DynamicCameraDesc.fMouseSensitivity = 0.1f;
 	DynamicCameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
 	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
 	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);

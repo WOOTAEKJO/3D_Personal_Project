@@ -2,6 +2,7 @@
 #include "..\Public\Terrain_Window.h"
 
 #include "GameInstance.h"
+#include "Terrain_Demo.h"
 
 CTerrain_Window::CTerrain_Window()
 {
@@ -17,6 +18,14 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 void CTerrain_Window::Tick()
 {
+	CTerrain_Demo::TERRAINDEMOVALUE tTerrainDemoValue;
+
+	tTerrainDemoValue.fRadius = m_iHeight_Control[0];
+	tTerrainDemoValue.fHeight = m_iHeight_Control[1];
+	tTerrainDemoValue.fSharpness = m_iHeight_Control[2];
+
+	CImGuiMgr::GetInstance()->Set_Control_Variable(&tTerrainDemoValue);
+
 }
 
 HRESULT CTerrain_Window::Render()
@@ -52,7 +61,6 @@ HRESULT CTerrain_Window::Render()
 
 void CTerrain_Window::HeightMap()
 {
-	
 	ImGui::InputInt2("Vertices_SizeX,Z", m_iVertices_Size);
 
 	if (ImGui::Button("Create_HeightMap"))
@@ -67,6 +75,8 @@ void CTerrain_Window::HeightMap()
 	{
 		CImGuiMgr::GetInstance()->Delete_HeightMap();
 	}
+
+	ImGui::InputInt3("R_H_S", m_iHeight_Control);
 
 }
 

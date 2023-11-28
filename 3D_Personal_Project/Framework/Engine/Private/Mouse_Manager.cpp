@@ -7,18 +7,20 @@ CMouse_Manager::CMouse_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMouse_Manager::Initialize()
+HRESULT CMouse_Manager::Initialize(HWND hWnd)
 {
+	m_hWnd = hWnd;
+
     return S_OK;
 }
 
-void CMouse_Manager::Update_Mouse(HWND hWnd)
+void CMouse_Manager::Update_Mouse()
 {
 	POINT	ptCursor;
 	RECT	rcClient;
 	GetCursorPos(&ptCursor);
-	ScreenToClient(hWnd, &ptCursor);
-	GetClientRect(hWnd, &rcClient);
+	ScreenToClient(m_hWnd, &ptCursor);
+	GetClientRect(m_hWnd, &rcClient);
 
 	_matrix	matView = m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::VIEW);
 	_matrix	matProj = m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::PROJ);
@@ -50,11 +52,11 @@ _bool CMouse_Manager::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvec
     return false;
 }
 
-CMouse_Manager* CMouse_Manager::Create()
+CMouse_Manager* CMouse_Manager::Create(HWND hWnd)
 {
 	CMouse_Manager* pInstance = new CMouse_Manager();
 
-	if (FAILED(pInstance->Initialize())) {
+	if (FAILED(pInstance->Initialize(hWnd))) {
 		MSG_BOX("Failed to Created : CMouse_Manager");
 		Safe_Release(pInstance);
 	}

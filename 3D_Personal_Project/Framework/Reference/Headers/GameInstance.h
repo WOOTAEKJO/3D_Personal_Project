@@ -22,7 +22,7 @@ private:
 
 public: /* For.Engine */
 	/* 엔진라이브러리를 사용하기위한 준비를 모두 거친다. */
-	HRESULT Initialize_Engine(_uint iNumLevels,const GRAPHIC_DESC& GraphicDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+	HRESULT Initialize_Engine(_uint iNumLevels,const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
 	void Tick_Engine(_float fTimeDelta);
 	HRESULT Render_Engine();	// 렌더는 렌더러 클래스를 통해 실행된다.
 	void Clear(_uint iLevelIndex);
@@ -31,6 +31,19 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();	
 	HRESULT Present();
+
+public: /* For.Input_Device*/
+	_byte   Get_DIKeyState(_ubyte byKeyID);
+	_byte   Get_DIMouseState(MOUSEKEYSTATE eMouse);
+	_long   Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
+
+	bool   Key_Pressing(_ubyte byKeyID);
+	bool   Key_Down(_ubyte byKeyID);
+	bool   Key_Up(_ubyte byKeyID);
+
+	bool   Mouse_Pressing(MOUSEKEYSTATE eMouse);
+	bool   Mouse_Down(MOUSEKEYSTATE eMouse);
+	bool   Mouse_Up(MOUSEKEYSTATE eMouse);
 
 public: /* For.Timer_Manager */
 	HRESULT	Add_Timer(const wstring& strTimeTag);
@@ -55,7 +68,7 @@ public: /* For.Component_Manager*/
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
 public: /* For.Mouse_Manager*/
-	void	Update_Mouse(HWND hWnd);
+	void	Update_Mouse();
 	_bool	Intersect(_float3 * pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
 
 public: /* For.PipeLine*/
@@ -69,6 +82,7 @@ public: /* For.PipeLine*/
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
+	class CInput_Device*			m_pInput_Device = { nullptr };
 	class CTimer_Manager*			m_pTimer_Manager = { nullptr };
 	class CLevel_Manager*			m_pLevel_Manager = { nullptr };
 	class CObject_Manager*			m_pObject_Manager = { nullptr };
