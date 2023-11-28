@@ -183,6 +183,9 @@
     <ClInclude Include="..\Public\Terrain_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Client_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

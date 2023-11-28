@@ -41,21 +41,13 @@ void CDynamicCamera::Tick(_float fTimeDelta)
 	Key_Input(fTimeDelta);
 	
 	Mouse_Move(fTimeDelta);
-	//Mouse_Fix();
+	//m_pGameInstance->Mouse_Fix();
 
 	__super::Tick(fTimeDelta);
 }
 
 void CDynamicCamera::Late_Tick(_float fTimeDelta)
 {
-}
-
-void CDynamicCamera::Mouse_Fix()
-{
-	POINT	pt{ g_iWinSizeX >> 1, g_iWinSizeY >> 1 };
-
-	ClientToScreen(g_hWnd, &pt);
-	SetCursorPos(pt.x, pt.y);
 }
 
 void CDynamicCamera::Mouse_Move(_float fTimeDelta)

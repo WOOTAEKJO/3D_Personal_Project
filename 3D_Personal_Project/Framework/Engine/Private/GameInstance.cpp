@@ -56,7 +56,7 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 		return E_FAIL;
 
 	/* 마우스 매니저 사용 준비*/
-	m_pMouse_Manager = CMouse_Manager::Create(GraphicDesc.hWnd);
+	m_pMouse_Manager = CMouse_Manager::Create(GraphicDesc.hWnd, GraphicDesc.iBackBufferSizeX, GraphicDesc.iBackBufferSizeY);
 	if (nullptr == m_pMouse_Manager)
 		return E_FAIL;
 
@@ -298,6 +298,14 @@ _bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvect
 		return false;
 
 	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
+}
+
+void CGameInstance::Mouse_Fix()
+{
+	if (nullptr == m_pMouse_Manager)
+		return;
+
+	m_pMouse_Manager->Mouse_Fix();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix)

@@ -7,9 +7,11 @@ CMouse_Manager::CMouse_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMouse_Manager::Initialize(HWND hWnd)
+HRESULT CMouse_Manager::Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 {
 	m_hWnd = hWnd;
+	m_iWinSize[0] = iWinSizeX;
+	m_iWinSize[1] = iWinSizeY;
 
     return S_OK;
 }
@@ -52,11 +54,19 @@ _bool CMouse_Manager::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvec
     return false;
 }
 
-CMouse_Manager* CMouse_Manager::Create(HWND hWnd)
+void CMouse_Manager::Mouse_Fix()
+{
+	POINT	pt{ m_iWinSize[0] >> 1, m_iWinSize[1] >> 1};
+
+	ClientToScreen(m_hWnd, &pt);
+	SetCursorPos(pt.x, pt.y);
+}
+
+CMouse_Manager* CMouse_Manager::Create(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY)
 {
 	CMouse_Manager* pInstance = new CMouse_Manager();
 
-	if (FAILED(pInstance->Initialize(hWnd))) {
+	if (FAILED(pInstance->Initialize(hWnd, iWinSizeX, iWinSizeY))) {
 		MSG_BOX("Failed to Created : CMouse_Manager");
 		Safe_Release(pInstance);
 	}

@@ -16,6 +16,15 @@
 
 IMPLEMENT_SINGLETON(CImGuiMgr)
 
+typedef struct tagImGuiMGR_Window_Desc
+{
+    string	strName;	// 창 이름
+    ImGuiWindowFlags window_flags;	// 창 옵션
+    ImVec2	vWinSize;	// 창 사이즈
+    ImVec4 vBackGroundColor = ImVec4(1.f, 1.f, 1.f, 1.f);  // 백 창 색
+
+}IMGUIMGRWINDESC;
+
 CImGuiMgr::CImGuiMgr() 
 {
 }
@@ -202,14 +211,25 @@ HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
-    CTerrain_Window::IMGUIWINDESC ImGuiWinDesc;
+    /*CTerrain_Window::IMGUIWINDESC ImGuiWinDesc;
 
     ImGuiWinDesc.strName = "Terrain";
     ImGuiWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
     ImGuiWinDesc.vWinSize = ImVec2(300, 500);
 
-    m_vecWindow.push_back(CTerrain_Window::Create(&ImGuiWinDesc));
+    m_vecWindow.push_back(CTerrain_Window::Create(&ImGuiWinDesc));*/
+    //m_vecWindow.push_back(CTerrain_Window::Create());
+
+    IMGUIMGRWINDESC ImguiMrgWinDesc;
+
+    ImguiMrgWinDesc.strName = "Terrain";
+    ImguiMrgWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+    ImguiMrgWinDesc.vWinSize = ImVec2(300, 500);
+
+    m_vecWindow.push_back(CTerrain_Window::Create(&ImguiMrgWinDesc));
+
 }
 
 void CImGuiMgr::Free()
