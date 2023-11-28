@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
-#include "..\Public\ImGui_Window.h"
+#include "../Public/imgui.h"
+#include "../Public/imgui_impl_win32.h"
+#include "../Public/imgui_impl_dx11.h"
+#include "../Public/ImGui_Window.h"
 #include "GameInstance.h"
 
 typedef struct tagImGui_Window_Desc
@@ -22,24 +22,7 @@ CImGui_Window::CImGui_Window()
 
 HRESULT CImGui_Window::Initialize(void* pArg)
 {
-	/*if (pArg == nullptr)
-		return E_FAIL;
-
-	IMGUIWINDESC* pImguiWinDesc = (IMGUIWINDESC*)pArg;
-
-	m_strName = pImguiWinDesc->strName;
-	m_window_flags = pImguiWinDesc->window_flags;
-	m_vWinSize = pImguiWinDesc->vWinSize;
-	m_vBackGroundColor = pImguiWinDesc->vBackGroundColor;*/
-	
-	IMGUIWINDESC* paa = new IMGUIWINDESC;
-	paa = (IMGUIWINDESC*)pArg;
-
-	//m_pDesc = new IMGUIWINDESC;
-
-	m_pDesc = paa;
-
-	//IMGUIWINDESC* pab = (IMGUIWINDESC*)m_pDesc;
+	m_pDesc = pArg;
 
 	return S_OK;
 }
@@ -68,5 +51,6 @@ void CImGui_Window::Free()
 {
 	__super::Free();
 
+	Safe_Delete(m_pDesc);
 	Safe_Release(m_pGameInstance);
 }

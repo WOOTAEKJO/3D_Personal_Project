@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include "imgui_impl_win32.h"
+#include "../Public/imgui_impl_win32.h"
 #include "Client.h"
 
 #include "MainApp.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
+#include "../Public/imgui.h"
+#include "../Public/imgui_impl_win32.h"
+#include "../Public/imgui_impl_dx11.h"
 #include "..\Public\ImGuiMgr.h"
 
 #include "commdlg.h"
@@ -211,25 +211,15 @@ HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
-    /*CTerrain_Window::IMGUIWINDESC ImGuiWinDesc;
+   
+    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
 
-    ImGuiWinDesc.strName = "Terrain";
-    ImGuiWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
+    ImguiMrgWinDesc->strName = "Terrain";
+    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImGuiWinDesc.vWinSize = ImVec2(300, 500);
+    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
-    m_vecWindow.push_back(CTerrain_Window::Create(&ImGuiWinDesc));*/
-    //m_vecWindow.push_back(CTerrain_Window::Create());
-
-    IMGUIMGRWINDESC ImguiMrgWinDesc;
-
-    ImguiMrgWinDesc.strName = "Terrain";
-    ImguiMrgWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
-        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImguiMrgWinDesc.vWinSize = ImVec2(300, 500);
-
-    m_vecWindow.push_back(CTerrain_Window::Create(&ImguiMrgWinDesc));
-
+    m_vecWindow.push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Free()

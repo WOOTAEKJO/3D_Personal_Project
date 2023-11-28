@@ -1,8 +1,10 @@
 #include "stdafx.h"
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
+#include "../Public/imgui.h"
+#include "../Public/imgui_impl_win32.h"
+#include "../Public/imgui_impl_dx11.h"
 #include "..\Public\Terrain_Window.h"
+
+#include "ImGuiMgr.h"
 
 #include "GameInstance.h"
 #include "Terrain_Demo.h"
@@ -13,7 +15,7 @@ CTerrain_Window::CTerrain_Window()
 
 HRESULT CTerrain_Window::Initialize(void* pArg)
 {
-	if (FAILED(__super::Initialize(pArg)))
+	if (FAILED(CImGui_Window::Initialize(pArg)))
 		return E_FAIL;
 
 	return S_OK;
@@ -33,7 +35,7 @@ void CTerrain_Window::Tick()
 
 HRESULT CTerrain_Window::Render()
 {
-	__super::Begin();
+	CImGui_Window::Begin();
 
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
@@ -57,7 +59,7 @@ HRESULT CTerrain_Window::Render()
 		ImGui::EndTabBar();
 	}
 
-	__super::End();
+	CImGui_Window::End();
 
 	return S_OK;
 }
