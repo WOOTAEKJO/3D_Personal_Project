@@ -28,6 +28,12 @@ public:
 private:
 	_float m_fMouseSensitivity = { 0.f };
 
+private:
+	void	Mouse_Fix();
+	void	Mouse_Move(_float fTimeDelta);
+	void	Key_Input(_float fTimeDelta);
+	
+
 public:
 	static	CDynamicCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	CGameObject* Clone(void* pArg) override;
