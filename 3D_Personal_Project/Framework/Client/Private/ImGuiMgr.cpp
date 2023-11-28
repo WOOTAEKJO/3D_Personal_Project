@@ -2,15 +2,15 @@
 #include "../Public/imgui.h"
 #include "../Public/imgui_impl_win32.h"
 #include "../Public/imgui_impl_dx11.h"
-#include "..\Public\ImGuiMgr.h"
+#include "../Public/ImGuiMgr.h"
 
 #include "commdlg.h"
 #include "shlwapi.h"
 
 #include "GameInstance.h"
 
-#include "Terrain_Window.h"
-#include "ImGui_Window.h"
+#include "../Public/Terrain_Window.h"
+#include "../Public/ImGui_Window.h"
 
 #include "Terrain_Demo.h"
 

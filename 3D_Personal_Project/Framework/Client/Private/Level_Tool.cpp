@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "..\Public\Level_Tool.h"
 
-#include "ImGuiMgr.h"
+#include "../Public/ImGuiMgr.h"
 
 #include "DynamicCamera.h"
 #include "GameInstance.h"

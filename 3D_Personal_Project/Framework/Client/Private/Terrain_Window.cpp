@@ -2,9 +2,9 @@
 #include "../Public/imgui.h"
 #include "../Public/imgui_impl_win32.h"
 #include "../Public/imgui_impl_dx11.h"
-#include "..\Public\Terrain_Window.h"
+#include "../Public/Terrain_Window.h"
 
-#include "ImGuiMgr.h"
+#include "../Public/ImGuiMgr.h"
 
 #include "GameInstance.h"
 #include "Terrain_Demo.h"

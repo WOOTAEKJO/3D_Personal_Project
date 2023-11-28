@@ -2,7 +2,7 @@
 #include "..\Public\Terrain_Demo.h"
 #include "GameInstance.h"
 
-#include "ImGuiMgr.h"
+#include "../Public/ImGuiMgr.h"
 
 CTerrain_Demo::CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
