@@ -149,6 +149,17 @@ HRESULT CShader::Bind_SRVS(const _char* pTextureName, ID3D11ShaderResourceView**
 	return S_OK;
 }
 
+HRESULT CShader::Bind_RawValue(const _char* pValueName, const void* pData, _uint iSize)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pValueName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	pVariable->SetRawValue(pData, 0, iSize);
+
+	return S_OK;
+}
+
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElement, const _uint& iElementNum)
 {
 	CShader* pInstance = new CShader(pDevice, pContext);

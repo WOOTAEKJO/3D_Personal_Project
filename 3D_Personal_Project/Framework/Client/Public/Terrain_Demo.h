@@ -23,6 +23,8 @@ public:
 
 	}TERRAINDEMOVALUE;
 
+	enum TEXTURE { TYPE_DIFFUSE, TYPE_MASK, TYPE_END };
+
 private:
 	CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CTerrain_Demo(const CTerrain_Demo& rhs);
@@ -43,7 +45,7 @@ public:
 private:
 	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom[TYPE_END] = { nullptr };
 
 private:
 	_float	m_fHeight = { 0.f };

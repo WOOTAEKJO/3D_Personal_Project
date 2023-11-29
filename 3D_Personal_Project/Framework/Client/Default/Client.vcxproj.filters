@@ -283,14 +283,14 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
+    </FxCompile>
   </ItemGroup>
 </Project>
