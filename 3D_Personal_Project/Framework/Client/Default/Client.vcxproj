@@ -178,20 +178,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Imgui\imconfig.h" />
+    <ClInclude Include="..\Imgui\imgui.h" />
+    <ClInclude Include="..\Imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\Imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\Imgui\imgui_internal.h" />
+    <ClInclude Include="..\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
-    <ClInclude Include="..\Public\imconfig.h" />
-    <ClInclude Include="..\Public\imgui.h" />
     <ClInclude Include="..\Public\ImGuiMgr.h" />
-    <ClInclude Include="..\Public\imgui_impl_dx11.h" />
-    <ClInclude Include="..\Public\imgui_impl_win32.h" />
-    <ClInclude Include="..\Public\imgui_internal.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
-    <ClInclude Include="..\Public\imstb_rectpack.h" />
-    <ClInclude Include="..\Public\imstb_textedit.h" />
-    <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
@@ -210,17 +210,17 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Imgui\imgui.cpp" />
+    <ClCompile Include="..\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\Imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
-    <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\ImGuiMgr.cpp" />
-    <ClCompile Include="..\Private\imgui_demo.cpp" />
-    <ClCompile Include="..\Private\imgui_draw.cpp" />
-    <ClCompile Include="..\Private\imgui_impl_dx11.cpp" />
-    <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\Private\imgui_tables.cpp" />
-    <ClCompile Include="..\Private\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />

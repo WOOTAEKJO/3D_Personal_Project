@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "../Public/imgui.h"
-#include "../Public/imgui_impl_win32.h"
-#include "../Public/imgui_impl_dx11.h"
+#include "../Imgui/imgui.h"
+#include "../Imgui/imgui_impl_win32.h"
+#include "../Imgui/imgui_impl_dx11.h"
 #include "../Public/Terrain_Window.h"
 
 #include "../Public/ImGuiMgr.h"
