@@ -30,7 +30,7 @@ void CTerrain_Window::Tick()
 	tTerrainDemoValue.fSharpness = m_fSharpness;
 	tTerrainDemoValue.bWireFrame = m_bWireFrame;
 
-	CImGuiMgr::GetInstance()->Set_Control_Variable(&tTerrainDemoValue);
+	CImGuiMgr::GetInstance()->Set_Terrain_Variable(&tTerrainDemoValue);
 
 }
 

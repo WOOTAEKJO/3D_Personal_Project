@@ -38,6 +38,7 @@ void CImGui_Window::Begin()
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	ImGui::Begin(pDesc->strName.c_str(), 0, pDesc->window_flags);
+
 }
 
 void CImGui_Window::End()
@@ -51,6 +52,6 @@ void CImGui_Window::Free()
 {
 	__super::Free();
 
-	Safe_Delete(m_pDesc);
+	free(m_pDesc);
 	Safe_Release(m_pGameInstance);
 }

@@ -195,6 +195,11 @@ HRESULT CLoader::Loading_For_Tool_Level()
 		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Mask.bmp"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Terrain_Brush*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Brush"),
+		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Brush.png"), 1))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
 	/* For.Prototype_Component_VIBuffer_DTerrain*/

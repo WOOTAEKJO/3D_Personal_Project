@@ -25,7 +25,7 @@ public:
 
 	}TERRAINDEMOVALUE;
 
-	enum TEXTURE { TYPE_DIFFUSE, TYPE_MASK, TYPE_END };
+	enum TEXTURE { TYPE_DIFFUSE, TYPE_MASK,TYPE_BRUSH, TYPE_END };
 
 private:
 	CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -57,8 +57,12 @@ private:
 	_bool	m_bWireFrame = { false };
 
 private:
+	_float4	m_vMouseWorldPos = {};
+
+private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
+	void	Update_Mouse();
 
 public:
 	static CTerrain_Demo* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

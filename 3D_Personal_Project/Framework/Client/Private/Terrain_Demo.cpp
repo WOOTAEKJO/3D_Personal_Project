@@ -40,14 +40,8 @@ void CTerrain_Demo::Tick(_float fTimeDelta)
 		return;
 
 	CImGuiMgr::GetInstance()->Tick();
-
-	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
-		m_pGameInstance->Update_Mouse();
-		_float3	vMousePos;
-		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
-		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
-	}
-		
+	
+	Update_Mouse();
 }
 
 void CTerrain_Demo::Late_Tick(_float fTimeDelta)
@@ -64,7 +58,7 @@ HRESULT CTerrain_Demo::Render()
 		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(0);
+		m_pShaderCom->Begin(1);
 
 		m_pVIBufferCom->Bind_Buffer();
 
@@ -109,8 +103,6 @@ HRESULT CTerrain_Demo::Create_DynamicBuffer(_uint iVerticesXNum, _uint iVertices
 			return E_FAIL;
 	}
 
-	
-
 	return S_OK;
 }
 
@@ -139,13 +131,22 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
+
 	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 	if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
 		return E_FAIL;
+	if (FAILED(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResource(m_pShaderCom, "g_BrushTexture")))
+		return E_FAIL;
+	
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos", &m_pGameInstance->Get_Camera_Pos(), sizeof(_float4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_bWireFrame", &m_bWireFrame, sizeof(bool))))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vBrushPos", &m_vMouseWorldPos, sizeof(_float4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fBrushRange", &m_fRadius, sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;
@@ -169,7 +170,27 @@ HRESULT CTerrain_Demo::Ready_Component()
 		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
 		return E_FAIL;
 
+	/* For.Com_Brush*/
+	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Brush"),
+		TEXT("Com_Brush"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]))))
+		return E_FAIL;
+
 	return S_OK;
+}
+
+void CTerrain_Demo::Update_Mouse()
+{
+	_float3	vMousePos = {};
+
+	m_pGameInstance->Update_Mouse();
+	m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
+
+	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
+
+		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
+	}
+
+	XMStoreFloat4(&m_vMouseWorldPos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

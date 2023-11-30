@@ -11,6 +11,7 @@
 #include "GameInstance.h"
 
 #include "../Public/Terrain_Window.h"
+#include "Camera_Window.h"
 #include "../Public/ImGui_Window.h"
 
 #include "Terrain_Demo.h"
@@ -63,6 +64,9 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
         TEXT("Prototype_GameObject_Terrain_Demo"), nullptr,reinterpret_cast<CGameObject**>(&m_pTerrain))))
         return E_FAIL;
     Safe_AddRef(m_pTerrain);
+
+   Set_Terrain_Edit();
+   Set_Camera_Edit();
 
 	return S_OK;
 }
@@ -133,7 +137,7 @@ HRESULT CImGuiMgr::Render()
 			{
 			}*/
 
-            Set_Terrain_Edit();
+            M_eCurentMode = MODE_TERRAIN;
 
             ImGui::EndMenu();
 		}
@@ -147,6 +151,8 @@ HRESULT CImGuiMgr::Render()
 		if (ImGui::BeginMenu("Camera"))
 		{
 			
+            M_eCurentMode = MODE_CAMERA;
+
             ImGui::EndMenu();
 		}
 
@@ -189,7 +195,7 @@ HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
     return S_OK;
 }
 
-HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
+HRESULT CImGuiMgr::Set_Terrain_Variable(void* pArg)
 {
     if (m_pTerrain == nullptr)
         return E_FAIL;
@@ -202,7 +208,6 @@ HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
-   
     IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
 
     ImguiMrgWinDesc->strName = "Terrain";
@@ -211,8 +216,18 @@ void CImGuiMgr::Set_Terrain_Edit()
     ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
     m_vecWindow[MODE_TERRAIN].push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
+}
 
-    M_eCurentMode = MODE_TERRAIN;
+void CImGuiMgr::Set_Camera_Edit()
+{
+    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
+
+    ImguiMrgWinDesc->strName = "Camera";
+    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
+
+    m_vecWindow[MODE_CAMERA].push_back(CCamera_Window::Create(ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Free()

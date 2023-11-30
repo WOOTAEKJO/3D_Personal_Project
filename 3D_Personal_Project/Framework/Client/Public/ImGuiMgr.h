@@ -15,7 +15,7 @@ class CImGuiMgr final : public CBase
 {
 	DECLARE_SINGLETON(CImGuiMgr)
 public:
-	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN, MODE_END};
+	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN,MODE_CAMERA, MODE_END};
 private:
 	CImGuiMgr();
 	virtual	~CImGuiMgr() = default;
@@ -27,7 +27,7 @@ public:
 
 public: /* For. Terrain*/
 	HRESULT		Create_HeightMap(_uint iX, _uint iZ);
-	HRESULT		Set_Control_Variable(void* pArg);
+	HRESULT		Set_Terrain_Variable(void* pArg);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };
@@ -44,6 +44,7 @@ private:
 
 private:
 	void		Set_Terrain_Edit();
+	void		Set_Camera_Edit();
 
 public:
 	virtual	void	Free() override;
