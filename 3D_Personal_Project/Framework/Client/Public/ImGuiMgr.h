@@ -15,7 +15,7 @@ class CImGuiMgr final : public CBase
 {
 	DECLARE_SINGLETON(CImGuiMgr)
 public:
-	enum STATE { TERRAIN, STATE_END};
+	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN, MODE_END};
 private:
 	CImGuiMgr();
 	virtual	~CImGuiMgr() = default;
@@ -27,7 +27,6 @@ public:
 
 public: /* For. Terrain*/
 	HRESULT		Create_HeightMap(_uint iX, _uint iZ);
-	HRESULT		Delete_HeightMap();
 	HRESULT		Set_Control_Variable(void* pArg);
 
 private:
@@ -36,10 +35,12 @@ private:
 	CGameInstance*			m_pGameInstance = { nullptr };
 
 private:
-	vector<CImGui_Window*>	m_vecWindow;
+	vector<CImGui_Window*>	m_vecWindow[MODE_END];
+	IMGUIMODE				M_eCurentMode = MODE_STATIC;
 
 private:
 	CTerrain_Demo* m_pTerrain = { nullptr };
+	
 
 private:
 	void		Set_Terrain_Edit();

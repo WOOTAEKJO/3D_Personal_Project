@@ -3,6 +3,8 @@
 
 BEGIN(Engine)
 
+class CTransform;
+
 class CMouse_Manager final : public	CBase
 {
 private:
@@ -10,21 +12,33 @@ private:
 	virtual	~CMouse_Manager() = default;
 
 public:
-	HRESULT	Initialize(HWND hWnd);
+	HRESULT	Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
 	void	Update_Mouse();
 	_bool	Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+	
+	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
 
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
 
 private:
 	HWND	m_hWnd;
+	_uint	m_iWinSize[2] = {};
 
 private:
 	RAY		m_pRay;
 
+private:
+	_bool	m_bFix = { true };
+	_bool	m_bCheck = { true };
+
+private:
+	void	Mouse_Fix();
+	void	Mouse_Move(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
+	void	Mouse_Key();
+
 public:
-	static	CMouse_Manager* Create(HWND hWnd);
+	static	CMouse_Manager* Create(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
 	virtual	void	Free() override;
 };
 

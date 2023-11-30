@@ -38,7 +38,7 @@ HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 		{
 			_uint iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].fPosition = _float3(j, 0.f, i);
+			pVertices[iIndex].fPosition = _float3((_float)j , 0.f, (_float)i );
 			pVertices[iIndex].fTangent = _float3(1.f, 0.f, 0.f);
 			pVertices[iIndex].fBinormal = _float3(0.f, 0.f, 1.f);
 			pVertices[iIndex].fNormal = _float3(0.f, 1.f, 0.f);
@@ -49,8 +49,8 @@ HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 	}
 
 	m_iIndexNum = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;
-	m_iIndexStride = m_iVertexNum >= 65535 ? 4 : 2;
-	m_eIndexForMat = m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
+	m_iIndexStride = 4;//m_iVertexNum >= 65535 ? 4 : 2;
+	m_eIndexForMat = DXGI_FORMAT_R32_UINT;//m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 	_uint* pIndices = new _uint[m_iIndexNum];
@@ -122,6 +122,9 @@ HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 
 void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _float fHeight, _float fSharpness)
 {
+	if (fMousePos.m128_f32[0] < 0)
+		return;
+
 	D3D11_MAPPED_SUBRESOURCE	SubResource;
 	if (FAILED(m_pContext->Map(m_pVB, 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource)))
 		return;
@@ -133,13 +136,13 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 	iBeginIndex.x = (0 > (iPickIndex.x - iRoundIndex)) ? 0 : (iPickIndex.x - iRoundIndex);
 	iBeginIndex.y = (0 > (iPickIndex.y - iRoundIndex)) ? 0 : (iPickIndex.y - iRoundIndex);
 	 
-	iEndIndex.x = m_iNumVerticesX < (iPickIndex.x + iRoundIndex) ? m_iNumVerticesX : (iPickIndex.x + iRoundIndex);
-	iEndIndex.y = m_iNumVerticesZ < (iPickIndex.y + iRoundIndex) ? m_iNumVerticesZ : (iPickIndex.y + iRoundIndex);
+	iEndIndex.x = (_int)m_iNumVerticesX < (iPickIndex.x + iRoundIndex) ? (_int)m_iNumVerticesX : (iPickIndex.x + iRoundIndex);
+	iEndIndex.y = (_int)m_iNumVerticesZ < (iPickIndex.y + iRoundIndex) ? (_int)m_iNumVerticesZ : (iPickIndex.y + iRoundIndex);
 
-	for (_uint i = iBeginIndex.y; i < iEndIndex.y; i++) {
-		for (_uint j = iBeginIndex.x; j < iEndIndex.x; j++) {
+	for (_int i = iBeginIndex.y; i < iEndIndex.y; i++) {
+		for (_int j = iBeginIndex.x; j < iEndIndex.x; j++) {
 
-			_uint iIndex = i * m_iNumVerticesX + j;
+			_int iIndex = i * m_iNumVerticesX + j;
 
 			_float3	vPos = ((VTXTBN*)(SubResource.pData))[iIndex].fPosition;
 			_float fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - fMousePos));
@@ -156,13 +159,13 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 		}
 	}
 
-	for (_uint i = iBeginIndex.y; i < iEndIndex.y; i++) {
-		for (_uint j = iBeginIndex.x; j < iEndIndex.x; j++) {
+	for (_int i = iBeginIndex.y; i < iEndIndex.y; i++) {
+		for (_int j = iBeginIndex.x; j < iEndIndex.x; j++) {
 
-			_uint iIndex = i * m_iNumVerticesX + j;
+			_int iIndex = i * m_iNumVerticesX + j;
 
-			_uint iIndices[4] = {
-				iIndex + m_iNumVerticesX, iIndex + m_iNumVerticesX + 1,
+			_int iIndices[4] = {
+				iIndex + (_int)m_iNumVerticesX, iIndex + (_int)m_iNumVerticesX + 1,
 				iIndex + 1, iIndex
 			};
 
@@ -231,7 +234,7 @@ _bool CVIBuffer_DTerrain::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	for (_uint i = 0; i < (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2; i++) {
 		_uint3 iIndices = m_vecIndexInfo[i];
 
-		_vector vPickPos, vVec1, vVec2, vVec3;
+		_vector  vVec1, vVec2, vVec3;
 
 		vVec1 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iX].fPosition);
 		vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iY].fPosition);

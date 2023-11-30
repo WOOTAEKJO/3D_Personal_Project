@@ -91,6 +91,9 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window">
       <UniqueIdentifier>{796bacf9-694a-4c84-9f29-d13cfcdfb860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window">
+      <UniqueIdentifier>{6a2b4e37-d078-4dcf-b5b1-4f09fafab680}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -126,30 +129,6 @@
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\00. BackGround</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\imconfig.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imgui.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imgui_impl_dx11.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imgui_impl_win32.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imgui_internal.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imstb_rectpack.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imstb_textedit.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\imstb_truetype.h">
-      <Filter>97. ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGuiMgr.h">
       <Filter>96. Manager\00. ImGuiMgr</Filter>
     </ClInclude>
@@ -183,6 +162,33 @@
     <ClInclude Include="..\Public\Terrain_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClInclude>
+    <ClInclude Include="..\Imgui\imconfig.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imgui.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imgui_impl_dx11.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imgui_impl_win32.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imgui_internal.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imstb_rectpack.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imstb_textedit.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\imstb_truetype.h">
+      <Filter>97. ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Camera_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -208,27 +214,6 @@
     </ClCompile>
     <ClCompile Include="..\private\BackGround.cpp">
       <Filter>02.GameObjects\00. BackGround</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_demo.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_draw.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_impl_win32.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_tables.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\imgui_widgets.cpp">
-      <Filter>97. ImGui</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGuiMgr.cpp">
       <Filter>96. Manager\00. ImGuiMgr</Filter>
@@ -263,6 +248,30 @@
     <ClCompile Include="..\Private\Terrain_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClCompile>
+    <ClCompile Include="..\Imgui\imgui.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_demo.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_draw.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_impl_win32.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_tables.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_widgets.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -283,14 +292,14 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsli">
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
-    <None Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsli">
+    </FxCompile>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>94. Shader</Filter>
-    </None>
+    </FxCompile>
   </ItemGroup>
 </Project>

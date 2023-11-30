@@ -20,9 +20,11 @@ namespace Engine
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
 
-#include <DirectXMath.h>
 #include "DirectXTK/SimpleMath.h"
 
+#include "Assimp\scene.h"
+#include "assimp\postprocess.h"
+#include "Assimp\Importer.hpp"
 #include <d3dcompiler.h>
 using namespace DirectX;
 
@@ -56,12 +58,13 @@ using namespace Engine;
 #include <stdlib.h>
 #include <crtdbg.h>
 
-#ifndef DBG_NEW 
+//#ifndef DBG_NEW 
 
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
 #define new DBG_NEW 
-
-#endif
+#else
+#define DBG_NEW new
+//#endif
 
 #endif // _DEBUG
 

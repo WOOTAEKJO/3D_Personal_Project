@@ -1,20 +1,30 @@
 #include "stdafx.h"
-#include "imgui.h"
-#include "imgui_impl_win32.h"
-#include "imgui_impl_dx11.h"
-#include "..\Public\ImGuiMgr.h"
+#include "../Imgui/imgui.h"
+#include "../Imgui/imgui_impl_win32.h"
+#include "../Imgui/imgui_impl_dx11.h"
+
+#include "../Public/ImGuiMgr.h"
 
 #include "commdlg.h"
 #include "shlwapi.h"
 
 #include "GameInstance.h"
 
-#include "Terrain_Window.h"
-#include "ImGui_Window.h"
+#include "../Public/Terrain_Window.h"
+#include "../Public/ImGui_Window.h"
 
 #include "Terrain_Demo.h"
 
 IMPLEMENT_SINGLETON(CImGuiMgr)
+
+typedef struct tagImGuiMGR_Window_Desc
+{
+    string	strName;	// 창 이름
+    ImGuiWindowFlags window_flags;	// 창 옵션
+    ImVec2	vWinSize;	// 창 사이즈
+    ImVec4 vBackGroundColor = ImVec4(1.f, 1.f, 1.f, 1.f);  // 백 창 색
+
+}IMGUIMGRWINDESC;
 
 CImGuiMgr::CImGuiMgr() 
 {
@@ -59,7 +69,7 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tick()
 {
-    for (auto& iter : m_vecWindow) {
+    for (auto& iter : m_vecWindow[M_eCurentMode]) {
         if (iter != nullptr) {
             iter->Tick();
         }
@@ -155,9 +165,10 @@ HRESULT CImGuiMgr::Render()
 		ImGui::EndMainMenuBar();
 	}
 
-    for (size_t i = 0; i < m_vecWindow.size(); i++)
+    for (size_t i = 0; i < m_vecWindow[M_eCurentMode].size(); i++)
     {
-        m_vecWindow[i]->Render();
+        if(m_vecWindow[M_eCurentMode][i] != nullptr)
+            m_vecWindow[M_eCurentMode][i]->Render();
     }
 
     ImGui::Render();
@@ -178,17 +189,6 @@ HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
     return S_OK;
 }
 
-HRESULT CImGuiMgr::Delete_HeightMap()
-{
-    if (m_pTerrain == nullptr)
-        return E_FAIL;
-
-    if (FAILED(m_pTerrain->Delete_DynamicBuffer()))
-        return E_FAIL;
-
-    return S_OK;
-}
-
 HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 {
     if (m_pTerrain == nullptr)
@@ -202,23 +202,29 @@ HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
-    CTerrain_Window::IMGUIWINDESC ImGuiWinDesc;
+   
+    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
 
-    ImGuiWinDesc.strName = "Terrain";
-    ImGuiWinDesc.window_flags = ImGuiWindowFlags_HorizontalScrollbar
+    ImguiMrgWinDesc->strName = "Terrain";
+    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImGuiWinDesc.vWinSize = ImVec2(300, 500);
+    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
-    m_vecWindow.push_back(CTerrain_Window::Create(&ImGuiWinDesc));
+    m_vecWindow[MODE_TERRAIN].push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
+
+    M_eCurentMode = MODE_TERRAIN;
 }
 
 void CImGuiMgr::Free()
 {
     Safe_Release(m_pTerrain);
 
-    for (auto& iter : m_vecWindow)
-        Safe_Release(iter);
-    m_vecWindow.clear();
+    for (_uint i = 0; i < MODE_END; i++) {
+        for (auto& iter : m_vecWindow[i]) {
+            Safe_Release(iter);
+        }
+        m_vecWindow[i].clear();
+    }
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

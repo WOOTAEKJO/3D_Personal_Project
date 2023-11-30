@@ -11,6 +11,12 @@ CShader::CShader(const CShader& rhs)
 	m_Technique(rhs.m_Technique),
 	m_vecInputLayout(rhs.m_vecInputLayout)
 {
+	for (_uint i = 0; i < RS_END; i++)
+	{
+		m_pFrame[i] = rhs.m_pFrame[i];
+		Safe_AddRef(m_pFrame[i]);
+	}
+
 	for (auto& iter : m_vecInputLayout)
 		Safe_AddRef(iter);
 
@@ -60,6 +66,9 @@ HRESULT CShader::Initialize_ProtoType(const wstring& strShaderFilePath, const D3
 
 		m_vecInputLayout.push_back(pInputLayout);
 	} // pass들의 정보들을 받아와서 Inputlayout객체를 생성해 벡터에 저장
+
+	if (FAILED(Ready_RenderState()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -149,6 +158,38 @@ HRESULT CShader::Bind_SRVS(const _char* pTextureName, ID3D11ShaderResourceView**
 	return S_OK;
 }
 
+HRESULT CShader::Bind_RawValue(const _char* pValueName, const void* pData, _uint iSize)
+{
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pValueName);
+	if (pVariable == nullptr)
+		return E_FAIL;
+
+	pVariable->SetRawValue(pData, 0, iSize);
+
+	return S_OK;
+}
+
+HRESULT CShader::Set_RenderState(RENDERSTATE eType)
+{
+	m_pContext->RSSetState(m_pFrame[eType]);
+
+	return S_OK;
+}
+
+HRESULT CShader::Ready_RenderState()
+{
+	D3D11_RASTERIZER_DESC RasterRizerDesc;
+	ZeroMemory(&RasterRizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+	RasterRizerDesc.FillMode = D3D11_FILL_WIREFRAME;
+	RasterRizerDesc.CullMode = D3D11_CULL_NONE;
+	m_pDevice->CreateRasterizerState(&RasterRizerDesc, &m_pFrame[RS_WIREFRAME]);
+
+	ZeroMemory(&RasterRizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+	m_pDevice->CreateRasterizerState(&RasterRizerDesc, &m_pFrame[RS_SOLID]);
+
+	return S_OK;
+}
+
 CShader* CShader::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strShaderFilePath, const D3D11_INPUT_ELEMENT_DESC* pElement, const _uint& iElementNum)
 {
 	CShader* pInstance = new CShader(pDevice, pContext);
@@ -179,6 +220,11 @@ CComponent* CShader::Clone(void* pArg)
 void CShader::Free()
 {
 	__super::Free();
+
+	for (_uint i = 0; i < RS_END; i++)
+	{
+		Safe_Release(m_pFrame[i]);
+	}
 
 	for (auto& iter : m_vecInputLayout)
 		Safe_Release(iter);
