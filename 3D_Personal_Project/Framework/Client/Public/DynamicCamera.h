@@ -29,7 +29,6 @@ private:
 	_float m_fMouseSensitivity = { 0.f };
 
 private:
-	void	Mouse_Move(_float fTimeDelta);
 	void	Key_Input(_float fTimeDelta);
 	
 

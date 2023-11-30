@@ -70,7 +70,7 @@ public: /* For.Component_Manager*/
 public: /* For.Mouse_Manager*/
 	void	Update_Mouse();
 	_bool	Intersect(_float3 * pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
-	void	Mouse_Fix();
+	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform * pTransCom);
 
 public: /* For.PipeLine*/
 	void	Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix);

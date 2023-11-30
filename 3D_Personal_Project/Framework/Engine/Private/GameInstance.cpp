@@ -300,12 +300,12 @@ _bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvect
 	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
 }
 
-void CGameInstance::Mouse_Fix()
+void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)
 {
 	if (nullptr == m_pMouse_Manager)
 		return;
 
-	m_pMouse_Manager->Mouse_Fix();
+	m_pMouse_Manager->Free_Mouse(fTimeDelta, fMouseSensitivity, pTransCom);
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix)

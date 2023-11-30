@@ -91,6 +91,9 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window">
       <UniqueIdentifier>{796bacf9-694a-4c84-9f29-d13cfcdfb860}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window">
+      <UniqueIdentifier>{6a2b4e37-d078-4dcf-b5b1-4f09fafab680}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="..\Imgui\imstb_truetype.h">
       <Filter>97. ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -262,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\imgui_widgets.cpp">
       <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

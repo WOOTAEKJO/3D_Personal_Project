@@ -27,7 +27,6 @@ public:
 
 public: /* For. Terrain*/
 	HRESULT		Create_HeightMap(_uint iX, _uint iZ);
-	HRESULT		Delete_HeightMap();
 	HRESULT		Set_Control_Variable(void* pArg);
 
 private:

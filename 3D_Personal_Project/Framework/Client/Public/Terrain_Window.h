@@ -16,7 +16,9 @@ public:
 
 private:
 	_int	m_iVertices_Size[2] = {3,3};
-	_int	m_iHeight_Control[3] = {};
+	_int	m_iHeight_Control[2] = {};
+	_float	m_fSharpness = { 0.f };
+	_bool	m_bWireFrame = false;
 
 private:
 	void	HeightMap();

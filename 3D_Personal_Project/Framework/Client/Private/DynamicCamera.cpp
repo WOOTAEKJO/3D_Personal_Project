@@ -40,30 +40,13 @@ void CDynamicCamera::Tick(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 	
-	Mouse_Move(fTimeDelta);
-	//m_pGameInstance->Mouse_Fix();
+	m_pGameInstance->Free_Mouse(fTimeDelta,m_fMouseSensitivity,m_pTransformCom);
 
 	__super::Tick(fTimeDelta);
 }
 
 void CDynamicCamera::Late_Tick(_float fTimeDelta)
 {
-}
-
-void CDynamicCamera::Mouse_Move(_float fTimeDelta)
-{
-	_long MouseMove = 0;
-
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fMouseSensitivity * MouseMove * fTimeDelta);
-	}
-
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
-	{
-		m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE::STATE_RIGHT),
-			m_fMouseSensitivity * MouseMove * fTimeDelta);
-	}
 }
 
 void CDynamicCamera::Key_Input(_float fTimeDelta)

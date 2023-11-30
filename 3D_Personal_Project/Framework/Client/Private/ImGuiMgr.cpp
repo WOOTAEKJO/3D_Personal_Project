@@ -189,17 +189,6 @@ HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
     return S_OK;
 }
 
-HRESULT CImGuiMgr::Delete_HeightMap()
-{
-    if (m_pTerrain == nullptr)
-        return E_FAIL;
-
-    if (FAILED(m_pTerrain->Delete_DynamicBuffer()))
-        return E_FAIL;
-
-    return S_OK;
-}
-
 HRESULT CImGuiMgr::Set_Control_Variable(void* pArg)
 {
     if (m_pTerrain == nullptr)
