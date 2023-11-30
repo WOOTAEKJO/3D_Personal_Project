@@ -69,7 +69,7 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tick()
 {
-    for (auto& iter : m_vecWindow) {
+    for (auto& iter : m_vecWindow[M_eCurentMode]) {
         if (iter != nullptr) {
             iter->Tick();
         }
@@ -165,9 +165,10 @@ HRESULT CImGuiMgr::Render()
 		ImGui::EndMainMenuBar();
 	}
 
-    for (size_t i = 0; i < m_vecWindow.size(); i++)
+    for (size_t i = 0; i < m_vecWindow[M_eCurentMode].size(); i++)
     {
-        m_vecWindow[i]->Render();
+        if(m_vecWindow[M_eCurentMode][i] != nullptr)
+            m_vecWindow[M_eCurentMode][i]->Render();
     }
 
     ImGui::Render();
@@ -220,16 +221,21 @@ void CImGuiMgr::Set_Terrain_Edit()
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
     ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
-    m_vecWindow.push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
+    m_vecWindow[MODE_TERRAIN].push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
+
+    M_eCurentMode = MODE_TERRAIN;
 }
 
 void CImGuiMgr::Free()
 {
     Safe_Release(m_pTerrain);
 
-    for (auto& iter : m_vecWindow)
-        Safe_Release(iter);
-    m_vecWindow.clear();
+    for (_uint i = 0; i < MODE_END; i++) {
+        for (auto& iter : m_vecWindow[i]) {
+            Safe_Release(iter);
+        }
+        m_vecWindow[i].clear();
+    }
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
