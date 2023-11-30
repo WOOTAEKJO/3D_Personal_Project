@@ -154,6 +154,12 @@
     <Filter Include="01.Utility\04. PipeLine">
       <UniqueIdentifier>{fcbb9cb1-6a03-447f-ba82-4d9ff8a4c3bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\04. Model">
+      <UniqueIdentifier>{ad065f11-0788-4920-bcec-01a1d918a26a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\04. Model\00.Mesh">
+      <UniqueIdentifier>{0ebad599-62d4-402d-99e2-68f9f2c01238}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -303,6 +309,12 @@
     <ClInclude Include="..\Public\Input_Device.h">
       <Filter>00.System\00.Device\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Model.h">
+      <Filter>01.Utility\03. Component\04. Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mesh.h">
+      <Filter>01.Utility\03. Component\04. Model\00.Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -433,6 +445,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Input_Device.cpp">
       <Filter>00.System\00.Device\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model.cpp">
+      <Filter>01.Utility\03. Component\04. Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mesh.cpp">
+      <Filter>01.Utility\03. Component\04. Model\00.Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

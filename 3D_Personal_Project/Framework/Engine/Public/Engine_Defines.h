@@ -20,9 +20,11 @@ namespace Engine
 #include "DirectXTK\DDSTextureLoader.h"
 #include "DirectXTK\WICTextureLoader.h"
 
-#include <DirectXMath.h>
 #include "DirectXTK/SimpleMath.h"
 
+#include "Assimp\scene.h"
+#include "assimp\postprocess.h"
+#include "Assimp\Importer.hpp"
 #include <d3dcompiler.h>
 using namespace DirectX;
 
