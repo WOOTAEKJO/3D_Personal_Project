@@ -5,12 +5,12 @@
 #include "../Public/ImGuiMgr.h"
 
 CTerrain_Demo::CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice, pContext)
+	:CDemo(pDevice, pContext)
 {
 }
 
 CTerrain_Demo::CTerrain_Demo(const CTerrain_Demo& rhs)
-	: CGameObject(rhs)
+	: CDemo(rhs)
 {
 }
 
@@ -185,12 +185,20 @@ void CTerrain_Demo::Update_Mouse()
 	m_pGameInstance->Update_Mouse();
 	m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
 
+	if (vMousePos.x == 0)
+		return;
+
 	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
 
 		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
 	}
 
 	XMStoreFloat4(&m_vMouseWorldPos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+}
+
+HRESULT CTerrain_Demo::Create_Mark()
+{
+	return E_NOTIMPL;
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

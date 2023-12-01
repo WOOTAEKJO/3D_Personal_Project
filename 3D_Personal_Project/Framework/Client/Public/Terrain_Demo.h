@@ -1,18 +1,15 @@
 #pragma once
-#include "Client_Defines.h"
-#include "GameObject.h"
+#include "Demo.h"
 
 BEGIN(Engine)
 
 class CVIBuffer_DTerrain;
-class CShader;
-class CTexture;
 
 END
 
 BEGIN(Client)
 
-class CTerrain_Demo final : public CGameObject
+class CTerrain_Demo final : public CDemo
 {
 public:
 	typedef struct tagTerrainDemoValue
@@ -63,6 +60,7 @@ private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
 	void	Update_Mouse();
+	HRESULT	Create_Mark();
 
 public:
 	static CTerrain_Demo* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

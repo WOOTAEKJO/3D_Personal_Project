@@ -13,8 +13,9 @@ private:
 	virtual	~CModel() = default;
 
 public:
-	virtual	HRESULT	Initialize_ProtoType(const string & strModelFilePath);
+	virtual	HRESULT	Initialize_ProtoType(const string & strModelFilePath, _fmatrix	matPivot);
 	virtual	HRESULT	Initialize(void* pArg);
+	virtual	HRESULT	Render();
 
 private:
 	const aiScene*		m_pAiScene = { nullptr };
@@ -25,10 +26,10 @@ private:
 	vector<CMesh*>	m_vecMesh;
 
 private:
-	HRESULT	Ready_Meshes();
+	HRESULT	Ready_Meshes(_fmatrix	matPivot);
 
 public:
-	static	CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const string& strModelFilePath);
+	static	CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const string& strModelFilePath, _fmatrix	matPivot);
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	void	Free() override;
 };

@@ -37,8 +37,6 @@ private:
 	// pass를 이용해서 만든 InputLayout들을 보관할 벡터
 
 private:
-	ID3D11RasterizerState* m_pWireFrame = { nullptr };
-	ID3D11RasterizerState* m_pSolidFrame = { nullptr };
 	ID3D11RasterizerState* m_pFrame[RS_END];
 
 private:

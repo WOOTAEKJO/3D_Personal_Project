@@ -22,6 +22,7 @@ private:
 
 private:
 	void	HeightMap();
+	void	ObjectMesh();
 
 public:
 	static	CTerrain_Window* Create(void* pArg);

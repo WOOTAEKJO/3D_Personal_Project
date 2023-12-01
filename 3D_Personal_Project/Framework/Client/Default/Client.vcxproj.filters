@@ -94,6 +94,9 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window">
       <UniqueIdentifier>{6a2b4e37-d078-4dcf-b5b1-4f09fafab680}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98. Demo\01. ObjectMesh">
+      <UniqueIdentifier>{0b9b1f49-8951-4384-b03d-7d2f4c08e2d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -189,6 +192,12 @@
     <ClInclude Include="..\Public\Camera_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ObjectMesh_Demo.h">
+      <Filter>02.GameObjects\98. Demo\01. ObjectMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Demo.h">
+      <Filter>02.GameObjects\98. Demo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -271,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ObjectMesh_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\01. ObjectMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Demo.cpp">
+      <Filter>02.GameObjects\98. Demo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

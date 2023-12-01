@@ -52,6 +52,13 @@ HRESULT CTerrain_Window::Render()
 
 		if (ImGui::BeginTabItem("ObjectMesh"))
 		{
+			ObjectMesh();
+
+			ImGui::EndTabItem();
+		}
+
+		if (ImGui::BeginTabItem("Tile"))
+		{
 
 
 			ImGui::EndTabItem();
@@ -84,6 +91,10 @@ void CTerrain_Window::HeightMap()
 	ImGui::SliderFloat("Sharpness", &m_fSharpness, 0.f, 1.f);
 
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
+}
+
+void CTerrain_Window::ObjectMesh()
+{
 }
 
 CTerrain_Window* CTerrain_Window::Create(void* pArg)
