@@ -18,6 +18,14 @@ public:
 	
 	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
 
+	_float4	Get_WorldMouse_Float4() {
+		return m_vWorldMouse;
+	}
+
+	_vector	Get_WorldMouse_Vector() {
+		return XMLoadFloat4(&m_vWorldMouse);
+	}
+
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
 
@@ -31,6 +39,9 @@ private:
 private:
 	_bool	m_bFix = { true };
 	_bool	m_bCheck = { true };
+
+private:
+	_float4	m_vWorldMouse = {};
 
 private:
 	void	Mouse_Fix();

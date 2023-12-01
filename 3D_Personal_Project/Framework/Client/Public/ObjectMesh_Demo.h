@@ -11,6 +11,12 @@ BEGIN(Client)
 
 class CObjectMesh_Demo final : public CDemo
 {
+public:
+	typedef struct tagObjectMeshDemoValue
+	{
+		_float4 vPos;
+
+	}OBDEMOVALUE;
 private:
 	CObjectMesh_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CObjectMesh_Demo(const CObjectMesh_Demo& rhs);
@@ -28,6 +34,9 @@ public:
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
+
+private:
+	_float4		m_vObjectPos = {};
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

@@ -97,6 +97,9 @@
     <Filter Include="02.GameObjects\98. Demo\01. ObjectMesh">
       <UniqueIdentifier>{0b9b1f49-8951-4384-b03d-7d2f4c08e2d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98. Demo\00. Terrain\00. Mark">
+      <UniqueIdentifier>{ff21d118-ed70-4458-8d6c-59a4737110af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -198,6 +201,9 @@
     <ClInclude Include="..\Public\Demo.h">
       <Filter>02.GameObjects\98. Demo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Mark.h">
+      <Filter>02.GameObjects\98. Demo\00. Terrain\00. Mark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -286,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Demo.cpp">
       <Filter>02.GameObjects\98. Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mark.cpp">
+      <Filter>02.GameObjects\98. Demo\00. Terrain\00. Mark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

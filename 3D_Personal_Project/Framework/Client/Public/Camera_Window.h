@@ -13,7 +13,7 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 	virtual	void	Tick() override;
 	virtual	HRESULT	Render() override;
-
+	virtual	void	Set_Variable(void* pArg);
 private:
 
 public:

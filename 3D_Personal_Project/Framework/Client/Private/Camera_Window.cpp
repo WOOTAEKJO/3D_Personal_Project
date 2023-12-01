@@ -33,6 +33,10 @@ HRESULT CCamera_Window::Render()
 	return S_OK;
 }
 
+void CCamera_Window::Set_Variable(void* pArg)
+{
+}
+
 CCamera_Window* CCamera_Window::Create(void* pArg)
 {
 	CCamera_Window* pInstance = new CCamera_Window();

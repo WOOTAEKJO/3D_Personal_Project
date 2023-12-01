@@ -6,6 +6,7 @@
 
 #include "BackGround.h"
 #include "Terrain.h"
+#include "Mark.h"
 #include "DynamicCamera.h"
 #include "GameObject_Test.h"
 #include "ObjectMesh_Demo.h"
@@ -226,6 +227,19 @@ HRESULT CLoader::Loading_For_Tool_Level()
 		CVIBuffer_DTerrain::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_VIBuffer_Cube*/
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	_matrix	matPivot;
+
+	/* For.Prototype_Component_Model_PineTree*/
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Model_PineTree"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/PineTree/PineTree.fbx", matPivot))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
 	/* For.Prototype_Component_Shader_VTXTBN*/
@@ -242,6 +256,14 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	/* For.Prototype_GameObject_DynamicCamera*/
 	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ObjectMesh_Demo*/
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_ObjectMesh_Demo"), CObjectMesh_Demo::Create(m_pDevice, m_pContext))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GameObject_Mark*/
+	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_GameObject_Mark"), CMark::Create(m_pDevice, m_pContext))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

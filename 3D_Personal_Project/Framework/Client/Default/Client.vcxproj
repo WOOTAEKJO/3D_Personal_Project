@@ -200,6 +200,7 @@
     <ClInclude Include="..\Public\Level_Tool.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
+    <ClInclude Include="..\Public\Mark.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="..\Private\Level_Tool.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
+    <ClCompile Include="..\Private\Mark.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />

@@ -60,10 +60,8 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
-    if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL,TEXT("BackGround"),
-        TEXT("Prototype_GameObject_Terrain_Demo"), nullptr,reinterpret_cast<CGameObject**>(&m_pTerrain))))
+    if(FAILED(Ready_Demo()))
         return E_FAIL;
-    Safe_AddRef(m_pTerrain);
 
    Set_Terrain_Edit();
    Set_Camera_Edit();
@@ -184,12 +182,34 @@ HRESULT CImGuiMgr::Render()
     return S_OK;
 }
 
+HRESULT CImGuiMgr::Add_Demo(const string& strDemoTag, CDemo* pDemo)
+{
+    if (pDemo == nullptr)
+        return E_FAIL;
+
+    CDemo* pDDemo = Find_Demo(strDemoTag);
+
+    if (pDDemo != nullptr)
+        return E_FAIL;
+
+    m_mapDemo.emplace(strDemoTag, pDemo);
+
+    return S_OK;
+}
+
+void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, void* pArg)
+{
+    if (m_vecWindow[eType].empty())
+        return;
+    m_vecWindow[eType][0]->Set_Variable(pArg);
+}
+
 HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
 {
     if (m_pTerrain == nullptr)
         return E_FAIL;
 
-    if (FAILED(m_pTerrain->Create_DynamicBuffer(iX, iZ)))
+    if (FAILED((m_pTerrain->Create_DynamicBuffer(iX, iZ))))
         return E_FAIL;
 
     return S_OK;
@@ -204,6 +224,14 @@ HRESULT CImGuiMgr::Set_Terrain_Variable(void* pArg)
         return E_FAIL;
 
     return S_OK;
+}
+
+_float4 CImGuiMgr::Get_PickingMousePoint()
+{
+    if (m_pTerrain == nullptr)
+        return _float4();
+
+    return m_pTerrain->Get_MousePoint();
 }
 
 void CImGuiMgr::Set_Terrain_Edit()
@@ -230,9 +258,32 @@ void CImGuiMgr::Set_Camera_Edit()
     m_vecWindow[MODE_CAMERA].push_back(CCamera_Window::Create(ImguiMrgWinDesc));
 }
 
+HRESULT CImGuiMgr::Ready_Demo()
+{
+    if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"),
+        TEXT("Prototype_GameObject_Terrain_Demo"), nullptr, reinterpret_cast<CGameObject**>(&m_pTerrain))))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+CDemo* CImGuiMgr::Find_Demo(const string& strDemoTag)
+{
+    auto& iter = m_mapDemo.find(strDemoTag);
+
+    if(iter == m_mapDemo.end())
+        return nullptr;
+
+    return iter->second;
+}
+
 void CImGuiMgr::Free()
 {
     Safe_Release(m_pTerrain);
+
+    for (auto& iter : m_mapDemo)
+        Safe_Release(iter.second);
+    m_mapDemo.clear();
 
     for (_uint i = 0; i < MODE_END; i++) {
         for (auto& iter : m_vecWindow[i]) {

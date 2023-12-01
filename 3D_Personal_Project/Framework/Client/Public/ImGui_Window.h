@@ -23,6 +23,9 @@ public:
 	virtual	void	Tick() = 0;
 	virtual	HRESULT	Render() = 0;
 
+public:
+	virtual	void	Set_Variable(void* pArg) = 0;
+
 protected:
 	CGameInstance*	m_pGameInstance = { nullptr };
 

@@ -32,7 +32,11 @@ void CMouse_Manager::Update_Mouse()
 	XMStoreFloat3(&m_pRay.vOrigin, XMVector3TransformCoord(XMVectorSet(0.f, 0.f, 0.f, 1.f), XMMatrixInverse(nullptr, matView)));
 	XMStoreFloat3(&m_pRay.vDir, XMVector3Normalize(XMVector3TransformNormal(XMVector3TransformCoord(XMLoadFloat3(&vCursor), XMMatrixInverse(nullptr, matProj)),
 		XMMatrixInverse(nullptr, matView))));
-	m_pRay.fLength = 0.f;
+
+	XMStoreFloat3(&vCursor, XMVector3TransformCoord(XMVector3TransformCoord(XMLoadFloat3(&vCursor), XMMatrixInverse(nullptr, matProj)),
+		XMMatrixInverse(nullptr, matView)));
+	
+	m_vWorldMouse = _float4(vCursor.x, vCursor.y, vCursor.z, 1.f);
 }
 
 _bool CMouse_Manager::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)

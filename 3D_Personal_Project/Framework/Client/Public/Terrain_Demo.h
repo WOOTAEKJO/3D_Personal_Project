@@ -9,6 +9,8 @@ END
 
 BEGIN(Client)
 
+class CMark;
+
 class CTerrain_Demo final : public CDemo
 {
 public:
@@ -39,11 +41,15 @@ public:
 public:
 	HRESULT	Create_DynamicBuffer(_uint iVerticesXNum = 3, _uint iVerticesZNum = 3);
 	HRESULT	Set_Control_Variable(void* pArg);
+	_float4	Get_MousePoint() { return m_vMouseWorldPos; }
 
 private:
 	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom[TYPE_END] = { nullptr };
+
+private:
+	CMark*		m_pMark = { nullptr };
 
 private:
 	_float	m_fHeight = { 0.f };
@@ -55,6 +61,7 @@ private:
 
 private:
 	_float4	m_vMouseWorldPos = {};
+	_bool	m_bPicked = false;
 
 private:
 	HRESULT	Bind_ShaderResources();

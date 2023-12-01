@@ -8,6 +8,7 @@
 
 #include "GameInstance.h"
 #include "Terrain_Demo.h"
+#include "ObjectMesh_Demo.h"
 
 CTerrain_Window::CTerrain_Window()
 {
@@ -23,15 +24,8 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 void CTerrain_Window::Tick()
 {
-	CTerrain_Demo::TERRAINDEMOVALUE tTerrainDemoValue;
-
-	tTerrainDemoValue.fRadius = (_float)m_iHeight_Control[0];
-	tTerrainDemoValue.fHeight = (_float)m_iHeight_Control[1];
-	tTerrainDemoValue.fSharpness = m_fSharpness;
-	tTerrainDemoValue.bWireFrame = m_bWireFrame;
-
-	CImGuiMgr::GetInstance()->Set_Terrain_Variable(&tTerrainDemoValue);
-
+	Terrain_Update();
+	ObjectMesh_Update();
 }
 
 HRESULT CTerrain_Window::Render()
@@ -72,6 +66,17 @@ HRESULT CTerrain_Window::Render()
 	return S_OK;
 }
 
+void CTerrain_Window::Set_Variable(void* pArg)
+{
+	if (pArg == nullptr)
+		return;
+
+	TERRAINWINDOWDESC* TerrainWindowDesc = (TERRAINWINDOWDESC*)pArg;
+
+	m_vPickPos = TerrainWindowDesc->vPickPos;
+	m_bPicked = TerrainWindowDesc->bPicked;
+}
+
 void CTerrain_Window::HeightMap()
 {
 	ImGui::InputInt2("Vertices_SizeX,Z", m_iVertices_Size);
@@ -95,6 +100,39 @@ void CTerrain_Window::HeightMap()
 
 void CTerrain_Window::ObjectMesh()
 {
+	if (m_bPicked) {
+	
+		CObjectMesh_Demo* pObject = nullptr;
+	
+		CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
+	
+		ObjectDemoValue.vPos = m_vPickPos;//CImGuiMgr::GetInstance()->Get_PickingMousePoint();
+	
+		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"),
+			TEXT("Prototype_GameObject_ObjectMesh_Demo"), &ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject))))
+			return;
+	
+		CImGuiMgr::GetInstance()->Add_Demo("Test", pObject);
+	}
+	m_bPicked = false;
+	
+}
+
+void CTerrain_Window::Terrain_Update()
+{
+	CTerrain_Demo::TERRAINDEMOVALUE tTerrainDemoValue;
+
+	tTerrainDemoValue.fRadius = (_float)m_iHeight_Control[0];
+	tTerrainDemoValue.fHeight = (_float)m_iHeight_Control[1];
+	tTerrainDemoValue.fSharpness = m_fSharpness;
+	tTerrainDemoValue.bWireFrame = m_bWireFrame;
+
+	CImGuiMgr::GetInstance()->Set_Terrain_Variable(&tTerrainDemoValue);
+}
+
+void CTerrain_Window::ObjectMesh_Update()
+{
+	
 }
 
 CTerrain_Window* CTerrain_Window::Create(void* pArg)

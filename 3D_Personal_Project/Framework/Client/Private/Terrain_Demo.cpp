@@ -4,6 +4,8 @@
 
 #include "../Public/ImGuiMgr.h"
 
+#include "Terrain_Window.h"
+
 CTerrain_Demo::CTerrain_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CDemo(pDevice, pContext)
 {
@@ -42,12 +44,19 @@ void CTerrain_Demo::Tick(_float fTimeDelta)
 	CImGuiMgr::GetInstance()->Tick();
 	
 	Update_Mouse();
+
+	CTerrain_Window::TERRAINWINDOWDESC TerrainWindowDesc;
+	TerrainWindowDesc.bPicked = m_bPicked;
+	TerrainWindowDesc.vPickPos = m_vMouseWorldPos;
+	CImGuiMgr::GetInstance()->Window_Set_Variable(CImGuiMgr::MODE_TERRAIN, &TerrainWindowDesc);
 }
 
 void CTerrain_Demo::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	m_bPicked = false;
 }
 
 HRESULT CTerrain_Demo::Render()
@@ -190,7 +199,9 @@ void CTerrain_Demo::Update_Mouse()
 
 	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
 
-		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
+		//m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
+		//Create_Mark();
+		m_bPicked = true;
 	}
 
 	XMStoreFloat4(&m_vMouseWorldPos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
@@ -198,7 +209,16 @@ void CTerrain_Demo::Update_Mouse()
 
 HRESULT CTerrain_Demo::Create_Mark()
 {
-	return E_NOTIMPL;
+	if (m_pMark == nullptr) {
+		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), TEXT("Prototype_GameObject_GameObject_Mark"),
+			nullptr, reinterpret_cast<CGameObject**>(&m_pMark))))
+			return E_FAIL;
+	}
+	else {
+
+	}
+
+	return S_OK;
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -237,4 +257,5 @@ void CTerrain_Demo::Free()
 	}
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pMark);
 }

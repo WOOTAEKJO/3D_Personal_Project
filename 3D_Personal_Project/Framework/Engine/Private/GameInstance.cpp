@@ -308,6 +308,22 @@ void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTra
 	m_pMouse_Manager->Free_Mouse(fTimeDelta, fMouseSensitivity, pTransCom);
 }
 
+_float4 CGameInstance::Get_WorldMouse_Float4()
+{
+	if (nullptr == m_pMouse_Manager)
+		return _float4();
+
+	return m_pMouse_Manager->Get_WorldMouse_Float4();
+}
+
+_vector CGameInstance::Get_WorldMouse_Vector()
+{
+	if (nullptr == m_pMouse_Manager)
+		return _vector();
+
+	return m_pMouse_Manager->Get_WorldMouse_Vector();
+}
+
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix)
 {
 	if (nullptr == m_pPipeLine)

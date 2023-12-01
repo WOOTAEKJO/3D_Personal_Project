@@ -20,11 +20,18 @@ HRESULT CObjectMesh_Demo::Initialize_Prototype()
 
 HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 {
+	
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-
+	
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
+	
+	if (pArg != nullptr) {
+		OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+		
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
+	}
 
 	return S_OK;
 }
@@ -35,6 +42,7 @@ void CObjectMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CObjectMesh_Demo::Tick(_float fTimeDelta)
 {
+	
 }
 
 void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
@@ -57,6 +65,13 @@ HRESULT CObjectMesh_Demo::Render()
 
 HRESULT CObjectMesh_Demo::Set_Control_Variable(void* pArg)
 {
+	if (pArg == nullptr)
+		return E_FAIL;
+
+	OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+
+	m_vObjectPos = ObjectDemoValue->vPos;
+
 	return S_OK;
 }
 
@@ -90,7 +105,7 @@ HRESULT CObjectMesh_Demo::Ready_Component()
 	//	return E_FAIL;
 
 	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
+	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
@@ -100,7 +115,7 @@ HRESULT CObjectMesh_Demo::Ready_Component()
 	//	return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PineTree"),
+	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Model_PineTree"),
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

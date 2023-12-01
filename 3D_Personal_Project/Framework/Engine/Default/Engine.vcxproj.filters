@@ -160,6 +160,9 @@
     <Filter Include="01.Utility\03. Component\04. Model\00.Mesh">
       <UniqueIdentifier>{0ebad599-62d4-402d-99e2-68f9f2c01238}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube">
+      <UniqueIdentifier>{975346e3-a36e-4375-a496-f52f28ad3eb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -315,6 +318,9 @@
     <ClInclude Include="..\Public\Mesh.h">
       <Filter>01.Utility\03. Component\04. Model\00.Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cube.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -451,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mesh.cpp">
       <Filter>01.Utility\03. Component\04. Model\00.Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
