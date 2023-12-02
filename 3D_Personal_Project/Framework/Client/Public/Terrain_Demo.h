@@ -17,9 +17,6 @@ public:
 	typedef struct tagTerrainDemoValue
 	{
 		_float	fRadius;
-		_float	fHeight;
-		_float	fSharpness;
-
 		_bool	bWireFrame;
 
 	}TERRAINDEMOVALUE;
@@ -41,7 +38,8 @@ public:
 public:
 	HRESULT	Create_DynamicBuffer(_uint iVerticesXNum = 3, _uint iVerticesZNum = 3);
 	HRESULT	Set_Control_Variable(void* pArg);
-	_float4	Get_MousePoint() { return m_vMouseWorldPos; }
+	_bool	Update_Mouse(_float4* fPickPoint);
+	void	Update_HeightMap(_fvector vPickPos, _float fRadius, _float fHeight, _float fSharpness);
 
 private:
 	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
@@ -49,26 +47,16 @@ private:
 	CTexture* m_pTextureCom[TYPE_END] = { nullptr };
 
 private:
-	CMark*		m_pMark = { nullptr };
-
-private:
-	_float	m_fHeight = { 0.f };
-	_float	m_fRadius = { 0.f };
-	_float	m_fSharpness = { 0.f };
-
-private:
 	_bool	m_bWireFrame = { false };
 
 private:
 	_float4	m_vMouseWorldPos = {};
-	_bool	m_bPicked = false;
-
+	_float	m_fRadius = { 0.f };
+	
 private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
-	void	Update_Mouse();
-	HRESULT	Create_Mark();
-
+	
 public:
 	static CTerrain_Demo* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
 	virtual	CGameObject* Clone(void* pArg) override;

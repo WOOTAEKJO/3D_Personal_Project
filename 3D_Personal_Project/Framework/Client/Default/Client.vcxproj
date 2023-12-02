@@ -202,6 +202,7 @@
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Mark.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
+    <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
     <ClInclude Include="..\Public\Terrain_Window.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Mark.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
+    <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain_Window.cpp" />

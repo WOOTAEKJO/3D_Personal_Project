@@ -10,9 +10,10 @@
 
 #include "GameInstance.h"
 
-#include "../Public/Terrain_Window.h"
+#include "Terrain_Window.h"
 #include "Camera_Window.h"
-#include "../Public/ImGui_Window.h"
+#include "Object_Window.h"
+
 
 #include "Terrain_Demo.h"
 
@@ -64,6 +65,7 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
         return E_FAIL;
 
    Set_Terrain_Edit();
+   Set_Object_Edit();
    Set_Camera_Edit();
 
 	return S_OK;
@@ -71,9 +73,11 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tick()
 {
-    for (auto& iter : m_vecWindow[M_eCurentMode]) {
-        if (iter != nullptr) {
-            iter->Tick();
+    Update_Pick();
+
+    for (auto& iter : m_mapWindow[M_eCurentMode]) {
+        if (iter.second != nullptr) {
+            iter.second->Tick();
         }
     }
 }
@@ -129,39 +133,44 @@ HRESULT CImGuiMgr::Render()
 
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("Terrain"))
+		
+		if (ImGui::BeginMenu("File"))
 		{
-			/*if (ImGui::MenuItem("Save"))
-			{
-			}*/
+            if (ImGui::MenuItem("Save"))
+            {
+            }
 
-            M_eCurentMode = MODE_TERRAIN;
+            if (ImGui::MenuItem("Load"))
+            {
+            }
 
             ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Object"))
-		{
-			
-            ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Camera"))
-		{
-			
-            M_eCurentMode = MODE_CAMERA;
-
-            ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("UI"))
-		{
-			
-            ImGui::EndMenu();
-		}
-
-        if (ImGui::BeginMenu("Effect"))
+        if (ImGui::BeginMenu("Mode"))
         {
+            if (ImGui::MenuItem("HeightMap"))
+            {
+                M_eCurentMode = MODE_TERRAIN;
+            }
+
+            if (ImGui::MenuItem("Object"))
+            {
+                M_eCurentMode = MODE_OBJECT;
+            }
+
+            if (ImGui::MenuItem("Camera"))
+            {
+                M_eCurentMode = MODE_CAMERA;
+            }
+
+            if (ImGui::MenuItem("UI"))
+            {
+            }
+
+            if (ImGui::MenuItem("Effect"))
+            {
+            }
 
             ImGui::EndMenu();
         }
@@ -169,10 +178,10 @@ HRESULT CImGuiMgr::Render()
 		ImGui::EndMainMenuBar();
 	}
 
-    for (size_t i = 0; i < m_vecWindow[M_eCurentMode].size(); i++)
+    for (auto& iter : m_mapWindow[M_eCurentMode])
     {
-        if(m_vecWindow[M_eCurentMode][i] != nullptr)
-            m_vecWindow[M_eCurentMode][i]->Render();
+        if (iter.second != nullptr)
+            iter.second->Render();
     }
 
     ImGui::Render();
@@ -197,42 +206,44 @@ HRESULT CImGuiMgr::Add_Demo(const string& strDemoTag, CDemo* pDemo)
     return S_OK;
 }
 
-void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, void* pArg)
+void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, WINDOWSTATE eWindowTag, void* pArg)
 {
-    if (m_vecWindow[eType].empty())
+    CImGui_Window* pWindow = Find_Window(eType, eWindowTag);
+    if (pWindow == nullptr)
         return;
-    m_vecWindow[eType][0]->Set_Variable(pArg);
+
+    pWindow->Set_Variable(pArg);
 }
 
-HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
-{
-    if (m_pTerrain == nullptr)
-        return E_FAIL;
-
-    if (FAILED((m_pTerrain->Create_DynamicBuffer(iX, iZ))))
-        return E_FAIL;
-
-    return S_OK;
-}
-
-HRESULT CImGuiMgr::Set_Terrain_Variable(void* pArg)
-{
-    if (m_pTerrain == nullptr)
-        return E_FAIL;
-
-    if (FAILED(m_pTerrain->Set_Control_Variable(pArg)))
-        return E_FAIL;
-
-    return S_OK;
-}
-
-_float4 CImGuiMgr::Get_PickingMousePoint()
-{
-    if (m_pTerrain == nullptr)
-        return _float4();
-
-    return m_pTerrain->Get_MousePoint();
-}
+//HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
+//{
+//    if (m_pTerrain == nullptr)
+//        return E_FAIL;
+//
+//    if (FAILED((m_pTerrain->Create_DynamicBuffer(iX, iZ))))
+//        return E_FAIL;
+//
+//    return S_OK;
+//}
+//
+//HRESULT CImGuiMgr::Set_Terrain_Variable(void* pArg)
+//{
+//    if (m_pTerrain == nullptr)
+//        return E_FAIL;
+//
+//    if (FAILED(m_pTerrain->Set_Control_Variable(pArg)))
+//        return E_FAIL;
+//
+//    return S_OK;
+//}
+//
+//_float4 CImGuiMgr::Get_PickingMousePoint()
+//{
+//    if (m_pTerrain == nullptr)
+//        return _float4();
+//
+//    return m_pTerrain->Get_MousePoint();
+//}
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
@@ -243,7 +254,19 @@ void CImGuiMgr::Set_Terrain_Edit()
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
     ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
-    m_vecWindow[MODE_TERRAIN].push_back(CTerrain_Window::Create(ImguiMrgWinDesc));
+    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(ImguiMrgWinDesc));
+}
+
+void CImGuiMgr::Set_Object_Edit()
+{
+    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
+
+    ImguiMrgWinDesc->strName = "Object";
+    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
+        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
+
+    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Camera_Edit()
@@ -255,7 +278,21 @@ void CImGuiMgr::Set_Camera_Edit()
         | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
     ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
 
-    m_vecWindow[MODE_CAMERA].push_back(CCamera_Window::Create(ImguiMrgWinDesc));
+    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(ImguiMrgWinDesc));
+}
+
+void CImGuiMgr::Update_Pick()
+{
+    if (m_pTerrain == nullptr)
+        return;
+
+    if (m_pTerrain->Update_Mouse(&m_vPickedPoint))
+    {
+        CImGui_Window* pWindow = Find_Window(M_eCurentMode, WS_MAIN);
+        if (pWindow == nullptr)
+            return;
+        pWindow->Picked(m_vPickedPoint);
+    }
 }
 
 HRESULT CImGuiMgr::Ready_Demo()
@@ -277,6 +314,15 @@ CDemo* CImGuiMgr::Find_Demo(const string& strDemoTag)
     return iter->second;
 }
 
+CImGui_Window* CImGuiMgr::Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag)
+{
+    auto& iter = m_mapWindow[eType].find(eWindowTag);
+    if (iter == m_mapWindow[eType].end())
+        return nullptr;
+
+    return iter->second;
+}
+
 void CImGuiMgr::Free()
 {
     Safe_Release(m_pTerrain);
@@ -286,10 +332,9 @@ void CImGuiMgr::Free()
     m_mapDemo.clear();
 
     for (_uint i = 0; i < MODE_END; i++) {
-        for (auto& iter : m_vecWindow[i]) {
-            Safe_Release(iter);
-        }
-        m_vecWindow[i].clear();
+        for (auto& iter : m_mapWindow[i])
+            Safe_Release(iter.second);
+        m_mapWindow[i].clear();
     }
 
     ImGui_ImplDX11_Shutdown();

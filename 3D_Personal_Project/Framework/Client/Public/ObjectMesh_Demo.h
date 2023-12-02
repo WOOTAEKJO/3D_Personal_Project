@@ -14,7 +14,8 @@ class CObjectMesh_Demo final : public CDemo
 public:
 	typedef struct tagObjectMeshDemoValue
 	{
-		_float4 vPos;
+		wstring		strModelTag;
+		_float4		vPos;
 
 	}OBDEMOVALUE;
 private:
@@ -31,12 +32,17 @@ public:
 	virtual HRESULT Render() override;
 	virtual HRESULT Set_Control_Variable(void* pArg) override;
 
+public:
+	void	Set_TransformState(CTransform::STATE eType, _float4 vVector);
+	_float4	Get_TransformState(CTransform::STATE eType);
+
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
 
 private:
-	_float4		m_vObjectPos = {};
+	wstring		m_strModelTag;
+	_float4		m_vObjectPos = {};	
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

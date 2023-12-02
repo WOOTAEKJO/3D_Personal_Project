@@ -39,17 +39,15 @@ void CMouse_Manager::Update_Mouse()
 	m_vWorldMouse = _float4(vCursor.x, vCursor.y, vCursor.z, 1.f);
 }
 
-_bool CMouse_Manager::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
+_bool CMouse_Manager::Intersect(_float3* pOut, _float* fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
 {
-	_float fDist = 0.f;
-
 	_vector vPickPos;
 	_vector	vRayPos = XMVector3TransformCoord(XMLoadFloat3(&m_pRay.vOrigin), XMMatrixInverse(nullptr, matWorld));
 	_vector	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&m_pRay.vDir), XMMatrixInverse(nullptr, matWorld)));
 
-	if (DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vV1, vV2, vV3, fDist))
+	if (DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vV1, vV2, vV3, (*fDist)))
 	{
-		vPickPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+		vPickPos = vRayPos + XMVector3Normalize(vRayDir) * (*fDist);
 		XMStoreFloat3(pOut, vPickPos);
 
 		return true;

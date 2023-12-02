@@ -292,12 +292,12 @@ void CGameInstance::Update_Mouse()
 	return m_pMouse_Manager->Update_Mouse();
 }
 
-_bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
+_bool CGameInstance::Intersect(_float3* pOut, _float* fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
 {
 	if (nullptr == m_pMouse_Manager)
 		return false;
 
-	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
+	return m_pMouse_Manager->Intersect( pOut, fDist, vV1, vV2, vV3, matWorld);
 }
 
 void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)

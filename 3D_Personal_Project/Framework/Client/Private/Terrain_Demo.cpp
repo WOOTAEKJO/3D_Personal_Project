@@ -43,12 +43,6 @@ void CTerrain_Demo::Tick(_float fTimeDelta)
 
 	CImGuiMgr::GetInstance()->Tick();
 	
-	Update_Mouse();
-
-	CTerrain_Window::TERRAINWINDOWDESC TerrainWindowDesc;
-	TerrainWindowDesc.bPicked = m_bPicked;
-	TerrainWindowDesc.vPickPos = m_vMouseWorldPos;
-	CImGuiMgr::GetInstance()->Window_Set_Variable(CImGuiMgr::MODE_TERRAIN, &TerrainWindowDesc);
 }
 
 void CTerrain_Demo::Late_Tick(_float fTimeDelta)
@@ -56,7 +50,6 @@ void CTerrain_Demo::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	m_bPicked = false;
 }
 
 HRESULT CTerrain_Demo::Render()
@@ -123,8 +116,6 @@ HRESULT CTerrain_Demo::Set_Control_Variable(void* pArg)
 	TERRAINDEMOVALUE* pVariable = (TERRAINDEMOVALUE*)pArg;
 
 	m_fRadius = pVariable->fRadius;
-	m_fHeight = pVariable->fHeight;
-	m_fSharpness = pVariable->fSharpness;
 	m_bWireFrame = pVariable->bWireFrame;
 
 	return S_OK;
@@ -187,38 +178,34 @@ HRESULT CTerrain_Demo::Ready_Component()
 	return S_OK;
 }
 
-void CTerrain_Demo::Update_Mouse()
+_bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
 {
+	if (m_pVIBufferCom == nullptr)
+		return false;
+
 	_float3	vMousePos = {};
 
 	m_pGameInstance->Update_Mouse();
 	m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
 
 	if (vMousePos.x == 0)
-		return;
+		return false; 
 
 	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
-
-		//m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), m_fRadius, m_fHeight, m_fSharpness);
-		//Create_Mark();
-		m_bPicked = true;
+		return true;
 	}
 
-	XMStoreFloat4(&m_vMouseWorldPos, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+	XMStoreFloat4(fPickPoint, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+	m_vMouseWorldPos = *fPickPoint;
+	return false;
 }
 
-HRESULT CTerrain_Demo::Create_Mark()
+void CTerrain_Demo::Update_HeightMap(_fvector vPickPos, _float fRadius, _float fHeight, _float fSharpness)
 {
-	if (m_pMark == nullptr) {
-		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), TEXT("Prototype_GameObject_GameObject_Mark"),
-			nullptr, reinterpret_cast<CGameObject**>(&m_pMark))))
-			return E_FAIL;
-	}
-	else {
+	if (m_pVIBufferCom == nullptr)
+		return;
 
-	}
-
-	return S_OK;
+	m_pVIBufferCom->Update_Buffer(vPickPos, fRadius, fHeight, fSharpness);
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -257,5 +244,4 @@ void CTerrain_Demo::Free()
 	}
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
-	Safe_Release(m_pMark);
 }

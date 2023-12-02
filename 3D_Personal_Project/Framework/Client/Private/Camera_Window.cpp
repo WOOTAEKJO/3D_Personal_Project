@@ -37,6 +37,10 @@ void CCamera_Window::Set_Variable(void* pArg)
 {
 }
 
+void CCamera_Window::Picked(_float4 vPickPoint)
+{
+}
+
 CCamera_Window* CCamera_Window::Create(void* pArg)
 {
 	CCamera_Window* pInstance = new CCamera_Window();

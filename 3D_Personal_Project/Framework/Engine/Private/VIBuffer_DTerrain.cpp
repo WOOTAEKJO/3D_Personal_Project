@@ -228,23 +228,31 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 	m_pContext->Unmap(m_pVB, 0);
 }
 
-_bool CVIBuffer_DTerrain::Compute_MousePos(_float3* pOut, _matrix matWorld)
+void CVIBuffer_DTerrain::Compute_MousePos(_float3* pOut, _matrix matWorld)
 {
+	_float	fEarly = 1000.f;
+	_float	fDist = 0.f;
+	_float3	fOut = {};
 
 	for (_uint i = 0; i < (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2; i++) {
 		_uint3 iIndices = m_vecIndexInfo[i];
 
+		
 		_vector  vVec1, vVec2, vVec3;
 
 		vVec1 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iX].fPosition);
 		vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iY].fPosition);
 		vVec3 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iZ].fPosition);
 
-		if(m_pGameInstance->Intersect(pOut, vVec1, vVec2, vVec3, matWorld))
-			return true;
-	}
+		if (m_pGameInstance->Intersect(&fOut, &fDist, vVec1, vVec2, vVec3, matWorld)) {
+			if (fEarly > fDist)
+			{
+				fEarly = fDist;
 
-	return false;
+				*pOut = fOut;
+			}
+		}
+	}
 }
 
 CVIBuffer_DTerrain* CVIBuffer_DTerrain::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

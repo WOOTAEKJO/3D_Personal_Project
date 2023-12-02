@@ -9,8 +9,6 @@ class CTerrain_Window final : public CImGui_Window
 public:
 	typedef struct tagTerrain_Window_Desc
 	{
-		_float4 vPickPos;
-		_bool	bPicked;
 	}TERRAINWINDOWDESC;
 private:
 	CTerrain_Window();
@@ -20,7 +18,8 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 	virtual	void	Tick() override;
 	virtual	HRESULT	Render() override;
-	virtual	void	Set_Variable(void* pArg);
+	virtual	void	Set_Variable(void* pArg) override;
+	virtual	void	Picked(_float4 vPickPoint) override;
 
 private: /* For. Terrain*/ // 여기서 조정해주는 값
 	_int	m_iVertices_Size[2] = {3,3};
@@ -30,15 +29,11 @@ private: /* For. Terrain*/ // 여기서 조정해주는 값
 
 private: /* For.object*/ // 외부에서 받아 와야 하는 값
 	_float4 m_vPickPos = {};
-	_bool	m_bPicked = false;
 
 private:
 	void	HeightMap();
-	void	ObjectMesh();
-
-private:
 	void	Terrain_Update();
-	void	ObjectMesh_Update();
+	void	Create_HeightMap();
 
 public:
 	static	CTerrain_Window* Create(void* pArg);

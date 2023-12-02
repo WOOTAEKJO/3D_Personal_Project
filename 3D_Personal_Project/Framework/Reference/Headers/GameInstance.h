@@ -69,7 +69,7 @@ public: /* For.Component_Manager*/
 
 public: /* For.Mouse_Manager*/
 	void	Update_Mouse();
-	_bool	Intersect(_float3 * pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+	_bool	Intersect(_float3 * pOut, _float * fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
 	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform * pTransCom);
 	_float4	Get_WorldMouse_Float4();
 	_vector	Get_WorldMouse_Vector();

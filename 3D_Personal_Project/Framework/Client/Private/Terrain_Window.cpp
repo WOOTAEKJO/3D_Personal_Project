@@ -25,7 +25,6 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 void CTerrain_Window::Tick()
 {
 	Terrain_Update();
-	ObjectMesh_Update();
 }
 
 HRESULT CTerrain_Window::Render()
@@ -40,13 +39,6 @@ HRESULT CTerrain_Window::Render()
 		if (ImGui::BeginTabItem("HeightMap"))
 		{
 			HeightMap();
-
-			ImGui::EndTabItem();
-		}
-
-		if (ImGui::BeginTabItem("ObjectMesh"))
-		{
-			ObjectMesh();
 
 			ImGui::EndTabItem();
 		}
@@ -70,11 +62,14 @@ void CTerrain_Window::Set_Variable(void* pArg)
 {
 	if (pArg == nullptr)
 		return;
+}
 
-	TERRAINWINDOWDESC* TerrainWindowDesc = (TERRAINWINDOWDESC*)pArg;
+void CTerrain_Window::Picked(_float4 vPickPoint)
+{
+	if (m_pTerrain == nullptr)
+		return;
 
-	m_vPickPos = TerrainWindowDesc->vPickPos;
-	m_bPicked = TerrainWindowDesc->bPicked;
+	m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
 }
 
 void CTerrain_Window::HeightMap()
@@ -88,7 +83,7 @@ void CTerrain_Window::HeightMap()
 			return;
 		}
 
-		CImGuiMgr::GetInstance()->Create_HeightMap(m_iVertices_Size[0], m_iVertices_Size[1]);
+		Create_HeightMap();
 	}
 
 	ImGui::SliderInt("Radius", &m_iHeight_Control[0], 0, 30);
@@ -98,24 +93,13 @@ void CTerrain_Window::HeightMap()
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
 }
 
-void CTerrain_Window::ObjectMesh()
+void CTerrain_Window::Create_HeightMap()
 {
-	if (m_bPicked) {
-	
-		CObjectMesh_Demo* pObject = nullptr;
-	
-		CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
-	
-		ObjectDemoValue.vPos = m_vPickPos;//CImGuiMgr::GetInstance()->Get_PickingMousePoint();
-	
-		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"),
-			TEXT("Prototype_GameObject_ObjectMesh_Demo"), &ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject))))
-			return;
-	
-		CImGuiMgr::GetInstance()->Add_Demo("Test", pObject);
-	}
-	m_bPicked = false;
-	
+	if (m_pTerrain == nullptr)
+		        return;
+		
+	if (FAILED((m_pTerrain->Create_DynamicBuffer(m_iVertices_Size[0], m_iVertices_Size[1]))))
+	    return ;
 }
 
 void CTerrain_Window::Terrain_Update()
@@ -123,16 +107,9 @@ void CTerrain_Window::Terrain_Update()
 	CTerrain_Demo::TERRAINDEMOVALUE tTerrainDemoValue;
 
 	tTerrainDemoValue.fRadius = (_float)m_iHeight_Control[0];
-	tTerrainDemoValue.fHeight = (_float)m_iHeight_Control[1];
-	tTerrainDemoValue.fSharpness = m_fSharpness;
 	tTerrainDemoValue.bWireFrame = m_bWireFrame;
 
-	CImGuiMgr::GetInstance()->Set_Terrain_Variable(&tTerrainDemoValue);
-}
-
-void CTerrain_Window::ObjectMesh_Update()
-{
-	
+	m_pTerrain->Set_Control_Variable(&tTerrainDemoValue);
 }
 
 CTerrain_Window* CTerrain_Window::Create(void* pArg)

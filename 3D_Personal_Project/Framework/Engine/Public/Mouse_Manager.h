@@ -14,7 +14,7 @@ private:
 public:
 	HRESULT	Initialize(HWND hWnd, _uint iWinSizeX, _uint iWinSizeY);
 	void	Update_Mouse();
-	_bool	Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+	_bool	Intersect(_float3* pOut,_float* fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
 	
 	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
 
