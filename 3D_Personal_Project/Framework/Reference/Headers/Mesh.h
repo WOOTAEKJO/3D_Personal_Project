@@ -11,13 +11,14 @@ private:
 	virtual	~CMesh() = default;
 
 public:
-	virtual	HRESULT	Initialize_ProtoType(const aiMesh* pMesh);
+	virtual	HRESULT	Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot);
 	virtual	HRESULT	Initialize(void* pArg);
 
 private:
+	char	m_cName[MAX_PATH] = {};
 
 public:
-	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pMesh);
+	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pMesh,_fmatrix matPivot);
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	void	Free() override;
 };

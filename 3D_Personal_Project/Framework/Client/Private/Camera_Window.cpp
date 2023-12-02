@@ -14,6 +14,9 @@ CCamera_Window::CCamera_Window()
 
 HRESULT CCamera_Window::Initialize(void* pArg)
 {
+	if (FAILED(CImGui_Window::Initialize(pArg)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -23,7 +26,19 @@ void CCamera_Window::Tick()
 
 HRESULT CCamera_Window::Render()
 {
+	CImGui_Window::Begin();
+
+	CImGui_Window::End();
+
 	return S_OK;
+}
+
+void CCamera_Window::Set_Variable(void* pArg)
+{
+}
+
+void CCamera_Window::Picked(_float4 vPickPoint)
+{
 }
 
 CCamera_Window* CCamera_Window::Create(void* pArg)

@@ -5,6 +5,8 @@
 #include "../Public/ImGui_Window.h"
 #include "GameInstance.h"
 
+#include "ImGuiMgr.h"
+
 typedef struct tagImGui_Window_Desc
 	{
 		string	strName;	// Ã¢ ÀÌ¸§
@@ -24,6 +26,9 @@ HRESULT CImGui_Window::Initialize(void* pArg)
 {
 	m_pDesc = pArg;
 
+	m_pTerrain = CImGuiMgr::GetInstance()->Get_Terrain();
+	Safe_AddRef(m_pTerrain);
+
 	return S_OK;
 }
 
@@ -38,6 +43,7 @@ void CImGui_Window::Begin()
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	ImGui::Begin(pDesc->strName.c_str(), 0, pDesc->window_flags);
+
 }
 
 void CImGui_Window::End()
@@ -51,6 +57,8 @@ void CImGui_Window::Free()
 {
 	__super::Free();
 
-	Safe_Delete(m_pDesc);
+	free(m_pDesc);
+	//Safe_Delete(m_pDesc);
+	Safe_Release(m_pTerrain);
 	Safe_Release(m_pGameInstance);
 }

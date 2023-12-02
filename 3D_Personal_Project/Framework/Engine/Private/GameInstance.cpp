@@ -292,12 +292,12 @@ void CGameInstance::Update_Mouse()
 	return m_pMouse_Manager->Update_Mouse();
 }
 
-_bool CGameInstance::Intersect(_float3* pOut, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
+_bool CGameInstance::Intersect(_float3* pOut, _float* fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld)
 {
 	if (nullptr == m_pMouse_Manager)
 		return false;
 
-	return m_pMouse_Manager->Intersect( pOut, vV1, vV2, vV3, matWorld);
+	return m_pMouse_Manager->Intersect( pOut, fDist, vV1, vV2, vV3, matWorld);
 }
 
 void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)
@@ -306,6 +306,22 @@ void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTra
 		return;
 
 	m_pMouse_Manager->Free_Mouse(fTimeDelta, fMouseSensitivity, pTransCom);
+}
+
+_float4 CGameInstance::Get_WorldMouse_Float4()
+{
+	if (nullptr == m_pMouse_Manager)
+		return _float4();
+
+	return m_pMouse_Manager->Get_WorldMouse_Float4();
+}
+
+_vector CGameInstance::Get_WorldMouse_Vector()
+{
+	if (nullptr == m_pMouse_Manager)
+		return _vector();
+
+	return m_pMouse_Manager->Get_WorldMouse_Vector();
 }
 
 void CGameInstance::Set_Transform(CPipeLine::TRANSFORMSTATE eState, _float4x4 matMatrix)

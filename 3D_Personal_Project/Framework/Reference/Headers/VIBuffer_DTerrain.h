@@ -23,7 +23,7 @@ public:
 
 public:
 	void	Update_Buffer(_fvector fMousePos, _float fRadious, _float fHeight, _float fSharpness);
-	_bool	Compute_MousePos(_float3* pOut, _matrix matWorld);
+	void	Compute_MousePos(_float3* pOut, _matrix matWorld);
 
 private:
 	vector<VTXTBN>	m_vecVertexInfo;
