@@ -70,6 +70,8 @@ void CTerrain_Window::Picked(_float4 vPickPoint)
 		return;
 
 	m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
+
+	m_vPickPos = vPickPoint;
 }
 
 void CTerrain_Window::HeightMap()
@@ -91,6 +93,8 @@ void CTerrain_Window::HeightMap()
 	ImGui::SliderFloat("Sharpness", &m_fSharpness, 0.f, 1.f);
 
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
+
+	ImGui::Text(to_string(m_vPickPos.x).c_str());
 }
 
 void CTerrain_Window::Create_HeightMap()

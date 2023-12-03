@@ -50,7 +50,8 @@ namespace Engine
 		unsigned long		dwRefCnt = 0;
 
 		if (nullptr != pInstance)		
-			dwRefCnt = pInstance->AddRef();	
+
+dwRefCnt = pInstance->AddRef();	
 
 		return dwRefCnt;
 	}

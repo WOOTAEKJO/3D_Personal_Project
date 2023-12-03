@@ -92,6 +92,27 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotation));
 }
 
+void CTransform::Rotation_Total(_float fX, _float fY, _float fZ)
+{
+	_float3 fScale = Get_Scaled();
+
+	_vector	vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * fScale.x;
+	_vector	vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * fScale.y;
+	_vector	vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * fScale.z;
+
+	_matrix matRotT,matRotX, matRotY, matRotZ;
+
+	matRotX = XMMatrixRotationX(fX);
+	matRotY = XMMatrixRotationY(fY);
+	matRotZ = XMMatrixRotationZ(fZ);
+
+	matRotT = matRotX * matRotY * matRotZ;
+
+	Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, matRotT));
+	Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, matRotT));
+	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotT));
+}
+
 void CTransform::Towards_Target(_fvector fTargetPos, _float fTimeDelta, _float fSpare)
 {
 	_vector vPos = Get_State(STATE::STATE_POS);

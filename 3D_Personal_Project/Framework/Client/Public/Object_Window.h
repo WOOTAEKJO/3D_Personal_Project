@@ -34,7 +34,7 @@ private: /* For.RadioButton_Transform*/
 	_int	m_iTransformRadioButton = {0};
 	_float	m_fObjectPos[3] = {};
 	_float	m_fObjectRot[3] = {};
-	_float	m_fObjectScale[3] = {};
+	_float	m_fObjectScale[3] = {1.f,1.f,1.f};
 
 private:
 	void	ObjectMesh();

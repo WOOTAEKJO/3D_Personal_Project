@@ -98,6 +98,24 @@ _float4 CObjectMesh_Demo::Get_TransformState(CTransform::STATE eType)
 	return vVec;
 }
 
+void CObjectMesh_Demo::Rotation(_float fX, _float fY, _float fZ)
+{
+	if (m_pTransformCom == nullptr)
+		return;
+
+	m_pTransformCom->Rotation_Total(XMConvertToRadians(fX),
+		XMConvertToRadians(fY),
+		XMConvertToRadians(fZ));
+}
+
+void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
+{
+	if (m_pTransformCom == nullptr)
+		return;
+
+	m_pTransformCom->Set_Scaling(fX, fY, fZ);
+}
+
 HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))

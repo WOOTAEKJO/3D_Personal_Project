@@ -128,10 +128,14 @@ void CObject_Window::ObjectMesh()
 
 			break;
 		case 1:
-			ImGui::DragFloat3("X_Y_Z", m_fObjectRot, 1.f, 0.f, 360.f);
+			ImGui::DragFloat3("X_Y_Z", m_fObjectRot, 1.f, -360.f, 360.f);
+
+			m_vecDemo[m_iCurrentDemoIndex]->Rotation(m_fObjectRot[0], m_fObjectRot[1], m_fObjectRot[2]);
 			break;
 		case 2:
-			ImGui::DragFloat3("X_Y_Z", m_fObjectScale, 1.f, 0.f, 360.f);
+			ImGui::DragFloat3("X_Y_Z", m_fObjectScale, 0.1f, 0.01f, 100.f);
+
+			m_vecDemo[m_iCurrentDemoIndex]->Set_Scale(m_fObjectScale[0], m_fObjectScale[1], m_fObjectScale[2]);
 			break;
 		default:
 			break;

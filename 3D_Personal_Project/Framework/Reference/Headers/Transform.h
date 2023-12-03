@@ -55,6 +55,7 @@ public: /* 카메라에 사용*/
 	void	Go_BackWard(_float fTimeDelta);
 	void	Turn(_fvector vAxis, _float fTimeDelta);
 	void	Rotation(_fvector vAxis, _float fRadian);
+	void	Rotation_Total(_float fX, _float fY, _float fZ);
 	void	Towards_Target(_fvector	fTargetPos, _float fTimeDelta, _float fSpare);
 	void	LookAt(_fvector	fTargetPos);
 	void	LookAt_OnLand(_fvector	fTargetPos);
