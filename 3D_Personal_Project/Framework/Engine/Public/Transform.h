@@ -39,6 +39,8 @@ public:
 			XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_matWorldMatrix).r[STATE::STATE_LOOK])));
 	}
 
+	void	Set_WorldMatrix(_float4x4 matMat) { m_matWorldMatrix = matMat; }
+
 	_float4x4	Get_WorldMatrix_Float4x4() { return m_matWorldMatrix; }
 	_matrix	Get_WorldMatrix_Matrix() { return XMLoadFloat4x4(&m_matWorldMatrix); }
 	_float4x4	Get_WorldMatrix_Inverse_Float4x4() { 

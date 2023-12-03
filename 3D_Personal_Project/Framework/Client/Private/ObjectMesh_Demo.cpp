@@ -116,6 +116,23 @@ void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
 }
 
+_bool CObjectMesh_Demo::Get_Picked()
+{
+	if (m_pModelCom == nullptr || 
+		m_pTransformCom==nullptr)
+		return false;
+
+	_float3 vPickPos;
+
+	m_pGameInstance->Update_Mouse();
+
+	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
+		return true;
+	
+
+	return false;
+}
+
 HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))

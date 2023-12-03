@@ -45,6 +45,20 @@ HRESULT CModel::Render()
 	return S_OK;
 }
 
+_bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
+{
+	if (m_vecMesh.empty())
+		return false;
+
+	for (auto& iter : m_vecMesh)
+	{
+		if (iter->Compute_MousePos(pOut, matWorld))
+			return true;
+	}
+
+	return false;
+}
+
 HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 {
 	m_iMeshesNum = m_pAiScene->mNumMeshes;

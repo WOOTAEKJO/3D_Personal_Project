@@ -64,14 +64,18 @@ void CTerrain_Window::Set_Variable(void* pArg)
 		return;
 }
 
-void CTerrain_Window::Picked(_float4 vPickPoint)
+void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 {
 	if (m_pTerrain == nullptr)
 		return;
-
+	
 	m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
 
 	m_vPickPos = vPickPoint;
+}
+
+void CTerrain_Window::Demo_Picked()
+{
 }
 
 void CTerrain_Window::HeightMap()

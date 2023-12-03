@@ -34,6 +34,10 @@ public:
 
 	virtual HRESULT Render();
 
+public:
+	void	Set_WorldMatrix(_float4x4 matWorld);
+	_float4x4 Get_WorldMatrix();
+
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };

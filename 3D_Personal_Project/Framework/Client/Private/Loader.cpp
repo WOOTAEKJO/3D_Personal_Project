@@ -240,6 +240,12 @@ HRESULT CLoader::Loading_For_Tool_Level()
 		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/PineTree/PineTree.fbx", matPivot))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Model_SM_Read2*/
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Model_SM_Reed2"),
+		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/SM_Reed2/SM_Reed2.fbx", matPivot))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
 	/* For.Prototype_Component_Shader_VTXTBN*/

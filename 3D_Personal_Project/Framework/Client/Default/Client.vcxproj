@@ -113,8 +113,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -160,8 +160,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -201,6 +201,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Mark.h" />
+    <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -236,6 +237,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Mark.cpp" />
+    <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />

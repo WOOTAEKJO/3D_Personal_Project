@@ -20,7 +20,8 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_PineTree"));
-
+	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_SM_Reed2"));
+	
 	return S_OK;
 }
 
@@ -58,12 +59,30 @@ void CObject_Window::Set_Variable(void* pArg)
 		return;
 }
 
-void CObject_Window::Picked(_float4 vPickPoint)
+void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 {
 	if (m_pTerrain == nullptr)
 		return;
 
 	Create_Model(m_strPickModelTag, vPickPoint);
+}
+
+void CObject_Window::Demo_Picked()
+{
+	if (m_vecDemo.empty())
+		return;
+
+	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+
+		for (size_t i = 0; i < m_vecDemo.size(); i++)
+		{
+			if (m_vecDemo[i]->Get_Picked())
+			{
+				m_iCurrentDemoIndex = i;
+				return;
+			}
+		}
+	}
 }
 
 void CObject_Window::ObjectMesh()
@@ -115,6 +134,51 @@ void CObject_Window::ObjectMesh()
 		switch (m_iTransformRadioButton)
 		{
 		case 0:
+			m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case 1:
+			m_eOperationType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case 2:
+			m_eOperationType = ImGuizmo::OPERATION::SCALE;
+			break;
+		default:
+			break;
+		}
+		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecDemo[m_iCurrentDemoIndex]);
+	}
+
+	
+}
+
+void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
+{
+	CGameObject* pObject_Demo = nullptr;
+	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
+
+	ObjectDemoValue.strModelTag = strModelTag;
+	ObjectDemoValue.vPos = vPickPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), TEXT("Prototype_GameObject_ObjectMesh_Demo"),
+		&ObjectDemoValue,reinterpret_cast<CGameObject**>(&pObject_Demo))))
+		return;
+
+	m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+}
+
+void CObject_Window::NotGuizmo()
+{
+	if (!m_vecDemo.empty() && m_vecDemo[m_iCurrentDemoIndex] != nullptr) {
+
+		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+
+		switch (m_iTransformRadioButton)
+		{
+		case 0:
 			_float4 vPos;
 			vPos = m_vecDemo[m_iCurrentDemoIndex]->Get_TransformState(CTransform::STATE::STATE_POS);
 			m_fObjectPos[0] = vPos.x;
@@ -142,25 +206,6 @@ void CObject_Window::ObjectMesh()
 		}
 		
 	}
-}
-
-void CObject_Window::ObjectMesh_Update()
-{
-}
-
-void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
-{
-	CGameObject* pObject_Demo = nullptr;
-	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
-
-	ObjectDemoValue.strModelTag = strModelTag;
-	ObjectDemoValue.vPos = vPickPos;
-
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), TEXT("Prototype_GameObject_ObjectMesh_Demo"),
-		&ObjectDemoValue,reinterpret_cast<CGameObject**>(&pObject_Demo))))
-		return;
-
-	m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
 }
 
 CObject_Window* CObject_Window::Create(void* pArg)

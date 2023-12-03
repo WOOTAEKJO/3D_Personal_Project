@@ -103,6 +103,9 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\02. Object_Window">
       <UniqueIdentifier>{099afb02-5b3a-40ab-8585-4d6f99541685}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\03. Mouse_WIndow">
+      <UniqueIdentifier>{8fa861cc-e864-4d79-b28a-8e7e1872ffbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -171,11 +174,23 @@
     <ClInclude Include="..\Public\Terrain_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\imconfig.h">
-      <Filter>97. ImGui</Filter>
+    <ClInclude Include="..\Public\Camera_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\imgui.h">
-      <Filter>97. ImGui</Filter>
+    <ClInclude Include="..\Public\ObjectMesh_Demo.h">
+      <Filter>02.GameObjects\98. Demo\01. ObjectMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Demo.h">
+      <Filter>02.GameObjects\98. Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mark.h">
+      <Filter>02.GameObjects\98. Demo\00. Terrain\00. Mark</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Object_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\02. Object_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mouse_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\03. Mouse_WIndow</Filter>
     </ClInclude>
     <ClInclude Include="..\Imgui\imgui_impl_dx11.h">
       <Filter>97. ImGui</Filter>
@@ -195,20 +210,11 @@
     <ClInclude Include="..\Imgui\imstb_truetype.h">
       <Filter>97. ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Camera_Window.h">
-      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
+    <ClInclude Include="..\Imgui\imconfig.h">
+      <Filter>97. ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ObjectMesh_Demo.h">
-      <Filter>02.GameObjects\98. Demo\01. ObjectMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Demo.h">
-      <Filter>02.GameObjects\98. Demo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Mark.h">
-      <Filter>02.GameObjects\98. Demo\00. Terrain\00. Mark</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Object_Window.h">
-      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\02. Object_Window</Filter>
+    <ClInclude Include="..\Imgui\imgui.h">
+      <Filter>97. ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,27 +275,6 @@
     <ClCompile Include="..\Private\Terrain_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\00. Terrain_Window</Filter>
     </ClCompile>
-    <ClCompile Include="..\Imgui\imgui.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_demo.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_draw.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_impl_win32.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_tables.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Imgui\imgui_widgets.cpp">
-      <Filter>97. ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Camera_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\01. Camera_Window</Filter>
     </ClCompile>
@@ -304,6 +289,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\Object_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\02. Object_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mouse_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\03. Mouse_WIndow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_impl_win32.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_tables.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_widgets.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_demo.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_draw.cpp">
+      <Filter>97. ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp">
+      <Filter>97. ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

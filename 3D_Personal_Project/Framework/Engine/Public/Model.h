@@ -17,6 +17,9 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render();
 
+public:
+	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
+
 private:
 	const aiScene*		m_pAiScene = { nullptr };
 	Assimp::Importer	m_Importer;

@@ -1,5 +1,7 @@
 #include "..\Public\Mesh.h"
 
+#include "GameInstance.h"
+
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CVIBuffer(pDevice, pContext)
 {
@@ -50,8 +52,10 @@ HRESULT CMesh::Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot)
 
 		memcpy(&pVerpostex[i].fTexCoord, &pMesh->mTextureCoords[0][i], sizeof(_float2));
 
-
+		m_vecVertexInfo.push_back(pVerpostex[i]);
 	}
+
+
 
 	m_SubResource_Data.pSysMem = pVerpostex;
 
@@ -80,6 +84,9 @@ HRESULT CMesh::Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot)
 		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[0];
 		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[1];
 		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[2];
+
+		m_vecIndexInfo.push_back(_uint3(pMesh->mFaces[i].mIndices[0],
+			pMesh->mFaces[i].mIndices[1], pMesh->mFaces[i].mIndices[2]));
 	}
 
 	m_SubResource_Data.pSysMem = pIndex;
@@ -97,6 +104,27 @@ HRESULT CMesh::Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot)
 HRESULT CMesh::Initialize(void* pArg)
 {
 	return S_OK;
+}
+
+_bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
+{
+	_float	fDist = 0.f;
+
+	for (_uint i = 0; i < (m_iIndexNum/3); i++)
+	{
+		_uint3 iIndices = m_vecIndexInfo[i];
+
+		_vector  vVec1, vVec2, vVec3;
+
+		vVec1 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iX].fPosition);
+		vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iY].fPosition);
+		vVec3 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iZ].fPosition);
+
+		if (m_pGameInstance->Intersect(pOut, &fDist, vVec1, vVec2, vVec3, matWorld)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pMesh, _fmatrix matPivot)

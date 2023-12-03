@@ -10,6 +10,8 @@ namespace Client
 	enum AXIS {AXIS_X,AXIS_Y,AXIS_Z,AXIS_END};
 }
 
+
+#include "ImGuizmo/ImGuizmo.h"
 using namespace Client;
 
 extern HWND g_hWnd;

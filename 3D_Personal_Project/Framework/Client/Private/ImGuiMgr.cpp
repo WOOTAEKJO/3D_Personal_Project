@@ -73,13 +73,15 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tick()
 {
-    Update_Pick();
+    Update_Terrain_Pick();
+    Update_Demo_Pick();
 
     for (auto& iter : m_mapWindow[M_eCurentMode]) {
         if (iter.second != nullptr) {
             iter.second->Tick();
         }
     }
+
 }
 
 HRESULT CImGuiMgr::Render()
@@ -108,6 +110,8 @@ HRESULT CImGuiMgr::Render()
     ImGui_ImplWin32_NewFrame();
 
     ImGui::NewFrame();
+
+    ImGuizmo::BeginFrame();
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
@@ -191,21 +195,6 @@ HRESULT CImGuiMgr::Render()
     return S_OK;
 }
 
-HRESULT CImGuiMgr::Add_Demo(const string& strDemoTag, CDemo* pDemo)
-{
-    if (pDemo == nullptr)
-        return E_FAIL;
-
-    CDemo* pDDemo = Find_Demo(strDemoTag);
-
-    if (pDDemo != nullptr)
-        return E_FAIL;
-
-    m_mapDemo.emplace(strDemoTag, pDemo);
-
-    return S_OK;
-}
-
 void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, WINDOWSTATE eWindowTag, void* pArg)
 {
     CImGui_Window* pWindow = Find_Window(eType, eWindowTag);
@@ -214,36 +203,6 @@ void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, WINDOWSTATE eWindowTag, voi
 
     pWindow->Set_Variable(pArg);
 }
-
-//HRESULT CImGuiMgr::Create_HeightMap(_uint iX, _uint iZ)
-//{
-//    if (m_pTerrain == nullptr)
-//        return E_FAIL;
-//
-//    if (FAILED((m_pTerrain->Create_DynamicBuffer(iX, iZ))))
-//        return E_FAIL;
-//
-//    return S_OK;
-//}
-//
-//HRESULT CImGuiMgr::Set_Terrain_Variable(void* pArg)
-//{
-//    if (m_pTerrain == nullptr)
-//        return E_FAIL;
-//
-//    if (FAILED(m_pTerrain->Set_Control_Variable(pArg)))
-//        return E_FAIL;
-//
-//    return S_OK;
-//}
-//
-//_float4 CImGuiMgr::Get_PickingMousePoint()
-//{
-//    if (m_pTerrain == nullptr)
-//        return _float4();
-//
-//    return m_pTerrain->Get_MousePoint();
-//}
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
@@ -281,7 +240,7 @@ void CImGuiMgr::Set_Camera_Edit()
     m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(ImguiMrgWinDesc));
 }
 
-void CImGuiMgr::Update_Pick()
+void CImGuiMgr::Update_Terrain_Pick()
 {
     if (m_pTerrain == nullptr)
         return;
@@ -291,8 +250,23 @@ void CImGuiMgr::Update_Pick()
         CImGui_Window* pWindow = Find_Window(M_eCurentMode, WS_MAIN);
         if (pWindow == nullptr)
             return;
-        pWindow->Picked(m_vPickedPoint);
+
+        if (m_pGameInstance->Key_Pressing(DIK_SPACE)) {
+            pWindow->Terrain_Picked(m_vPickedPoint);
+        }
     }
+}
+
+void CImGuiMgr::Update_Demo_Pick()
+{
+    if (m_mapWindow[M_eCurentMode].empty())
+        return;
+
+    for (auto& iter : m_mapWindow[M_eCurentMode]) {
+        if (iter.second != nullptr)
+            iter.second->Demo_Picked();
+    }
+    
 }
 
 HRESULT CImGuiMgr::Ready_Demo()
@@ -302,16 +276,6 @@ HRESULT CImGuiMgr::Ready_Demo()
         return E_FAIL;
 
     return S_OK;
-}
-
-CDemo* CImGuiMgr::Find_Demo(const string& strDemoTag)
-{
-    auto& iter = m_mapDemo.find(strDemoTag);
-
-    if(iter == m_mapDemo.end())
-        return nullptr;
-
-    return iter->second;
 }
 
 CImGui_Window* CImGuiMgr::Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag)
@@ -326,10 +290,6 @@ CImGui_Window* CImGuiMgr::Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag)
 void CImGuiMgr::Free()
 {
     Safe_Release(m_pTerrain);
-
-    for (auto& iter : m_mapDemo)
-        Safe_Release(iter.second);
-    m_mapDemo.clear();
 
     for (_uint i = 0; i < MODE_END; i++) {
         for (auto& iter : m_mapWindow[i])

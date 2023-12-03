@@ -37,8 +37,10 @@ public:
 	_float4	Get_TransformState(CTransform::STATE eType);
 
 	void	Rotation(_float fX, _float fY, _float fZ);
-
 	void	Set_Scale(_float fX, _float fY, _float fZ);
+
+public:
+	_bool	Get_Picked();
 
 private:
 	CShader*	m_pShaderCom = { nullptr };

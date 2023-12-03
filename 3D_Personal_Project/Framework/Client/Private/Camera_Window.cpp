@@ -37,7 +37,11 @@ void CCamera_Window::Set_Variable(void* pArg)
 {
 }
 
-void CCamera_Window::Picked(_float4 vPickPoint)
+void CCamera_Window::Terrain_Picked(_float4 vPickPoint)
+{
+}
+
+void CCamera_Window::Demo_Picked()
 {
 }
 

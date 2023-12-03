@@ -3,11 +3,11 @@
 
 BEGIN(Client)
 
-class CCamera_Window final : public CImGui_Window
+class CMouse_Window final : public CImGui_Window
 {
 private:
-	CCamera_Window();
-	virtual	~CCamera_Window() = default;
+	CMouse_Window();
+	virtual	~CMouse_Window() = default;
 
 public:
 	virtual	HRESULT	Initialize(void* pArg) override;
@@ -19,7 +19,7 @@ public:
 private:
 
 public:
-	static CCamera_Window* Create(void* pArg);
+	static CMouse_Window* Create(void* pArg);
 	virtual	void	Free() override;
 };
 
