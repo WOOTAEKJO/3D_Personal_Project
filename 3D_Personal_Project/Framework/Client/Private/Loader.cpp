@@ -13,6 +13,30 @@
 
 #include "Terrain_Demo.h"
 
+/* For.Prototype_Component_Shader_VTXTBN*/
+/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"), VTXTBN::Elements, VTXTBN::iElementsNum))))
+	return E_FAIL;
+
+#define VTXTBN VTXTBN
+#define ELMENTS(type) (type::Elements)
+#define ELENENTSNUM(type) (type::iElementsNum)
+
+#define LOAD_SHADER_BTN(eLevel,szKey,szPath)			\
+	m_pGameInstance->Add_Component_ProtoType(			\
+eLevel,	szKey, 	CShader::Create(m_pDevice, m_pContext,	\	
+szPath, ELMENTS(VTXTBN), ELENENTSNUM(VTXTBN)));	*/		
+
+//m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+//	TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"));
+
+#define GET_SINGLE(type) (type::GetInstance())
+#define GAMEINSTANCE GET_SINGLE(CGameInstance)
+
+#define SHADER_PROTOTYPE(type,eLevel,strProtoTag,strFilePaht)		\
+	GAMEINSTANCE->Add_Shader_ProtoType<type>(eLevel,strProtoTag,	\
+	strFilePaht);
+
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -102,22 +126,16 @@ HRESULT CLoader::Loading_For_Logo_Level()
 	/* 로고 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Default%d.jpg"), 2))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_LOGO, TEX_BACKGROUND_TAG, TEX_BACKGROUND_PATH, 2))) return E_FAIL;
 		
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_BackGround"),
-		CBackGround::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_GameObject_Test"),
-		CGameObject_Test::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CBackGround>(G0_BACKGROUND_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CGameObject_Test>(GO_GAMEOBJECTTEST_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -131,67 +149,31 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	/* 게임플레이 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	/* For.Prototype_Component_Texture_Terrain*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Tile%d.dds"),2))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_Terrain_Mask*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain_Mask"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Mask.bmp"), 1))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_GAMEPLAY, TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_GAMEPLAY, TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
-	/* For.Prototype_Component_VIBuffer_Terrain*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Height1.bmp")))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_VIBuffer_DTerrain*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
-		CVIBuffer_DTerrain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Terrain_Buffer_ProtoType(LEVEL_GAMEPLAY, BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_HEIGHT_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(LEVEL_GAMEPLAY, BUFFER_DTERRAIN_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 
-	/* For.Prototype_Component_Model_Fiona*/
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_Fiona"),
-		CModel::Create(m_pDevice, m_pContext,"../Bin/Export/Debug/x64/Resources/Models/Fiona/Fiona.fbx", matPivot))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_PineTree*/
-	matPivot = XMMatrixScaling(0.01f,0.01f,0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Model_PineTree"),
-		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/PineTree/PineTree.fbx", matPivot))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_GAMEPLAY, MODEL_FIONA_TAG, MODEL_FIONA_PATH, matPivot))) return E_FAIL;
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_GAMEPLAY, MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
-	/* For.Prototype_Component_Shader_VTXNORTEX*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxNorTex.hlsl"), VTXNORTEX::Elements, VTXNORTEX::iElementsNum))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Shader_VTXTBN*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"), VTXTBN::Elements, VTXTBN::iElementsNum))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(LEVEL_GAMEPLAY, SHADER_NOR_TAG, SHADER_NOR_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_GAMEPLAY, SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	
-	/* For.Prototype_GameObject_Terrain*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_Terrain"), CTerrain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_DynamicCamera*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_ObjectMesh_Demo*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_ObjectMesh_Demo"), CObjectMesh_Demo::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain>(G0_TERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CDynamicCamera>(G0_DCAMERA_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CObjectMesh_Demo>(G0_OBJECTMESH_DEMO_TAG))) return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -202,75 +184,35 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 HRESULT CLoader::Loading_For_Tool_Level()
 {
-	/* 게임플레이 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	/* For.Prototype_Component_Texture_Terrain*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Tile%d.dds"),2))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_Terrain_Mask*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Mask"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Mask.bmp"), 1))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Texture_Terrain_Brush*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Brush"),
-		CTexture::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/Resources/Textures/Terrain/Brush.png"), 1))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_BRUSH_TAG, TEX_TERRAIN_BRUSH_PATH, 1))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
-	/* For.Prototype_Component_VIBuffer_DTerrain*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_DTerrain"),
-		CVIBuffer_DTerrain::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_VIBuffer_Cube*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Cube"),
-		CVIBuffer_Cube::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(LEVEL_TOOL, BUFFER_DTERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(LEVEL_TOOL, BUFFER_CUBE_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 
-	/* For.Prototype_Component_Model_PineTree*/
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Model_PineTree"),
-		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/PineTree/PineTree.fbx", matPivot))))
-		return E_FAIL;
-
-	/* For.Prototype_Component_Model_SM_Read2*/
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Model_SM_Reed2"),
-		CModel::Create(m_pDevice, m_pContext, "../Bin/Export/Debug/x64/Resources/Models/SM_Reed2/SM_Reed2.fbx", matPivot))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
-	/* For.Prototype_Component_Shader_VTXTBN*/
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
-		CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"), VTXTBN::Elements, VTXTBN::iElementsNum))))
-		return E_FAIL;
+	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_TOOL, SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
-	/* For.Prototype_GameObject_Terrain_Demo*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_Terrain_Demo"),
-		CTerrain_Demo::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_DynamicCamera*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_DynamicCamera"), CDynamicCamera::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_ObjectMesh_Demo*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_ObjectMesh_Demo"), CObjectMesh_Demo::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_GameObject_Mark*/
-	if (FAILED(m_pGameInstance->Add_ProtoType(TEXT("Prototype_GameObject_GameObject_Mark"), CMark::Create(m_pDevice, m_pContext))))
-		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain_Demo>(G0_TERRAIN_DEMO_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CDynamicCamera>(G0_DCAMERA_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CObjectMesh_Demo>(G0_OBJECTMESH_DEMO_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

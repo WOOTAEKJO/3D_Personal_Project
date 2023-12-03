@@ -56,6 +56,13 @@ public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr, CGameObject * *ppOut = nullptr);
 
+	template <typename T>
+	HRESULT Add_GameObject_ProtoType(const wstring & strProtoTypeTag)
+	{
+		return Add_ProtoType(strProtoTypeTag, T::Create(m_pDevice, m_pContext));
+	}
+
+
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
 
@@ -67,6 +74,45 @@ public: /* For.Component_Manager*/
 	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring & strProtoTypeTag, class CComponent* pComponent);
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
+	template <typename VertexType>
+	HRESULT	Add_Shader_ProtoType(_uint iLEVEL, const wstring & strProtoTypeTag, const wstring& strShaderFilePath)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			CShader::Create(m_pDevice, m_pContext, strShaderFilePath, VertexType::Elements, VertexType::iElementsNum));
+	}
+
+	HRESULT Add_Texture_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const wstring& strTextureFilePath, _uint iNum = 0)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			CTexture::Create(m_pDevice, m_pContext, strTextureFilePath, iNum));
+	}
+
+	HRESULT	Add_Model_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext, strModelFilePath, matPivot));
+	}
+
+	HRESULT	Add_Terrain_Buffer_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, strHeightFilePath));
+	}
+
+	template <typename T>
+	HRESULT	Add_Buffer_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			T::Create(m_pDevice, m_pContext));
+	}
+
+	template <typename T>
+	HRESULT Add_ETC_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+			T::Create(m_pDevice, m_pContext));
+	}
+	
 public: /* For.Mouse_Manager*/
 	void	Update_Mouse();
 	_bool	Intersect(_float3 * pOut, _float * fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
@@ -95,6 +141,10 @@ private:
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
+
+private:
+	ID3D11Device* m_pDevice = { nullptr };		
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 public:
 	void Release_Manager();

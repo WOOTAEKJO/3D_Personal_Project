@@ -216,6 +216,9 @@
     <ClInclude Include="..\Imgui\imgui.h">
       <Filter>97. ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Client_Macro.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

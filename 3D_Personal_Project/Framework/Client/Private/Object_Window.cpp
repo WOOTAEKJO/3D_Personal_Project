@@ -20,6 +20,7 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_PineTree"));
+	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_SM_Reed1"));
 	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_SM_Reed2"));
 	
 	return S_OK;
@@ -78,7 +79,7 @@ void CObject_Window::Demo_Picked()
 		{
 			if (m_vecDemo[i]->Get_Picked())
 			{
-				m_iCurrentDemoIndex = i;
+				m_iCurrentDemoIndex = (_uint)i;
 				return;
 			}
 		}

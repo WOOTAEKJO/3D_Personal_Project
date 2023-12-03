@@ -65,6 +65,12 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	if (nullptr == m_pPipeLine)
 		return E_FAIL;
 
+	m_pDevice = *ppDevice;
+	m_pContext = *ppContext;
+
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
+
 	return S_OK;
 }
 
@@ -382,6 +388,9 @@ _float4 CGameInstance::Get_Camera_Pos()
 
 void CGameInstance::Release_Manager()
 {
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
+
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pMouse_Manager);
 	Safe_Release(m_pEvent_Manager);

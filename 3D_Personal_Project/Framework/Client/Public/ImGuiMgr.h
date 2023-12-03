@@ -47,6 +47,9 @@ private:
 	_float4		m_vPickedPoint = {};
 
 private:
+	_bool		m_bGrid = false;
+
+private:
 	void		Set_Terrain_Edit();
 	void		Set_Object_Edit();
 	void		Set_Camera_Edit();
@@ -54,6 +57,9 @@ private:
 private:
 	void		Update_Terrain_Pick();
 	void		Update_Demo_Pick();
+
+private:
+	void		Grid_Draw();
 
 private:
 	HRESULT		Ready_Demo();

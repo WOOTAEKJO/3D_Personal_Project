@@ -12,6 +12,8 @@ namespace Client
 
 
 #include "ImGuizmo/ImGuizmo.h"
+
+#include "Client_Macro.h"
 using namespace Client;
 
 extern HWND g_hWnd;
