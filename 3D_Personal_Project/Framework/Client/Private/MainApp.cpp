@@ -76,10 +76,10 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG, SHADER_POS_PATH))) return E_FAIL;
 
 	/* For.Prototype_Component_StateMachine*/
-	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG)));
+	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG))) return E_FAIL;
 
 	/* For.Prototype_Component_AI*/
-	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG)));
+	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG))) return E_FAIL;
 
 	return S_OK;
 }

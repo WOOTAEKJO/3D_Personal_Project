@@ -131,7 +131,7 @@ _bool CObjectMesh_Demo::Get_Picked()
 
 	_float3 vPickPos;
 
-	m_pGameInstance->Update_Mouse();
+	//m_pGameInstance->Update_Mouse();
 
 	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
 		return true;

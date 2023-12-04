@@ -7,13 +7,13 @@
 
 #include "commdlg.h"
 #include "shlwapi.h"
+#include <fstream>
 
 #include "GameInstance.h"
 
 #include "Terrain_Window.h"
 #include "Camera_Window.h"
 #include "Object_Window.h"
-
 
 #include "Terrain_Demo.h"
 
@@ -143,10 +143,15 @@ HRESULT CImGuiMgr::Render()
 		{
             if (ImGui::MenuItem("Save"))
             {
+                if (FAILED(Save_Data()))
+                    MSG_BOX("Save_Failed");
+                    
             }
 
             if (ImGui::MenuItem("Load"))
             {
+                if (FAILED(Load_Data()))
+                    MSG_BOX("Load_Failed");
             }
 
             ImGui::EndMenu();
@@ -284,6 +289,24 @@ void CImGuiMgr::Update_Demo_Pick()
             iter.second->Demo_Picked();
     }
     
+}
+
+HRESULT CImGuiMgr::Save_Data()
+{
+    CImGui_Window* pWindow = Find_Window(M_eCurentMode, WINDOWSTATE::WS_MAIN);
+    if (pWindow == nullptr)
+        return E_FAIL;
+
+    return pWindow->Save_Data();    
+}
+
+HRESULT CImGuiMgr::Load_Data()
+{
+    CImGui_Window* pWindow = Find_Window(M_eCurentMode, WINDOWSTATE::WS_MAIN);
+    if (pWindow == nullptr)
+        return E_FAIL;
+
+    return pWindow->Load_Data();
 }
 
 void CImGuiMgr::Grid_Draw()

@@ -197,6 +197,7 @@ _bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
 
 	XMStoreFloat4(fPickPoint, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
 	m_vMouseWorldPos = *fPickPoint;
+
 	return false;
 }
 

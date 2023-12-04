@@ -19,6 +19,8 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 	if (FAILED(CImGui_Window::Initialize(pArg)))
 		return E_FAIL;
 
+	wcscpy_s(m_szFile, DATA_TERRAIN_PATH);
+
 	return S_OK;
 }
 
@@ -55,6 +57,8 @@ HRESULT CTerrain_Window::Render()
 
 	CImGui_Window::End();
 
+	m_szFile;
+
 	return S_OK;
 }
 
@@ -76,6 +80,108 @@ void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 
 void CTerrain_Window::Demo_Picked()
 {
+}
+
+HRESULT CTerrain_Window::Save_Data()
+{
+	Set_File_Flag(TYPE::TYPE_SAVE);
+
+	if (GetSaveFileName(&m_ofn) == TRUE)
+	{
+		Document doc;
+		//json 객체 선언
+		doc.SetObject();
+
+		// json 구조체생성
+		Value ValueOne(kObjectType);
+
+		//json구조체에 저장할 구조체의 멤버 변환해서 저장
+		ValueOne.AddMember("int", m_Data.m_iTest, doc.GetAllocator());
+
+		ValueOne.AddMember("str", Value(wstring_To_Json(m_Data.m_strTest).c_str(), doc.GetAllocator()), doc.GetAllocator());
+
+		//새로운 json 구조체 생성
+		Value ValueTwo(kObjectType);
+		//json 구조체에 값 저장
+		ValueTwo.AddMember("str2", Value(wstring_To_Json(m_Data.m_strTest2).c_str(), doc.GetAllocator()), doc.GetAllocator());
+
+		//json구조체들을 json 문서에 저장
+		//1.저장할 구조체 이름, 2.구조체,3.객체의 할당기
+		doc.AddMember("One", ValueOne, doc.GetAllocator());
+		doc.AddMember("Two", ValueTwo, doc.GetAllocator());
+
+		// json 문서를 문자열로 변환
+		StringBuffer buffer;
+		Writer<StringBuffer> writer(buffer);
+		doc.Accept(writer);
+
+		ofstream ofs(m_ofn.lpstrFile);
+		ofs << buffer.GetString();
+		ofs.close();
+	}
+	else
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTerrain_Window::Load_Data()
+{
+	Set_File_Flag(TYPE::TYPE_LOAD);
+
+	if (GetOpenFileName(&m_ofn) == TRUE)
+	{
+		FILE* pFile = _tfopen(m_ofn.lpstrFile, _T("rb"));
+		if (!pFile)
+			return E_FAIL;
+
+		fseek(pFile, 0, SEEK_END);
+		size_t fileSize = ftell(pFile);
+		fseek(pFile, 0, SEEK_SET);
+
+		vector<char> buffer(fileSize + 1, 0);
+		fread(buffer.data(), 1, fileSize, pFile);
+		fclose(pFile);
+
+		Document document;
+		document.Parse(buffer.data());
+
+		if (document.HasParseError())
+		{
+			return MSG_BOX("불러오기 실패");
+		}
+
+		// json Document 찾기
+		if (document.HasMember("One") && document["One"].IsObject())
+		{
+			//Document 의 value값
+			const Value& dataValue = document["One"];
+
+			//Value의 key값
+			if (dataValue.HasMember("int") && dataValue["int"].IsInt())
+				m_Data.m_iTest = dataValue["int"].GetInt();
+
+			if (dataValue.HasMember("str") && dataValue["str"].IsString())
+			{
+				const char* strValue = dataValue["str"].GetString();
+				m_Data.m_strTest = Json_To_wstring(strValue);
+			}
+
+		}
+		if (document.HasMember("Two") && document["Two"].IsObject())
+		{
+			const Value& dataValue = document["Two"];
+
+			if (dataValue.HasMember("str2") && dataValue["str2"].IsString())
+			{
+				const char* strValue = dataValue["str2"].GetString();
+				m_Data.m_strTest2 = Json_To_wstring(strValue);
+			}
+		}
+
+	}
+	
+	return S_OK;
 }
 
 void CTerrain_Window::HeightMap()

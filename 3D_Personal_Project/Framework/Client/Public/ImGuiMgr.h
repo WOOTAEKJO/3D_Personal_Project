@@ -59,11 +59,16 @@ private:
 	void		Update_Terrain_Pick();
 	void		Update_Demo_Pick();
 
+	HRESULT		Save_Data();
+	HRESULT		Load_Data();
+
 private:
 	void		Grid_Draw();
 
 private:
 	HRESULT		Ready_Demo();
+
+	
 
 private:
 	CImGui_Window*	Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag);

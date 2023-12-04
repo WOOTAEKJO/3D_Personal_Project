@@ -104,6 +104,49 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 	ImGuizmo::SetDrawlist();
 }
 
+void CImGui_Window::Set_File_Flag(TYPE eType)
+{
+	//OPENFILENAME ofn;
+
+	ZeroMemory(&m_ofn, sizeof(OPENFILENAME));
+	m_ofn.lStructSize = sizeof(OPENFILENAME);
+	m_ofn.hwndOwner = NULL;
+	m_ofn.lpstrFilter = L"JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+	m_ofn.lpstrFile = m_szFile;
+	m_ofn.nMaxFile = MAX_PATH;
+	if (eType == TYPE::TYPE_SAVE) {
+		//m_ofn.lpstrDefExt = L"json";
+		m_ofn.Flags = OFN_OVERWRITEPROMPT;
+	}
+	else {
+		m_ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+	}	
+
+	SetCurrentDirectory(m_ofn.lpstrFile);
+}
+
+string CImGui_Window::wstring_To_Json(const wstring& strTag)
+{
+	wstring_convert<codecvt_utf8<_tchar>> converter;
+	string utf8Str = converter.to_bytes(strTag);
+
+	return utf8Str;
+}
+
+wstring CImGui_Window::Json_To_wstring(const string& utf8Str)
+{
+	int length = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
+
+	if (length > 0)
+	{
+		wstring wstr(length - 1, L'\0');
+
+		MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, &wstr[0], length - 1);
+		return wstr;
+	}
+	return L"";
+}
+
 void CImGui_Window::Begin()
 {
 	IMGUIWINDESC* pDesc = (IMGUIWINDESC*)m_pDesc;

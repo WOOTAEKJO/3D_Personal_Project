@@ -1,6 +1,12 @@
 #pragma once
 
 
+#pragma region 데이터 파일 주소
+
+#define DATA_TERRAIN_PATH			TEXT("../../Data")
+
+#pragma endregion
+
 #pragma region 버퍼
 
 #define BUFFER_RECT_TAG				TEXT("Prototype_Component_VIBuffer_Rect")

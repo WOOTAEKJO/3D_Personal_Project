@@ -22,6 +22,8 @@ public:
 	virtual	void	Set_Variable(void* pArg) override;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
 	virtual	void	Demo_Picked() override;
+	virtual	HRESULT	Save_Data() override;
+	virtual	HRESULT	Load_Data() override;
 
 private:
 	vector<wstring>					m_vecModelTag;

@@ -52,6 +52,22 @@ using namespace Engine;
 
 
 
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/pointer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/filereadstream.h"
+#include <locale>
+#include <codecvt>
+
+#include "commdlg.h"
+#include "shlwapi.h"
+#include <fstream>
+using namespace rapidjson;
+
 #ifdef _DEBUG
 
 #define _CRTDBG_MAP_ALLOC

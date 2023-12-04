@@ -19,9 +19,9 @@ HRESULT CObject_Window::Initialize(void* pArg)
 	if (FAILED(CImGui_Window::Initialize(pArg)))
 		return E_FAIL;
 
-	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_PineTree"));
-	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_SM_Reed1"));
-	m_vecModelTag.push_back(TEXT("Prototype_Component_Model_SM_Reed2"));
+	m_vecModelTag.push_back(MODEL_PINETREE_TAG);
+	m_vecModelTag.push_back(MODEL_SM_REED1_TAG);
+	m_vecModelTag.push_back(MODEL_SM_REED2_TAG);
 	
 	return S_OK;
 }
@@ -84,6 +84,16 @@ void CObject_Window::Demo_Picked()
 			}
 		}
 	}
+}
+
+HRESULT CObject_Window::Save_Data()
+{
+	return S_OK;
+}
+
+HRESULT CObject_Window::Load_Data()
+{
+	return S_OK;
 }
 
 void CObject_Window::ObjectMesh()
@@ -160,7 +170,7 @@ void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
 	ObjectDemoValue.strModelTag = strModelTag;
 	ObjectDemoValue.vPos = vPickPos;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), TEXT("Prototype_GameObject_ObjectMesh_Demo"),
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), G0_OBJECTMESH_DEMO_TAG,
 		&ObjectDemoValue,reinterpret_cast<CGameObject**>(&pObject_Demo))))
 		return;
 

@@ -45,6 +45,16 @@ void CCamera_Window::Demo_Picked()
 {
 }
 
+HRESULT CCamera_Window::Save_Data()
+{
+	return S_OK;
+}
+
+HRESULT CCamera_Window::Load_Data()
+{
+	return S_OK;
+}
+
 CCamera_Window* CCamera_Window::Create(void* pArg)
 {
 	CCamera_Window* pInstance = new CCamera_Window();
