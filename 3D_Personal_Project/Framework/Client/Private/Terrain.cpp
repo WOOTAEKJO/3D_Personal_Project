@@ -55,7 +55,7 @@ HRESULT CTerrain::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	m_pShaderCom->Begin(SHADER_TBN::TBN_TERRAIN);
 
 	m_pVIBufferCom->Bind_Buffer();
 

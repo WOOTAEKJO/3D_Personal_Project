@@ -18,6 +18,7 @@ class CImGuiMgr final : public CBase
 public:
 	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN,MODE_OBJECT,MODE_CAMERA, MODE_END};
 	enum WINDOWSTATE {WS_MAIN,WS_SUB1, WS_SUB2, WS_SUB3, WS_SUB4,WS_END};
+
 private:
 	CImGuiMgr();
 	virtual	~CImGuiMgr() = default;

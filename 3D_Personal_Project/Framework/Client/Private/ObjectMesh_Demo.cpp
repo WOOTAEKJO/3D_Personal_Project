@@ -60,9 +60,16 @@ HRESULT CObjectMesh_Demo::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(2);
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
-	m_pModelCom->Render();
+	for (_uint i = 0; i < iNumMeshs; i++)
+	{
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+
+		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+
+		m_pModelCom->Render(i);
+	}
 
 	return S_OK;
 }

@@ -32,6 +32,11 @@ namespace Engine
 
 	}RAY;
 
+	typedef	struct tagMaterial_Desc
+	{
+		class CTexture* pMtrlTexture[AI_TEXTURE_TYPE_MAX];
+	}MATERIAL_DESC;
+
 	typedef struct ENGINE_DLL tagVertex_Position_TexCoord
 	{
 		XMFLOAT3	fPosition;

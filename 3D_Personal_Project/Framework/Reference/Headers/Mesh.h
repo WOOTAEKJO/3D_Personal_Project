@@ -16,9 +16,11 @@ public:
 
 public:
 	_bool	Compute_MousePos(_float3* pOut, _matrix matWorld);
+	_uint	Get_MaterialIndex() const { return m_iMaterialIndex; }
 
 private:
 	char	m_cName[MAX_PATH] = {};
+	_uint	m_iMaterialIndex = { 0 };
 
 private:
 	vector<VTXTBN>	m_vecVertexInfo;

@@ -55,6 +55,8 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr, CGameObject * *ppOut = nullptr);
+	_uint	Get_Current_Level();
+	void	Set_Current_Level(_uint iLevel);
 
 	template <typename T>
 	HRESULT Add_GameObject_ProtoType(const wstring & strProtoTypeTag)
@@ -75,41 +77,47 @@ public: /* For.Component_Manager*/
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
 
 	template <typename VertexType>
-	HRESULT	Add_Shader_ProtoType(_uint iLEVEL, const wstring & strProtoTypeTag, const wstring& strShaderFilePath)
+	HRESULT	Add_Shader_ProtoType(const wstring & strProtoTypeTag, const wstring& strShaderFilePath)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			CShader::Create(m_pDevice, m_pContext, strShaderFilePath, VertexType::Elements, VertexType::iElementsNum));
 	}
 
-	HRESULT Add_Texture_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const wstring& strTextureFilePath, _uint iNum = 0)
+	HRESULT Add_Texture_ProtoType(const wstring& strProtoTypeTag, const wstring& strTextureFilePath, _uint iNum = 0)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			CTexture::Create(m_pDevice, m_pContext, strTextureFilePath, iNum));
 	}
 
-	HRESULT	Add_Model_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	HRESULT	Add_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
-			CModel::Create(m_pDevice, m_pContext, strModelFilePath, matPivot));
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext,CModel::TYPE::TYPE_NONANIM ,strModelFilePath, matPivot));
 	}
 
-	HRESULT	Add_Terrain_Buffer_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM, strModelFilePath, matPivot));
+	}
+
+	HRESULT	Add_Terrain_Buffer_ProtoType(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, strHeightFilePath));
 	}
 
 	template <typename T>
-	HRESULT	Add_Buffer_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag)
+	HRESULT	Add_Buffer_ProtoType(const wstring& strProtoTypeTag)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			T::Create(m_pDevice, m_pContext));
 	}
 
 	template <typename T>
-	HRESULT Add_ETC_ProtoType(_uint iLEVEL, const wstring& strProtoTypeTag)
+	HRESULT Add_ETC_ProtoType(const wstring& strProtoTypeTag)
 	{
-		return Add_Component_ProtoType(iLEVEL, strProtoTypeTag,
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			T::Create(m_pDevice, m_pContext));
 	}
 	

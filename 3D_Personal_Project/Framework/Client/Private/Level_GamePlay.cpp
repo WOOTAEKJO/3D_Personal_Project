@@ -37,7 +37,7 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_Terrain"))))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_TERRAIN_TAG)))
 		return E_FAIL;
 	
 	return S_OK;
@@ -66,7 +66,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_ObjectMesh_Demo"))))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_OBJECTMESH_DEMO_TAG)))
 		return E_FAIL;
 
 	return S_OK;

@@ -250,6 +250,22 @@ HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, 
 	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, ppOut, pArg);
 }
 
+_uint CGameInstance::Get_Current_Level()
+{
+	if (nullptr == m_pObject_Manager)
+		return _uint();
+
+	return m_pObject_Manager->Get_Current_Level();
+}
+
+void CGameInstance::Set_Current_Level(_uint iLevel)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	m_pObject_Manager->Set_Current_Level(iLevel);
+}
+
 HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameObject* pGameObject)
 {
 	if (nullptr == m_pRenderer)

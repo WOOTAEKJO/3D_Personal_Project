@@ -97,7 +97,7 @@ HRESULT CLoader::Loading()
 	// 소유권 획득을 요구
 
 	HRESULT hr = 0;
-
+	m_pGameInstance->Set_Current_Level(m_eNextLevelID);
 	switch (m_eNextLevelID)
 	{
 	case LEVEL_LOGO:
@@ -126,7 +126,7 @@ HRESULT CLoader::Loading_For_Logo_Level()
 	/* 로고 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_LOGO, TEX_BACKGROUND_TAG, TEX_BACKGROUND_PATH, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BACKGROUND_TAG, TEX_BACKGROUND_PATH, 2))) return E_FAIL;
 		
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
@@ -149,25 +149,24 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	/* 게임플레이 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_GAMEPLAY, TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_GAMEPLAY, TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
-	if (FAILED(m_pGameInstance->Add_Terrain_Buffer_ProtoType(LEVEL_GAMEPLAY, BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_HEIGHT_PATH))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(LEVEL_GAMEPLAY, BUFFER_DTERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Terrain_Buffer_ProtoType(BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_HEIGHT_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
-
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_GAMEPLAY, MODEL_FIONA_TAG, MODEL_FIONA_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_FIONA_TAG, MODEL_FIONA_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_GAMEPLAY, MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(LEVEL_GAMEPLAY, SHADER_NOR_TAG, SHADER_NOR_PATH))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_GAMEPLAY, SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(SHADER_NOR_TAG, SHADER_NOR_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	
@@ -186,27 +185,27 @@ HRESULT CLoader::Loading_For_Tool_Level()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(LEVEL_TOOL, TEX_TERRAIN_BRUSH_TAG, TEX_TERRAIN_BRUSH_PATH, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_TAG, TEX_TERRAIN_PATH, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_MASK_TAG, TEX_TERRAIN_MASK_PATH, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_BRUSH_TAG, TEX_TERRAIN_BRUSH_PATH, 1))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(LEVEL_TOOL, BUFFER_DTERRAIN_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(LEVEL_TOOL, BUFFER_CUBE_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(LEVEL_TOOL, MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
-	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_TOOL, SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
+	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 

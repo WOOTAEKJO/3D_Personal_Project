@@ -14,6 +14,8 @@ CMesh::CMesh(const CMesh& rhs)
 
 HRESULT CMesh::Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot)
 {
+	m_iMaterialIndex = pMesh->mMaterialIndex;
+
 	strcpy_s(m_cName, pMesh->mName.data);
 
 	m_iVertexBuffersNum = 1;

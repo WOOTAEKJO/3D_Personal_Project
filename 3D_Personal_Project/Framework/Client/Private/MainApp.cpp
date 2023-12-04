@@ -70,16 +70,16 @@ HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
 HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 {
 	/* For.Prototype_Component_VIBuffer_Rect*/
-	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Rect>(LEVEL_STATIC, BUFFER_RECT_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Rect>(BUFFER_RECT_TAG))) return E_FAIL;
 
 	/* For.Prototype_Component_Shader_VTXPOSTEX*/
-	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(LEVEL_STATIC, SHADER_POS_TAG, SHADER_POS_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG, SHADER_POS_PATH))) return E_FAIL;
 
 	/* For.Prototype_Component_StateMachine*/
-	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(LEVEL_STATIC, COM_STATEMACHINE_TAG)));
+	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG)));
 
 	/* For.Prototype_Component_AI*/
-	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(LEVEL_STATIC, COM_AI_TAG)));
+	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG)));
 
 	return S_OK;
 }

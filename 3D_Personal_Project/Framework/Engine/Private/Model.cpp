@@ -1,6 +1,8 @@
 #include "..\Public\Model.h"
 #include "Mesh.h"
 
+#include "Texture.h"
+
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
@@ -8,21 +10,40 @@ CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CModel::CModel(const CModel& rhs)
 	: CComponent(rhs),
+	m_eType(rhs.m_eType),
 	m_iMeshesNum(rhs.m_iMeshesNum),
-	m_vecMesh(rhs.m_vecMesh)
+	m_iMaterialsNum(rhs.m_iMaterialsNum),
+	m_vecMesh(rhs.m_vecMesh),
+	m_vecMaterial(rhs.m_vecMaterial)
 {
+	for (auto& iter1 : m_vecMaterial)
+	{
+		for (auto& iter2 : iter1.pMtrlTexture)
+			Safe_AddRef(iter2);
+	}
+
 	for (auto& iter : m_vecMesh)
 		Safe_AddRef(iter);
 }
 
-HRESULT CModel::Initialize_ProtoType(const string& strModelFilePath, _fmatrix	matPivot)
+HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
 {
-	m_pAiScene = m_Importer.ReadFile(strModelFilePath, aiProcess_PreTransformVertices | aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast);
+	m_eType = eType;
 
+	_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
+
+	if (m_eType == TYPE::TYPE_NONANIM)
+		iFlag |= aiProcess_PreTransformVertices;
+
+	m_pAiScene = m_Importer.ReadFile(strModelFilePath, iFlag);
+	// aiProcess_PreTransformVertices 애니메이션이 있는 매쉬를 로드하면 애니메이션과 관련된 매쉬가 없어질 수 있다.
 	if (m_pAiScene == nullptr)
 		return E_FAIL;
 
 	if (FAILED(Ready_Meshes(matPivot)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Materials(strModelFilePath)))
 		return E_FAIL;
 
 	return S_OK;
@@ -33,14 +54,13 @@ HRESULT CModel::Initialize(void* pArg)
 	return S_OK;
 }
 
-HRESULT CModel::Render()
+HRESULT CModel::Render(_uint iMeshIndex)
 {
-	for (auto& iter : m_vecMesh) {
-		if (iter != nullptr) {
-			iter->Bind_Buffer();
-			iter->Render();
-		}
-	}
+	if (iMeshIndex >= m_iMeshesNum)
+		return E_FAIL;
+
+	m_vecMesh[iMeshIndex]->Bind_Buffer();
+	m_vecMesh[iMeshIndex]->Render();
 
 	return S_OK;
 }
@@ -57,6 +77,16 @@ _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	}
 
 	return false;
+}
+
+HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, aiTextureType eType)
+{
+	if (pShader==nullptr || iMeshIndex >= m_iMeshesNum)
+		return E_FAIL;
+
+	_uint	iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
+
+	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }
 
 HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
@@ -78,11 +108,62 @@ HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 	return S_OK;
 }
 
-CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const string& strModelFilePath, _fmatrix	matPivot)
+HRESULT CModel::Ready_Materials(const string& strModelFilePath)
+{
+	m_iMaterialsNum = m_pAiScene->mNumMaterials;
+
+	for (_uint i = 0; i < m_iMaterialsNum; i++)
+	{
+		aiMaterial* pMaterial = m_pAiScene->mMaterials[i];
+
+		MATERIAL_DESC	Material_Desc = {};
+
+		for (_uint j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
+		{
+			
+			_char szDdrive[MAX_PATH] = "";
+			_char szDirectory[MAX_PATH] = "";
+			
+			_splitpath_s(strModelFilePath.c_str(), szDdrive, MAX_PATH, szDirectory, MAX_PATH,
+				nullptr, 0, nullptr, 0);
+
+			aiString	szGetPath;
+			if (FAILED(pMaterial->GetTexture((aiTextureType)j, 0, &szGetPath)))
+				continue;
+
+			_char	szFileName[MAX_PATH] = "";
+			_char	szExc[MAX_PATH] = "";
+
+			_splitpath_s(szGetPath.data, nullptr, 0, nullptr, 0,
+				szFileName, MAX_PATH, szExc, MAX_PATH);
+			
+			_char	szTmp[MAX_PATH] = "";
+
+			strcpy_s(szTmp, szDdrive);
+			strcat_s(szTmp, szDirectory);
+			strcat_s(szTmp, szFileName);
+			strcat_s(szTmp, szExc);
+			
+			_tchar	szFullPath[MAX_PATH] = TEXT("");
+
+			MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullPath, MAX_PATH);
+
+			Material_Desc.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, szFullPath, 1);
+			if (Material_Desc.pMtrlTexture[j] == nullptr)
+				return E_FAIL;
+		}
+
+		m_vecMaterial.push_back(Material_Desc);
+	}
+
+	return S_OK;
+}
+
+CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
 {
 	CModel* pInstance = new CModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(strModelFilePath, matPivot))) {
+	if (FAILED(pInstance->Initialize_ProtoType(eType,strModelFilePath, matPivot))) {
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
 	}
@@ -105,6 +186,12 @@ CComponent* CModel::Clone(void* pArg)
 void CModel::Free()
 {
 	__super::Free();
+
+	for (auto& iter1 : m_vecMaterial)
+	{
+		for (auto& iter2 : iter1.pMtrlTexture)
+			Safe_Release(iter2);
+	}
 
 	for (auto* iter : m_vecMesh)
 		Safe_Release(iter);
