@@ -3,6 +3,8 @@
 
 BEGIN(Engine)
 
+class CMeshData;
+
 class ENGINE_DLL CVIBuffer_DTerrain final : public	CVIBuffer
 {
 public:
@@ -24,9 +26,15 @@ public:
 public:
 	void	Update_Buffer(_fvector fMousePos, _float fRadious, _float fHeight, _float fSharpness);
 	void	Compute_MousePos(_float3* pOut, _matrix matWorld);
+	virtual HRESULT	Save_Buffer(const _char* strPath) override;
+	virtual	HRESULT	Load_Buffer(const _char* strPath) override;
+
+public:
+	HRESULT	Init_Terrain(DTERRAINDESC tTerrainDesc);
+	HRESULT	Init_Terrain(CMeshData::MESHDATADESC tTerrainData);
 
 private:
-	vector<VTXTBN>	m_vecVertexInfo;
+	vector<VTXMESH>	m_vecVertexInfo;
 	vector<_uint3>	m_vecIndexInfo;
 
 private:

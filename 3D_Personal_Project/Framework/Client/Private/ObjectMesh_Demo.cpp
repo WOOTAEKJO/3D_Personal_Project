@@ -160,8 +160,8 @@ HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 HRESULT CObjectMesh_Demo::Ready_Component()
 {
 	
-	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+	/* For.Com_Shader*/ 
+	if (FAILED(Add_Component(LEVEL_TOOL, SHADER_MESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 

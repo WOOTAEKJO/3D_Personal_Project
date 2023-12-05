@@ -104,7 +104,7 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 	ImGuizmo::SetDrawlist();
 }
 
-void CImGui_Window::Set_File_Flag(TYPE eType)
+HRESULT CImGui_Window::Set_File_Flag(TYPE eType)
 {
 	//OPENFILENAME ofn;
 
@@ -115,14 +115,20 @@ void CImGui_Window::Set_File_Flag(TYPE eType)
 	m_ofn.lpstrFile = m_szFile;
 	m_ofn.nMaxFile = MAX_PATH;
 	if (eType == TYPE::TYPE_SAVE) {
-		//m_ofn.lpstrDefExt = L"json";
+		m_ofn.lpstrDefExt = L"json";
 		m_ofn.Flags = OFN_OVERWRITEPROMPT;
+		if (GetSaveFileName(&m_ofn) != TRUE)
+			return E_FAIL;
 	}
 	else {
 		m_ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
+		if (GetOpenFileName(&m_ofn) != TRUE)
+			return E_FAIL;
 	}	
 
-	SetCurrentDirectory(m_ofn.lpstrFile);
+	//SetCurrentDirectory(m_ofn.lpstrFile);
+
+	return S_OK;
 }
 
 string CImGui_Window::wstring_To_Json(const wstring& strTag)
@@ -185,8 +191,8 @@ void CImGui_Window::Free()
 {
 	__super::Free();
 
-	free(m_pDesc);
-	//Safe_Delete(m_pDesc);
+	free((IMGUIWINDESC*)m_pDesc);
+	//Safe_Delete();
 	Safe_Release(m_pTerrain);
 	Safe_Release(m_pGameInstance);
 }

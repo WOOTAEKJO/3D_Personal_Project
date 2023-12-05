@@ -1,6 +1,7 @@
 #include "..\Public\Model.h"
 #include "Mesh.h"
 
+#include "Bone.h"
 #include "Texture.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -44,6 +45,9 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 		return E_FAIL;
 
 	if (FAILED(Ready_Materials(strModelFilePath)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Bones(m_pAiScene->mRootNode,-1)))
 		return E_FAIL;
 
 	return S_OK;
@@ -97,7 +101,7 @@ HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 
 	for (_uint i = 0; i < m_iMeshesNum; i++)
 	{
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_pAiScene->mMeshes[i], matPivot);
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, m_pAiScene->mMeshes[i], matPivot);
 
 		if (pMesh == nullptr)
 			return E_FAIL;
@@ -159,6 +163,24 @@ HRESULT CModel::Ready_Materials(const string& strModelFilePath)
 	return S_OK;
 }
 
+HRESULT CModel::Ready_Bones(aiNode* pNode, _int iParentIndex)
+{
+	CBone* pBone = CBone::Create(pNode, iParentIndex);
+	if (pBone == nullptr)
+		return E_FAIL;
+
+	m_vecBones.push_back(pBone);
+
+	_int iParIndx = m_vecBones.size() - (int)1;
+
+	for (_uint i = 0; i < pNode->mNumChildren; i++)
+	{
+		Ready_Bones(pNode->mChildren[i], iParIndx);
+	}
+
+	return S_OK;
+}
+
 CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
 {
 	CModel* pInstance = new CModel(pDevice, pContext);
@@ -192,6 +214,10 @@ void CModel::Free()
 		for (auto& iter2 : iter1.pMtrlTexture)
 			Safe_Release(iter2);
 	}
+
+	for (auto* iter : m_vecBones)
+		Safe_Release(iter);
+	m_vecBones.clear();
 
 	for (auto* iter : m_vecMesh)
 		Safe_Release(iter);

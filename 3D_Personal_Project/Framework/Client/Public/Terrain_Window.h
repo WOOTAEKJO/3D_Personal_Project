@@ -5,11 +5,8 @@ BEGIN(Client)
 
 class CTerrain_Window final : public CImGui_Window
 {
-
 public:
-	typedef struct tagTerrain_Window_Desc
-	{
-	}TERRAINWINDOWDESC;
+	
 private:
 	CTerrain_Window();
 	virtual	~CTerrain_Window() = default;
@@ -33,10 +30,12 @@ private: /* For. Terrain*/ // 여기서 조정해주는 값
 private: /* For.object*/ // 외부에서 받아 와야 하는 값
 	_float4 m_vPickPos = {};
 
+	//TERRAINDATA	m_Test;
+
 private:
 	void	HeightMap();
 	void	Terrain_Update();
-	void	Create_HeightMap();
+	void	Create_HeightMap();	
 
 public:
 	static	CTerrain_Window* Create(void* pArg);

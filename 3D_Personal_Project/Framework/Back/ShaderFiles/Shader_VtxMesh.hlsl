@@ -38,7 +38,6 @@ struct VS_IN
 {
 	float3	vPosition : POSITION;
 	float3  vTanget : TANGENT;
-	float3	vBinormal : BINORMAL;
 	float3	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 };
@@ -47,7 +46,6 @@ struct VS_OUT
 {
 	float4	vPosition : SV_POSITION;
 	float4  vTanget : TANGENT;
-	float4	vBinormal : BINORMAL;
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;
@@ -79,7 +77,6 @@ struct PS_IN
 {
 	float4	vPosition : SV_POSITION;
 	float4  vTanget : TANGENT;
-	float4	vBinormal : BINORMAL;
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;

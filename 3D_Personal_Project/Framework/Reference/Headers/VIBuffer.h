@@ -1,10 +1,14 @@
 #pragma once
 #include "Component.h"
+#include "MeshData.h"
 
 BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer abstract : public CComponent
 {
+public:
+	enum MODE {MODE_DYNAMIC, MODE_STATIC,MODE_END};
+
 protected:
 	CVIBuffer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CVIBuffer(const CVIBuffer& rhs);
@@ -17,6 +21,10 @@ public:
 public:
 	HRESULT	Bind_Buffer();									// context로 바인드 작업
 	HRESULT	Create_Buffer(_Inout_ ID3D11Buffer** pBuffer);	// device로 버퍼 생성 작업
+
+public:
+	virtual HRESULT	Save_Buffer(const _char* strPath);
+	virtual	HRESULT	Load_Buffer(const _char * strPath);
 
 protected:
 	ID3D11Buffer*	m_pVB = { nullptr };	// 버텍스 버퍼를 저장하는 변수
@@ -33,6 +41,9 @@ protected:
 	_uint					m_iIndexStride = { 0 };			// 인덱스 하나의 크기
 	DXGI_FORMAT				m_eIndexForMat = { };			// 인덱스 포맷 설정, 인덱스 하나의 크기
 	D3D_PRIMITIVE_TOPOLOGY	m_eTopology = { };				// 정점을 이용해서 어떻게 그릴지 설정하는 구조체
+
+protected:
+	CMeshData*				m_pMeshData = { nullptr };
 
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;

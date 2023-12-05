@@ -68,12 +68,13 @@ protected:
 	OPENFILENAME	m_ofn;
 
 	Data m_Data;
+
 protected:
 	void	Begin();
 	void	End();
 
 protected: /* For.Json*/
-	void	Set_File_Flag(TYPE eType);
+	HRESULT	Set_File_Flag(TYPE eType);
 	string wstring_To_Json(const wstring& strTag);
 	wstring	Json_To_wstring(const string& utf8Str);
 

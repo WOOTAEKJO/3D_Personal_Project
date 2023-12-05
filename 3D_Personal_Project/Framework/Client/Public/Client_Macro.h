@@ -3,9 +3,10 @@
 
 #pragma region 데이터 파일 주소
 
-#define DATA_TERRAIN_PATH			TEXT("../../Data")
+#define DATA_TERRAIN_PATH			TEXT("../Bin/Export/Debug/x64/Data/Terrain")
+//TEXT("C:/Users/Git/SourcTree/3D_Personal_Project/3D_Personal_Project/Framework/Client/Bin/Export/Debug/x64/Data/Terrain")
 
-#pragma endregion
+#pragma endregion	
 
 #pragma region 버퍼
 
@@ -22,13 +23,17 @@
 
 #pragma region 쉐이더
 
-#define	SHADER_POS_TAG TEXT("Prototype_Component_Shader_VTXPOSTEX")
-#define SHADER_NOR_TAG TEXT("Prototype_Component_Shader_VTXNORTEX")
-#define	SHADER_BTN_TAG TEXT("Prototype_Component_Shader_VTXTBN")
+#define	SHADER_POS_TAG			TEXT("Prototype_Component_Shader_VTXPOSTEX")
+#define SHADER_NOR_TAG			TEXT("Prototype_Component_Shader_VTXNORTEX")
+#define	SHADER_BTN_TAG			TEXT("Prototype_Component_Shader_VTXTBN")
+#define	SHADER_MESH_TAG			TEXT("Prototype_Component_Shader_VTXMESH")
+#define	SHADER_ANIMMESH_TAG		TEXT("Prototype_Component_Shader_VTXANIMMESH")
 
-#define SHADER_POS_PATH TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsl")
-#define SHADER_NOR_PATH TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxNorTex.hlsl")
-#define SHADER_BTN_PATH TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl")
+#define SHADER_POS_PATH			TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxPosTex.hlsl")
+#define SHADER_NOR_PATH			TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxNorTex.hlsl")
+#define SHADER_BTN_PATH			TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl")
+#define	SHADER_MESH_PATH		TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxMesh.hlsl")
+#define	SHADER_ANIMMESH_PATH	TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxAnimMesh.hlsl")
 
 #pragma endregion
 

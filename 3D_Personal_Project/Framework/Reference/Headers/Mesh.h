@@ -11,7 +11,7 @@ private:
 	virtual	~CMesh() = default;
 
 public:
-	virtual	HRESULT	Initialize_ProtoType(const aiMesh* pMesh, _fmatrix matPivot);
+	virtual	HRESULT	Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh, _fmatrix matPivot);
 	virtual	HRESULT	Initialize(void* pArg);
 
 public:
@@ -23,11 +23,15 @@ private:
 	_uint	m_iMaterialIndex = { 0 };
 
 private:
-	vector<VTXTBN>	m_vecVertexInfo;
-	vector<_uint3>	m_vecIndexInfo;
+	vector<_float3>			m_vecVertexInfo;
+	vector<_uint3>			m_vecIndexInfo;
+
+private:
+	HRESULT	Anim_Vertex(const aiMesh* pMesh);
+	HRESULT	NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot);
 
 public:
-	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const aiMesh* pMesh,_fmatrix matPivot);
+	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CModel::TYPE eType, const aiMesh* pMesh,_fmatrix matPivot);
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	void	Free() override;
 };

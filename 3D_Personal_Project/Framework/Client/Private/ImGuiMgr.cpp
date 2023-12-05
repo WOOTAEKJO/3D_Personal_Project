@@ -145,7 +145,6 @@ HRESULT CImGuiMgr::Render()
             {
                 if (FAILED(Save_Data()))
                     MSG_BOX("Save_Failed");
-                    
             }
 
             if (ImGui::MenuItem("Load"))

@@ -103,23 +103,23 @@ HRESULT CTerrain::Ready_Component()
 	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 	//	return E_FAIL;
 
-	/* For.Com_VIBuffer*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
+	/* For.Com_VIBuffer*/ 
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, BUFFER_TERRAIN_TAG,
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
-	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXNORTEX"),
+	/* For.Com_Shader*/ 
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, SHADER_NOR_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
-	/* For.Com_Texture*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
+	/* For.Com_Texture*/ 
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEX_TERRAIN_TAG,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]))))
 		return E_FAIL;
 
-	/* For.Com_Mask*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain_Mask"),
+	/* For.Com_Mask*/ 
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEX_TERRAIN_MASK_TAG,
 		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
 		return E_FAIL;
 	

@@ -7,6 +7,7 @@
 #include "../Public/ImGuiMgr.h"
 
 #include "GameInstance.h"
+#include "Json/Json_Utility.h"
 #include "Terrain_Demo.h"
 #include "ObjectMesh_Demo.h"
 
@@ -21,12 +22,48 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 	wcscpy_s(m_szFile, DATA_TERRAIN_PATH);
 
+	/*m_Test.iNumVerticesX = 3;
+	m_Test.iNumverticesZ = 3;
+
+	m_Test.tTerrainInfo = new TERRAININFO[9];
+	
+	for (_uint i = 0; i < 9; i++)
+	{
+		
+		VTXMESH dd;
+		dd.vPosition = _float3(0.f, 0.f, 0.f);
+		dd.vTangent = _float3(0.f, 0.f, 0.f);
+		dd.vNormal = _float3(0.f, 0.f, 0.f);
+		dd.vTexCoord = _float2(0.f, 0.f);
+
+		_char* szName = "test";
+
+		wsprintfA(szName, "%d", i);
+
+		m_Test.tTerrainInfo[i].tVertex = dd;
+		m_Test.tTerrainInfo[i].szVertexName = szName;
+	}
+
+	for (_uint i = 0; i < 4; i++)
+	{
+		_uint3 aa;
+		aa = _uint3(1, 1, 1);
+
+		_char* szName = "Intest";
+
+		wsprintfA(szName, "%d", i);
+
+		m_Test.tTerrainInfo[i].tIndex = aa;
+		m_Test.tTerrainInfo[i].szIndexName = szName;
+	}*/
+
 	return S_OK;
 }
 
 void CTerrain_Window::Tick()
 {
 	Terrain_Update();
+
 }
 
 HRESULT CTerrain_Window::Render()
@@ -84,103 +121,68 @@ void CTerrain_Window::Demo_Picked()
 
 HRESULT CTerrain_Window::Save_Data()
 {
-	Set_File_Flag(TYPE::TYPE_SAVE);
+	/*json dd;
+	CJson_Utility::Write_Float3(dd["test1"], _float3(1.f, 1.f, 1.f));
+	CJson_Utility::Write_Float3(dd["test2"], _float3(2.f, 2.f, 2.f));
+	if (FAILED(CJson_Utility::Save_Json("../Bin/Terrain.json", dd)))
+		return E_FAIL;*/
+	/*int a = 1;
 
-	if (GetSaveFileName(&m_ofn) == TRUE)
+	ofstream fout;
+
+	fout.open("../Bin/Terrain.json");
+
+	if (fout.is_open())
 	{
-		Document doc;
-		//json 객체 선언
-		doc.SetObject();
 
-		// json 구조체생성
-		Value ValueOne(kObjectType);
+		fout.write(reinterpret_cast<const char*>(&a), sizeof(a));
 
-		//json구조체에 저장할 구조체의 멤버 변환해서 저장
-		ValueOne.AddMember("int", m_Data.m_iTest, doc.GetAllocator());
-
-		ValueOne.AddMember("str", Value(wstring_To_Json(m_Data.m_strTest).c_str(), doc.GetAllocator()), doc.GetAllocator());
-
-		//새로운 json 구조체 생성
-		Value ValueTwo(kObjectType);
-		//json 구조체에 값 저장
-		ValueTwo.AddMember("str2", Value(wstring_To_Json(m_Data.m_strTest2).c_str(), doc.GetAllocator()), doc.GetAllocator());
-
-		//json구조체들을 json 문서에 저장
-		//1.저장할 구조체 이름, 2.구조체,3.객체의 할당기
-		doc.AddMember("One", ValueOne, doc.GetAllocator());
-		doc.AddMember("Two", ValueTwo, doc.GetAllocator());
-
-		// json 문서를 문자열로 변환
-		StringBuffer buffer;
-		Writer<StringBuffer> writer(buffer);
-		doc.Accept(writer);
-
-		ofstream ofs(m_ofn.lpstrFile);
-		ofs << buffer.GetString();
-		ofs.close();
 	}
 	else
 		return E_FAIL;
 
+	fout.close();*/
+
+	if (m_pTerrain == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pTerrain->Save_Terrain("../Bin/Export/Debug/x64/Data/Terrain/33.dat")))
+		return E_FAIL;
+	
 	return S_OK;
 }
 
 HRESULT CTerrain_Window::Load_Data()
 {
-	Set_File_Flag(TYPE::TYPE_LOAD);
+	/*_float3 ff;
+	json ddd;
+	CJson_Utility::Load_Json("../Bin/Terrain.json", ddd);
 
-	if (GetOpenFileName(&m_ofn) == TRUE)
+	CJson_Utility::Load_Float3(ddd["test1"], ff);
+	ff;
+	int a = 0;*/
+
+	int a = 0;
+
+	ifstream fIn;
+
+	fIn.open("../Bin/Terrain.json");
+
+	if (fIn.is_open())
 	{
-		FILE* pFile = _tfopen(m_ofn.lpstrFile, _T("rb"));
-		if (!pFile)
-			return E_FAIL;
 
-		fseek(pFile, 0, SEEK_END);
-		size_t fileSize = ftell(pFile);
-		fseek(pFile, 0, SEEK_SET);
-
-		vector<char> buffer(fileSize + 1, 0);
-		fread(buffer.data(), 1, fileSize, pFile);
-		fclose(pFile);
-
-		Document document;
-		document.Parse(buffer.data());
-
-		if (document.HasParseError())
-		{
-			return MSG_BOX("불러오기 실패");
-		}
-
-		// json Document 찾기
-		if (document.HasMember("One") && document["One"].IsObject())
-		{
-			//Document 의 value값
-			const Value& dataValue = document["One"];
-
-			//Value의 key값
-			if (dataValue.HasMember("int") && dataValue["int"].IsInt())
-				m_Data.m_iTest = dataValue["int"].GetInt();
-
-			if (dataValue.HasMember("str") && dataValue["str"].IsString())
-			{
-				const char* strValue = dataValue["str"].GetString();
-				m_Data.m_strTest = Json_To_wstring(strValue);
-			}
-
-		}
-		if (document.HasMember("Two") && document["Two"].IsObject())
-		{
-			const Value& dataValue = document["Two"];
-
-			if (dataValue.HasMember("str2") && dataValue["str2"].IsString())
-			{
-				const char* strValue = dataValue["str2"].GetString();
-				m_Data.m_strTest2 = Json_To_wstring(strValue);
-			}
-		}
+		fIn.read(reinterpret_cast<char*>(&a), sizeof(a));
 
 	}
-	
+	else
+		return E_FAIL;
+
+	fIn.close();
+
+	a;
+
+	int b = 0;
+
 	return S_OK;
 }
 

@@ -70,4 +70,28 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
 	}VTXTBN;
 
+	typedef struct ENGINE_DLL tagVertex_Mesh
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT3	vTangent;	// 접선 벡터 : 정점 표면의 정보.		탄젠트 공간 x 축
+		XMFLOAT3	vNormal;	// 법선 벡터 : 면에서 수직인 벡터.		탄젠트 공간 z 축
+		XMFLOAT2	vTexCoord;
+
+		static const unsigned int	iElementsNum = 4;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}VTXMESH;
+
+	typedef struct ENGINE_DLL tagVertex_Anim_Mesh
+	{
+		XMFLOAT3	vPosition;
+		XMFLOAT3	vTangent;	// 접선 벡터 : 정점 표면의 정보.		탄젠트 공간 x 축
+		XMFLOAT3	vNormal;	// 법선 벡터 : 면에서 수직인 벡터.		탄젠트 공간 z 축
+		XMFLOAT2	vTexCoord;
+		XMINT4		vBlendIndices;	// 뼈의 인덱스를 저장, 최대 4개까지 저장 가능하다.
+		XMFLOAT4	vBlendWeights;	// 뼈들의 가중치를 저장한다.
+
+		static const unsigned int	iElementsNum = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}VTXANIMMESH;
+
 }

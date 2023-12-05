@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Component_Manager.h"
 #include "PipeLine.h"
+#include "Json/Json_Utility.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -149,6 +150,7 @@ private:
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
+
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };		

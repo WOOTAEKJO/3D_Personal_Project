@@ -38,12 +38,15 @@ private:
 	_uint					m_iMaterialsNum = { 0 };
 	vector<MATERIAL_DESC>	m_vecMaterial;
 
+	vector<class CBone*>	m_vecBones;
+
 private:
 	TYPE					m_eType = { TYPE_END };
 
 private:
 	HRESULT	Ready_Meshes(_fmatrix	matPivot);
 	HRESULT	Ready_Materials(const string & strModelFilePath);
+	HRESULT	Ready_Bones(aiNode* pNode, _int iParentIndex);
 
 public:
 	static	CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext,TYPE eType, const string& strModelFilePath, _fmatrix	matPivot);

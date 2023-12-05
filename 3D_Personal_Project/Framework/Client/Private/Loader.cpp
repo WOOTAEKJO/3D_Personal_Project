@@ -167,6 +167,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(SHADER_NOR_TAG, SHADER_NOR_PATH))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG, SHADER_MESH_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	
@@ -206,6 +207,7 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
 	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG, SHADER_MESH_PATH))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 

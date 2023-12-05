@@ -176,6 +176,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\Public\BehaviorTree.h" />
     <ClInclude Include="..\Public\BlackBoard.h" />
+    <ClInclude Include="..\Public\Bone.h" />
     <ClInclude Include="..\Public\Builder.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\Component.h" />
@@ -197,11 +198,14 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\Public\Graphic_Device.h" />
     <ClInclude Include="..\Public\Input_Device.h" />
     <ClInclude Include="..\Public\Inverter.h" />
+    <ClInclude Include="..\Public\Json\json.hpp" />
+    <ClInclude Include="..\Public\Json\Json_Utility.h" />
     <ClInclude Include="..\Public\Layer.h" />
     <ClInclude Include="..\Public\Leaf.h" />
     <ClInclude Include="..\public\Level.h" />
     <ClInclude Include="..\public\Level_Manager.h" />
     <ClInclude Include="..\Public\Mesh.h" />
+    <ClInclude Include="..\Public\MeshData.h" />
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\Mouse_Manager.h" />
     <ClInclude Include="..\Public\Node.h" />
@@ -209,6 +213,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClInclude Include="..\Public\PipeLine.h" />
     <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\Repeator.h" />
+    <ClInclude Include="..\Public\SaveLoad_Manager.h" />
     <ClInclude Include="..\Public\Selector.h" />
     <ClInclude Include="..\Public\Sequence.h" />
     <ClInclude Include="..\Public\Shader.h" />
@@ -230,6 +235,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\Private\BehaviorTree.cpp" />
     <ClCompile Include="..\Private\BlackBoard.cpp" />
+    <ClCompile Include="..\Private\Bone.cpp" />
     <ClCompile Include="..\Private\Builder.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\Component.cpp" />
@@ -245,11 +251,13 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\Private\Graphic_Device.cpp" />
     <ClCompile Include="..\Private\Input_Device.cpp" />
     <ClCompile Include="..\Private\Inverter.cpp" />
+    <ClCompile Include="..\Private\Json\Json_Utility.cpp" />
     <ClCompile Include="..\Private\Layer.cpp" />
     <ClCompile Include="..\Private\Leaf.cpp" />
     <ClCompile Include="..\private\Level.cpp" />
     <ClCompile Include="..\private\Level_Manager.cpp" />
     <ClCompile Include="..\Private\Mesh.cpp" />
+    <ClCompile Include="..\Private\MeshData.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\Mouse_Manager.cpp" />
     <ClCompile Include="..\Private\Node.cpp" />
@@ -257,6 +265,7 @@ xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configurat
     <ClCompile Include="..\Private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\Repeator.cpp" />
+    <ClCompile Include="..\Private\SaveLoad_Manager.cpp" />
     <ClCompile Include="..\Private\Selector.cpp" />
     <ClCompile Include="..\Private\Sequence.cpp" />
     <ClCompile Include="..\Private\Shader.cpp" />
