@@ -47,6 +47,9 @@
 #define	ANIMMODEL_RAT_TAG		TEXT("Prototype_Component_AnimModel_Rat")
 #define	ANIMMODEL_RAT_PATH		"../Bin/Export/Debug/x64/Resources/Models/AnimModel/Rat/Rat.fbx"
 
+#define	ANIMMODEL_BAT_TAG		TEXT("Prototype_Component_AnimModel_Bat")
+#define	ANIMMODEL_BAT_PATH		"../Bin/Export/Debug/x64/Resources/Models/AnimModel/Bat/Bat.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

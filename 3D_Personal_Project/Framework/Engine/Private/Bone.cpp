@@ -18,13 +18,12 @@ HRESULT CBone::Initialize(aiNode* pNode, _int iParentIndex)
 	return  S_OK;
 }
 
-void CBone::Imvalidate_MatCombined(class CModel::BONES& pBones, _fmatrix matPivot)
+void CBone::Invalidate_MatCombined(class CModel::BONES& pBones, _fmatrix matPivot)
 {
-	if (m_iParentIndex == -1)
+	if (-1 == m_iParentIndex)
+		XMStoreFloat4x4(&m_matCombinedTransformation, XMLoadFloat4x4(&m_matTransformation) * matPivot);
+	else
 	{
-		XMStoreFloat4x4(&m_matCombinedTransformation,XMLoadFloat4x4(&m_matTransformation) * matPivot) ;
-	}
-	else {
 		XMStoreFloat4x4(&m_matCombinedTransformation,
 			XMLoadFloat4x4(&m_matTransformation) * XMLoadFloat4x4(&pBones[m_iParentIndex]->m_matCombinedTransformation));
 	}

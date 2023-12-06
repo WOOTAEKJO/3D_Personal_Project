@@ -98,15 +98,15 @@ _bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
 
 HRESULT CMesh::Bind_Blend(CShader* pShader, const _char* strName, CModel::BONES& pBones)
 {
-	_float4x4 matBlend[256];
 
-	for (_uint i = 0; i < m_iNumBones; i++)
+	_float4x4		BoneMatrices[256];
+
+	for (size_t i = 0; i < m_iNumBones; i++)
 	{
-		XMStoreFloat4x4( &matBlend[i],pBones[m_vecBoneIndices[i]]->Get_CombinedTransformationMatrix()*
-			XMLoadFloat4x4(&m_vecOffsetMatrix[i]));
+		XMStoreFloat4x4(&BoneMatrices[i], XMLoadFloat4x4(&m_vecOffsetMatrix[i]) * pBones[m_vecBoneIndices[i]]->Get_CombinedTransformationMatrix());
 	}
-	
-	return pShader->Bind_Matrixes(strName, matBlend, 256);
+
+	return pShader->Bind_Matrixes(strName, BoneMatrices, 256);
 }
 
 HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
@@ -206,10 +206,6 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
 	{
 		m_iNumBones = 1;	// 강제 갯수 1
 
-		_float4x4 matOffset;
-		XMStoreFloat4x4(&matOffset, XMMatrixIdentity());
-		m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬 항등 행렬
-
 		_uint iBoneIndex = { 0 };
 
 		auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pBb) {
@@ -228,7 +224,13 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
 
 		m_vecBoneIndices.push_back(iBoneIndex); // 매쉬의 이름과 같은 이름의 뼈 인덱스 추가
 
+		_float4x4 matOffset;
+		XMStoreFloat4x4(&matOffset, XMMatrixIdentity());
+		m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬 항등 행렬
+
 	}
+
+	return S_OK;
 
 	return S_OK;
 }

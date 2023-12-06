@@ -36,8 +36,6 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 {
 	m_eType = eType;
 
-	XMStoreFloat4x4(&m_matPivot, matPivot);
-
 	_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
 	if (m_eType == TYPE::TYPE_NONANIM)
@@ -47,6 +45,8 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 	// aiProcess_PreTransformVertices 애니메이션이 있는 매쉬를 로드하면 애니메이션과 관련된 매쉬가 없어질 수 있다.
 	if (m_pAiScene == nullptr)
 		return E_FAIL;
+
+	XMStoreFloat4x4(&m_matPivot, matPivot);
 
 	if (FAILED(Ready_Bones(m_pAiScene->mRootNode, -1)))
 		return E_FAIL;
@@ -80,7 +80,7 @@ void CModel::Play_Animation(_float fTimeDelta)
 {
 	for (auto& iter : m_vecBones)
 	{
-		iter->Imvalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
+		iter->Invalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
 	}
 }
 
@@ -119,7 +119,7 @@ HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 
 	m_vecMesh.reserve(m_iMeshesNum);
 
-	for (_uint i = 0; i < m_iMeshesNum; i++)
+	for (size_t i = 0; i < m_iMeshesNum; i++)
 	{
 		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, m_pAiScene->mMeshes[i], matPivot,m_vecBones);
 
@@ -136,13 +136,13 @@ HRESULT CModel::Ready_Materials(const string& strModelFilePath)
 {
 	m_iMaterialsNum = m_pAiScene->mNumMaterials;
 
-	for (_uint i = 0; i < m_iMaterialsNum; i++)
+	for (size_t i = 0; i < m_iMaterialsNum; i++)
 	{
 		aiMaterial* pMaterial = m_pAiScene->mMaterials[i];
 
 		MATERIAL_DESC	Material_Desc = {};
 
-		for (_uint j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
+		for (size_t j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
 			
 			_char szDdrive[MAX_PATH] = "";
@@ -191,7 +191,7 @@ HRESULT CModel::Ready_Bones(aiNode* pNode, _int iParentIndex)
 
 	m_vecBones.push_back(pBone);
 
-	_int iParIndx = m_vecBones.size() - (int)1;
+	_int iParIndx = m_vecBones.size() - 1;
 
 	for (_uint i = 0; i < pNode->mNumChildren; i++)
 	{

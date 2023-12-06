@@ -60,9 +60,10 @@ HRESULT CAnimMesh_Demo::Render()
 
 	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
-	for (_uint i = 0; i < iNumMeshs; i++)
+	for (size_t i = 0; i < iNumMeshs; i++)
 	{
-		m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i);
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
@@ -158,7 +159,7 @@ HRESULT CAnimMesh_Demo::Bind_ShaderResources()
 
 HRESULT CAnimMesh_Demo::Ready_Component()
 {
-	
+
 	/* For.Com_Shader*/ 
 	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_ANIMMESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))

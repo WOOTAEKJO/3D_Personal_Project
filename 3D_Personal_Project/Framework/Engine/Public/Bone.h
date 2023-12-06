@@ -17,7 +17,7 @@ public:
 	_matrix	Get_CombinedTransformationMatrix() const { 
 		return XMLoadFloat4x4(&m_matCombinedTransformation); }
 
-	void	Imvalidate_MatCombined(CModel::BONES& pBones, _fmatrix matPivot);
+	void	Invalidate_MatCombined(CModel::BONES& pBones, _fmatrix matPivot);
 
 private:
 	_char	m_szName[MAX_PATH] = "";
