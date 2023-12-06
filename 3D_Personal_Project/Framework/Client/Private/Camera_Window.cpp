@@ -2,6 +2,7 @@
 #include "../Imgui/imgui.h"
 #include "../Imgui/imgui_impl_win32.h"
 #include "../Imgui/imgui_impl_dx11.h"
+#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialog.h"
 #include "..\Public\Camera_Window.h"
 
 #include "../Public/ImGuiMgr.h"
@@ -47,6 +48,27 @@ void CCamera_Window::Demo_Picked()
 
 HRESULT CCamera_Window::Save_Data()
 {
+	//ImGuiFileDialog::Instance()->method_of_your_choice();
+
+	// open Dialog Simple
+	if (ImGui::Button("Open File Dialog"))
+		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
+
+	// display
+	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			// action
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
+
 	return S_OK;
 }
 

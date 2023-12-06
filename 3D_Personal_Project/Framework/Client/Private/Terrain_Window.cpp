@@ -22,40 +22,7 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 	wcscpy_s(m_szFile, DATA_TERRAIN_PATH);
 
-	/*m_Test.iNumVerticesX = 3;
-	m_Test.iNumverticesZ = 3;
-
-	m_Test.tTerrainInfo = new TERRAININFO[9];
 	
-	for (_uint i = 0; i < 9; i++)
-	{
-		
-		VTXMESH dd;
-		dd.vPosition = _float3(0.f, 0.f, 0.f);
-		dd.vTangent = _float3(0.f, 0.f, 0.f);
-		dd.vNormal = _float3(0.f, 0.f, 0.f);
-		dd.vTexCoord = _float2(0.f, 0.f);
-
-		_char* szName = "test";
-
-		wsprintfA(szName, "%d", i);
-
-		m_Test.tTerrainInfo[i].tVertex = dd;
-		m_Test.tTerrainInfo[i].szVertexName = szName;
-	}
-
-	for (_uint i = 0; i < 4; i++)
-	{
-		_uint3 aa;
-		aa = _uint3(1, 1, 1);
-
-		_char* szName = "Intest";
-
-		wsprintfA(szName, "%d", i);
-
-		m_Test.tTerrainInfo[i].tIndex = aa;
-		m_Test.tTerrainInfo[i].szIndexName = szName;
-	}*/
 
 	return S_OK;
 }
@@ -121,67 +88,33 @@ void CTerrain_Window::Demo_Picked()
 
 HRESULT CTerrain_Window::Save_Data()
 {
-	/*json dd;
-	CJson_Utility::Write_Float3(dd["test1"], _float3(1.f, 1.f, 1.f));
-	CJson_Utility::Write_Float3(dd["test2"], _float3(2.f, 2.f, 2.f));
-	if (FAILED(CJson_Utility::Save_Json("../Bin/Terrain.json", dd)))
-		return E_FAIL;*/
-	/*int a = 1;
-
-	ofstream fout;
-
-	fout.open("../Bin/Terrain.json");
-
-	if (fout.is_open())
-	{
-
-		fout.write(reinterpret_cast<const char*>(&a), sizeof(a));
-
-	}
-	else
-		return E_FAIL;
-
-	fout.close();*/
-
 	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pTerrain->Save_Terrain("../Bin/Export/Debug/x64/Data/Terrain/33.dat")))
+	if (FAILED(m_pTerrain->Save_Terrain("../Bin/Export/Debug/x64/Data/Terrain/Terrain.bin"))) {
+		MSG_BOX("Failed");
 		return E_FAIL;
+	}
+	else {
+		MSG_BOX("Success");
+	}
 	
 	return S_OK;
 }
 
 HRESULT CTerrain_Window::Load_Data()
 {
-	/*_float3 ff;
-	json ddd;
-	CJson_Utility::Load_Json("../Bin/Terrain.json", ddd);
 
-	CJson_Utility::Load_Float3(ddd["test1"], ff);
-	ff;
-	int a = 0;*/
-
-	int a = 0;
-
-	ifstream fIn;
-
-	fIn.open("../Bin/Terrain.json");
-
-	if (fIn.is_open())
-	{
-
-		fIn.read(reinterpret_cast<char*>(&a), sizeof(a));
-
-	}
-	else
+	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	fIn.close();
-
-	a;
-
-	int b = 0;
+	if (FAILED(m_pTerrain->Load_Terrain("../Bin/Export/Debug/x64/Data/Terrain/Terrain.bin"))) {
+		MSG_BOX("Failed");
+		return E_FAIL;
+	}
+	else {
+		MSG_BOX("Success");
+	}
 
 	return S_OK;
 }

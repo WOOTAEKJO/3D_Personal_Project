@@ -15,11 +15,10 @@ HRESULT CSaveLoad_Manager::Initialize()
 	return S_OK;
 }
 
-HRESULT CSaveLoad_Manager::Save_Data(const _char* strFileName)
+HRESULT CSaveLoad_Manager::Save_Data_Mesh(const _char* strFileName)
 {
-	
+		
 
-	
 
 	return S_OK;
 }
@@ -44,7 +43,7 @@ HRESULT CSaveLoad_Manager::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFi
 		break;
 	case CMeshData::MODEL_TYPE::TERRAIN:
 		
-		//pBuffer-
+		pBuffer->Init_Buffer(MeshDataDesc);
 
 		break;
 	}

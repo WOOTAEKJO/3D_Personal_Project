@@ -138,6 +138,10 @@ public: /* For.PipeLine*/
 	_matrix		Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eState);
 	_float4		Get_Camera_Pos();
 
+public: /* For. SaveLoad_Manager*/
+	HRESULT	Save_Data_Mesh(const _char* strFileName);
+	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
@@ -149,6 +153,7 @@ private:
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
+	class CSaveLoad_Manager*		m_pSaveLoad_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

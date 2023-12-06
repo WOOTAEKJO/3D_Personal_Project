@@ -84,12 +84,12 @@ HRESULT CVIBuffer::Create_Buffer(_Inout_ ID3D11Buffer** pBuffer)
 	return S_OK;
 }
 
-HRESULT CVIBuffer::Save_Buffer(const _char* strPath)
+HRESULT CVIBuffer::Set_Buffer(const _char* strPath)
 {
 	return S_OK;
 }
 
-HRESULT CVIBuffer::Load_Buffer(const _char* strPath)
+HRESULT CVIBuffer::Init_Buffer(CMeshData::MESHDATADESC tMeshData)
 {
 	return S_OK;
 }

@@ -20,7 +20,7 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 {
 	ofstream fout;
 
-	fout.open(strPath);
+	fout.open(strPath,std::ofstream::binary);
 
 	if (fout.is_open())
 	{
@@ -39,21 +39,23 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 
 			for (_uint i =0;i< m_iNumVertices;i++)
 			{
-				fout.write(reinterpret_cast<const char*>(&m_vecMeshVertices[i]), sizeof(VTXMESH));
+				fout.write(reinterpret_cast<char*>(&m_vecMeshVertices[i]), sizeof(VTXMESH));
 			}
 
 			break;
 		}
 
+		string line;
+
 		for (_uint i = 0; i < m_iNumFaces; i++)
 		{
-
-			fout.write(reinterpret_cast<const char*>(&m_vecIndices[i]), sizeof(_uint3));
+			fout.write(reinterpret_cast<char*>(&m_vecIndices[i]), sizeof(_uint3));
 		}
 
 	}
 	else
 		return E_FAIL;
+
 
 	fout.close();
 	
@@ -64,7 +66,7 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 {
 	ifstream fIn;
 
-	fIn.open(strPath);
+	fIn.open(strPath, std::ifstream::binary);
 
 	if (fIn.is_open())
 	{
@@ -80,25 +82,29 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 		case Engine::CMeshData::ANIM:
 			break;
 		case Engine::CMeshData::TERRAIN:
+
+			VTXMESH* tTerrain = new VTXMESH[m_iNumVertices];
+
 			for (_uint i = 0; i < m_iNumVertices; i++)
 			{
-				VTXMESH* tTerrain = new VTXMESH;
 				
-				fIn.read(reinterpret_cast<char*>(tTerrain), sizeof(VTXMESH));
-
-				m_vecMeshVertices.push_back(*tTerrain);
+				fIn.read(reinterpret_cast<char*>(&tTerrain[i]), sizeof(VTXMESH));
+				m_vecMeshVertices.push_back(tTerrain[i]);
+				//memcpy(&m_MeshVertices[i], &tTerrain[i], sizeof(VTXMESH));
+				//fIn >> (&tTerrain[i]);
 			}
 			break;
 		}
 
+		_uint3* iIndex = new _uint3[m_iNumFaces];
+
 		for (_uint i = 0; i < m_iNumFaces; i++)
 		{
 
-			_uint3* iIndex = new _uint3;
-
-			fIn.read(reinterpret_cast<char*>(iIndex), sizeof(_uint3));
+			fIn.read(reinterpret_cast<char*>(&iIndex[i]), sizeof(_uint3));
 			
-			m_vecIndices.push_back(*iIndex);
+			m_vecIndices.push_back(iIndex[i]);
+			//memcpy(&m_Indices[i], &iIndex[i], sizeof(_uint3));
 		}
 	}
 	else

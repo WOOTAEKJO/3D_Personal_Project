@@ -134,7 +134,6 @@ _bool CObjectMesh_Demo::Get_Picked()
 	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
 		return true;
 	
-
 	return false;
 }
 

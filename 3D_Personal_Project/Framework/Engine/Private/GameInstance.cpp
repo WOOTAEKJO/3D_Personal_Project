@@ -6,6 +6,7 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 #include "Mouse_Manager.h"
+#include "SaveLoad_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -63,6 +64,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	/* 파이프라인 사용 준비*/
 	m_pPipeLine = CPipeLine::Create();
 	if (nullptr == m_pPipeLine)
+		return E_FAIL;
+
+	/* 세이브 및 로드 사용 준비*/
+	m_pSaveLoad_Manager = CSaveLoad_Manager::Create();
+	if (nullptr == m_pSaveLoad_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -402,11 +408,28 @@ _float4 CGameInstance::Get_Camera_Pos()
 	return m_pPipeLine->Get_Camera_Pos();
 }
 
+HRESULT CGameInstance::Save_Data_Mesh(const _char* strFileName)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Save_Data_Mesh(strFileName);
+}
+
+HRESULT CGameInstance::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Load_Data_Mesh(pBuffer, strFileName);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pSaveLoad_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pMouse_Manager);
 	Safe_Release(m_pEvent_Manager);

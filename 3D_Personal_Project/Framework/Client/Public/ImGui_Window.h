@@ -73,7 +73,7 @@ protected:
 	void	Begin();
 	void	End();
 
-protected: /* For.Json*/
+protected:
 	HRESULT	Set_File_Flag(TYPE eType);
 	string wstring_To_Json(const wstring& strTag);
 	wstring	Json_To_wstring(const string& utf8Str);

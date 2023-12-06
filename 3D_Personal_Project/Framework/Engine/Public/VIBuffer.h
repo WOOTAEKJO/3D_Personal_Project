@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "MeshData.h"
 
+
 BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer abstract : public CComponent
@@ -23,8 +24,8 @@ public:
 	HRESULT	Create_Buffer(_Inout_ ID3D11Buffer** pBuffer);	// device로 버퍼 생성 작업
 
 public:
-	virtual HRESULT	Save_Buffer(const _char* strPath);
-	virtual	HRESULT	Load_Buffer(const _char * strPath);
+	virtual HRESULT	Set_Buffer(const _char* strPath);
+	virtual HRESULT	Init_Buffer(CMeshData::MESHDATADESC tMeshData);
 
 protected:
 	ID3D11Buffer*	m_pVB = { nullptr };	// 버텍스 버퍼를 저장하는 변수

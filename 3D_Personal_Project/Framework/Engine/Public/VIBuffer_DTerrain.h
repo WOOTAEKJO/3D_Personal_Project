@@ -26,12 +26,11 @@ public:
 public:
 	void	Update_Buffer(_fvector fMousePos, _float fRadious, _float fHeight, _float fSharpness);
 	void	Compute_MousePos(_float3* pOut, _matrix matWorld);
-	virtual HRESULT	Save_Buffer(const _char* strPath) override;
-	virtual	HRESULT	Load_Buffer(const _char* strPath) override;
+	virtual HRESULT	Set_Buffer(const _char* strPath) override;
+	virtual HRESULT	Init_Buffer(CMeshData::MESHDATADESC tMeshData) override;
 
 public:
 	HRESULT	Init_Terrain(DTERRAINDESC* pDTerrainDesc);
-	HRESULT	Init_Terrain(CMeshData::MESHDATADESC tTerrainData);
 
 private:
 	vector<VTXMESH>	m_vecVertexInfo;

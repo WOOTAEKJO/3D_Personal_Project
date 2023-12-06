@@ -41,6 +41,7 @@ public:
 	_bool	Update_Mouse(_float4* fPickPoint);
 	void	Update_HeightMap(_fvector vPickPos, _float fRadius, _float fHeight, _float fSharpness);
 	HRESULT	Save_Terrain(const _char* strPath);
+	HRESULT	Load_Terrain(const _char* strPath);
 
 private:
 	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };

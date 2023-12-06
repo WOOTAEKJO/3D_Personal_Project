@@ -213,7 +213,32 @@ HRESULT CTerrain_Demo::Save_Terrain(const _char* strPath)
 	if (m_pVIBufferCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Save_Buffer(strPath)))
+	if (FAILED(m_pVIBufferCom->Set_Buffer(strPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
+{
+	if (m_pVIBufferCom == nullptr) {
+		
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
+			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), nullptr)))
+			return E_FAIL;
+	}
+	else {
+		if (FAILED(Delete_Component(TEXT("Com_VIBuffer"))))
+			return E_FAIL;
+
+		Safe_Release(m_pVIBufferCom);
+
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
+			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), nullptr)))
+			return E_FAIL;
+	}
+
+	if (FAILED(m_pGameInstance->Load_Data_Mesh(m_pVIBufferCom, strPath)))
 		return E_FAIL;
 
 	return S_OK;
@@ -249,7 +274,7 @@ void CTerrain_Demo::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < TYPE_END; i++)
+	for (_uint i = 0; i < TEXTURE::TYPE_END; i++)
 	{
 		Safe_Release(m_pTextureCom[i]);
 	}

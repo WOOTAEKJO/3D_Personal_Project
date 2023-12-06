@@ -1,7 +1,7 @@
 #include "..\Public\VIBuffer_DTerrain.h"
 #include "GameInstance.h"
 
-#include "MeshData.h"
+
 
 CVIBuffer_DTerrain::CVIBuffer_DTerrain(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CVIBuffer(pDevice, pContext)
@@ -20,12 +20,11 @@ HRESULT CVIBuffer_DTerrain::Initialize_ProtoType()
 
 HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 {
-	if (pArg == nullptr)
-		return E_FAIL;
-
-	DTERRAINDESC* pDTerrainDesc = (DTERRAINDESC*)pArg;
-	if (FAILED(Init_Terrain(pDTerrainDesc)))
-		return E_FAIL;
+	if (pArg != nullptr) {
+		DTERRAINDESC* pDTerrainDesc = (DTERRAINDESC*)pArg;
+		if (FAILED(Init_Terrain(pDTerrainDesc)))
+			return E_FAIL;
+	}
 	
 
 	return S_OK;
@@ -166,7 +165,7 @@ void CVIBuffer_DTerrain::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	}
 }
 
-HRESULT CVIBuffer_DTerrain::Save_Buffer(const _char* strPath)
+HRESULT CVIBuffer_DTerrain::Set_Buffer(const _char* strPath)
 {
 	CMeshData::MESHDATADESC MeshDataDesc;
 
@@ -176,7 +175,7 @@ HRESULT CVIBuffer_DTerrain::Save_Buffer(const _char* strPath)
 	MeshDataDesc.iNumBones = 0;
 	MeshDataDesc.vecMeshVertices = m_vecVertexInfo;
 	MeshDataDesc.vecIndices = m_vecIndexInfo;
-
+	
 	CMeshData* pMeshData = CMeshData::Create(MeshDataDesc);
 	if (pMeshData == nullptr)
 		return E_FAIL;
@@ -189,17 +188,71 @@ HRESULT CVIBuffer_DTerrain::Save_Buffer(const _char* strPath)
 	return S_OK;
 }
 
-HRESULT CVIBuffer_DTerrain::Load_Buffer(const _char* strPath)
+HRESULT CVIBuffer_DTerrain::Init_Buffer(CMeshData::MESHDATADESC tMeshData)
 {
-	/*CMeshData::MESHDATADESC MeshDataDesc;
+	m_iVertexBuffersNum = 1;
+	m_iVertexNum = tMeshData.iNumVertices;
+	m_iVertexStride = sizeof(VTXMESH);
 
-	CMeshData* pMeshData = CMeshData::Create(MeshDataDesc);
+	VTXMESH* pVertices = new VTXMESH[m_iVertexNum];
 
-	if (FAILED(pMeshData->Load_Data(strPath)))
+	for (_uint i = 0; i < m_iVertexNum; i++)
+	{
+		pVertices[i].vPosition = tMeshData.vecMeshVertices[i].vPosition;
+		pVertices[i].vTangent = tMeshData.vecMeshVertices[i].vTangent;
+		pVertices[i].vNormal = tMeshData.vecMeshVertices[i].vNormal;
+		pVertices[i].vTexCoord = tMeshData.vecMeshVertices[i].vTexCoord;
+
+		m_vecVertexInfo.push_back(pVertices[i]);
+	}
+
+	m_iIndexNum = tMeshData.iNumFaces * 3;
+	m_iIndexStride = 4;
+	m_eIndexForMat = DXGI_FORMAT_R32_UINT;
+	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	_uint3* pIndices = new _uint3[tMeshData.iNumFaces];
+
+	for (_uint i = 0; i < tMeshData.iNumFaces; i++)
+	{
+		pIndices[i] = tMeshData.vecIndices[i];
+		m_vecIndexInfo.push_back(pIndices[i]);
+	}
+
+	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
+
+	m_Buffer_Desc.ByteWidth = m_iVertexStride * m_iVertexNum;	// 동적배열의 크기
+	m_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;					// 정적버퍼인지 동적버퍼인지 설정/ 지금은 정적
+	m_Buffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			// 버퍼 종류 설정
+	m_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// 동적만 해당
+	m_Buffer_Desc.MiscFlags = 0;								// 동적만 해당
+	m_Buffer_Desc.StructureByteStride = m_iVertexStride;		// 정점 하나의 크기를 집어 넣음
+
+	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
+
+	m_SubResource_Data.pSysMem = pVertices;
+
+	if (FAILED(Create_Buffer(&m_pVB)))		// 내가 할당한 값들을 버퍼가 할당한 공간에 복사하여 생성
 		return E_FAIL;
 
-	if (FAILED(pMeshData->Data_Get(MeshDataDesc)))
-		return E_FAIL;*/
+	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
+
+	m_Buffer_Desc.ByteWidth = m_iIndexStride * m_iIndexNum;
+	m_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;
+	m_Buffer_Desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	m_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	m_Buffer_Desc.MiscFlags = 0;
+	m_Buffer_Desc.StructureByteStride = 0;
+
+	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
+
+	m_SubResource_Data.pSysMem = pIndices;
+
+	if (FAILED(Create_Buffer(&m_pIB)))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+	Safe_Delete_Array(pIndices);
 
 	return S_OK;
 }
@@ -300,11 +353,6 @@ HRESULT CVIBuffer_DTerrain::Init_Terrain(DTERRAINDESC* pDTerrainDesc)
 	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
 
-	return S_OK;
-}
-
-HRESULT CVIBuffer_DTerrain::Init_Terrain(CMeshData::MESHDATADESC tTerrainData)
-{
 	return S_OK;
 }
 
