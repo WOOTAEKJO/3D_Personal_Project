@@ -15,7 +15,9 @@ CModel::CModel(const CModel& rhs)
 	m_iMeshesNum(rhs.m_iMeshesNum),
 	m_iMaterialsNum(rhs.m_iMaterialsNum),
 	m_vecMesh(rhs.m_vecMesh),
-	m_vecMaterial(rhs.m_vecMaterial)
+	m_vecMaterial(rhs.m_vecMaterial),
+	m_vecBones(rhs.m_vecBones),
+	m_matPivot(rhs.m_matPivot)
 {
 	for (auto& iter1 : m_vecMaterial)
 	{
@@ -25,11 +27,16 @@ CModel::CModel(const CModel& rhs)
 
 	for (auto& iter : m_vecMesh)
 		Safe_AddRef(iter);
+
+	for (auto& iter : m_vecBones)
+		Safe_AddRef(iter);
 }
 
 HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
 {
 	m_eType = eType;
+
+	XMStoreFloat4x4(&m_matPivot, matPivot);
 
 	_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
 
@@ -41,13 +48,13 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 	if (m_pAiScene == nullptr)
 		return E_FAIL;
 
+	if (FAILED(Ready_Bones(m_pAiScene->mRootNode, -1)))
+		return E_FAIL;
+
 	if (FAILED(Ready_Meshes(matPivot)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Materials(strModelFilePath)))
-		return E_FAIL;
-
-	if (FAILED(Ready_Bones(m_pAiScene->mRootNode,-1)))
 		return E_FAIL;
 
 	return S_OK;
@@ -67,6 +74,14 @@ HRESULT CModel::Render(_uint iMeshIndex)
 	m_vecMesh[iMeshIndex]->Render();
 
 	return S_OK;
+}
+
+void CModel::Play_Animation(_float fTimeDelta)
+{
+	for (auto& iter : m_vecBones)
+	{
+		iter->Imvalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
+	}
 }
 
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
@@ -93,6 +108,11 @@ HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint
 	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }
 
+HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshIndex)
+{
+	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones);
+}
+
 HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 {
 	m_iMeshesNum = m_pAiScene->mNumMeshes;
@@ -101,7 +121,7 @@ HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
 
 	for (_uint i = 0; i < m_iMeshesNum; i++)
 	{
-		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, m_pAiScene->mMeshes[i], matPivot);
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, m_pAiScene->mMeshes[i], matPivot,m_vecBones);
 
 		if (pMesh == nullptr)
 			return E_FAIL;
@@ -185,7 +205,7 @@ CModel* CModel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, TYP
 {
 	CModel* pInstance = new CModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(eType,strModelFilePath, matPivot))) {
+ 	if (FAILED(pInstance->Initialize_ProtoType(eType,strModelFilePath, matPivot))) {
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);
 	}
@@ -222,6 +242,10 @@ void CModel::Free()
 	for (auto* iter : m_vecMesh)
 		Safe_Release(iter);
 	m_vecMesh.clear();
+
+	for (auto* iter : m_vecBones)
+		Safe_Release(iter);
+	m_vecBones.clear();
 
 	if(!m_bClone)
 		m_Importer.FreeScene();

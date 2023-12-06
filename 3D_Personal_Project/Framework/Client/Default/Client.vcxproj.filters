@@ -106,6 +106,9 @@
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\03. Mouse_WIndow">
       <UniqueIdentifier>{8fa861cc-e864-4d79-b28a-8e7e1872ffbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98. Demo\02. ObjectAnimMesh">
+      <UniqueIdentifier>{96d709e8-5d3e-4238-bdad-411bcef46676}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -219,6 +222,9 @@
     <ClInclude Include="..\Public\Client_Macro.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AnimMesh_Demo.h">
+      <Filter>02.GameObjects\98. Demo\02. ObjectAnimMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -317,6 +323,9 @@
     <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp">
       <Filter>97. ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\AnimMesh_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\02. ObjectAnimMesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -347,6 +356,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxMesh.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

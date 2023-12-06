@@ -5,6 +5,9 @@
 
 #include "GameInstance.h"
 
+#include "ObjectMesh_Demo.h"
+#include "AnimMesh_Demo.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -37,8 +40,8 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_TERRAIN_TAG)))
-		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_TERRAIN_TAG)))
+		return E_FAIL;*/
 	
 	return S_OK;
 }
@@ -58,7 +61,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 	DynamicCameraDesc.fSpeedPerSec = 30.f;
 	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_DynamicCamera"), &DynamicCameraDesc)))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_DCAMERA_TAG, &DynamicCameraDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -66,9 +69,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_OBJECTMESH_DEMO_TAG)))
-		return E_FAIL;
+	/*CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
 
+	ObjectDemoValue.strModelTag = strModelTag;
+	ObjectDemoValue.vPos = vPickPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
+		&ObjectDemoValue)))
+		return E_FAIL;*/
+
+	CAnimMesh_Demo::ANIMDEMOVALUE AnimMeshDemoValue;
+
+	AnimMeshDemoValue.strModelTag = ANIMMODEL_FIONA_TAG;
+	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, TEXT("Tool"), G0_ANIMMESH_DEMO_TAG,
+		&AnimMeshDemoValue)))
+		return E_FAIL;
+	
 	return S_OK;
 }
 

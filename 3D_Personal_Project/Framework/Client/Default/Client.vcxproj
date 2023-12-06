@@ -186,6 +186,7 @@
     <ClInclude Include="..\Imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="..\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
@@ -263,6 +265,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl" />

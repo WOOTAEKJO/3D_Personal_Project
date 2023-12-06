@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CVIBuffer_DTerrain;
+class CVIBuffer;
 
 class CSaveLoad_Manager final : public CBase
 {
@@ -14,9 +14,10 @@ private:
 public:
 	HRESULT	Initialize();
 	HRESULT	Save_Data(const _char* strFileName);
-	HRESULT	Load_Data_Terrain(CVIBuffer_DTerrain* pDTerrain,const _char* strFileName);
+	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer,const _char* strFileName);
 
 private:
+	class CGameInstance* m_pGameInstance = { nullptr };
 
 public:
 	static	CSaveLoad_Manager* Create();

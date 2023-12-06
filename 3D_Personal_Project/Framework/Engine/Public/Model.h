@@ -9,7 +9,7 @@ class ENGINE_DLL CModel final : public	CComponent
 {
 public:
 	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
-
+	typedef vector<class CBone*> BONES;
 private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& rhs);
@@ -19,6 +19,7 @@ public:
 	virtual	HRESULT	Initialize_ProtoType(TYPE eType, const string & strModelFilePath, _fmatrix	matPivot);
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render(_uint iMeshIndex);
+	void	Play_Animation(_float fTimeDelta);
 
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
@@ -26,6 +27,7 @@ public:
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, aiTextureType eType);
+	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
 
 private:
 	const aiScene*		m_pAiScene = { nullptr };
@@ -38,7 +40,9 @@ private:
 	_uint					m_iMaterialsNum = { 0 };
 	vector<MATERIAL_DESC>	m_vecMaterial;
 
-	vector<class CBone*>	m_vecBones;
+	BONES	m_vecBones;
+
+	_float4x4				m_matPivot;
 
 private:
 	TYPE					m_eType = { TYPE_END };

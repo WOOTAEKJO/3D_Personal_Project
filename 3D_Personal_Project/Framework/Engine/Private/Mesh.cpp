@@ -1,6 +1,7 @@
 #include "..\Public\Mesh.h"
 
 #include "GameInstance.h"
+#include "Bone.h"
 
 CMesh::CMesh(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CVIBuffer(pDevice, pContext)
@@ -12,11 +13,12 @@ CMesh::CMesh(const CMesh& rhs)
 {
 }
 
-HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh, _fmatrix matPivot)
+HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh,
+	_fmatrix matPivot, CModel::BONES& pBones)
 {
 	m_iMaterialIndex = pMesh->mMaterialIndex;
 
-	strcpy_s(m_cName, pMesh->mName.data);
+	strcpy_s(m_szName, pMesh->mName.data);
 
 	m_iVertexBuffersNum = 1;
 	m_iVertexNum = pMesh->mNumVertices;
@@ -26,7 +28,7 @@ HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh, _fm
 	m_eIndexForMat =  DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	HRESULT hr = eType == CModel::TYPE::TYPE_ANIM ? Anim_Vertex(pMesh) : NonAnim_Vertex(pMesh, matPivot);
+	HRESULT hr = eType == CModel::TYPE::TYPE_ANIM ? Anim_Vertex(pMesh, pBones) : NonAnim_Vertex(pMesh, matPivot);
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -94,7 +96,20 @@ _bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	return false;
 }
 
-HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh)
+HRESULT CMesh::Bind_Blend(CShader* pShader, const _char* strName, CModel::BONES& pBones)
+{
+	_float4x4 matBlend[256];
+
+	for (_uint i = 0; i < m_iNumBones; i++)
+	{
+		XMStoreFloat4x4( &matBlend[i],pBones[m_vecBoneIndices[i]]->Get_CombinedTransformationMatrix()*
+			XMLoadFloat4x4(&m_vecOffsetMatrix[i]));
+	}
+	
+	return pShader->Bind_Matrixes(strName, matBlend, 256);
+}
+
+HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
 {
 	m_iVertexStride = sizeof(VTXANIMMESH);
 
@@ -110,6 +125,7 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh)
 	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
 
 	VTXANIMMESH* pVerpostex = new VTXANIMMESH[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
+	ZeroMemory(pVerpostex, sizeof(VTXANIMMESH) * m_iVertexNum);
 
 	for (size_t i = 0; i < m_iVertexNum; i++)
 	{
@@ -123,9 +139,35 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh)
 		//m_vecAnimVertexInfo.push_back(pVerpostex[i]);
 	}
 
-	for (size_t i = 0; i < pMesh->mNumBones; i++)
+	m_iNumBones = pMesh->mNumBones;
+
+	for (size_t i = 0; i < m_iNumBones; i++)
 	{
 		aiBone* pBone = pMesh->mBones[i];
+
+		_float4x4 matOffset;
+
+		memcpy(&matOffset, &pBone->mOffsetMatrix,sizeof(_float4x4));
+		XMStoreFloat4x4(&matOffset,XMMatrixTranspose(XMLoadFloat4x4(&matOffset)));
+
+		m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬을 저장
+
+		_uint iBoneIndex = { 0 };
+
+		auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pB) {
+			
+			if (false==strcmp(pBone->mName.data, pB->Get_BoneName()))
+				return true;
+
+			++iBoneIndex;
+
+			return false;
+		});
+
+		if (iter == pBones.end())
+			return E_FAIL;
+
+		m_vecBoneIndices.push_back(iBoneIndex);
 
 		/* pAIBone->mWeights[j].mVertexId : 이 뼈가 영향을 주는 j번째 정점의 인덱스 */
 		for (size_t j = 0; j < pBone->mNumWeights; j++)
@@ -159,6 +201,34 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh)
 		return E_FAIL;
 
 	Safe_Delete_Array(pVerpostex);			// 내가 할당한 것은 버퍼가 이미 사용했기에 필요 없으니 해제
+
+	if (m_iNumBones == 0)
+	{
+		m_iNumBones = 1;	// 강제 갯수 1
+
+		_float4x4 matOffset;
+		XMStoreFloat4x4(&matOffset, XMMatrixIdentity());
+		m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬 항등 행렬
+
+		_uint iBoneIndex = { 0 };
+
+		auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pBb) {
+
+			if (false == strcmp(m_szName, pBb->Get_BoneName()))
+				return true;
+
+			++iBoneIndex;
+
+			return false;
+
+		});
+
+		if (iter == pBones.end())
+			return E_FAIL;
+
+		m_vecBoneIndices.push_back(iBoneIndex); // 매쉬의 이름과 같은 이름의 뼈 인덱스 추가
+
+	}
 
 	return S_OK;
 }
@@ -206,11 +276,12 @@ HRESULT CMesh::NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot)
 	return S_OK;
 }
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const aiMesh* pMesh, _fmatrix matPivot)
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const aiMesh* pMesh,
+	_fmatrix matPivot, CModel::BONES& pBones)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(eType, pMesh, matPivot))) {
+	if (FAILED(pInstance->Initialize_ProtoType(eType, pMesh, matPivot, pBones))) {
 		MSG_BOX("Failed to Created : CMesh");
 		Safe_Release(pInstance);
 	}

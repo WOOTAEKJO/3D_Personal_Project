@@ -1,9 +1,13 @@
 #include "..\Public\SaveLoad_Manager.h"
 #include "Json/Json_Utility.h"
+#include "GameInstance.h"
+#include "GameObject.h"
 #include "MeshData.h"
 
 CSaveLoad_Manager::CSaveLoad_Manager()
+	:m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CSaveLoad_Manager::Initialize()
@@ -20,7 +24,7 @@ HRESULT CSaveLoad_Manager::Save_Data(const _char* strFileName)
 	return S_OK;
 }
 
-HRESULT CSaveLoad_Manager::Load_Data_Terrain(CVIBuffer_DTerrain* pDTerrain, const _char* strFileName)
+HRESULT CSaveLoad_Manager::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName)
 {
 	CMeshData::MESHDATADESC MeshDataDesc;
 
@@ -31,6 +35,19 @@ HRESULT CSaveLoad_Manager::Load_Data_Terrain(CVIBuffer_DTerrain* pDTerrain, cons
 
 	if (FAILED(pMeshData->Data_Get(MeshDataDesc)))
 		return E_FAIL;
+
+	switch (MeshDataDesc.eModel_Type)
+	{
+	case CMeshData::MODEL_TYPE::ANIM:
+		break;
+	case CMeshData::MODEL_TYPE::NONANIM:
+		break;
+	case CMeshData::MODEL_TYPE::TERRAIN:
+		
+		//pBuffer-
+
+		break;
+	}
 
 	return S_OK;
 }
@@ -50,4 +67,6 @@ CSaveLoad_Manager* CSaveLoad_Manager::Create()
 void CSaveLoad_Manager::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pGameInstance);
 }

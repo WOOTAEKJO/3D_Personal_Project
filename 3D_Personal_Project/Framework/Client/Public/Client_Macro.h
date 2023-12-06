@@ -39,17 +39,28 @@
 
 #pragma region ¸ðµ¨
 
-#define	MODEL_FIONA_TAG			TEXT("Prototype_Component_Model_Fiona")
-#define	MODEL_FIONA_PATH		"../Bin/Export/Debug/x64/Resources/Models/Fiona/Fiona.fbx"
+#pragma region ¾Ö´Ï¸ÞÀÌ¼Ç ¸ðµ¨
+
+#define	ANIMMODEL_FIONA_TAG			TEXT("Prototype_Component_AnimModel_Fiona")
+#define	ANIMMODEL_FIONA_PATH		"../Bin/Export/Debug/x64/Resources/Models/AnimModel/Fiona/Fiona.fbx"
+
+#define	ANIMMODEL_RAT_TAG		TEXT("Prototype_Component_AnimModel_Rat")
+#define	ANIMMODEL_RAT_PATH		"../Bin/Export/Debug/x64/Resources/Models/AnimModel/Rat/Rat.fbx"
+
+#pragma endregion
+
+#pragma region ÀÏ¹Ý¸ðµ¨
 
 #define	MODEL_PINETREE_TAG		TEXT("Prototype_Component_Model_PineTree")
-#define	MODEL_PINETREE_PATH		"../Bin/Export/Debug/x64/Resources/Models/PineTree/PineTree.fbx"
+#define	MODEL_PINETREE_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/PineTree/PineTree.fbx"
 
 #define	MODEL_SM_REED1_TAG		TEXT("Prototype_Component_Model_SM_Reed1")
-#define	MODEL_SM_REED1_PATH		"../Bin/Export/Debug/x64/Resources/Models/SM_Reed1/SM_Reed1.fbx"
+#define	MODEL_SM_REED1_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed1/SM_Reed1.fbx"
 
 #define	MODEL_SM_REED2_TAG		TEXT("Prototype_Component_Model_SM_Reed2")
-#define	MODEL_SM_REED2_PATH		"../Bin/Export/Debug/x64/Resources/Models/SM_Reed2/SM_Reed2.fbx"
+#define	MODEL_SM_REED2_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed2/SM_Reed2.fbx"
+
+#pragma endregion
 
 #pragma endregion
 
@@ -84,10 +95,12 @@
 
 #define G0_TERRAIN_TAG			TEXT("Prototype_GameObject_Terrain")
 
+#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
+
 #define G0_DCAMERA_TAG			TEXT("Prototype_GameObject_DynamicCamera")
 
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
 
-#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
+#define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
 
 #pragma endregion

@@ -30,7 +30,7 @@ public:
 	virtual	HRESULT	Load_Buffer(const _char* strPath) override;
 
 public:
-	HRESULT	Init_Terrain(DTERRAINDESC tTerrainDesc);
+	HRESULT	Init_Terrain(DTERRAINDESC* pDTerrainDesc);
 	HRESULT	Init_Terrain(CMeshData::MESHDATADESC tTerrainData);
 
 private:
@@ -43,7 +43,7 @@ private:
 
 public:
 	static	CVIBuffer_DTerrain* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);
-	virtual	CComponent* Clone(void* pArg) override;
+	virtual	CComponent* Clone(void* pArg) ;
 	virtual	void	Free() override;
 };
 

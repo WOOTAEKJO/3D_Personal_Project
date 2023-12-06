@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "..\Public\Terrain_Demo.h"
-#include "GameInstance.h"
 
 #include "../Public/ImGuiMgr.h"
 

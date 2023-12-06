@@ -13,9 +13,21 @@ HRESULT CBone::Initialize(aiNode* pNode, _int iParentIndex)
 	memcpy(&m_matTransformation, &pNode->mTransformation,sizeof(_float4x4));
 	XMStoreFloat4x4(&m_matTransformation,XMMatrixTranspose(XMLoadFloat4x4(&m_matTransformation)));
 
-	XMStoreFloat4x4(&m_matCombindTransformation, XMMatrixIdentity());
+	XMStoreFloat4x4(&m_matCombinedTransformation, XMMatrixIdentity());
 
 	return  S_OK;
+}
+
+void CBone::Imvalidate_MatCombined(class CModel::BONES& pBones, _fmatrix matPivot)
+{
+	if (m_iParentIndex == -1)
+	{
+		XMStoreFloat4x4(&m_matCombinedTransformation,XMLoadFloat4x4(&m_matTransformation) * matPivot) ;
+	}
+	else {
+		XMStoreFloat4x4(&m_matCombinedTransformation,
+			XMLoadFloat4x4(&m_matTransformation) * XMLoadFloat4x4(&pBones[m_iParentIndex]->m_matCombinedTransformation));
+	}
 }
 
 CBone* CBone::Create(aiNode* pNode, _int iParentIndex)

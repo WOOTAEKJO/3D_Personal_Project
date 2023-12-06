@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "..\Public\ObjectMesh_Demo.h"
+#include "..\Public\AnimMesh_Demo.h"
 
-CObjectMesh_Demo::CObjectMesh_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CAnimMesh_Demo::CAnimMesh_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CDemo(pDevice, pContext)
 {
 }
 
-CObjectMesh_Demo::CObjectMesh_Demo(const CObjectMesh_Demo& rhs)
+CAnimMesh_Demo::CAnimMesh_Demo(const CAnimMesh_Demo& rhs)
 	:CDemo(rhs)
 {
 }
 
-HRESULT CObjectMesh_Demo::Initialize_Prototype()
+HRESULT CAnimMesh_Demo::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CObjectMesh_Demo::Initialize(void* pArg)
+HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 {
 	if (pArg == nullptr)
 		return E_FAIL;
@@ -24,7 +24,7 @@ HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 	
-	OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+	ANIMDEMOVALUE* ObjectDemoValue = (ANIMDEMOVALUE*)pArg;
 	
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
 	m_strModelTag = ObjectDemoValue->strModelTag;
@@ -35,22 +35,22 @@ HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CObjectMesh_Demo::Priority_Tick(_float fTimeDelta)
+void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 {
 }
 
-void CObjectMesh_Demo::Tick(_float fTimeDelta)
+void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
-	
+	m_pModelCom->Play_Animation(fTimeDelta);
 }
 
-void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
+void CAnimMesh_Demo::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 }
 
-HRESULT CObjectMesh_Demo::Render()
+HRESULT CAnimMesh_Demo::Render()
 {
 	if (m_pModelCom == nullptr)
 		return E_FAIL;
@@ -62,6 +62,8 @@ HRESULT CObjectMesh_Demo::Render()
 
 	for (_uint i = 0; i < iNumMeshs; i++)
 	{
+		m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i);
+
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
@@ -72,19 +74,19 @@ HRESULT CObjectMesh_Demo::Render()
 	return S_OK;
 }
 
-HRESULT CObjectMesh_Demo::Set_Control_Variable(void* pArg)
+HRESULT CAnimMesh_Demo::Set_Control_Variable(void* pArg)
 {
 	if (pArg == nullptr)
 		return E_FAIL;
 
-	OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+	ANIMDEMOVALUE* ObjectDemoValue = (ANIMDEMOVALUE*)pArg;
 
 	m_vObjectPos = ObjectDemoValue->vPos;
 
 	return S_OK;
 }
 
-void CObjectMesh_Demo::Set_TransformState(CTransform::STATE eType, _float4 vVector)
+void CAnimMesh_Demo::Set_TransformState(CTransform::STATE eType, _float4 vVector)
 {
 	if (m_pTransformCom == nullptr)
 		return;
@@ -92,7 +94,7 @@ void CObjectMesh_Demo::Set_TransformState(CTransform::STATE eType, _float4 vVect
 	m_pTransformCom->Set_State(eType, vVector);
 }
 
-_float4 CObjectMesh_Demo::Get_TransformState(CTransform::STATE eType)
+_float4 CAnimMesh_Demo::Get_TransformState(CTransform::STATE eType)
 {
 	if (m_pTransformCom == nullptr)
 		return _float4();
@@ -103,7 +105,7 @@ _float4 CObjectMesh_Demo::Get_TransformState(CTransform::STATE eType)
 	return vVec;
 }
 
-void CObjectMesh_Demo::Rotation(_float fX, _float fY, _float fZ)
+void CAnimMesh_Demo::Rotation(_float fX, _float fY, _float fZ)
 {
 	if (m_pTransformCom == nullptr)
 		return;
@@ -113,7 +115,7 @@ void CObjectMesh_Demo::Rotation(_float fX, _float fY, _float fZ)
 		XMConvertToRadians(fZ));
 }
 
-void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
+void CAnimMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 {
 	if (m_pTransformCom == nullptr)
 		return;
@@ -121,7 +123,7 @@ void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
 }
 
-_bool CObjectMesh_Demo::Get_Picked()
+_bool CAnimMesh_Demo::Get_Picked()
 {
 	if (m_pModelCom == nullptr || 
 		m_pTransformCom==nullptr)
@@ -134,11 +136,10 @@ _bool CObjectMesh_Demo::Get_Picked()
 	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
 		return true;
 	
-
 	return false;
 }
 
-HRESULT CObjectMesh_Demo::Bind_ShaderResources()
+HRESULT CAnimMesh_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
@@ -155,49 +156,49 @@ HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 	return S_OK;
 }
 
-HRESULT CObjectMesh_Demo::Ready_Component()
+HRESULT CAnimMesh_Demo::Ready_Component()
 {
 	
 	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, SHADER_MESH_TAG,
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_ANIMMESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(Add_Component(LEVEL_TOOL, m_strModelTag,
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-CObjectMesh_Demo* CObjectMesh_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CAnimMesh_Demo* CAnimMesh_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	CObjectMesh_Demo* pInstance = new CObjectMesh_Demo(pDevice, pContext);
+	CAnimMesh_Demo* pInstance = new CAnimMesh_Demo(pDevice, pContext);
 
 	/* 원형객체를 초기화한다.  */
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CObjectMesh_Demo");
+		MSG_BOX("Failed to Created : CAnimMesh_Demo");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject* CObjectMesh_Demo::Clone(void* pArg)
+CGameObject* CAnimMesh_Demo::Clone(void* pArg)
 {
-	CObjectMesh_Demo* pInstance = new CObjectMesh_Demo(*this);
+	CAnimMesh_Demo* pInstance = new CAnimMesh_Demo(*this);
 
 	/* 원형객체를 초기화한다.  */
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CObjectMesh_Demo");
+		MSG_BOX("Failed to Cloned : CAnimMesh_Demo");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void CObjectMesh_Demo::Free()
+void CAnimMesh_Demo::Free()
 {
 	__super::Free();
 
