@@ -56,7 +56,6 @@ private:
 private:
 	HRESULT	Set_Data(MESHDATADESC MeshDataDesc);
 	
-	
 public:
 	static CMeshData* Create(MESHDATADESC MeshDataDesc);
 	virtual	void	Free() override;

@@ -4,12 +4,14 @@
 BEGIN(Engine)
 
 class CMesh;
+class CAnimaton;
+class CBone;
 
 class ENGINE_DLL CModel final : public	CComponent
 {
 public:
 	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
-	typedef vector<class CBone*> BONES;
+	typedef vector<CBone*> BONES;
 private:
 	CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CModel(const CModel& rhs);
@@ -42,15 +44,20 @@ private:
 
 	BONES	m_vecBones;
 
-	_float4x4				m_matPivot;
+	_uint					m_iAnimationNum = { 0 };
+	_uint					m_iCurrentAnimationIndex = { 0 };
+	vector<CAnimation*>		m_vecAnimation;
 
 private:
 	TYPE					m_eType = { TYPE_END };
+
+	_float4x4				m_matPivot;
 
 private:
 	HRESULT	Ready_Meshes(_fmatrix	matPivot);
 	HRESULT	Ready_Materials(const string & strModelFilePath);
 	HRESULT	Ready_Bones(aiNode* pNode, _int iParentIndex);
+	HRESULT	Ready_Animation();
 
 public:
 	static	CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext,TYPE eType, const string& strModelFilePath, _fmatrix	matPivot);

@@ -1,8 +1,9 @@
 #include "..\Public\Model.h"
-#include "Mesh.h"
 
+#include "Mesh.h"
 #include "Bone.h"
 #include "Texture.h"
+#include "Animation.h"
 
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
@@ -57,6 +58,9 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 	if (FAILED(Ready_Materials(strModelFilePath)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Animation()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -78,6 +82,11 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 void CModel::Play_Animation(_float fTimeDelta)
 {
+	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
+		return;
+
+	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+
 	for (auto& iter : m_vecBones)
 	{
 		iter->Invalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
@@ -196,6 +205,22 @@ HRESULT CModel::Ready_Bones(aiNode* pNode, _int iParentIndex)
 	for (_uint i = 0; i < pNode->mNumChildren; i++)
 	{
 		Ready_Bones(pNode->mChildren[i], iParIndx);
+	}
+
+	return S_OK;
+}
+
+HRESULT CModel::Ready_Animation()
+{
+	m_iAnimationNum = m_pAiScene->mNumAnimations;
+
+	for (_uint i = 0; i < m_iAnimationNum; i++)
+	{
+		CAnimation* pAnimation = CAnimation::Create(m_pAiScene->mAnimations[i]);
+		if (pAnimation == nullptr)
+			return E_FAIL;
+
+		m_vecAnimation.push_back(pAnimation);
 	}
 
 	return S_OK;

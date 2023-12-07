@@ -32,6 +32,16 @@ namespace Engine
 
 	}RAY;
 
+	typedef	struct tagKeyFrame
+	{
+		_float3 vScale;
+		_float3 vPosition;
+		_float4 vRotation;
+
+		_float fTrackPosition;
+
+	}KEYFRAME;
+
 	typedef	struct tagMaterial_Desc
 	{
 		class CTexture* pMtrlTexture[AI_TEXTURE_TYPE_MAX];

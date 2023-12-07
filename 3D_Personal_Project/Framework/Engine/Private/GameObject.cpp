@@ -17,6 +17,7 @@ CGameObject::CGameObject(const CGameObject & rhs)
 	, m_pContext(rhs.m_pContext)
 	, m_pGameInstance(rhs.m_pGameInstance)
 	, m_isCloned(true)
+	, m_bDead(false)
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext); 

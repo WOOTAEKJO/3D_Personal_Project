@@ -38,6 +38,9 @@ public:
 	void	Set_WorldMatrix(_float4x4 matWorld);
 	_float4x4 Get_WorldMatrix();
 
+public:
+	_bool	Get_Dead() const { return m_bDead; }
+
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
@@ -50,6 +53,9 @@ protected:
 
 protected:
 	map<const wstring, class CComponent*>	m_mapComponent;
+
+protected:
+	_bool						m_bDead = { false };
 
 protected:
 	_bool						m_isCloned = { false };

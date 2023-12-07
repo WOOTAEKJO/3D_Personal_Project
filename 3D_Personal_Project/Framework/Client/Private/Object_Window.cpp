@@ -125,7 +125,7 @@ void CObject_Window::ObjectMesh()
 	if (ImGui::Button("Delete Object")) {
 		if (m_vecDemo[m_iCurrentDemoIndex] != nullptr)
 		{
-			//Safe_Release(m_vecDemo[m_iCurrentDemoIndex]);
+			m_vecDemo[m_iCurrentDemoIndex]->Get_Dead();
 			m_vecDemo.erase(m_vecDemo.begin() + m_iCurrentDemoIndex);
 		}
 	}
