@@ -98,6 +98,22 @@ _float4x4 CGameObject::Get_WorldMatrix()
 	return m_pTransformCom->Get_WorldMatrix_Float4x4();
 }
 
+void CGameObject::Write_Json(json& Out_Json)
+{
+	for (auto& iter : m_mapComponent)
+	{
+		iter.second->Write_Json(Out_Json["Component"]);
+	}
+}
+
+void CGameObject::Load_FromJson(const json& In_Json)
+{
+	for (auto& iter : m_mapComponent)
+	{
+		iter.second->Load_FromJson(In_Json["Component"]);
+	}
+}
+
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)
 {
 	CComponent* pComponent = Find_Component(strComTag);

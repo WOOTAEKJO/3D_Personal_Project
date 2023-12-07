@@ -18,8 +18,8 @@ public:
 	virtual	void	Set_Variable(void* pArg) override;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
 	virtual	void	Demo_Picked() override;
-	virtual	HRESULT	Save_Data() override;
-	virtual	HRESULT	Load_Data() override;
+	virtual	HRESULT	Save_Data(const _char* strFilePath) override;
+	virtual	HRESULT	Load_Data(const _char* strFilePath) override;
 
 private: /* For. Terrain*/ // 여기서 조정해주는 값
 	_int	m_iVertices_Size[2] = {3,3};

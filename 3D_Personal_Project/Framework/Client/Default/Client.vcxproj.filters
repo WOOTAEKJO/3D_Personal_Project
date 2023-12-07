@@ -234,15 +234,6 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image.h">
-      <Filter>97. ImGui\ImGuiFileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image_resize.h">
-      <Filter>97. ImGui\ImGuiFileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\dirent\dirent.h">
-      <Filter>97. ImGui\ImGuiFileDialog</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

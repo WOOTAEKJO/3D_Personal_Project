@@ -40,7 +40,14 @@ public:
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
 public:
+	wstring	Get_ModelTag() { return m_strModelTag; }
+
+public:
 	_bool	Get_Picked();
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	CShader*	m_pShaderCom = { nullptr };

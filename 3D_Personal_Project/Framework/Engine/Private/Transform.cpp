@@ -165,6 +165,27 @@ HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixN
 	return S_OK;
 }
 
+void CTransform::Write_Json(json& Out_Json)
+{
+	Out_Json.clear();
+
+	Out_Json.emplace("Transform", m_matWorldMatrix.m);
+}
+
+void CTransform::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("Transform") == In_Json.end())
+		return;
+
+	for (_uint i = 0; i < 4; i++)
+	{
+		for (_uint j = 0; j < 4; j++)
+		{
+			m_matWorldMatrix.m[i][j] = In_Json["Transform"][i][j];
+		}
+	}
+}
+
 CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _float fSpeedPerSec, _float fRotationPerSec)
 {
 	CTransform* pInstance = new CTransform(pDevice, pContext);

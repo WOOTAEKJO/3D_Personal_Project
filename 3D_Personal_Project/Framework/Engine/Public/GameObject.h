@@ -39,7 +39,12 @@ public:
 	_float4x4 Get_WorldMatrix();
 
 public:
-	_bool	Get_Dead() const { return m_bDead; }
+	void	Set_Dead() { m_bDead = true; }
+	_bool	Get_Dead() { return m_bDead; }
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };

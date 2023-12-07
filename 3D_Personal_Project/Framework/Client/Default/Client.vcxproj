@@ -180,11 +180,8 @@
   <ItemGroup>
     <ClInclude Include="..\Imgui\imconfig.h" />
     <ClInclude Include="..\Imgui\imgui.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\dirent\dirent.h" />
     <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h" />
     <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image_resize.h" />
     <ClInclude Include="..\Imgui\imgui_impl_dx11.h" />
     <ClInclude Include="..\Imgui\imgui_impl_win32.h" />
     <ClInclude Include="..\Imgui\imgui_internal.h" />

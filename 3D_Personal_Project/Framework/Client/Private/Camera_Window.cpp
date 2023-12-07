@@ -2,7 +2,6 @@
 #include "../Imgui/imgui.h"
 #include "../Imgui/imgui_impl_win32.h"
 #include "../Imgui/imgui_impl_dx11.h"
-//#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialog.h"
 #include "..\Public\Camera_Window.h"
 
 #include "../Public/ImGuiMgr.h"
@@ -29,6 +28,8 @@ HRESULT CCamera_Window::Render()
 {
 	CImGui_Window::Begin();
 
+	
+
 	CImGui_Window::End();
 
 	return S_OK;
@@ -46,33 +47,14 @@ void CCamera_Window::Demo_Picked()
 {
 }
 
-HRESULT CCamera_Window::Save_Data()
+HRESULT CCamera_Window::Save_Data(const _char* strFilePath)
 {
-	//ImGuiFileDialog::Instance()->method_of_your_choice();
-
-	// open Dialog Simple
-	//if (ImGui::Button("Open File Dialog"))
-	//	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
-
-	//// display
-	//if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
-	//{
-	//	// action if OK
-	//	if (ImGuiFileDialog::Instance()->IsOk())
-	//	{
-	//		std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-	//		std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-	//		// action
-	//	}
-
-	//	// close
-	//	ImGuiFileDialog::Instance()->Close();
-	//}
+	
 
 	return S_OK;
 }
 
-HRESULT CCamera_Window::Load_Data()
+HRESULT CCamera_Window::Load_Data(const _char* strFilePath)
 {
 	return S_OK;
 }

@@ -39,6 +39,7 @@ private:
 private:
 	_uint	m_iNumVerticesX = { 0 };
 	_uint	m_iNumVerticesZ = { 0 };
+	_uint   m_iNumFaces = { 0 };
 
 public:
 	static	CVIBuffer_DTerrain* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

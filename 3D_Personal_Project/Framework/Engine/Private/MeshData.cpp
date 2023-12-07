@@ -83,27 +83,28 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 			break;
 		case Engine::CMeshData::TERRAIN:
 
-			VTXMESH* tTerrain = new VTXMESH[m_iNumVertices];
+			//VTXMESH* tTerrain = new VTXMESH[m_iNumVertices];
 
 			for (_uint i = 0; i < m_iNumVertices; i++)
 			{
-				
-				fIn.read(reinterpret_cast<char*>(&tTerrain[i]), sizeof(VTXMESH));
-				m_vecMeshVertices.push_back(tTerrain[i]);
+				VTXMESH tTerrain = {};
+
+				fIn.read(reinterpret_cast<char*>(&tTerrain), sizeof(VTXMESH));
+				m_vecMeshVertices.push_back(tTerrain);
 				//memcpy(&m_MeshVertices[i], &tTerrain[i], sizeof(VTXMESH));
 				//fIn >> (&tTerrain[i]);
 			}
 			break;
 		}
 
-		_uint3* iIndex = new _uint3[m_iNumFaces];
+		//_uint3* iIndex = new _uint3[m_iNumFaces];
 
 		for (_uint i = 0; i < m_iNumFaces; i++)
 		{
-
-			fIn.read(reinterpret_cast<char*>(&iIndex[i]), sizeof(_uint3));
+			_uint3 iIndex = {};
+			fIn.read(reinterpret_cast<char*>(&iIndex), sizeof(_uint3));
 			
-			m_vecIndices.push_back(iIndex[i]);
+			m_vecIndices.push_back(iIndex);
 			//memcpy(&m_Indices[i], &iIndex[i], sizeof(_uint3));
 		}
 	}

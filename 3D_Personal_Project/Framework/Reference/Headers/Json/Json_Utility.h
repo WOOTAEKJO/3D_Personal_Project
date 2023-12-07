@@ -1,11 +1,11 @@
 #pragma once
-#include "Base.h"
+#include "Engine_Defines.h"
 #include "json.hpp"
 using namespace nlohmann;
 
 BEGIN(Engine)
 
-class ENGINE_DLL CJson_Utility final : public CBase
+class ENGINE_DLL CJson_Utility final
 {
 private:
 	CJson_Utility();
@@ -36,9 +36,7 @@ public:
 	static void			Write_uint3(Value & pValue, const _char * strName, _uint3 iValue, Document & doc);
 
 public:
-	//static wstring Complete_Path(const char* _strFileName);
-	static	CJson_Utility* Create();
-	virtual	void	Free() override;
+	//static wstring Complete_Path(const char* _strFileName)
 
 };
 

@@ -2,6 +2,8 @@
 #include "../Imgui/imgui.h"
 #include "../Imgui/imgui_impl_win32.h"
 #include "../Imgui/imgui_impl_dx11.h"
+#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialogConfig.h"
+#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialog.h"
 
 #include "../Public/ImGuiMgr.h"
 
@@ -18,15 +20,6 @@
 #include "Terrain_Demo.h"
 
 IMPLEMENT_SINGLETON(CImGuiMgr)
-
-typedef struct tagImGuiMGR_Window_Desc
-{
-    string	strName;	// 창 이름
-    ImGuiWindowFlags window_flags;	// 창 옵션
-    ImVec2	vWinSize;	// 창 사이즈
-    ImVec4 vBackGroundColor = ImVec4(1.f, 1.f, 1.f, 1.f);  // 백 창 색
-
-}IMGUIMGRWINDESC;
 
 CImGuiMgr::CImGuiMgr() 
 {
@@ -45,16 +38,6 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-#pragma region 도킹
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-    ////io.ConfigViewportsNoAutoMerge = true;
-    ////io.ConfigViewportsNoTaskBarIcon = true;
-    //io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesKorean());
-#pragma endregion
 
     ImGui::StyleColorsDark();
 
@@ -87,26 +70,6 @@ void CImGuiMgr::Tick()
 
 HRESULT CImGuiMgr::Render()
 {
-#pragma region 도킹
-    //ImGui_ImplDX11_NewFrame();
-    //ImGui_ImplWin32_NewFrame();
-    //ImGui::NewFrame();
-
-    ///*bool bDemo = true;
-    //ImGui::ShowDemoWindow(&bDemo);*/
-    ////CImGuiMgr::GetInstance()->Tool();
-
-    //ImGui::Render();
-
-    //ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-    //// Update and Render additional Platform Windows
-    //if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    //{
-    //	ImGui::UpdatePlatformWindows();
-    //	ImGui::RenderPlatformWindowsDefault();
-    //}
-#pragma endregion
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
 
@@ -143,14 +106,12 @@ HRESULT CImGuiMgr::Render()
 		{
             if (ImGui::MenuItem("Save"))
             {
-                if (FAILED(Save_Data()))
-                    MSG_BOX("Save_Failed");
+                m_eFileMode = FILEMODE_SAVE;
             }
 
             if (ImGui::MenuItem("Load"))
             {
-                if (FAILED(Load_Data()))
-                    MSG_BOX("Load_Failed");
+                m_eFileMode = FILEMODE_LOAD;
             }
 
             ImGui::EndMenu();
@@ -206,6 +167,10 @@ HRESULT CImGuiMgr::Render()
             iter.second->Render();
     }
 
+    if (m_eFileMode != FILEMODE_END)
+        File_Render();
+       
+
     if (m_bGrid)
         Grid_Draw();
 
@@ -227,38 +192,38 @@ void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, WINDOWSTATE eWindowTag, voi
 
 void CImGuiMgr::Set_Terrain_Edit()
 {
-    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
+    CImGui_Window::IMGUIWINDESC ImguiMrgWinDesc;
 
-    ImguiMrgWinDesc->strName = "Terrain";
-    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
-        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
+    ImguiMrgWinDesc.strName = "Terrain";
+    ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
+        | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
+    ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(ImguiMrgWinDesc));
+    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(&ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Object_Edit()
 {
-    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
+    CImGui_Window::IMGUIWINDESC ImguiMrgWinDesc;
 
-    ImguiMrgWinDesc->strName = "Object";
-    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
-        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
+    ImguiMrgWinDesc.strName = "Object";
+    ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
+        | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
+    ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(ImguiMrgWinDesc));
+    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(&ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Camera_Edit()
 {
-    IMGUIMGRWINDESC* ImguiMrgWinDesc = new IMGUIMGRWINDESC;
+    CImGui_Window::IMGUIWINDESC ImguiMrgWinDesc;
 
-    ImguiMrgWinDesc->strName = "Camera";
-    ImguiMrgWinDesc->window_flags = ImGuiWindowFlags_HorizontalScrollbar
-        | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-    ImguiMrgWinDesc->vWinSize = ImVec2(300, 500);
+    ImguiMrgWinDesc.strName = "Camera";
+    ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
+        | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
+    ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(ImguiMrgWinDesc));
+    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(&ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Update_Terrain_Pick()
@@ -290,22 +255,22 @@ void CImGuiMgr::Update_Demo_Pick()
     
 }
 
-HRESULT CImGuiMgr::Save_Data()
+HRESULT CImGuiMgr::Save_Data(const _char* strFilePath)
 {
     CImGui_Window* pWindow = Find_Window(M_eCurentMode, WINDOWSTATE::WS_MAIN);
     if (pWindow == nullptr)
         return E_FAIL;
 
-    return pWindow->Save_Data();    
+    return pWindow->Save_Data(strFilePath);
 }
 
-HRESULT CImGuiMgr::Load_Data()
+HRESULT CImGuiMgr::Load_Data(const _char* strFilePath)
 {
     CImGui_Window* pWindow = Find_Window(M_eCurentMode, WINDOWSTATE::WS_MAIN);
     if (pWindow == nullptr)
         return E_FAIL;
 
-    return pWindow->Load_Data();
+    return pWindow->Load_Data(strFilePath);
 }
 
 void CImGuiMgr::Grid_Draw()
@@ -336,6 +301,51 @@ void CImGuiMgr::Grid_Draw()
     ImGuizmo::DrawGrid(arrView, arrProj, arrWorld, 100.f);
 }
 
+void CImGuiMgr::File_Render()
+{
+    const char* Path = nullptr;
+    const char* Filter = nullptr;
+    switch (M_eCurentMode)
+    {
+    case Client::CImGuiMgr::MODE_STATIC:
+        return;
+    case Client::CImGuiMgr::MODE_TERRAIN:
+        Path = DATA_TERRAIN_PATH;
+        Filter = ".bin";
+        break;
+    case Client::CImGuiMgr::MODE_OBJECT:
+        Path = DATA_OBJECT_PATH;
+        Filter = ".json";
+        break;
+    case Client::CImGuiMgr::MODE_CAMERA:
+        break;
+    }
+
+    ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", Filter, Path);
+
+    // display
+    if (ImGuiFileDialog::Instance()->Display("FileDialog"))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            string strFileName = ImGuiFileDialog::Instance()->GetFilePathName();
+            string strFilePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+
+            if (m_eFileMode == FILEMODE::FILEMODE_SAVE)
+                Save_Data(strFileName.c_str());
+            else if (m_eFileMode == FILEMODE::FILEMODE_LOAD)
+                Load_Data(strFileName.c_str());
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+
+        m_eFileMode = FILEMODE_END;
+    }
+    // 파일 다이얼로그만 키면 누수가 남
+}
+
 HRESULT CImGuiMgr::Ready_Demo()
 {
     if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"),
@@ -356,13 +366,14 @@ CImGui_Window* CImGuiMgr::Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag)
 
 void CImGuiMgr::Free()
 {
-    Safe_Release(m_pTerrain);
-
+   
     for (_uint i = 0; i < MODE_END; i++) {
         for (auto& iter : m_mapWindow[i])
             Safe_Release(iter.second);
         m_mapWindow[i].clear();
     }
+
+    Safe_Release(m_pTerrain);
 
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

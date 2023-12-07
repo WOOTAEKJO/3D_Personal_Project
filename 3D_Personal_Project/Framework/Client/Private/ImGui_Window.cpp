@@ -8,25 +8,19 @@
 #include "ImGuiMgr.h"
 
 #include "Demo.h"
+#include <sstream>
 
-typedef struct tagImGui_Window_Desc
-{
-	string	strName;	// 창 이름
-	ImGuiWindowFlags window_flags;	// 창 옵션
-	ImVec2	vWinSize;	// 창 사이즈
-	ImVec4 vBackGroundColor = ImVec4(1.f, 1.f, 1.f, 1.f);  // 백 창 색
-
-}IMGUIWINDESC;
 
 CImGui_Window::CImGui_Window()
 	:m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pGameInstance);
+
 }
 
 HRESULT CImGui_Window::Initialize(void* pArg)
 {
-	m_pDesc = pArg;
+	m_Desc = *(IMGUIWINDESC*)pArg;
 
 	m_pTerrain = CImGuiMgr::GetInstance()->Get_Terrain();
 	Safe_AddRef(m_pTerrain);
@@ -155,15 +149,21 @@ wstring CImGui_Window::Json_To_wstring(const string& utf8Str)
 
 void CImGui_Window::Begin()
 {
-	IMGUIWINDESC* pDesc = (IMGUIWINDESC*)m_pDesc;
+	ImVec4 vec4;
 
-	ImGui::PushStyleColor(ImGuiCol_PopupBg, pDesc->vBackGroundColor);
+	memcpy(&vec4, &m_Desc.vBackGroundColor, sizeof(ImVec4));
 
-	ImGui::SetNextWindowSize(pDesc->vWinSize, 0);
+	ImGui::PushStyleColor(ImGuiCol_PopupBg, vec4);
+
+	ImVec2 vec2;
+
+	memcpy(&vec2, &m_Desc.vWinSize, sizeof(ImVec2));
+
+	ImGui::SetNextWindowSize(vec2, 0);
 
 	ImGui::SetNextWindowBgAlpha(0.5f);
 
-	ImGui::Begin(pDesc->strName.c_str(), 0, pDesc->window_flags);
+	ImGui::Begin(m_Desc.strName.c_str(), 0, (ImGuiWindowFlags_)m_Desc.window_flags);
 
 }
 
@@ -187,12 +187,19 @@ void CImGui_Window::Arrow_Button(const string& strTag, _float fInterval, float* 
 		*fValue -= fInterval;
 }
 
+wstring CImGui_Window::Split_Wstring(wstring strFull, _tchar cSeperator)
+{
+	wstring wstr;
+	wstringstream wss(strFull);
+	getline(wss, wstr, cSeperator);
+
+	return wstr;
+}
+
 void CImGui_Window::Free()
 {
 	__super::Free();
-
-	free((IMGUIWINDESC*)m_pDesc);
-	//Safe_Delete();
+	
 	Safe_Release(m_pTerrain);
 	Safe_Release(m_pGameInstance);
 }

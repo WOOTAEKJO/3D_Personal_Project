@@ -10,6 +10,9 @@
 
 #include "ObjectMesh_Demo.h"
 
+
+
+
 CObject_Window::CObject_Window()
 {
 }
@@ -19,10 +22,25 @@ HRESULT CObject_Window::Initialize(void* pArg)
 	if (FAILED(CImGui_Window::Initialize(pArg)))
 		return E_FAIL;
 
-	m_vecModelTag.push_back(MODEL_PINETREE_TAG);
-	m_vecModelTag.push_back(MODEL_SM_REED1_TAG);
-	m_vecModelTag.push_back(MODEL_SM_REED2_TAG);
+	CComponent_Manager::PROTOTYPE mapProtoCom = m_pGameInstance->Get_Com_ProtoType(m_pGameInstance->Get_Current_Level());
 	
+	_uint pos;
+	wstring wstr;
+	for (auto& iter : mapProtoCom)
+	{
+		wstr = iter.first;
+		for (_uint i = 0; i < 2; i++) {
+			pos = wstr.find(L"_");
+			wstr = wstr.substr(pos + 1);
+		}	
+		wstr = Split_Wstring(wstr, L'_');
+
+		if (!wcscmp(wstr.c_str(),L"Model"))
+		{
+			m_vecModelTag.push_back(iter.first);
+		}
+
+	}
 	return S_OK;
 }
 
@@ -73,7 +91,7 @@ void CObject_Window::Demo_Picked()
 	if (m_vecDemo.empty())
 		return;
 
-	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+ 	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
 		for (size_t i = 0; i < m_vecDemo.size(); i++)
 		{
@@ -86,14 +104,58 @@ void CObject_Window::Demo_Picked()
 	}
 }
 
-HRESULT CObject_Window::Save_Data()
+HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 {
+	json jSave;
+
+	Write_Json(jSave);
+
+	if (FAILED(CJson_Utility::Save_Json(strFilePath, jSave)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
-HRESULT CObject_Window::Load_Data()
+HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 {
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
+		return E_FAIL;
+
+	Load_FromJson(jLoad);
+
 	return S_OK;
+}
+
+void CObject_Window::Write_Json(json& Out_Json)
+{
+	_uint iSize = m_vecDemo.size();
+
+	for (_uint i = 0; i < iSize; i++)
+	{
+		m_vecDemo[i]->Write_Json(Out_Json["Demo"][i]);
+	}
+}
+
+void CObject_Window::Load_FromJson(const json& In_Json)
+{
+	for (auto& iter : m_vecDemo)
+		iter->Set_Dead();
+	m_vecDemo.clear();
+
+	for (auto& iter : In_Json["Demo"])
+	{
+		CGameObject* pObject_Demo = nullptr;
+
+		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), G0_OBJECTMESH_DEMO_TAG,
+			nullptr, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+			return;
+
+		pObject_Demo->Load_FromJson(iter);
+
+		m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+	}
 }
 
 void CObject_Window::ObjectMesh()
@@ -102,19 +164,26 @@ void CObject_Window::ObjectMesh()
 	ImVec2 vSize = ImVec2(250, 100);
 	ImGui::BeginListBox("Model", vSize);
 	for (auto& iter : m_vecModelTag) {
+
+		size_t pos = iter.rfind(L"_");
+		wstring wstr = iter.substr(pos + 1);
+
 		string str;
-		str.assign(iter.begin(), iter.end());// 무슨 오류가 남
+		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
 		if (ImGui::Selectable(str.c_str(), iter == m_strPickModelTag))
 			m_strPickModelTag = iter;
 	}
 	ImGui::EndListBox();
 
 	ImGui::BeginListBox("Demo", vSize);
-	for (_uint i = 0; i < m_vecDemo.size(); i++)
+	_uint iSize = m_vecDemo.size();
+	for (_uint i = 0; i < iSize; i++)
 	{
 		string str = to_string(i);
 		string str2;
-		str2.assign(m_strPickModelTag.begin(), m_strPickModelTag.end());// 무슨 오류가 남
+		size_t pos = m_vecDemo[i]->Get_ModelTag().rfind(L"_");
+		wstring wstr = m_vecDemo[i]->Get_ModelTag().substr(pos + 1);
+		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
 		if (ImGui::Selectable((str + "." + str2).c_str(), i == m_iCurrentDemoIndex)) {
 			m_iCurrentDemoIndex = i;
 			m_strCurrentDemoTag = (str + "." + str2);
@@ -123,10 +192,13 @@ void CObject_Window::ObjectMesh()
 	ImGui::EndListBox();
 
 	if (ImGui::Button("Delete Object")) {
-		if (m_vecDemo[m_iCurrentDemoIndex] != nullptr)
+		if (!m_vecDemo.empty() && m_vecDemo[m_iCurrentDemoIndex] != nullptr)
 		{
-			m_vecDemo[m_iCurrentDemoIndex]->Get_Dead();
+			m_vecDemo[m_iCurrentDemoIndex]->Set_Dead();
 			m_vecDemo.erase(m_vecDemo.begin() + m_iCurrentDemoIndex);
+
+			if (m_iCurrentDemoIndex != 0)
+				--m_iCurrentDemoIndex;
 		}
 	}
 

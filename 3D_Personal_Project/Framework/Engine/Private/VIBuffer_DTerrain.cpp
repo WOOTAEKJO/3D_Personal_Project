@@ -144,7 +144,7 @@ void CVIBuffer_DTerrain::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	_float	fDist = 0.f;
 	_float3	fOut = {};
 
-	for (_uint i = 0; i < (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2; i++) {
+	for (_uint i = 0; i < m_iNumFaces; i++) {
 		_uint3 iIndices = m_vecIndexInfo[i];
 
 		
@@ -205,8 +205,8 @@ HRESULT CVIBuffer_DTerrain::Init_Buffer(CMeshData::MESHDATADESC tMeshData)
 
 		m_vecVertexInfo.push_back(pVertices[i]);
 	}
-
-	m_iIndexNum = tMeshData.iNumFaces * 3;
+	m_iNumFaces = tMeshData.iNumFaces;
+	m_iIndexNum = m_iNumFaces * 3;
 	m_iIndexStride = 4;
 	m_eIndexForMat = DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -283,8 +283,8 @@ HRESULT CVIBuffer_DTerrain::Init_Terrain(DTERRAINDESC* pDTerrainDesc)
 			m_vecVertexInfo.push_back(pVertices[iIndex]);
 		}
 	}
-
-	m_iIndexNum = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;
+	m_iNumFaces = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
+	m_iIndexNum = m_iNumFaces * 3;
 	m_iIndexStride = 4;//m_iVertexNum >= 65535 ? 4 : 2;
 	m_eIndexForMat = DXGI_FORMAT_R32_UINT;//m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;

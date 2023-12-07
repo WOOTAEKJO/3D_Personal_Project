@@ -76,6 +76,7 @@ public: /* For.Event_Manager*/
 public: /* For.Component_Manager*/
 	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring & strProtoTypeTag, class CComponent* pComponent);
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
+	CComponent_Manager::PROTOTYPE Get_Com_ProtoType(const _uint& iLevelIndex);
 
 	template <typename VertexType>
 	HRESULT	Add_Shader_ProtoType(const wstring & strProtoTypeTag, const wstring& strShaderFilePath)

@@ -65,6 +65,10 @@ public: /* 카메라에 사용*/
 public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);
 
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
 private:
 	_float		m_fSpeedPerSec = { 0.f };
 	_float		m_fRotationPerSec = { 0.f };

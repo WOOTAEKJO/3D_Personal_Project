@@ -18,20 +18,20 @@ HRESULT CObjectMesh_Demo::Initialize_Prototype()
 
 HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 {
-	if (pArg == nullptr)
-		return E_FAIL;
-	
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-	
-	OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
-	
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
-	m_strModelTag = ObjectDemoValue->strModelTag;
-	
-	if (FAILED(Ready_Component()))
-		return E_FAIL;
 
+	if (pArg != nullptr)
+	{
+		OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
+		m_strModelTag = ObjectDemoValue->strModelTag;
+
+		if (FAILED(Ready_Component()))
+			return E_FAIL;
+	}
+	
 	return S_OK;
 }
 
@@ -135,6 +135,31 @@ _bool CObjectMesh_Demo::Get_Picked()
 		return true;
 	
 	return false;
+}
+
+void CObjectMesh_Demo::Write_Json(json& Out_Json)
+{
+	string strTag;
+
+	strTag.assign(m_strModelTag.begin(), m_strModelTag.end());
+
+	Out_Json.emplace("ModelTag", strTag);
+	CGameObject::Write_Json(Out_Json);
+}
+
+void CObjectMesh_Demo::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("ModelTag") == In_Json.end())
+		return;
+
+	string strTag  = In_Json["ModelTag"];
+
+	m_strModelTag.assign(strTag.begin(), strTag.end());
+
+	CGameObject::Load_FromJson(In_Json);
+
+	if (FAILED(Ready_Component()))
+		return;
 }
 
 HRESULT CObjectMesh_Demo::Bind_ShaderResources()

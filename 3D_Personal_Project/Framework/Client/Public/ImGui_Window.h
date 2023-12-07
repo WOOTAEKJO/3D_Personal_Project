@@ -1,5 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
+
 #include "Base.h"
 
 BEGIN(Engine)
@@ -15,6 +16,22 @@ class CDemo;
 
 class CImGui_Window abstract : public CBase
 {
+public:
+	enum WINDOWFLAGS { HorizontalScrollbar = 1 << 11,
+		NoMove = 1 << 2,
+		NoResize =  1 << 1
+	};
+
+	typedef struct tagImGui_Window_Desc
+	{
+		string	strName;	// 창 이름
+		//ImGuiWindowFlags window_flags;	
+		int window_flags; // 창 옵션
+		_float2	vWinSize;	// 창 사이즈
+		_float4 vBackGroundColor = _float4(1.f, 1.f, 1.f, 1.f);  // 백 창 색
+
+	}IMGUIWINDESC;
+
 public:
 	enum TYPE {TYPE_SAVE,TYPE_LOAD,TYPE_END};
 
@@ -37,8 +54,8 @@ public:
 	virtual	void	Set_Variable(void* pArg) = 0;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) = 0;
 	virtual	void	Demo_Picked() = 0;
-	virtual	HRESULT	Save_Data() = 0;
-	virtual	HRESULT	Load_Data() = 0;
+	virtual	HRESULT	Save_Data(const _char* strFilePath) { return S_OK; }
+	virtual	HRESULT	Load_Data(const _char* strFilePath) { return S_OK; }
 public:
 	void	ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo);
 
@@ -61,7 +78,8 @@ protected:
 	_float	m_fInterval = { 1.f };
 
 protected:
-	void*	m_pDesc = { nullptr }; // 윈도우 정보를 받아오는 변수
+	IMGUIWINDESC	m_Desc;
+
 
 protected:
 	TCHAR m_szFile[MAX_PATH] = TEXT("");
@@ -80,6 +98,7 @@ protected:
 
 protected:
 	void	Arrow_Button(const string& strTag,_float fInterval,float* fValue);
+	wstring	Split_Wstring(wstring strFull, _tchar cSeperator);
 
 public:
 	virtual	void	Free() override;

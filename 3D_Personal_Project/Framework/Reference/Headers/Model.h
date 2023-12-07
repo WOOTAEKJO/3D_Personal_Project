@@ -4,7 +4,7 @@
 BEGIN(Engine)
 
 class CMesh;
-class CAnimaton;
+class CAnimation;
 class CBone;
 
 class ENGINE_DLL CModel final : public	CComponent

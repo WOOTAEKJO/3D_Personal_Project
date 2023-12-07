@@ -95,8 +95,8 @@ SOFTWARE.
 #define PATH_SEP '/'
 #endif  // _IGFD_UNIX_
 
-#include "imgui.h"
-#include "imgui_internal.h"
+#include "../Imgui/imgui.h"
+#include "../Imgui/imgui_internal.h"
 
 // legacy compatibility 1.89
 #ifndef IM_TRUNC

@@ -20,10 +20,6 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 	if (FAILED(CImGui_Window::Initialize(pArg)))
 		return E_FAIL;
 
-	wcscpy_s(m_szFile, DATA_TERRAIN_PATH);
-
-	
-
 	return S_OK;
 }
 
@@ -61,8 +57,6 @@ HRESULT CTerrain_Window::Render()
 
 	CImGui_Window::End();
 
-	m_szFile;
-
 	return S_OK;
 }
 
@@ -86,35 +80,26 @@ void CTerrain_Window::Demo_Picked()
 {
 }
 
-HRESULT CTerrain_Window::Save_Data()
+HRESULT CTerrain_Window::Save_Data(const _char* strFilePath)
 {
+	string aa;
+
 	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pTerrain->Save_Terrain("../Bin/Export/Debug/x64/Data/Terrain/Terrain.bin"))) {
-		MSG_BOX("Failed");
+	if (FAILED(m_pTerrain->Save_Terrain(strFilePath)))
 		return E_FAIL;
-	}
-	else {
-		MSG_BOX("Success");
-	}
-	
+
 	return S_OK;
 }
 
-HRESULT CTerrain_Window::Load_Data()
+HRESULT CTerrain_Window::Load_Data(const _char* strFilePath)
 {
-
 	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pTerrain->Load_Terrain("../Bin/Export/Debug/x64/Data/Terrain/Terrain.bin"))) {
-		MSG_BOX("Failed");
+	if (FAILED(m_pTerrain->Load_Terrain(strFilePath)))
 		return E_FAIL;
-	}
-	else {
-		MSG_BOX("Success");
-	}
 
 	return S_OK;
 }

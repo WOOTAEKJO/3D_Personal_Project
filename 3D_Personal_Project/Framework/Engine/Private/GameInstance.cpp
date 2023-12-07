@@ -312,6 +312,14 @@ CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const w
 	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
 }
 
+CComponent_Manager::PROTOTYPE CGameInstance::Get_Com_ProtoType(const _uint& iLevelIndex)
+{
+	if (nullptr == m_pComponent_Manager)
+		return CComponent_Manager::PROTOTYPE();
+
+	return m_pComponent_Manager->Get_Com_ProtoType(iLevelIndex);
+}
+
 void CGameInstance::Update_Mouse()
 {
 	if (nullptr == m_pMouse_Manager)
@@ -429,11 +437,11 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
-	Safe_Release(m_pSaveLoad_Manager);
 	Safe_Release(m_pPipeLine);
-	Safe_Release(m_pMouse_Manager);
-	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pEvent_Manager);
+	Safe_Release(m_pMouse_Manager);
+	Safe_Release(m_pSaveLoad_Manager);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);

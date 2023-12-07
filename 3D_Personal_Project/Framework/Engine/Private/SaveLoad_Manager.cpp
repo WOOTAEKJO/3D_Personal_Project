@@ -48,6 +48,8 @@ HRESULT CSaveLoad_Manager::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFi
 		break;
 	}
 
+	Safe_Release(pMeshData);
+
 	return S_OK;
 }
 

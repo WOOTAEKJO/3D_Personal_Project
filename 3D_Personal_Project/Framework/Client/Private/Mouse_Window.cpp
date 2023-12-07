@@ -45,16 +45,6 @@ void CMouse_Window::Demo_Picked()
 {
 }
 
-HRESULT CMouse_Window::Save_Data()
-{
-	return S_OK;
-}
-
-HRESULT CMouse_Window::Load_Data()
-{
-	return S_OK;
-}
-
 CMouse_Window* CMouse_Window::Create(void* pArg)
 {
 	CMouse_Window* pInstance = new CMouse_Window();

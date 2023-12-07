@@ -185,21 +185,7 @@ void CJson_Utility::Write_uint3(Value& pValue, const  _char* strName, _uint3 iVa
 	pValue.AddMember(GenericStringRef < char>(strName), iValue.iY, doc.GetAllocator());
 	pValue.AddMember(GenericStringRef < char>(strName), iValue.iZ, doc.GetAllocator());
 }
-CJson_Utility* CJson_Utility::Create()
-{
-	CJson_Utility* pInstance = new CJson_Utility();
 
-	if (FAILED(pInstance->Initialize())) {
-		MSG_BOX("Failed to Created : CJson_Utility");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-void CJson_Utility::Free()
-{
-	__super::Free();
-}
 /*
 
 string CJson_Utility::Complete_Path(const char* _strFileName)

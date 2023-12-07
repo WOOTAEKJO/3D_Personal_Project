@@ -3,7 +3,8 @@
 
 #pragma region 单捞磐 颇老 林家
 
-#define DATA_TERRAIN_PATH			TEXT("../Bin/Export/Debug/x64/Data/Terrain")
+#define DATA_TERRAIN_PATH			"../Bin/Export/Debug/x64/Data/Terrain/"
+#define DATA_OBJECT_PATH			"../Bin/Export/Debug/x64/Data/Object/"
 //TEXT("C:/Users/Git/SourcTree/3D_Personal_Project/3D_Personal_Project/Framework/Client/Bin/Export/Debug/x64/Data/Terrain")
 
 #pragma endregion	
