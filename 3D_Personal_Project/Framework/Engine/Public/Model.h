@@ -21,7 +21,7 @@ public:
 	virtual	HRESULT	Initialize_ProtoType(TYPE eType, const string & strModelFilePath, _fmatrix	matPivot);
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render(_uint iMeshIndex);
-	void	Play_Animation(_float fTimeDelta);
+	void	Play_Animation(_float fTimeDelta, _bool bLoop);
 
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
@@ -45,7 +45,7 @@ private:
 	BONES	m_vecBones;
 
 	_uint					m_iAnimationNum = { 0 };
-	_uint					m_iCurrentAnimationIndex = { 0 };
+	_uint					m_iCurrentAnimationIndex = { 1 };
 	vector<CAnimation*>		m_vecAnimation;
 
 private:

@@ -5,6 +5,8 @@ matrix		g_matWorld, g_matView, g_matProj;
 vector		g_PointLightPos = vector(100.f, 20.f, 100.f, 1.f);
 float		g_PointLightRange = 30.f;
 
+matrix		g_BlendMatrix[256];
+
 vector		g_LightDir = vector(1.f, -1.f, 1.f, 0.f);
 vector		g_LightDiffuse = vector(1.f, 1.f, 1.f, 1.f);
 vector		g_LightAmbient = vector(1.f, 1.f, 1.f, 1.f);
@@ -37,17 +39,18 @@ sampler		DefaultSampler = sampler_state
 struct VS_IN
 {
 	float3	vPosition : POSITION;
-	float3  vTanget : TANGENT;
-	float3	vBinormal : BINORMAL;
+	float3  vTangent : TANGENT;
 	float3	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
+
+	uint4	vBlendIndices : BLENDINDEX;
+	float4  vBlendWeights : BLENDWEIGHT;
 };
 
 struct VS_OUT
 {
 	float4	vPosition : SV_POSITION;
-	float4  vTanget : TANGENT;
-	float4	vBinormal : BINORMAL;
+	float4  vTangent : TANGENT;
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;
@@ -57,12 +60,21 @@ VS_OUT VS_MAIN(VS_IN In)
 {
 	VS_OUT Out = (VS_OUT)0;
 
-	matrix	matWV, matWVP;
+	float fWeightW = 1.f - (In.vBlendWeights.x + In.vBlendWeights.y + In.vBlendWeights.z);
 
-	matWV = mul(g_matWorld, g_matView);
-	matWVP = mul(matWV, g_matProj);
+	matrix matBlend = g_BlendMatrix[In.vBlendIndices.x] * In.vBlendWeights.x +
+		g_BlendMatrix[In.vBlendIndices.y] * In.vBlendWeights.y +
+		g_BlendMatrix[In.vBlendIndices.z] * In.vBlendWeights.z +
+		g_BlendMatrix[In.vBlendIndices.w] * fWeightW;
 
-	Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+	vector vPosition = mul(vector(In.vPosition, 1.f), matBlend);
+	
+    matrix matWV, matWVP;
+
+    matWV = mul(g_matWorld, g_matView);
+    matWVP = mul(matWV, g_matProj);
+
+	Out.vPosition = mul(vPosition, matWVP);
 	Out.vNormal = mul(float4(In.vNormal, 0.f), g_matWorld);
 	Out.vWorldPos = mul(float4(In.vPosition, 1.f),g_matWorld);
 	Out.vTexCoord = In.vTexCoord;
@@ -78,8 +90,7 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
 	float4	vPosition : SV_POSITION;
-	float4  vTanget : TANGENT;
-	float4	vBinormal : BINORMAL;
+	float4  vTangent : TANGENT;
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;

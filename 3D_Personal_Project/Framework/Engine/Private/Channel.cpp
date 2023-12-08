@@ -1,10 +1,11 @@
 #include "..\Public\Channel.h"
+#include "Bone.h"
 
 CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(aiNodeAnim* paiChannel)
+HRESULT CChannel::Initialize(aiNodeAnim* paiChannel, const CModel::BONES& vecBones)
 {
 	strcpy_s(m_szName, paiChannel->mNodeName.data);
 	
@@ -45,11 +46,31 @@ HRESULT CChannel::Initialize(aiNodeAnim* paiChannel)
 		m_vecKeyFrame.push_back(KeyFrame);
 	}
 
+	_uint iBoneIndex = { 0 };
+
+	auto iter = find_if(vecBones.begin(), vecBones.end(), [&](CBone* pBone) {
+		
+		if (!strcmp(m_szName, pBone->Get_BoneName()))
+			return true;
+	
+		++iBoneIndex;
+
+		return false;
+	});
+
+	if (iter == vecBones.end())
+		return E_FAIL;
+
+	m_iBoneIndex = iBoneIndex;
+
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition)
+void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones)
 {
+	if (fCurrentTrackPosition == 0.f)
+		m_iCurrentKeyFrameIndex = 0;
+
 	_vector	vScale, vRot, vPos;
 
 	KEYFRAME	LastKeyFrame = m_vecKeyFrame.back();
@@ -62,7 +83,7 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition)
 	}
 	else {
 
-		if (fCurrentTrackPosition >= m_vecKeyFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
+		while(fCurrentTrackPosition >= m_vecKeyFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
 			++m_iCurrentKeyFrameIndex;
 
 		_float3 vSourScale, vDestScale;
@@ -87,13 +108,15 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition)
 
 	_matrix matTransformation = XMMatrixAffineTransformation(vScale,
 		XMVectorSet(0.f, 0.f, 0.f, 1.f), vRot, vPos);
+
+	vecBones[m_iBoneIndex]->Set_TransformationMatrix(matTransformation);
 }
 
-CChannel* CChannel::Create(aiNodeAnim* paiChannel)
+CChannel* CChannel::Create(aiNodeAnim* paiChannel, const CModel::BONES& vecBones)
 {
 	CChannel* pInstance = new CChannel();
 
-	if (FAILED(pInstance->Initialize(paiChannel))) {
+	if (FAILED(pInstance->Initialize(paiChannel, vecBones))) {
 		MSG_BOX("Failed to Created : CChannel");
 		Safe_Release(pInstance);
 	}

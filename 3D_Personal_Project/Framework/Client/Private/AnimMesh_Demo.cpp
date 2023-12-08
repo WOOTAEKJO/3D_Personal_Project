@@ -41,7 +41,7 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
-	m_pModelCom->Play_Animation(fTimeDelta);
+	m_pModelCom->Play_Animation(fTimeDelta,true);
 }
 
 void CAnimMesh_Demo::Late_Tick(_float fTimeDelta)

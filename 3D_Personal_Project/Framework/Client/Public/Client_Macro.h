@@ -55,14 +55,17 @@
 
 #pragma region ÀÏ¹Ý¸ðµ¨
 
-#define	MODEL_PINETREE_TAG		TEXT("Prototype_Component_Model_PineTree")
-#define	MODEL_PINETREE_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/PineTree/PineTree.fbx"
+#define	MODEL_PINETREE_TAG			TEXT("Prototype_Component_Model_PineTree")
+#define	MODEL_PINETREE_PATH			"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/PineTree/PineTree.fbx"
 
-#define	MODEL_SM_REED1_TAG		TEXT("Prototype_Component_Model_SM_Reed1")
-#define	MODEL_SM_REED1_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed1/SM_Reed1.fbx"
+#define	MODEL_SM_REED1_TAG			TEXT("Prototype_Component_Model_SM_Reed1")
+#define	MODEL_SM_REED1_PATH			"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed1/SM_Reed1.fbx"
 
-#define	MODEL_SM_REED2_TAG		TEXT("Prototype_Component_Model_SM_Reed2")
-#define	MODEL_SM_REED2_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed2/SM_Reed2.fbx"
+#define	MODEL_SM_REED2_TAG			TEXT("Prototype_Component_Model_SM_Reed2")
+#define	MODEL_SM_REED2_PATH			"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/SM_Reed2/SM_Reed2.fbx"
+
+#define	MODEL_DEAD_TREE2_TAG		TEXT("Prototype_Component_Model_DeadTree2")
+#define	MODEL_DEAD_TREE2_PATH		"../Bin/Export/Debug/x64/Resources/Models/NonAnimModel/DeadTree2/DeadTree2.fbx"
 
 #pragma endregion
 

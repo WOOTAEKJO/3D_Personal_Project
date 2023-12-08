@@ -17,6 +17,11 @@ public:
 	_matrix	Get_CombinedTransformationMatrix() const { 
 		return XMLoadFloat4x4(&m_matCombinedTransformation); }
 
+	void	Set_TransformationMatrix(_fmatrix matTransformation) {
+		XMStoreFloat4x4(&m_matTransformation, matTransformation);
+	}
+
+public:
 	void	Invalidate_MatCombined(CModel::BONES& pBones, _fmatrix matPivot);
 
 private:

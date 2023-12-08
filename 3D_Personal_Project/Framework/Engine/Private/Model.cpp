@@ -18,7 +18,10 @@ CModel::CModel(const CModel& rhs)
 	m_vecMesh(rhs.m_vecMesh),
 	m_vecMaterial(rhs.m_vecMaterial),
 	m_vecBones(rhs.m_vecBones),
-	m_matPivot(rhs.m_matPivot)
+	m_matPivot(rhs.m_matPivot),
+	m_iAnimationNum(rhs.m_iAnimationNum),
+	m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex),
+	m_vecAnimation(rhs.m_vecAnimation)
 {
 	for (auto& iter1 : m_vecMaterial)
 	{
@@ -30,6 +33,9 @@ CModel::CModel(const CModel& rhs)
 		Safe_AddRef(iter);
 
 	for (auto& iter : m_vecBones)
+		Safe_AddRef(iter);
+
+	for (auto& iter : m_vecAnimation)
 		Safe_AddRef(iter);
 }
 
@@ -80,12 +86,12 @@ HRESULT CModel::Render(_uint iMeshIndex)
 	return S_OK;
 }
 
-void CModel::Play_Animation(_float fTimeDelta)
+void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 {
 	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
 		return;
 
-	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta);
+	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta, bLoop,m_vecBones);
 
 	for (auto& iter : m_vecBones)
 	{
@@ -216,7 +222,7 @@ HRESULT CModel::Ready_Animation()
 
 	for (_uint i = 0; i < m_iAnimationNum; i++)
 	{
-		CAnimation* pAnimation = CAnimation::Create(m_pAiScene->mAnimations[i]);
+		CAnimation* pAnimation = CAnimation::Create(m_pAiScene->mAnimations[i],m_vecBones);
 		if (pAnimation == nullptr)
 			return E_FAIL;
 
@@ -272,6 +278,11 @@ void CModel::Free()
 		Safe_Release(iter);
 	m_vecBones.clear();
 
+	for (auto& iter : m_vecAnimation)
+		Safe_Release(iter);
+	m_vecAnimation.clear();
+
 	if(!m_bClone)
 		m_Importer.FreeScene();
+
 }
