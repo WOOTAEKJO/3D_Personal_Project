@@ -358,19 +358,19 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxMesh.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxAnimMesh.hlsl">
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>
