@@ -4,7 +4,7 @@
 
 #include <process.h>
 
-
+#include "Converter_Model.h"
 
 /* For.Prototype_Component_Shader_VTXTBN*/
 /*if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
@@ -115,6 +115,10 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_FIONA_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_FIONA_PATH))))
+		return E_FAIL;*/
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));

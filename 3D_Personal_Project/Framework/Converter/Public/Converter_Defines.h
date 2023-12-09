@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Converter
 {
 	static const unsigned int	g_iWinSizeX = 1280;
@@ -13,7 +12,16 @@ namespace Converter
 	enum SHADER_TBN { TBN_TERRAIN, TBN_DTERRAIN, TBN_MODEL, TBN_END };
 }
 
+#include "DirectXTK/SimpleMath.h"
+
+#include "Assimp\scene.h"
+#include "assimp\postprocess.h"
+#include "Assimp\Importer.hpp"
+#include <d3dcompiler.h>
+//using namespace DirectX;
+
 #include "Converter_Macro.h"
+#include "Converter_Struct.h"
 using namespace Converter;
 
 extern HWND g_hWnd;

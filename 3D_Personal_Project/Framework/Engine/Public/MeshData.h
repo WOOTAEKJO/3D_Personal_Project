@@ -1,9 +1,10 @@
 #pragma once
 #include "Base.h"
+#include "VIBuffer.h"
 
 BEGIN(Engine)
 
-class CMeshData final : public CBase
+class ENGINE_DLL CMeshData final : public CBase
 {
 public:
 	enum MODEL_TYPE {NONANIM, ANIM, TERRAIN, TYPE_END};
@@ -14,13 +15,22 @@ public:
 		vector<VTXNORTEX>	vecNorVertices;
 		vector<VTXTBN>		vecTBNVertices;
 		vector<VTXMESH>		vecMeshVertices;
-		vector<VTXANIMMESH>	vecAnimVertices;
+
+		
+		vector<MESH>		vecMesh;
+		vector<MATERIAL>	vecMaterial;
+		vector<ANIMATION>	vecAnimAnimation;
+		vector<BONE>		vecAnimBone;
 
 		vector<_uint3>		vecIndices;
 
+		_uint					iMeshNum ;
+		_uint					iMaterialNum ;
+		_uint					iAnimAnimationNum ;
+		_uint					iAnimBoneNum ;
+
 		_uint				iNumVertices;
 		_uint				iNumFaces;
-		_uint				iNumBones;
 
 		MODEL_TYPE			eModel_Type = TYPE_END;
 	}MESHDATADESC;
@@ -42,14 +52,24 @@ private:
 	vector<VTXNORTEX>	m_vecNorVertices;
 	vector<VTXTBN>		m_vecTBNVertices;
 	vector<VTXMESH>		m_vecMeshVertices;
-	vector<VTXANIMMESH>	m_vecAnimVertices;
-
+	
 	vector<_uint3>		m_vecIndices;
+	
+private: /* For. Anim*/
+	
+	vector<MESH>			m_vecMesh;
+	vector<MATERIAL>		m_vecMaterial;
+	vector<ANIMATION>		m_vecAnimAnimation;
+	vector<BONE>			m_vecAnimBone;
+
+	_uint					m_iMeshNum = { 0 };
+	_uint					m_iMaterialNum = { 0 };
+	_uint					m_iAnimAnimationNum = { 0 };
+	_uint					m_iAnimBoneNum = { 0 };
 
 private:
 	_uint				m_iNumVertices;
 	_uint				m_iNumFaces;
-	_uint				m_iNumBones;
 
 	MODEL_TYPE			m_eModel_Type = { TYPE_END };
 

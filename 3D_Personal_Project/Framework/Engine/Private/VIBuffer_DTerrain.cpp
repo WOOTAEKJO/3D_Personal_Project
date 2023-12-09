@@ -172,18 +172,11 @@ HRESULT CVIBuffer_DTerrain::Set_Buffer(const _char* strPath)
 	MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::TERRAIN;
 	MeshDataDesc.iNumVertices = m_iVertexNum;
 	MeshDataDesc.iNumFaces = m_iIndexNum / 3;
-	MeshDataDesc.iNumBones = 0;
 	MeshDataDesc.vecMeshVertices = m_vecVertexInfo;
 	MeshDataDesc.vecIndices = m_vecIndexInfo;
 	
-	CMeshData* pMeshData = CMeshData::Create(MeshDataDesc);
-	if (pMeshData == nullptr)
+	if (FAILED(m_pGameInstance->Save_Data_Mesh(strPath, MeshDataDesc)))
 		return E_FAIL;
-
-	if (FAILED(pMeshData->Save_Data(strPath)))
-		return E_FAIL;
-
-	Safe_Release(pMeshData);
 
 	return S_OK;
 }

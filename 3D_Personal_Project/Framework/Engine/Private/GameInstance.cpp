@@ -416,12 +416,12 @@ _float4 CGameInstance::Get_Camera_Pos()
 	return m_pPipeLine->Get_Camera_Pos();
 }
 
-HRESULT CGameInstance::Save_Data_Mesh(const _char* strFileName)
+HRESULT CGameInstance::Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc)
 {
 	if (nullptr == m_pSaveLoad_Manager)
 		return E_FAIL;
 
-	return m_pSaveLoad_Manager->Save_Data_Mesh(strFileName);
+	return m_pSaveLoad_Manager->Save_Data_Mesh(strFileName, MeshDataDesc);
 }
 
 HRESULT CGameInstance::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName)

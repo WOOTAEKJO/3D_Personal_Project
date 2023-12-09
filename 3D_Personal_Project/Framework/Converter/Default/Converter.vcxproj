@@ -128,7 +128,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -161,8 +161,11 @@
     <ClInclude Include="..\Imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Public\Converter_Model.h" />
     <ClInclude Include="..\Public\Converter_Defines.h" />
     <ClInclude Include="..\Public\Converter_Macro.h" />
+    <ClInclude Include="..\Public\Converter_Struct.h" />
+    <ClInclude Include="..\Public\ImGuiMgr.h" />
     <ClInclude Include="..\Public\LEVEL_Converter.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\Public\Loader.h" />
@@ -181,6 +184,8 @@
     <ClCompile Include="..\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\Converter_Model.cpp" />
+    <ClCompile Include="..\Private\ImGuiMgr.cpp" />
     <ClCompile Include="..\Private\LEVEL_Converter.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Loader.cpp" />

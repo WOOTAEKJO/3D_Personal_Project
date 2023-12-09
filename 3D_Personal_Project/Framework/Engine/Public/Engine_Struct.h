@@ -104,4 +104,52 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
 	}VTXANIMMESH;
 
+	typedef struct tagMeshDesc
+	{
+		string				szName;
+
+		_uint				iMaterialIndex;
+
+		vector<VTXANIMMESH> vecVerticesAnim;
+		vector<VTXMESH>		vecVerticesNonAim;
+
+		vector<_uint3>		vecIndices;
+
+	}MESH;
+
+	typedef struct tagMaterialDesc
+	{
+		string	vecMaterialPath[AI_TEXTURE_TYPE_MAX];
+
+	}MATERIAL;
+
+	typedef struct tagBoneDesc
+	{
+		string			szName;
+
+		_int			iParentIndex;
+
+		_float4x4		matTransformation;
+		_float4x4		matOffsetMatrix;
+
+	}BONE;
+
+	typedef struct tagChannelDesc
+	{
+		string				szName;
+
+		vector<KEYFRAME>	vecKeyFrame;
+
+	}CHANNEL;
+
+	typedef struct tagAnimationDesc
+	{
+		string		szName;
+
+		_float		fDuration;
+		_float		fTicksPerSecond;
+
+		vector<CHANNEL>		vecChannel;
+
+	}ANIMATION;
 }

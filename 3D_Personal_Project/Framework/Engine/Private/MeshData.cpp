@@ -24,34 +24,50 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 
 	if (fout.is_open())
 	{
-		fout.write(reinterpret_cast<const char*>(&m_eModel_Type), sizeof(m_eModel_Type));
-		fout.write(reinterpret_cast<const char*>(&m_iNumVertices), sizeof(m_iNumVertices));
-		fout.write(reinterpret_cast<const char*>(&m_iNumFaces), sizeof(m_iNumFaces));
-		fout.write(reinterpret_cast<const char*>(&m_iNumBones), sizeof(m_iNumBones));
+		
 
 		switch (m_eModel_Type)
 		{
 		case Engine::CMeshData::NONANIM:
 			break;
 		case Engine::CMeshData::ANIM:
+
+			fout.write(reinterpret_cast<const char*>(&m_iMeshNum), sizeof(m_iMeshNum));
+			fout.write(reinterpret_cast<const char*>(&m_iMaterialNum), sizeof(m_iMaterialNum));
+			fout.write(reinterpret_cast<const char*>(&m_iAnimBoneNum), sizeof(m_iAnimBoneNum));
+			fout.write(reinterpret_cast<const char*>(&m_iAnimAnimationNum), sizeof(m_iAnimAnimationNum));
+
+			for (_uint i = 0; i < m_iMeshNum; i++)
+				fout.write(reinterpret_cast<char*>(&m_vecMesh[i]), sizeof(MESH));
+
+			for (_uint i = 0; i < m_iMaterialNum; i++)
+				fout.write(reinterpret_cast<char*>(&m_vecMaterial[i]), sizeof(MESH));
+
+			for (_uint i = 0; i < m_iAnimBoneNum; i++)
+				fout.write(reinterpret_cast<char*>(&m_vecAnimBone[i]), sizeof(MESH));
+
+			for (_uint i = 0; i < m_iAnimAnimationNum; i++)
+				fout.write(reinterpret_cast<char*>(&m_vecAnimAnimation[i]), sizeof(MESH));
+			
 			break;
 		case Engine::CMeshData::TERRAIN:
+
+			fout.write(reinterpret_cast<const char*>(&m_eModel_Type), sizeof(m_eModel_Type));
+			fout.write(reinterpret_cast<const char*>(&m_iNumVertices), sizeof(m_iNumVertices));
+			fout.write(reinterpret_cast<const char*>(&m_iNumFaces), sizeof(m_iNumFaces));
 
 			for (_uint i =0;i< m_iNumVertices;i++)
 			{
 				fout.write(reinterpret_cast<char*>(&m_vecMeshVertices[i]), sizeof(VTXMESH));
 			}
 
+			for (_uint i = 0; i < m_iNumFaces; i++)
+			{
+				fout.write(reinterpret_cast<char*>(&m_vecIndices[i]), sizeof(_uint3));
+			}
+
 			break;
 		}
-
-		string line;
-
-		for (_uint i = 0; i < m_iNumFaces; i++)
-		{
-			fout.write(reinterpret_cast<char*>(&m_vecIndices[i]), sizeof(_uint3));
-		}
-
 	}
 	else
 		return E_FAIL;
@@ -73,13 +89,19 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 		fIn.read(reinterpret_cast<char*>(&m_eModel_Type), sizeof(m_eModel_Type));
 		fIn.read(reinterpret_cast<char*>(&m_iNumVertices), sizeof(m_iNumVertices));
 		fIn.read(reinterpret_cast<char*>(&m_iNumFaces), sizeof(m_iNumFaces));
-		fIn.read(reinterpret_cast<char*>(&m_iNumBones), sizeof(m_iNumBones));
 
 		switch (m_eModel_Type)
 		{
 		case Engine::CMeshData::NONANIM:
 			break;
 		case Engine::CMeshData::ANIM:
+			
+
+
+
+			break;
+
+
 			break;
 		case Engine::CMeshData::TERRAIN:
 
@@ -121,7 +143,6 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 	MeshDataDesc.eModel_Type = m_eModel_Type;
 	MeshDataDesc.iNumVertices = m_iNumVertices;
 	MeshDataDesc.iNumFaces = m_iNumFaces;
-	MeshDataDesc.iNumBones = m_iNumBones;
 
 	switch (m_eModel_Type)
 	{
@@ -129,7 +150,7 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 		 MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
 		break;
 	case Engine::CMeshData::ANIM:
-		 MeshDataDesc.vecAnimVertices = m_vecAnimVertices;
+		 
 		break;
 	case Engine::CMeshData::TERRAIN:
 		 MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
@@ -146,7 +167,6 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 	m_eModel_Type = MeshDataDesc.eModel_Type;
 	m_iNumVertices = MeshDataDesc.iNumVertices;
 	m_iNumFaces = MeshDataDesc.iNumFaces;
-	m_iNumBones = MeshDataDesc.iNumBones;
 
 	switch (m_eModel_Type)
 	{
@@ -154,7 +174,11 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
 		break;
 	case Engine::CMeshData::ANIM:
-		m_vecAnimVertices = MeshDataDesc.vecAnimVertices;
+		/*m_vecAnimMesh = MeshDataDesc.vecAnimMesh;
+		m_vecAnimBone = MeshDataDesc.vecAnimBone;
+		m_vecAnimMaterial = MeshDataDesc.vecAnimMaterial;
+		m_vecAnimAnimation = MeshDataDesc.vecAnimAnimation;
+		*/
 		break;
 	case Engine::CMeshData::TERRAIN:
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;

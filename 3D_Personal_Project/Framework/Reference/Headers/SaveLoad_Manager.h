@@ -13,7 +13,7 @@ private:
 
 public:
 	HRESULT	Initialize();
-	HRESULT	Save_Data_Mesh(const _char* strFileName);
+	HRESULT	Save_Data_Mesh(const _char* strFileName,CMeshData::MESHDATADESC MeshDataDesc);
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer,const _char* strFileName);
 
 private:

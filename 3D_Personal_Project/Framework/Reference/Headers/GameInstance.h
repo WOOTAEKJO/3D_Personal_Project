@@ -140,7 +140,7 @@ public: /* For.PipeLine*/
 	_float4		Get_Camera_Pos();
 
 public: /* For. SaveLoad_Manager*/
-	HRESULT	Save_Data_Mesh(const _char* strFileName);
+	HRESULT	Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc);
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
 
 private:

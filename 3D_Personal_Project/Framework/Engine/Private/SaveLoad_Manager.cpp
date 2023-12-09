@@ -15,10 +15,17 @@ HRESULT CSaveLoad_Manager::Initialize()
 	return S_OK;
 }
 
-HRESULT CSaveLoad_Manager::Save_Data_Mesh(const _char* strFileName)
+HRESULT CSaveLoad_Manager::Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc)
 {
-		
+	CMeshData* pMeshData = CMeshData::Create(MeshDataDesc);
+	if (pMeshData == nullptr)
+		return E_FAIL;
 
+	if (FAILED(pMeshData->Save_Data(strFileName)))
+		return E_FAIL;
+
+	Safe_Release(pMeshData);
+	
 
 	return S_OK;
 }

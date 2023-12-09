@@ -28,6 +28,15 @@
     <Filter Include="97. Imgui\FileDialog">
       <UniqueIdentifier>{db39f331-7948-47e0-9ca3-2c2fb880d19f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager">
+      <UniqueIdentifier>{3d8333e5-8719-4190-91ff-d783e0c659bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGui_Manager">
+      <UniqueIdentifier>{49f7b950-b886-40ea-939b-b6b1c059dd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Converter">
+      <UniqueIdentifier>{522e4595-b421-4978-85a4-cfc0320983e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -99,6 +108,15 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog-master\dirent\dirent.h">
       <Filter>97. Imgui\FileDialog</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGuiMgr.h">
+      <Filter>96. Manager\00. ImGui_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Converter_Model.h">
+      <Filter>02. Converter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Converter_Struct.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -150,6 +168,12 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp">
       <Filter>97. Imgui\FileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuiMgr.cpp">
+      <Filter>96. Manager\00. ImGui_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Converter_Model.cpp">
+      <Filter>02. Converter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
