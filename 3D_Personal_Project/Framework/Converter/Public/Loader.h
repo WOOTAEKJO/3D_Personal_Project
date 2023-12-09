@@ -1,0 +1,56 @@
+#pragma once
+
+#include "Converter_Defines.h"
+#include "Base.h"
+
+/* 스레드를 생성한다. */
+/* 생성한 스레드로 필요한 레벨의 자원을 로딩한다. */
+
+BEGIN(Engine)
+class CGameInstance;
+END
+
+BEGIN(Converter)
+
+class CLoader final : public CBase
+{
+private:
+	CLoader(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual ~CLoader() = default;
+
+public:
+
+	_bool isFinished() const {
+		return m_isFinished;  
+	}
+	
+public:	
+	HRESULT Initialize(LEVEL eNextLevelID);
+
+	void Print_LoadingText();
+
+public:
+	HRESULT Loading();
+	HRESULT Loading_For_Converter_Level();
+
+private:
+	ID3D11Device*			m_pDevice = { nullptr };
+	ID3D11DeviceContext*	m_pContext = { nullptr };
+	CGameInstance*			m_pGameInstance = { nullptr };
+	// 위 포인터 변수들을 참조
+private:
+	HANDLE					m_hThread;				// 서브 쓰레드
+	CRITICAL_SECTION		m_CriticalSection;		// 크리티컬 섹션
+
+private:
+	LEVEL					m_eNextLevelID = { LEVEL_END };		// 어떤 레벨의 자원을 로딩해야 하는지를 알려줌
+	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
+	_bool					m_isFinished = { false }; // 다음 레벨을 위한 자원을 모두 로드했는지를 판단
+
+public:
+	static CLoader * Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL eNextLevelID);
+	virtual void Free() override;
+	
+};
+
+END
