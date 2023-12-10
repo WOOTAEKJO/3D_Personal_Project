@@ -113,8 +113,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -160,8 +160,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -180,15 +180,19 @@
   <ItemGroup>
     <ClInclude Include="..\Imgui\imconfig.h" />
     <ClInclude Include="..\Imgui\imgui.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
     <ClInclude Include="..\Imgui\imgui_impl_dx11.h" />
     <ClInclude Include="..\Imgui\imgui_impl_win32.h" />
     <ClInclude Include="..\Imgui\imgui_internal.h" />
     <ClInclude Include="..\Imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -201,6 +205,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Mark.h" />
+    <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Terrain.h" />
@@ -216,12 +221,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Imgui\imgui.cpp" />
+    <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\Imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
@@ -236,6 +243,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Mark.cpp" />
+    <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
@@ -260,9 +268,11 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxNorTex.hlsl" />
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxPosTex.hlsl" />
-    <FxCompile Include="..\Bin\Export\Debug\x64\ShaderFiles\Shader_VtxTBN.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

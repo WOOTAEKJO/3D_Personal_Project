@@ -36,6 +36,19 @@ public:
 	void	Set_TransformState(CTransform::STATE eType, _float4 vVector);
 	_float4	Get_TransformState(CTransform::STATE eType);
 
+	void	Rotation(_float fX, _float fY, _float fZ);
+	void	Set_Scale(_float fX, _float fY, _float fZ);
+
+public:
+	wstring	Get_ModelTag() { return m_strModelTag; }
+
+public:
+	_bool	Get_Picked();
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };

@@ -6,8 +6,16 @@ namespace Client
 	static const unsigned int	g_iWinSizeY = 720;
 
 	enum LEVEL { LEVEL_STATIC,LEVEL_LOGO, LEVEL_GAMEPLAY, LEVEL_LOADING, LEVEL_TOOL, LEVEL_END };
+
+	enum AXIS {AXIS_X,AXIS_Y,AXIS_Z,AXIS_END};
+
+	enum SHADER_TBN {TBN_TERRAIN,TBN_DTERRAIN,TBN_MODEL,TBN_END};
 }
 
+
+#include "ImGuizmo/ImGuizmo.h"
+
+#include "Client_Macro.h"
 using namespace Client;
 
 extern HWND g_hWnd;

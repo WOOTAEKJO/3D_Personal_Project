@@ -34,6 +34,18 @@ public:
 
 	virtual HRESULT Render();
 
+public:
+	void	Set_WorldMatrix(_float4x4 matWorld);
+	_float4x4 Get_WorldMatrix();
+
+public:
+	void	Set_Dead() { m_bDead = true; }
+	_bool	Get_Dead() { return m_bDead; }
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
@@ -46,6 +58,9 @@ protected:
 
 protected:
 	map<const wstring, class CComponent*>	m_mapComponent;
+
+protected:
+	_bool						m_bDead = { false };
 
 protected:
 	_bool						m_isCloned = { false };

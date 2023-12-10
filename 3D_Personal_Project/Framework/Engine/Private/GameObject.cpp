@@ -17,6 +17,7 @@ CGameObject::CGameObject(const CGameObject & rhs)
 	, m_pContext(rhs.m_pContext)
 	, m_pGameInstance(rhs.m_pGameInstance)
 	, m_isCloned(true)
+	, m_bDead(false)
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext); 
@@ -79,6 +80,38 @@ void CGameObject::Late_Tick(_float fTimeDelta)
 HRESULT CGameObject::Render()
 {
 	return S_OK;
+}
+
+void CGameObject::Set_WorldMatrix(_float4x4 matWorld)
+{
+	if (m_pTransformCom == nullptr)
+		return;
+
+	m_pTransformCom->Set_WorldMatrix(matWorld);
+}
+
+_float4x4 CGameObject::Get_WorldMatrix()
+{
+	if (m_pTransformCom == nullptr)
+		return _float4x4();
+
+	return m_pTransformCom->Get_WorldMatrix_Float4x4();
+}
+
+void CGameObject::Write_Json(json& Out_Json)
+{
+	for (auto& iter : m_mapComponent)
+	{
+		iter.second->Write_Json(Out_Json["Component"]);
+	}
+}
+
+void CGameObject::Load_FromJson(const json& In_Json)
+{
+	for (auto& iter : m_mapComponent)
+	{
+		iter.second->Load_FromJson(In_Json["Component"]);
+	}
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)

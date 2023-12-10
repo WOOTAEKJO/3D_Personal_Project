@@ -6,6 +6,12 @@ namespace Engine
 {
 	enum MOUSEKEYSTATE { DIM_LB, DIM_RB, DIM_MB, DIM_END };
 	enum MOUSEMOVESTATE { DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
+
+	enum TEXTURETYPE {
+		TYPE_NONE, TYPE_DIFFUSE, TYPE_SPECULAR, TYPE_AMBIENT, TYPE_EMISSIVE, TYPE_HEIGHT, TYPE_NORMALS,
+		TYPE_SHININESS, TYPE_OPACITY, TYPE_DISPLACEMENT, TYPE_LIGHTMAP, TYPE_REFLECTION, TYPE_BASE_COLOR, TYPE_NORMAL_CAMERA,
+		TYPE_EMISSION_COLOR, TYPE_METALNESS, TYPE_DIFFUSE_ROUNGHNESS, TYPE_AMBIENT_OCCLUSION, TYPE_UNKNOWN
+	};
 }
 
 
@@ -22,9 +28,6 @@ namespace Engine
 
 #include "DirectXTK/SimpleMath.h"
 
-#include "Assimp\scene.h"
-#include "assimp\postprocess.h"
-#include "Assimp\Importer.hpp"
 #include <d3dcompiler.h>
 using namespace DirectX;
 
@@ -45,12 +48,28 @@ namespace Engine
 }
 
 #include "Engine_Macro.h"
+#include "Engine_Typedef.h"
 #include "Engine_Struct.h"
 #include "Engine_Function.h"
-#include "Engine_Typedef.h"
 using namespace Engine;
 
 
+
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/pointer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/filereadstream.h"
+#include <locale>
+#include <codecvt>
+
+#include "commdlg.h"
+#include "shlwapi.h"
+#include <fstream>
+using namespace rapidjson;
 
 #ifdef _DEBUG
 

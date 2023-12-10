@@ -20,7 +20,14 @@ public:
 	virtual	void	Tick() override;
 	virtual	HRESULT	Render() override;
 	virtual	void	Set_Variable(void* pArg) override;
-	virtual	void	Picked(_float4 vPickPoint) override;
+	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
+	virtual	void	Demo_Picked() override;
+	virtual	HRESULT	Save_Data(const _char* strFilePath) override;
+	virtual	HRESULT	Load_Data(const _char* strFilePath) override;
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	vector<wstring>					m_vecModelTag;
@@ -32,14 +39,12 @@ private:
 	
 private: /* For.RadioButton_Transform*/
 	_int	m_iTransformRadioButton = {0};
-	_float	m_fObjectPos[3] = {};
-	_float	m_fObjectRot[3] = {};
-	_float	m_fObjectScale[3] = {};
+	
 
 private:
 	void	ObjectMesh();
-	void	ObjectMesh_Update();
 	void	Create_Model(const wstring& strModelTag, _float4 vPickPos);
+	void	NotGuizmo();
 
 public:
 	static	CObject_Window* Create(void* pArg);

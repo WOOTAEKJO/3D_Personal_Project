@@ -18,6 +18,10 @@ public:
 	void	Late_Tick(_float fTimeDelta);
 	void	Clear(_uint iLevelIndex);
 
+public:
+	_uint	Get_Current_Level() { return m_iCurrentLevel; }
+	void	Set_Current_Level(_uint iLevel) { m_iCurrentLevel = iLevel; }
+
 private:
 	map<const wstring, class CGameObject*> m_mapProtoType;				// 원형 객체 보관
 	map<const wstring, class CLayer*>* m_mapLayer = {nullptr};		   // 사본 객체 보관
@@ -25,6 +29,10 @@ private:
 	typedef map<const wstring, class CLayer*> LAYERS;
 private:
 	_uint	m_iNumLevel = {0};
+
+private:
+	_uint	m_iCurrentLevel = { 0 };
+
 private:
 	class CGameObject* Find_ProtoType(const wstring& strProtoTypeTag);
 	class CLayer* Find_Layer(_uint iLevelIndex, const wstring& strLayerTag);

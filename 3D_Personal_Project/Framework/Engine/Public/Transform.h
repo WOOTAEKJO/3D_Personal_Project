@@ -39,6 +39,8 @@ public:
 			XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&m_matWorldMatrix).r[STATE::STATE_LOOK])));
 	}
 
+	void	Set_WorldMatrix(_float4x4 matMat) { m_matWorldMatrix = matMat; }
+
 	_float4x4	Get_WorldMatrix_Float4x4() { return m_matWorldMatrix; }
 	_matrix	Get_WorldMatrix_Matrix() { return XMLoadFloat4x4(&m_matWorldMatrix); }
 	_float4x4	Get_WorldMatrix_Inverse_Float4x4() { 
@@ -55,12 +57,17 @@ public: /* 카메라에 사용*/
 	void	Go_BackWard(_float fTimeDelta);
 	void	Turn(_fvector vAxis, _float fTimeDelta);
 	void	Rotation(_fvector vAxis, _float fRadian);
+	void	Rotation_Total(_float fX, _float fY, _float fZ);
 	void	Towards_Target(_fvector	fTargetPos, _float fTimeDelta, _float fSpare);
 	void	LookAt(_fvector	fTargetPos);
 	void	LookAt_OnLand(_fvector	fTargetPos);
 
 public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	_float		m_fSpeedPerSec = { 0.f };

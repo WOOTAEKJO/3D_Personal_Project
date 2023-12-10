@@ -92,6 +92,27 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotation));
 }
 
+void CTransform::Rotation_Total(_float fX, _float fY, _float fZ)
+{
+	_float3 fScale = Get_Scaled();
+
+	_vector	vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * fScale.x;
+	_vector	vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * fScale.y;
+	_vector	vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * fScale.z;
+
+	_matrix matRotT,matRotX, matRotY, matRotZ;
+
+	matRotX = XMMatrixRotationX(fX);
+	matRotY = XMMatrixRotationY(fY);
+	matRotZ = XMMatrixRotationZ(fZ);
+
+	matRotT = matRotX * matRotY * matRotZ;
+
+	Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, matRotT));
+	Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, matRotT));
+	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotT));
+}
+
 void CTransform::Towards_Target(_fvector fTargetPos, _float fTimeDelta, _float fSpare)
 {
 	_vector vPos = Get_State(STATE::STATE_POS);
@@ -142,6 +163,27 @@ HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixN
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CTransform::Write_Json(json& Out_Json)
+{
+	Out_Json.clear();
+
+	Out_Json.emplace("Transform", m_matWorldMatrix.m);
+}
+
+void CTransform::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("Transform") == In_Json.end())
+		return;
+
+	for (_uint i = 0; i < 4; i++)
+	{
+		for (_uint j = 0; j < 4; j++)
+		{
+			m_matWorldMatrix.m[i][j] = In_Json["Transform"][i][j];
+		}
+	}
 }
 
 CTransform* CTransform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _float fSpeedPerSec, _float fRotationPerSec)

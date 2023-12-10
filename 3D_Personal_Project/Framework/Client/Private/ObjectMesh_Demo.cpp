@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\ObjectMesh_Demo.h"
 
-#include "GameInstance.h"
-
 CObjectMesh_Demo::CObjectMesh_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CDemo(pDevice, pContext)
 {
@@ -20,20 +18,20 @@ HRESULT CObjectMesh_Demo::Initialize_Prototype()
 
 HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 {
-	if (pArg == nullptr)
-		return E_FAIL;
-	
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-	
-	OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
-	
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
-	m_strModelTag = ObjectDemoValue->strModelTag;
-	
-	if (FAILED(Ready_Component()))
-		return E_FAIL;
 
+	if (pArg != nullptr)
+	{
+		OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
+		m_strModelTag = ObjectDemoValue->strModelTag;
+
+		if (FAILED(Ready_Component()))
+			return E_FAIL;
+	}
+	
 	return S_OK;
 }
 
@@ -60,9 +58,16 @@ HRESULT CObjectMesh_Demo::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(2);
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
-	m_pModelCom->Render();
+	for (_uint i = 0; i < iNumMeshs; i++)
+	{
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+
+		m_pModelCom->Render(i);
+	}
 
 	return S_OK;
 }
@@ -98,6 +103,65 @@ _float4 CObjectMesh_Demo::Get_TransformState(CTransform::STATE eType)
 	return vVec;
 }
 
+void CObjectMesh_Demo::Rotation(_float fX, _float fY, _float fZ)
+{
+	if (m_pTransformCom == nullptr)
+		return;
+
+	m_pTransformCom->Rotation_Total(XMConvertToRadians(fX),
+		XMConvertToRadians(fY),
+		XMConvertToRadians(fZ));
+}
+
+void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
+{
+	if (m_pTransformCom == nullptr)
+		return;
+
+	m_pTransformCom->Set_Scaling(fX, fY, fZ);
+}
+
+_bool CObjectMesh_Demo::Get_Picked()
+{
+	if (m_pModelCom == nullptr || 
+		m_pTransformCom==nullptr)
+		return false;
+
+	_float3 vPickPos;
+
+	//m_pGameInstance->Update_Mouse();
+
+	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
+		return true;
+	
+	return false;
+}
+
+void CObjectMesh_Demo::Write_Json(json& Out_Json)
+{
+	string strTag;
+
+	strTag.assign(m_strModelTag.begin(), m_strModelTag.end());
+
+	Out_Json.emplace("ModelTag", strTag);
+	CGameObject::Write_Json(Out_Json);
+}
+
+void CObjectMesh_Demo::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("ModelTag") == In_Json.end())
+		return;
+
+	string strTag  = In_Json["ModelTag"];
+
+	m_strModelTag.assign(strTag.begin(), strTag.end());
+
+	CGameObject::Load_FromJson(In_Json);
+
+	if (FAILED(Ready_Component()))
+		return;
+}
+
 HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
@@ -118,13 +182,13 @@ HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 HRESULT CObjectMesh_Demo::Ready_Component()
 {
 	
-	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+	/* For.Com_Shader*/ 
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_MESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(Add_Component(LEVEL_TOOL, m_strModelTag,
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

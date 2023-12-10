@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Component_Manager.h"
 #include "PipeLine.h"
+#include "Json/Json_Utility.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -55,6 +56,15 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr, CGameObject * *ppOut = nullptr);
+	_uint	Get_Current_Level();
+	void	Set_Current_Level(_uint iLevel);
+
+	template <typename T>
+	HRESULT Add_GameObject_ProtoType(const wstring & strProtoTypeTag)
+	{
+		return Add_ProtoType(strProtoTypeTag, T::Create(m_pDevice, m_pContext));
+	}
+
 
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
@@ -66,7 +76,53 @@ public: /* For.Event_Manager*/
 public: /* For.Component_Manager*/
 	HRESULT	Add_Component_ProtoType(const _uint& iLevelIndex,const wstring & strProtoTypeTag, class CComponent* pComponent);
 	class CComponent*	Add_Component_Clone(const _uint & iLevelIndex, const wstring & strProtoTypeTag, void* pArg = nullptr);
+	CComponent_Manager::PROTOTYPE Get_Com_ProtoType(const _uint& iLevelIndex);
 
+	template <typename VertexType>
+	HRESULT	Add_Shader_ProtoType(const wstring & strProtoTypeTag, const wstring& strShaderFilePath)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CShader::Create(m_pDevice, m_pContext, strShaderFilePath, VertexType::Elements, VertexType::iElementsNum));
+	}
+
+	HRESULT Add_Texture_ProtoType(const wstring& strProtoTypeTag, const wstring& strTextureFilePath, _uint iNum = 0)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CTexture::Create(m_pDevice, m_pContext, strTextureFilePath, iNum));
+	}
+
+	HRESULT	Add_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext,CModel::TYPE::TYPE_NONANIM ,strModelFilePath, matPivot));
+	}
+
+	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM, strModelFilePath, matPivot));
+	}
+
+	HRESULT	Add_Terrain_Buffer_ProtoType(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, strHeightFilePath));
+	}
+
+	template <typename T>
+	HRESULT	Add_Buffer_ProtoType(const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			T::Create(m_pDevice, m_pContext));
+	}
+
+	template <typename T>
+	HRESULT Add_ETC_ProtoType(const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			T::Create(m_pDevice, m_pContext));
+	}
+	
 public: /* For.Mouse_Manager*/
 	void	Update_Mouse();
 	_bool	Intersect(_float3 * pOut, _float * fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
@@ -83,6 +139,10 @@ public: /* For.PipeLine*/
 	_matrix		Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eState);
 	_float4		Get_Camera_Pos();
 
+public: /* For. SaveLoad_Manager*/
+	HRESULT	Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc);
+	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
@@ -94,7 +154,13 @@ private:
 	class CComponent_Manager*		m_pComponent_Manager = { nullptr };
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
+	class CSaveLoad_Manager*		m_pSaveLoad_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
+
+
+private:
+	ID3D11Device* m_pDevice = { nullptr };		
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 public:
 	void Release_Manager();

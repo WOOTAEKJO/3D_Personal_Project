@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "..\Public\Terrain_Demo.h"
-#include "GameInstance.h"
 
 #include "../Public/ImGuiMgr.h"
 
@@ -60,7 +59,7 @@ HRESULT CTerrain_Demo::Render()
 		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(1);
+		m_pShaderCom->Begin(SHADER_TBN::TBN_DTERRAIN);
 
 		m_pVIBufferCom->Bind_Buffer();
 
@@ -83,8 +82,8 @@ HRESULT CTerrain_Demo::Create_DynamicBuffer(_uint iVerticesXNum, _uint iVertices
 		tDTerrainDesc.iVerticesXNum = iVerticesXNum;
 		tDTerrainDesc.iVerticesZNum = iVerticesZNum;
 
-		/* For.Com_VIBuffer*/
-		if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+		/* For.Com_VIBuffer*/ 
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
 			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
 			return E_FAIL;
 	}
@@ -100,7 +99,7 @@ HRESULT CTerrain_Demo::Create_DynamicBuffer(_uint iVerticesXNum, _uint iVertices
 		tDTerrainDesc.iVerticesZNum = iVerticesZNum;
 
 		/* For.Com_VIBuffer*/
-		if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_DTerrain"),
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
 			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
 			return E_FAIL;
 	}
@@ -155,23 +154,23 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 HRESULT CTerrain_Demo::Ready_Component()
 {
 	
-	/* For.Com_Shader*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
+	/* For.Com_Shader*/ 
+	if (FAILED(Add_Component(LEVEL_TOOL, SHADER_MESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
-	/* For.Com_Texture*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain"),
+	/* For.Com_Texture*/ 
+	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_TAG,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]))))
 		return E_FAIL;
 
-	/* For.Com_Mask*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Mask"),
+	/* For.Com_Mask*/ 
+	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_MASK_TAG,
 		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
 		return E_FAIL;
 
-	/* For.Com_Brush*/
-	if (FAILED(Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Terrain_Brush"),
+	/* For.Com_Brush*/ 
+	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_BRUSH_TAG,
 		TEXT("Com_Brush"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]))))
 		return E_FAIL;
 
@@ -197,6 +196,7 @@ _bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
 
 	XMStoreFloat4(fPickPoint, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
 	m_vMouseWorldPos = *fPickPoint;
+
 	return false;
 }
 
@@ -206,6 +206,42 @@ void CTerrain_Demo::Update_HeightMap(_fvector vPickPos, _float fRadius, _float f
 		return;
 
 	m_pVIBufferCom->Update_Buffer(vPickPos, fRadius, fHeight, fSharpness);
+}
+
+HRESULT CTerrain_Demo::Save_Terrain(const _char* strPath)
+{
+	if (m_pVIBufferCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pVIBufferCom->Set_Buffer(strPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
+{
+	if (m_pVIBufferCom == nullptr) {
+		
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
+			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), nullptr)))
+			return E_FAIL;
+	}
+	else {
+		if (FAILED(Delete_Component(TEXT("Com_VIBuffer"))))
+			return E_FAIL;
+
+		Safe_Release(m_pVIBufferCom);
+
+		if (FAILED(Add_Component(LEVEL_TOOL, BUFFER_DTERRAIN_TAG,
+			TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), nullptr)))
+			return E_FAIL;
+	}
+
+	if (FAILED(m_pGameInstance->Load_Data_Mesh(m_pVIBufferCom, strPath)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -238,7 +274,7 @@ void CTerrain_Demo::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < TYPE_END; i++)
+	for (_uint i = 0; i < TEXTURE::TYPE_END; i++)
 	{
 		Safe_Release(m_pTextureCom[i]);
 	}

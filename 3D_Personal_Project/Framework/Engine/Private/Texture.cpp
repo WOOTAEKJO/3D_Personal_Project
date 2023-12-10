@@ -49,6 +49,7 @@ HRESULT CTexture::Initialize_ProtoType(const wstring& strTextureAddress, const _
 			hr= CreateWICTextureFromFile(m_pDevice, strPath, nullptr, &pSRV);
 		}
 
+
 		if (FAILED(hr))
 			return E_FAIL;
 
@@ -76,6 +77,8 @@ HRESULT CTexture::Bind_ShaderResources(CShader* pShader, const _char* pTextureNa
 CTexture* CTexture::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, const wstring& strTextureAddress, const _uint& iTextureNum)
 {
 	CTexture* pInstance = new CTexture(pDevice, pContext);
+
+
 
 	if (FAILED(pInstance->Initialize_ProtoType(strTextureAddress, iTextureNum))) {
 		MSG_BOX("Failed to Created : CTexture");

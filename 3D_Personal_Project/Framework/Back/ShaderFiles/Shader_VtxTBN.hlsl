@@ -163,7 +163,10 @@ PS_OUT PS_MODEL(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vDiffuse = vector(1.f, 1.f, 1.f, 1.f);
+	vector vDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord);
+
+	if (vDiffuse.a < 0.3f)
+		discard;
 
 	float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // ΈνΎΟ
 

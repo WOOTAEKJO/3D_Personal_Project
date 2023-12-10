@@ -54,6 +54,11 @@ void CComponent_Manager::Clear(_uint iLevelIndex)
 	m_mapCom_ProtoType[iLevelIndex].clear();
 }
 
+CComponent_Manager::PROTOTYPE CComponent_Manager::Get_Com_ProtoType(const _uint& iLevelIndex)
+{
+	return m_mapCom_ProtoType[iLevelIndex];
+}
+
 CComponent* CComponent_Manager::Find_Com_ProtoType(const _uint& iLevelIndex, const wstring& strProtoTypeTag)
 {
 	auto& iter = m_mapCom_ProtoType[iLevelIndex].find(strProtoTypeTag);

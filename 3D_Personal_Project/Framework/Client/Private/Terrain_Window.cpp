@@ -7,6 +7,7 @@
 #include "../Public/ImGuiMgr.h"
 
 #include "GameInstance.h"
+#include "Json/Json_Utility.h"
 #include "Terrain_Demo.h"
 #include "ObjectMesh_Demo.h"
 
@@ -25,6 +26,7 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 void CTerrain_Window::Tick()
 {
 	Terrain_Update();
+
 }
 
 HRESULT CTerrain_Window::Render()
@@ -64,12 +66,42 @@ void CTerrain_Window::Set_Variable(void* pArg)
 		return;
 }
 
-void CTerrain_Window::Picked(_float4 vPickPoint)
+void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 {
 	if (m_pTerrain == nullptr)
 		return;
-
+	
 	m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
+
+	m_vPickPos = vPickPoint;
+}
+
+void CTerrain_Window::Demo_Picked()
+{
+}
+
+HRESULT CTerrain_Window::Save_Data(const _char* strFilePath)
+{
+	string aa;
+
+	if (m_pTerrain == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pTerrain->Save_Terrain(strFilePath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTerrain_Window::Load_Data(const _char* strFilePath)
+{
+	if (m_pTerrain == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pTerrain->Load_Terrain(strFilePath)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 void CTerrain_Window::HeightMap()
@@ -91,6 +123,8 @@ void CTerrain_Window::HeightMap()
 	ImGui::SliderFloat("Sharpness", &m_fSharpness, 0.f, 1.f);
 
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
+
+	ImGui::Text(to_string(m_vPickPos.x).c_str());
 }
 
 void CTerrain_Window::Create_HeightMap()

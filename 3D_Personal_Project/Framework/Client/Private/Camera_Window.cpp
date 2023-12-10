@@ -28,6 +28,8 @@ HRESULT CCamera_Window::Render()
 {
 	CImGui_Window::Begin();
 
+	
+
 	CImGui_Window::End();
 
 	return S_OK;
@@ -37,8 +39,24 @@ void CCamera_Window::Set_Variable(void* pArg)
 {
 }
 
-void CCamera_Window::Picked(_float4 vPickPoint)
+void CCamera_Window::Terrain_Picked(_float4 vPickPoint)
 {
+}
+
+void CCamera_Window::Demo_Picked()
+{
+}
+
+HRESULT CCamera_Window::Save_Data(const _char* strFilePath)
+{
+	
+
+	return S_OK;
+}
+
+HRESULT CCamera_Window::Load_Data(const _char* strFilePath)
+{
+	return S_OK;
 }
 
 CCamera_Window* CCamera_Window::Create(void* pArg)

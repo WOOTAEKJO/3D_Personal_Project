@@ -6,6 +6,7 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 #include "Mouse_Manager.h"
+#include "SaveLoad_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -64,6 +65,17 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	m_pPipeLine = CPipeLine::Create();
 	if (nullptr == m_pPipeLine)
 		return E_FAIL;
+
+	/* 세이브 및 로드 사용 준비*/
+	m_pSaveLoad_Manager = CSaveLoad_Manager::Create();
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	m_pDevice = *ppDevice;
+	m_pContext = *ppContext;
+
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 
 	return S_OK;
 }
@@ -244,6 +256,22 @@ HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, 
 	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, ppOut, pArg);
 }
 
+_uint CGameInstance::Get_Current_Level()
+{
+	if (nullptr == m_pObject_Manager)
+		return _uint();
+
+	return m_pObject_Manager->Get_Current_Level();
+}
+
+void CGameInstance::Set_Current_Level(_uint iLevel)
+{
+	if (nullptr == m_pObject_Manager)
+		return;
+
+	m_pObject_Manager->Set_Current_Level(iLevel);
+}
+
 HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameObject* pGameObject)
 {
 	if (nullptr == m_pRenderer)
@@ -282,6 +310,14 @@ CComponent* CGameInstance::Add_Component_Clone(const _uint& iLevelIndex, const w
 		return nullptr;
 
 	return m_pComponent_Manager->Add_Component_Clone(iLevelIndex, strProtoTypeTag, pArg);
+}
+
+CComponent_Manager::PROTOTYPE CGameInstance::Get_Com_ProtoType(const _uint& iLevelIndex)
+{
+	if (nullptr == m_pComponent_Manager)
+		return CComponent_Manager::PROTOTYPE();
+
+	return m_pComponent_Manager->Get_Com_ProtoType(iLevelIndex);
 }
 
 void CGameInstance::Update_Mouse()
@@ -380,12 +416,32 @@ _float4 CGameInstance::Get_Camera_Pos()
 	return m_pPipeLine->Get_Camera_Pos();
 }
 
+HRESULT CGameInstance::Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Save_Data_Mesh(strFileName, MeshDataDesc);
+}
+
+HRESULT CGameInstance::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Load_Data_Mesh(pBuffer, strFileName);
+}
+
 void CGameInstance::Release_Manager()
 {
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
+
 	Safe_Release(m_pPipeLine);
-	Safe_Release(m_pMouse_Manager);
-	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pEvent_Manager);
+	Safe_Release(m_pMouse_Manager);
+	Safe_Release(m_pSaveLoad_Manager);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pTimer_Manager);

@@ -163,6 +163,24 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube">
       <UniqueIdentifier>{975346e3-a36e-4375-a496-f52f28ad3eb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\04. Model\01. Bone">
+      <UniqueIdentifier>{4ec10f18-8002-46b3-b61b-cfc63dcfb90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\96. Json">
+      <UniqueIdentifier>{745875b2-f93a-4296-a7c2-69ed74272532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97. Manager\02. SaveLoadManager">
+      <UniqueIdentifier>{1c355d49-b25a-4d41-b57f-bc75ea3deba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97. Manager\02. SaveLoadManager\00. MeshData">
+      <UniqueIdentifier>{3e3d8d14-590d-430f-a250-9691cec65485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\04. Model\02. Animation">
+      <UniqueIdentifier>{62ac3a20-8e75-44d2-a5f2-d37ff8c8ec74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\04. Model\02. Animation\00. Channel">
+      <UniqueIdentifier>{4bb5768f-3a4e-455c-a5cb-04df71825a1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -321,6 +339,27 @@
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bone.h">
+      <Filter>01.Utility\03. Component\04. Model\01. Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Json\json.hpp">
+      <Filter>01.Utility\96. Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Json\Json_Utility.h">
+      <Filter>01.Utility\96. Json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SaveLoad_Manager.h">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MeshData.h">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager\00. MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation.h">
+      <Filter>01.Utility\03. Component\04. Model\02. Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Channel.h">
+      <Filter>01.Utility\03. Component\04. Model\02. Animation\00. Channel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -460,6 +499,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\03. VIBuffer_Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bone.cpp">
+      <Filter>01.Utility\03. Component\04. Model\01. Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Json\Json_Utility.cpp">
+      <Filter>01.Utility\96. Json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SaveLoad_Manager.cpp">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MeshData.cpp">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager\00. MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation.cpp">
+      <Filter>01.Utility\03. Component\04. Model\02. Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Channel.cpp">
+      <Filter>01.Utility\03. Component\04. Model\02. Animation\00. Channel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
