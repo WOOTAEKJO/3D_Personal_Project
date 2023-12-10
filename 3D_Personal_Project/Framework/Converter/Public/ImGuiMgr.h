@@ -8,10 +8,14 @@ END
 
 BEGIN(Converter)
 
+class CMesh_Demo;
+
 class CImGuiMgr final : public CBase
 {
 	DECLARE_SINGLETON(CImGuiMgr)
 
+public:
+	enum MODELTYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
 private:
 	CImGuiMgr();
 	virtual	~CImGuiMgr() = default;
@@ -29,10 +33,21 @@ private:
 	CGameInstance*			m_pGameInstance = { nullptr };
 
 private:
-	_bool					m_bFileDialog = { false };
+	vector<CMesh_Demo*>	m_vecMesh_Demo[TYPE_END];
 
 private:
-	HRESULT		Binarization();
+	_bool					m_bFileDialog = { false };
+
+	_uint					m_iCurrentIndex = { 0 };
+	MODELTYPE				m_eCurrentType = { TYPE_END };
+
+private:
+	HRESULT		Binarization(const _char* strFilePath);
+
+	HRESULT		Init_Model();
+	HRESULT		Create_Model(MODELTYPE eType, const wstring& strTag);
+
+	wstring	Split_Wstring(wstring strFull, _tchar cSeperator);
 
 public:
 	virtual	void	Free() override;

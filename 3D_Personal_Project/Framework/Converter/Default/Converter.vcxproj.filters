@@ -37,6 +37,12 @@
     <Filter Include="02. Converter">
       <UniqueIdentifier>{522e4595-b421-4978-85a4-cfc0320983e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Demo">
+      <UniqueIdentifier>{0afd36af-87ea-45b1-8718-1c8082d76fb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Demo\00. Mesh">
+      <UniqueIdentifier>{dd420a07-945d-4196-8b38-8f4974b04001}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -117,6 +123,9 @@
     <ClInclude Include="..\Public\Converter_Struct.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Mesh_Demo.h">
+      <Filter>03. Demo\00. Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -174,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Converter_Model.cpp">
       <Filter>02. Converter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mesh_Demo.cpp">
+      <Filter>03. Demo\00. Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

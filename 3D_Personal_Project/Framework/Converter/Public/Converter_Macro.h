@@ -4,7 +4,7 @@
 
 #pragma region 单捞磐 颇老 林家
 
-#define DATA_TERRAIN_PATH			"../Bin/Data/Terrain/"
+#define DATA_TERRAIN_PATH			"../Bin/Data/"
 #define DATA_OBJECT_PATH			"../Bin/Data/Object/"
 //TEXT("C:/Users/Git/SourcTree/3D_Personal_Project/3D_Personal_Project/Framework/Client/Bin/Data/Terrain")
 
@@ -110,5 +110,7 @@
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
 
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
+
+#define G0_MESH_DEMO_TAG	TEXT("Prototype_GameObject_Mesh_Demo")
 
 #pragma endregion

@@ -9,7 +9,12 @@ CConverter_Model::CConverter_Model(ID3D11Device* pDevice, ID3D11DeviceContext* p
 }
 
 CConverter_Model::CConverter_Model(const CConverter_Model& rhs)
-	:CVIBuffer(rhs)
+	:CVIBuffer(rhs),
+	m_eType(rhs.m_eType),
+	m_bReady(rhs.m_bReady), m_iMeshesNum(rhs.m_iMeshesNum),m_vecMesh(rhs.m_vecMesh),
+	m_iMaterialsNum(rhs.m_iMaterialsNum),m_vecMaterial(rhs.m_vecMaterial),
+	m_iBonesNum(rhs.m_iBonesNum),m_vecBone(rhs.m_vecBone),
+	m_iAnimationsNum(rhs.m_iAnimationsNum),m_vecAnimation(rhs.m_vecAnimation)
 {
 }
 
@@ -64,7 +69,7 @@ HRESULT CConverter_Model::Set_Buffer(const _char* strPath)
 	if (m_eType == TYPE::TYPE_ANIM) {
 
 		MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::ANIM;
-		MeshDataDesc.iMeshNum = m_iMashesNum;
+		MeshDataDesc.iMeshNum = m_iMeshesNum;
 		MeshDataDesc.iMaterialNum = m_iMaterialsNum;
 		MeshDataDesc.iAnimBoneNum = m_iBonesNum;
 		MeshDataDesc.iAnimAnimationNum = m_iAnimationsNum;
@@ -91,11 +96,11 @@ HRESULT CConverter_Model::Ready_Meshes()
 {
 	m_iBonesNum = m_vecBone.size();
 
-	m_iMashesNum = m_pAiScene->mNumMeshes;
+	m_iMeshesNum = m_pAiScene->mNumMeshes;
 
-	m_vecMesh.reserve(m_iMashesNum);
+	m_vecMesh.reserve(m_iMeshesNum);
 
-	for (_uint i = 0; i < m_iMashesNum; i++)
+	for (_uint i = 0; i < m_iMeshesNum; i++)
 	{
 		MESH Mesh = {};
 		
@@ -111,27 +116,27 @@ HRESULT CConverter_Model::Ready_Meshes()
 			
 			Mesh.vecVerticesAnim.reserve(pMesh->mNumVertices);
 			
-			for (_uint i = 0; i < pMesh->mNumVertices; i++)
+			for (_uint j = 0; j < pMesh->mNumVertices; j++)
 			{
 				Mesh.vecVerticesAnim.push_back(VTXANIMMESH());
 			}
 
 			_uint iSize = Mesh.vecVerticesAnim.size();
 
-			for (_uint i = 0; i < iSize; i++)
+			for (_uint j = 0; j < iSize; j++)
 			{
-				memcpy(&Mesh.vecVerticesAnim[i].vPosition, &pMesh->mVertices[i], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesAnim[i].vTangent, &pMesh->mTangents[i], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesAnim[i].vNormal, &pMesh->mNormals[i], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesAnim[i].vTexCoord, &pMesh->mTextureCoords[0][i], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vPosition, &pMesh->mVertices[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vTangent, &pMesh->mTangents[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vNormal, &pMesh->mNormals[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vTexCoord, &pMesh->mTextureCoords[0][j], sizeof(_float3));
 
 			}
 
 			_uint iBonesNum = pMesh->mNumBones;
 
-			for (_uint i = 0; i < iBonesNum; i++)
+			for (_uint j = 0; j < iBonesNum; j++)
 			{
-				aiBone* pBone = pMesh->mBones[i];
+				aiBone* pBone = pMesh->mBones[j];
 
 				_float4x4 matOffset;
 				memcpy(&matOffset, &pBone->mOffsetMatrix, sizeof(_float4x4));
@@ -149,30 +154,34 @@ HRESULT CConverter_Model::Ready_Meshes()
 					return false;
 				});
 
-				m_vecBone[i].matOffsetMatrix = matOffset;
+				m_vecBone[j].matOffsetMatrix = matOffset;
 
-				for (_uint j = 0; j < pBone->mNumWeights; j++)
+				for (_uint k = 0; k < pBone->mNumWeights; k++)
 				{
 				
-					if (Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.x == 0.f)
+					if (Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.x == 0.f)
 					{
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendIndices.x = (int32_t)i;
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.x = pBone->mWeights[j].mWeight;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendIndices.x = (int32_t)j;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.x = pBone->mWeights[k].mWeight;
+					
 					}
-					else if (Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.y == 0.f)
+					else if (Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.y == 0.f)
 					{
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendIndices.y = (int32_t)i;
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.y = pBone->mWeights[j].mWeight;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendIndices.y = (int32_t)j;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.y = pBone->mWeights[k].mWeight;
+						
 					}
-					else if (Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.z == 0.f)
+					else if (Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.z == 0.f)
 					{
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendIndices.z = (int32_t)i;
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.z = pBone->mWeights[j].mWeight;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendIndices.z = (int32_t)j;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.z = pBone->mWeights[k].mWeight;
+					
 					}
-					else if (Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.w == 0.f)
+					else if (Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.w == 0.f)
 					{
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendIndices.w = (int32_t)i;
-						Mesh.vecVerticesAnim[pBone->mWeights[j].mVertexId].vBlendWeights.w = pBone->mWeights[j].mWeight;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendIndices.w = (int32_t)j;
+						Mesh.vecVerticesAnim[pBone->mWeights[k].mVertexId].vBlendWeights.w = pBone->mWeights[k].mWeight;
+
 					}
 				}
 
@@ -180,21 +189,34 @@ HRESULT CConverter_Model::Ready_Meshes()
 		}
 		else if (m_eType == TYPE::TYPE_NONANIM)
 		{
-			VTXMESH NonAnimMesh;
+			Mesh.vecVerticesNonAim.reserve(pMesh->mNumVertices);
 
-			memcpy(&NonAnimMesh.vPosition, &pMesh->mVertices[i], sizeof(_float3));
-			memcpy(&NonAnimMesh.vTangent, &pMesh->mTangents[i], sizeof(_float3));
-			memcpy(&NonAnimMesh.vNormal, &pMesh->mNormals[i], sizeof(_float3));
-			memcpy(&NonAnimMesh.vTexCoord, &pMesh->mTextureCoords[0][i], sizeof(_float3));
+			for (_uint j = 0; j < pMesh->mNumVertices; j++)
+			{
+				Mesh.vecVerticesNonAim.push_back(VTXMESH());
+			}
 
-			Mesh.vecVerticesNonAim.push_back(NonAnimMesh);
+			_uint iSize = Mesh.vecVerticesNonAim.size();
+
+			for (_uint j = 0; j < iSize; j++)
+			{
+				memcpy(&Mesh.vecVerticesNonAim[j].vPosition, &pMesh->mVertices[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesNonAim[j].vTangent, &pMesh->mTangents[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesNonAim[j].vNormal, &pMesh->mNormals[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesNonAim[j].vTexCoord, &pMesh->mTextureCoords[0][j], sizeof(_float3));
+
+			}
 		}
 
-		for (_uint i = 0; i < pMesh->mNumFaces;i++)
+		Mesh.vecIndices.reserve(pMesh->mNumFaces);
+		for (_uint j = 0; j < pMesh->mNumFaces;j++)
 		{
-			_uint3 iIndices;
+			_uint3 iIndices = {};
 
-			memcpy(&iIndices, &pMesh->mFaces[i], sizeof(_uint3));
+			//memcpy(&iIndices, &pMesh->mFaces[i], sizeof(_uint3));
+			iIndices.iX = pMesh->mFaces[j].mIndices[0];
+			iIndices.iY = pMesh->mFaces[j].mIndices[1];
+			iIndices.iZ = pMesh->mFaces[j].mIndices[2];
 
 			Mesh.vecIndices.push_back(iIndices);
 		}
@@ -253,8 +275,8 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 
 HRESULT CConverter_Model::Ready_Bones(aiNode* pNode, _int iParentIndex)
 {
-	if (pNode == nullptr)
-		return S_OK;
+	/*if (pNode == nullptr)
+		return S_OK;*/
 
 	BONE	Bone;
 

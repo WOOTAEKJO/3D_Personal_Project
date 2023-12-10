@@ -11,7 +11,11 @@
 #include "shlwapi.h"
 #include <fstream>
 
+#include <sstream>
+
 #include "GameInstance.h"
+
+#include "Mesh_Demo.h"
 
 IMPLEMENT_SINGLETON(CImGuiMgr)
 
@@ -37,6 +41,9 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(m_pDevice, m_pContext);
+
+    if (FAILED(Init_Model()))
+        return E_FAIL;
 
 	return S_OK;
 }
@@ -87,6 +94,9 @@ HRESULT CImGuiMgr::Render()
 
         if (ImGui::BeginMenu("Mode"))
         {
+
+            
+
             ImGui::EndMenu();
         }
 
@@ -99,6 +109,58 @@ HRESULT CImGuiMgr::Render()
 		ImGui::EndMainMenuBar();
 	}
 
+    if (ImGui::BeginTabBar("Mesh"))
+    {
+        if (ImGui::BeginTabItem("AnimMesh"))
+        {
+            m_eCurrentType = TYPE_ANIM;
+
+            ImVec2 vSize = ImVec2(250, 100);
+            ImGui::BeginListBox("AnimMesh", vSize);
+            _uint iSize = m_vecMesh_Demo[TYPE_ANIM].size();
+            for (_uint i = 0; i < iSize; i++)
+            {
+                string str = to_string(i);
+                string str2;
+                size_t pos = m_vecMesh_Demo[TYPE_ANIM][i]->Get_ModelTag().rfind(L"_");
+                wstring wstr = m_vecMesh_Demo[TYPE_ANIM][i]->Get_ModelTag().substr(pos + 1);
+                str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+                if (ImGui::Selectable((str2).c_str(), i == m_iCurrentIndex)) {
+                    m_iCurrentIndex = i;
+                    //m_strCurrentDemoTag = (str + "." + str2);
+                }
+            }
+            ImGui::EndListBox();
+
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("NonAnimMesh"))
+        {
+            m_eCurrentType = TYPE_NONANIM;
+
+            ImVec2 vSize = ImVec2(250, 100);
+            ImGui::BeginListBox("NonAnimMesh",vSize);
+            _uint iSize = m_vecMesh_Demo[TYPE_NONANIM].size();
+            for (_uint i = 0; i < iSize; i++)
+            {
+                string str = to_string(i);
+                string str2;
+                size_t pos = m_vecMesh_Demo[TYPE_NONANIM][i]->Get_ModelTag().rfind(L"_");
+                wstring wstr = m_vecMesh_Demo[TYPE_NONANIM][i]->Get_ModelTag().substr(pos + 1);
+                str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+                if (ImGui::Selectable((str2).c_str(), i == m_iCurrentIndex)) {
+                    m_iCurrentIndex = i;
+                    //m_strCurrentDemoTag = (str + "." + str2);
+                }
+            }
+            ImGui::EndListBox();
+
+            ImGui::EndTabItem();
+        }
+
+        ImGui::EndTabBar();
+    }
 
     if (m_bFileDialog)
     {
@@ -128,7 +190,7 @@ void CImGuiMgr::File_Render()
             string strFileName = ImGuiFileDialog::Instance()->GetFilePathName();
             string strFilePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 
-
+            Binarization(strFileName.c_str());
         }
 
         // close
@@ -138,9 +200,69 @@ void CImGuiMgr::File_Render()
     // 파일 다이얼로그만 키면 누수가 남
 }
 
-HRESULT CImGuiMgr::Binarization()
+HRESULT CImGuiMgr::Binarization(const _char* strFilePath)
 {
+    if (FAILED(m_vecMesh_Demo[m_eCurrentType][m_iCurrentIndex]->Binarization(strFilePath)))
+        return E_FAIL;
+
     return S_OK;
+}
+
+HRESULT CImGuiMgr::Init_Model()
+{
+    CComponent_Manager::PROTOTYPE mapProtoCom = m_pGameInstance->Get_Com_ProtoType(m_pGameInstance->Get_Current_Level());
+
+    _uint pos;
+    wstring wstr;
+    for (auto& iter : mapProtoCom)
+    {
+        wstr = iter.first;
+        for (_uint i = 0; i < 2; i++) {
+            pos = wstr.find(L"_");
+            wstr = wstr.substr(pos + 1);
+        }
+        wstr = Split_Wstring(wstr, L'_');
+
+        if (!wcscmp(wstr.c_str(), L"AnimModel"))
+        {
+            if (FAILED(Create_Model(TYPE_ANIM, iter.first)))
+                return E_FAIL;
+        }
+        else if (!wcscmp(wstr.c_str(), L"Model"))
+        {
+            if (FAILED(Create_Model(TYPE_NONANIM, iter.first)))
+                return E_FAIL;
+        }
+
+    }
+
+    return S_OK;
+}
+
+HRESULT CImGuiMgr::Create_Model(MODELTYPE eType, const wstring& strTag)
+{
+    CGameObject* pDemo = nullptr;
+
+    CMesh_Demo::OBDEMOVALUE DemoValue;
+
+    DemoValue.strModelTag = strTag;
+
+    if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), TEXT("Converter"), G0_MESH_DEMO_TAG, &DemoValue,
+        reinterpret_cast<CGameObject**>(&pDemo))))
+        return E_FAIL;
+
+    m_vecMesh_Demo[eType].push_back(dynamic_cast<CMesh_Demo*>(pDemo));
+
+    return S_OK;
+}
+
+wstring CImGuiMgr::Split_Wstring(wstring strFull, _tchar cSeperator)
+{
+    wstring wstr;
+    wstringstream wss(strFull);
+    getline(wss, wstr, cSeperator);
+
+    return wstr;
 }
 
 void CImGuiMgr::Free()

@@ -30,7 +30,7 @@ private:
 	_bool					m_bReady = false;
 
 private:
-	_uint					m_iMashesNum = { 0 };
+	_uint					m_iMeshesNum = { 0 };
 	vector<MESH>			m_vecMesh;
 
 	_uint					m_iMaterialsNum = { 0 };

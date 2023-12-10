@@ -25,6 +25,7 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 	if (fout.is_open())
 	{
 		
+		fout.write(reinterpret_cast<const char*>(&m_eModel_Type), sizeof(m_eModel_Type));
 
 		switch (m_eModel_Type)
 		{
@@ -52,7 +53,6 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 			break;
 		case Engine::CMeshData::TERRAIN:
 
-			fout.write(reinterpret_cast<const char*>(&m_eModel_Type), sizeof(m_eModel_Type));
 			fout.write(reinterpret_cast<const char*>(&m_iNumVertices), sizeof(m_iNumVertices));
 			fout.write(reinterpret_cast<const char*>(&m_iNumFaces), sizeof(m_iNumFaces));
 
@@ -165,8 +165,7 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 {
 	m_eModel_Type = MeshDataDesc.eModel_Type;
-	m_iNumVertices = MeshDataDesc.iNumVertices;
-	m_iNumFaces = MeshDataDesc.iNumFaces;
+	
 
 	switch (m_eModel_Type)
 	{
@@ -174,13 +173,21 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
 		break;
 	case Engine::CMeshData::ANIM:
-		/*m_vecAnimMesh = MeshDataDesc.vecAnimMesh;
+
+		m_iMeshNum = MeshDataDesc.iMeshNum;
+		m_iMaterialNum = MeshDataDesc.iMaterialNum;
+		m_iAnimBoneNum = MeshDataDesc.iAnimBoneNum;
+		m_iAnimAnimationNum = MeshDataDesc.iAnimAnimationNum;
+
+		m_vecMesh = MeshDataDesc.vecMesh;
 		m_vecAnimBone = MeshDataDesc.vecAnimBone;
-		m_vecAnimMaterial = MeshDataDesc.vecAnimMaterial;
+		m_vecMaterial = MeshDataDesc.vecMaterial;
 		m_vecAnimAnimation = MeshDataDesc.vecAnimAnimation;
-		*/
+		
 		break;
 	case Engine::CMeshData::TERRAIN:
+		m_iNumVertices = MeshDataDesc.iNumVertices;
+		m_iNumFaces = MeshDataDesc.iNumFaces;
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
 		break;
 	}
