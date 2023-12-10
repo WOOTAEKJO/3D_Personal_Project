@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "MeshData.h"
 
 BEGIN(Engine)
 
@@ -54,10 +55,15 @@ private:
 	_float4x4				m_matPivot;
 
 private:
-	HRESULT	Ready_Meshes(_fmatrix	matPivot);
+	/*HRESULT	Ready_Meshes(_fmatrix	matPivot);
 	HRESULT	Ready_Materials(const string & strModelFilePath);
 	HRESULT	Ready_Bones(aiNode* pNode, _int iParentIndex);
-	HRESULT	Ready_Animation();
+	HRESULT	Ready_Animation();*/
+
+	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);
+	HRESULT	Ready_Materials(CMeshData::MESHDATADESC MeshData);
+	HRESULT	Ready_Bones(CMeshData::MESHDATADESC MeshData);
+	HRESULT	Ready_Animation(CMeshData::MESHDATADESC MeshData);
 
 public:
 	static	CModel* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext,TYPE eType, const string& strModelFilePath, _fmatrix	matPivot);

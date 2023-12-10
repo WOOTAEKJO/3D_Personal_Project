@@ -2,6 +2,7 @@
 
 #include "Base.h"
 
+
 BEGIN(Engine)
 
 class ENGINE_DLL CComponent abstract : public CBase

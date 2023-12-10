@@ -2,7 +2,6 @@
 #include "Json/Json_Utility.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "MeshData.h"
 
 CSaveLoad_Manager::CSaveLoad_Manager()
 	:m_pGameInstance(CGameInstance::GetInstance())
@@ -50,7 +49,7 @@ HRESULT CSaveLoad_Manager::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFi
 		break;
 	case CMeshData::MODEL_TYPE::TERRAIN:
 		
-		pBuffer->Init_Buffer(MeshDataDesc);
+		//pBuffer->Init_Buffer(MeshDataDesc);
 
 		break;
 	}

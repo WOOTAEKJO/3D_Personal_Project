@@ -43,7 +43,7 @@
 #pragma region 애니메이션 모델
 
 #define	ANIMMODEL_FIONA_TAG			TEXT("Prototype_Component_AnimModel_Fiona")
-#define	ANIMMODEL_FIONA_PATH		"../Bin/Resources/Models/AnimModel/Fiona/Fiona.fbx"
+#define	ANIMMODEL_FIONA_PATH		"../Bin/Resources/Models/AnimModel/Fiona/Fiona.bin"
 
 #define	ANIMMODEL_RAT_TAG		TEXT("Prototype_Component_AnimModel_Rat")
 #define	ANIMMODEL_RAT_PATH		"../Bin/Resources/Models/AnimModel/Rat/Rat.fbx"

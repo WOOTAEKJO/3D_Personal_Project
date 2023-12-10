@@ -1,9 +1,9 @@
 #pragma once
 #include "Base.h"
+#include "MeshData.h"
+
 
 BEGIN(Engine)
-
-class CVIBuffer;
 
 class CSaveLoad_Manager final : public CBase
 {
