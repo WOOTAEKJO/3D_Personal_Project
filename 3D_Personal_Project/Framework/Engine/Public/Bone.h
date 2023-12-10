@@ -36,7 +36,6 @@ private:
 	_float4x4	m_matOffset;
 
 public:
-	//static	CBone* Create(aiNode* pNode, _int iParentIndex);
 	static	CBone* Create(BONE Bone);
 	virtual	void	Free() override;
 };

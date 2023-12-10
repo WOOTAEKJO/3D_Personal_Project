@@ -27,7 +27,6 @@ private:
 	_bool				m_bFinished = { false };
 
 public:
-	//static	CAnimation* Create(aiAnimation* paiAnimation, const CModel::BONES& vecBones);
 	static	CAnimation* Create(ANIMATION Animation, const CModel::BONES& vecBones);
 	virtual	void	Free() override;
 };

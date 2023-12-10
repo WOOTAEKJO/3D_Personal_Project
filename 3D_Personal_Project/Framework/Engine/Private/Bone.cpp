@@ -12,8 +12,6 @@ HRESULT CBone::Initialize(BONE Bone)
 
 	m_matOffset = Bone.matOffsetMatrix;
 
-	/*memcpy(&m_matTransformation, &pNode->mTransformation,sizeof(_float4x4));
-	XMStoreFloat4x4(&m_matTransformation,XMMatrixTranspose(XMLoadFloat4x4(&m_matTransformation)));*/
 	m_matTransformation = Bone.matTransformation;
 
 	XMStoreFloat4x4(&m_matCombinedTransformation, XMMatrixIdentity());

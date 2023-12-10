@@ -13,40 +13,6 @@ HRESULT CChannel::Initialize(CHANNEL Channel, const CModel::BONES& vecBones)
 
 	m_vecKeyFrame = Channel.vecKeyFrame;
 
-	/*_float3 vPos;
-	_float3 vScale;
-	_float4 vRot;
-
-	for (_uint i = 0; i < m_iKeyFrameNum; i++)
-	{
-		KEYFRAME	KeyFrame = {};
-
-		if (i < paiChannel->mNumScalingKeys)
-		{
-			memcpy(&vScale, &paiChannel->mScalingKeys[i].mValue, sizeof(_float3));
-			KeyFrame.fTrackPosition = paiChannel->mScalingKeys[i].mTime;
-		}
-		if (i < paiChannel->mNumRotationKeys)
-		{
-			vRot.x = paiChannel->mRotationKeys[i].mValue.x;
-			vRot.y = paiChannel->mRotationKeys[i].mValue.y;
-			vRot.z = paiChannel->mRotationKeys[i].mValue.z;
-			vRot.w = paiChannel->mRotationKeys[i].mValue.w;
-			KeyFrame.fTrackPosition = paiChannel->mRotationKeys[i].mTime;
-		}
-		if (i < paiChannel->mNumPositionKeys)
-		{
-			memcpy(&vPos, &paiChannel->mPositionKeys[i].mValue, sizeof(_float3));
-			KeyFrame.fTrackPosition = paiChannel->mPositionKeys[i].mTime;
-		}
-
-		KeyFrame.vPosition = vPos;
-		KeyFrame.vRotation = vRot;
-		KeyFrame.vScale = vScale;
-
-		m_vecKeyFrame.push_back(KeyFrame);
-	}*/
-
 	_uint iBoneIndex = { 0 };
 
 	auto iter = find_if(vecBones.begin(), vecBones.end(), [&](CBone* pBone) {

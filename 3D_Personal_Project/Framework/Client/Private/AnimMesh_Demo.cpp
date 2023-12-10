@@ -65,7 +65,7 @@ HRESULT CAnimMesh_Demo::Render()
 		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
 			return E_FAIL;
 
-		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
 		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
 

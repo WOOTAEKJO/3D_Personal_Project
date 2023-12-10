@@ -41,32 +41,6 @@ CModel::CModel(const CModel& rhs)
 
 HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
 {
-	
-
-	//_uint iFlag = aiProcess_ConvertToLeftHanded | aiProcessPreset_TargetRealtime_Fast;
-
-	//if (m_eType == TYPE::TYPE_NONANIM)
-	//	iFlag |= aiProcess_PreTransformVertices;
-
-	//m_pAiScene = m_Importer.ReadFile(strModelFilePath, iFlag);
-	//// aiProcess_PreTransformVertices 애니메이션이 있는 매쉬를 로드하면 애니메이션과 관련된 매쉬가 없어질 수 있다.
-	//if (m_pAiScene == nullptr)
-	//	return E_FAIL;
-
-	//XMStoreFloat4x4(&m_matPivot, matPivot);
-
-	//if (FAILED(Ready_Bones(m_pAiScene->mRootNode, -1)))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Meshes(matPivot)))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Materials(strModelFilePath)))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Animation()))
-	//	return E_FAIL;
-
 	m_eType = eType;
 
 	XMStoreFloat4x4(&m_matPivot, matPivot);
@@ -147,7 +121,7 @@ _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	return false;
 }
 
-HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, aiTextureType eType)
+HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType)
 {
 	if (pShader==nullptr || iMeshIndex >= m_iMeshesNum)
 		return E_FAIL;
@@ -161,110 +135,6 @@ HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshInde
 {
 	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones);
 }
-
-//HRESULT CModel::Ready_Meshes(_fmatrix	matPivot)
-//{
-//	m_iMeshesNum = m_pAiScene->mNumMeshes;
-//
-//	m_vecMesh.reserve(m_iMeshesNum);
-//
-//	for (size_t i = 0; i < m_iMeshesNum; i++)
-//	{
-//		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, m_pAiScene->mMeshes[i], matPivot,m_vecBones);
-//
-//		if (pMesh == nullptr)
-//			return E_FAIL;
-//
-//		m_vecMesh.push_back(pMesh);
-//	}
-//
-//	return S_OK;
-//}
-//
-//HRESULT CModel::Ready_Materials(const string& strModelFilePath)
-//{
-//	m_iMaterialsNum = m_pAiScene->mNumMaterials;
-//
-//	for (size_t i = 0; i < m_iMaterialsNum; i++)
-//	{
-//		aiMaterial* pMaterial = m_pAiScene->mMaterials[i];
-//
-//		MATERIAL_DESC	Material_Desc = {};
-//
-//		for (size_t j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
-//		{
-//			
-//			_char szDdrive[MAX_PATH] = "";
-//			_char szDirectory[MAX_PATH] = "";
-//			
-//			_splitpath_s(strModelFilePath.c_str(), szDdrive, MAX_PATH, szDirectory, MAX_PATH,
-//				nullptr, 0, nullptr, 0);
-//
-//			aiString	szGetPath;
-//			if (FAILED(pMaterial->GetTexture((aiTextureType)j, 0, &szGetPath)))
-//				continue;
-//
-//			_char	szFileName[MAX_PATH] = "";
-//			_char	szExc[MAX_PATH] = "";
-//
-//			_splitpath_s(szGetPath.data, nullptr, 0, nullptr, 0,
-//				szFileName, MAX_PATH, szExc, MAX_PATH);
-//			
-//			_char	szTmp[MAX_PATH] = "";
-//
-//			strcpy_s(szTmp, szDdrive);
-//			strcat_s(szTmp, szDirectory);
-//			strcat_s(szTmp, szFileName);
-//			strcat_s(szTmp, szExc);
-//			
-//			_tchar	szFullPath[MAX_PATH] = TEXT("");
-//
-//			MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullPath, MAX_PATH);
-//
-//			Material_Desc.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, szFullPath, 1);
-//			if (Material_Desc.pMtrlTexture[j] == nullptr)
-//				return E_FAIL;
-//		}
-//
-//		m_vecMaterial.push_back(Material_Desc);
-//	}
-//
-//	return S_OK;
-//}
-//
-//HRESULT CModel::Ready_Bones(aiNode* pNode, _int iParentIndex)
-//{
-//	CBone* pBone = CBone::Create(pNode, iParentIndex);
-//	if (pBone == nullptr)
-//		return E_FAIL;
-//
-//	m_vecBones.push_back(pBone);
-//
-//	_int iParIndx = m_vecBones.size() - 1;
-//
-//	for (_uint i = 0; i < pNode->mNumChildren; i++)
-//	{
-//		Ready_Bones(pNode->mChildren[i], iParIndx);
-//	}
-//
-//	return S_OK;
-//}
-//
-//HRESULT CModel::Ready_Animation()
-//{
-//	m_iAnimationNum = m_pAiScene->mNumAnimations;
-//
-//	for (_uint i = 0; i < m_iAnimationNum; i++)
-//	{
-//		CAnimation* pAnimation = CAnimation::Create(m_pAiScene->mAnimations[i],m_vecBones);
-//		if (pAnimation == nullptr)
-//			return E_FAIL;
-//
-//		m_vecAnimation.push_back(pAnimation);
-//	}
-//
-//	return S_OK;
-//}
 
 HRESULT CModel::Ready_Meshes(CMeshData::MESHDATADESC MeshData)
 {	
@@ -292,7 +162,7 @@ HRESULT CModel::Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& 
 	{
 		MATERIAL_DESC Material_Desc = {};
 
-		for (_uint j = 1; j < 18; j++)
+		for (_uint j = 1; j < (_uint)TEXTURETYPE::TYPE_UNKNOWN; j++)
 		{
 			_char szDdrive[MAX_PATH] = "";
 			_char szDirectory[MAX_PATH] = "";
@@ -412,8 +282,5 @@ void CModel::Free()
 	for (auto& iter : m_vecAnimation)
 		Safe_Release(iter);
 	m_vecAnimation.clear();
-
-	if(!m_bClone)
-		m_Importer.FreeScene();
 
 }

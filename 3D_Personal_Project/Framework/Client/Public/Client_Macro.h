@@ -56,7 +56,7 @@
 #pragma region ÀÏ¹Ý¸ðµ¨
 
 #define	MODEL_PINETREE_TAG			TEXT("Prototype_Component_Model_PineTree")
-#define	MODEL_PINETREE_PATH			"../Bin/Resources/Models/NonAnimModel/PineTree/PineTree.fbx"
+#define	MODEL_PINETREE_PATH			"../Bin/Resources/Models/NonAnimModel/PineTree/PineTree.bin"
 
 #define	MODEL_SM_REED1_TAG			TEXT("Prototype_Component_Model_SM_Reed1")
 #define	MODEL_SM_REED1_PATH			"../Bin/Resources/Models/NonAnimModel/SM_Reed1/SM_Reed1.fbx"

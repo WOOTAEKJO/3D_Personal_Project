@@ -44,7 +44,7 @@ namespace Engine
 
 	typedef	struct tagMaterial_Desc
 	{
-		class CTexture* pMtrlTexture[AI_TEXTURE_TYPE_MAX];
+		class CTexture* pMtrlTexture[TEXTURETYPE::TYPE_UNKNOWN];
 	}MATERIAL_DESC;
 
 	typedef struct ENGINE_DLL tagVertex_Position_TexCoord
@@ -121,7 +121,7 @@ namespace Engine
 
 	typedef struct tagMaterialDesc
 	{
-		string	vecMaterialPath[AI_TEXTURE_TYPE_MAX];
+		string	vecMaterialPath[TEXTURETYPE::TYPE_UNKNOWN];
 
 	}MATERIAL;
 

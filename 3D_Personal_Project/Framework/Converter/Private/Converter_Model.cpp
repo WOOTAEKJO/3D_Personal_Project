@@ -67,7 +67,6 @@ HRESULT CConverter_Model::Set_Buffer(const _char* strPath)
 	CMeshData::MESHDATADESC MeshDataDesc;
 
 	if (m_eType == TYPE::TYPE_ANIM) {
-
 		MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::ANIM;
 		MeshDataDesc.iMeshNum = m_iMeshesNum;
 		MeshDataDesc.iMaterialNum = m_iMaterialsNum;
@@ -78,13 +77,21 @@ HRESULT CConverter_Model::Set_Buffer(const _char* strPath)
 		MeshDataDesc.vecMaterial = m_vecMaterial;
 		MeshDataDesc.vecAnimBone = m_vecBone;
 		MeshDataDesc.vecAnimAnimation = m_vecAnimation;
+		
 	}
 	else if (m_eType == TYPE::TYPE_NONANIM) {
+		MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::NONANIM;
+		MeshDataDesc.iMeshNum = m_iMeshesNum;
+		MeshDataDesc.iMaterialNum = m_iMaterialsNum;
+		MeshDataDesc.iAnimBoneNum = m_iBonesNum;
 
+		MeshDataDesc.vecMesh = m_vecMesh;
+		MeshDataDesc.vecMaterial = m_vecMaterial;
+		MeshDataDesc.vecAnimBone = m_vecBone;
 	}
 	else
 		return E_FAIL;
-
+	
 
 	if (FAILED(m_pGameInstance->Save_Data_Mesh(strPath, MeshDataDesc)))
 		return E_FAIL;
@@ -185,7 +192,7 @@ HRESULT CConverter_Model::Ready_Meshes()
 
 					}
 				}
-
+				
 			}
 		}
 		else if (m_eType == TYPE::TYPE_NONANIM)
@@ -287,8 +294,6 @@ HRESULT CConverter_Model::Ready_Bones(aiNode* pNode, _int iParentIndex)
 	memcpy(&Bone.matTransformation, &pNode->mTransformation, sizeof(_float4x4));
 	XMStoreFloat4x4(&Bone.matTransformation, XMMatrixTranspose(XMLoadFloat4x4(&Bone.matTransformation)));
 
-
-	
 	m_vecBone.push_back(Bone);
 
 	_int iParentIndx = m_vecBone.size() - 1;

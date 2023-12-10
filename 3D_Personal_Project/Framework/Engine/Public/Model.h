@@ -29,13 +29,9 @@ public:
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
-	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, aiTextureType eType);
+	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, TEXTURETYPE eType);
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
 
-private:
-	const aiScene*		m_pAiScene = { nullptr };
-	Assimp::Importer	m_Importer;
-	
 private:
 	_uint					m_iMeshesNum = { 0 };
 	vector<CMesh*>			m_vecMesh;
@@ -55,11 +51,6 @@ private:
 	_float4x4				m_matPivot;
 
 private:
-	/*HRESULT	Ready_Meshes(_fmatrix	matPivot);
-	HRESULT	Ready_Materials(const string & strModelFilePath);
-	HRESULT	Ready_Bones(aiNode* pNode, _int iParentIndex);
-	HRESULT	Ready_Animation();*/
-
 	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);
 	HRESULT	Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& strModelFilePath);
 	HRESULT	Ready_Bones(CMeshData::MESHDATADESC MeshData);

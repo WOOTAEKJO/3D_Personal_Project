@@ -24,7 +24,7 @@ HRESULT CLEVEL_Converter::Initialize()
 
 void CLEVEL_Converter::Tick(_float fTimeDelta)
 {
-	
+
 }
 
 HRESULT CLEVEL_Converter::Render()

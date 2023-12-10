@@ -62,7 +62,7 @@ HRESULT CObjectMesh_Demo::Render()
 
 	for (_uint i = 0; i < iNumMeshs; i++)
 	{
-		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
 		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
 
@@ -183,12 +183,12 @@ HRESULT CObjectMesh_Demo::Ready_Component()
 {
 	
 	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, SHADER_MESH_TAG,
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_MESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Model*/
-	if (FAILED(Add_Component(LEVEL_TOOL, m_strModelTag,
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 

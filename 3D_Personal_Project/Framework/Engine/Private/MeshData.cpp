@@ -30,6 +30,50 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 		switch (m_eModel_Type)
 		{
 		case Engine::CMeshData::NONANIM:
+			fout.write(reinterpret_cast<const char*>(&m_iMeshNum), sizeof(m_iMeshNum));
+			fout.write(reinterpret_cast<const char*>(&m_iMaterialNum), sizeof(m_iMaterialNum));
+			fout.write(reinterpret_cast<const char*>(&m_iAnimBoneNum), sizeof(m_iAnimBoneNum));
+
+			for (_uint i = 0; i < m_iMeshNum; i++) {
+
+				size_t nameSize = m_vecMesh[i].szName.size();
+				fout.write(reinterpret_cast<const char*>(&nameSize), sizeof(size_t));
+				fout.write(m_vecMesh[i].szName.c_str(), nameSize);
+
+				fout.write(reinterpret_cast<const char*>(&m_vecMesh[i].iMaterialIndex), sizeof(_uint));
+
+				_uint iSize = m_vecMesh[i].vecMeshBoneIndices.size();
+				fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+				fout.write(reinterpret_cast<const char*>(m_vecMesh[i].vecMeshBoneIndices.data()), iSize * sizeof(_uint));
+
+				iSize = m_vecMesh[i].vecVerticesNonAim.size();
+				fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+				fout.write(reinterpret_cast<const char*>(m_vecMesh[i].vecVerticesNonAim.data()), iSize * sizeof(VTXMESH));
+
+				iSize = m_vecMesh[i].vecIndices.size();
+				fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+				fout.write(reinterpret_cast<const char*>(m_vecMesh[i].vecIndices.data()), iSize * sizeof(_uint3));
+			}
+
+			for (_uint i = 0; i < m_iMaterialNum; i++) {
+				for (_uint j = 0; j < 18; j++)
+				{
+					size_t nameSize = m_vecMaterial[i].vecMaterialPath[j].size();
+					fout.write(reinterpret_cast<const char*>(&nameSize), sizeof(size_t));
+					fout.write(m_vecMaterial[i].vecMaterialPath[j].c_str(), nameSize);
+				}
+			}
+
+
+			for (_uint i = 0; i < m_iAnimBoneNum; i++) {
+				size_t nameSize = m_vecAnimBone[i].szName.size();
+				fout.write(reinterpret_cast<const char*>(&nameSize), sizeof(size_t));
+				fout.write(m_vecAnimBone[i].szName.c_str(), nameSize);
+
+				fout.write(reinterpret_cast<const char*>(&m_vecAnimBone[i].iParentIndex), sizeof(_int));
+				fout.write(reinterpret_cast<const char*>(&m_vecAnimBone[i].matTransformation), sizeof(_float4x4));
+				fout.write(reinterpret_cast<const char*>(&m_vecAnimBone[i].matOffsetMatrix), sizeof(_float4x4));
+			}
 			break;
 		case Engine::CMeshData::ANIM:
 
@@ -146,6 +190,70 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 		switch (m_eModel_Type)
 		{
 		case Engine::CMeshData::NONANIM:
+			fIn.read(reinterpret_cast<char*>(&m_iMeshNum), sizeof(m_iMeshNum));
+			fIn.read(reinterpret_cast<char*>(&m_iMaterialNum), sizeof(m_iMaterialNum));
+			fIn.read(reinterpret_cast<char*>(&m_iAnimBoneNum), sizeof(m_iAnimBoneNum));
+
+			for (_uint i = 0; i < m_iMeshNum; i++) {
+
+				MESH	Mesh = {};
+
+				size_t	nameSize = {};
+				fIn.read(reinterpret_cast<char*>(&nameSize), sizeof(size_t));
+				Mesh.szName.resize(nameSize);
+				fIn.read(&Mesh.szName[0], nameSize);
+
+				fIn.read(reinterpret_cast<char*>(&Mesh.iMaterialIndex), sizeof(_uint));
+
+				_uint iSize = {};
+
+				fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+				Mesh.vecMeshBoneIndices.resize(iSize);
+				fIn.read(reinterpret_cast<char*>(Mesh.vecMeshBoneIndices.data()), iSize * sizeof(_uint));
+
+				fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+				Mesh.vecVerticesNonAim.resize(iSize);
+				fIn.read(reinterpret_cast<char*>(Mesh.vecVerticesNonAim.data()), iSize * sizeof(VTXMESH));
+
+				fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+				Mesh.vecIndices.resize(iSize);
+				fIn.read(reinterpret_cast<char*>(Mesh.vecIndices.data()), iSize * sizeof(_uint3));
+
+				m_vecMesh.push_back(Mesh);
+			}
+
+
+			for (_uint i = 0; i < m_iMaterialNum; i++) {
+
+				MATERIAL Material = {};
+
+				for (_uint j = 0; j < 18; j++)
+				{
+					size_t nameSize = {};
+					fIn.read(reinterpret_cast<char*>(&nameSize), sizeof(size_t));
+					Material.vecMaterialPath[j].resize(nameSize);
+					fIn.read(&Material.vecMaterialPath[j][0], nameSize);
+				}
+
+				m_vecMaterial.push_back(Material);
+			}
+
+
+			for (_uint i = 0; i < m_iAnimBoneNum; i++) {
+
+				BONE	Bone = {};
+
+				size_t nameSize = {};
+				fIn.read(reinterpret_cast<char*>(&nameSize), sizeof(size_t));
+				Bone.szName.resize(nameSize);
+				fIn.read(&Bone.szName[0], nameSize);
+
+				fIn.read(reinterpret_cast<char*>(&Bone.iParentIndex), sizeof(_int));
+				fIn.read(reinterpret_cast<char*>(&Bone.matTransformation), sizeof(_float4x4));
+				fIn.read(reinterpret_cast<char*>(&Bone.matOffsetMatrix), sizeof(_float4x4));
+
+				m_vecAnimBone.push_back(Bone);
+			}
 			break;
 		case Engine::CMeshData::ANIM:
 
@@ -291,7 +399,13 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 	switch (m_eModel_Type)
 	{
 	case Engine::CMeshData::NONANIM:
-		 MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
+		MeshDataDesc.iMeshNum = m_iMeshNum;
+		MeshDataDesc.iMaterialNum = m_iMaterialNum;
+		MeshDataDesc.iAnimBoneNum = m_iAnimBoneNum;
+
+		MeshDataDesc.vecMesh = m_vecMesh;
+		MeshDataDesc.vecMaterial = m_vecMaterial;
+		MeshDataDesc.vecAnimBone = m_vecAnimBone;
 		break;
 	case Engine::CMeshData::ANIM:
 		MeshDataDesc.iMeshNum = m_iMeshNum;
@@ -324,7 +438,13 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 	switch (m_eModel_Type)
 	{
 	case Engine::CMeshData::NONANIM:
-		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
+		m_iMeshNum = MeshDataDesc.iMeshNum;
+		m_iMaterialNum = MeshDataDesc.iMaterialNum;
+		m_iAnimBoneNum = MeshDataDesc.iAnimBoneNum;
+
+		m_vecMesh = MeshDataDesc.vecMesh;
+		m_vecAnimBone = MeshDataDesc.vecAnimBone;
+		m_vecMaterial = MeshDataDesc.vecMaterial;
 		break;
 	case Engine::CMeshData::ANIM:
 

@@ -148,62 +148,6 @@ HRESULT CMesh::Anim_Vertex(MESH MeshData, CModel::BONES& pBones)
 		m_vecBoneIndices.push_back(MeshData.vecMeshBoneIndices[i]);
 	}
 
-	//m_iNumBones = pMesh->mNumBones;
-
-	//for (size_t i = 0; i < m_iNumBones; i++)
-	//{
-	//	aiBone* pBone = pMesh->mBones[i];
-
-	//	_float4x4 matOffset;
-
-	//	memcpy(&matOffset, &pBone->mOffsetMatrix,sizeof(_float4x4));
-	//	XMStoreFloat4x4(&matOffset,XMMatrixTranspose(XMLoadFloat4x4(&matOffset)));
-
-	//	m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬을 저장
-
-	//	_uint iBoneIndex = { 0 };
-
-	//	auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pB) {
-	//		
-	//		if (false==strcmp(pBone->mName.data, pB->Get_BoneName()))
-	//			return true;
-
-	//		++iBoneIndex;
-
-	//		return false;
-	//	});
-
-	//	if (iter == pBones.end())
-	//		return E_FAIL;
-
-	//	m_vecBoneIndices.push_back(iBoneIndex);
-
-	//	/* pAIBone->mWeights[j].mVertexId : 이 뼈가 영향을 주는 j번째 정점의 인덱스 */
-	//	for (size_t j = 0; j < pBone->mNumWeights; j++)
-	//	{
-	//		if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x == 0.f)
-	//		{
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.x = (int32_t)i;
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x = pBone->mWeights[j].mWeight;
-	//		}
-	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y == 0.f)
-	//		{
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.y = (int32_t)i;
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y = pBone->mWeights[j].mWeight;
-	//		}
-	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z == 0.f)
-	//		{
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.z = (int32_t)i;
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z = pBone->mWeights[j].mWeight;
-	//		}
-	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w == 0.f)
-	//		{
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.w = (int32_t)i;
-	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w = pBone->mWeights[j].mWeight;
-	//		}
-	//	}
-	//}
-
 	m_SubResource_Data.pSysMem = pVerpostex;
 
 	if (FAILED(Create_Buffer(&m_pVB)))		// 내가 할당한 값들을 버퍼가 할당한 공간에 복사하여 생성

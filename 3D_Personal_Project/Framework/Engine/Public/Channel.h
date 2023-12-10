@@ -23,7 +23,6 @@ private:
 	vector<KEYFRAME>	m_vecKeyFrame;
 
 public:
-	//static CChannel* Create(aiNodeAnim* paiChannel, const CModel::BONES& vecBones);
 	static CChannel* Create(CHANNEL Channel, const CModel::BONES& vecBones);
 	virtual	void	Free() override;
 };
