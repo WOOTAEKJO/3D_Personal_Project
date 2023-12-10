@@ -13,22 +13,22 @@ CMesh::CMesh(const CMesh& rhs)
 {
 }
 
-HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh,
+HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, MESH MeshData,
 	_fmatrix matPivot, CModel::BONES& pBones)
 {
-	m_iMaterialIndex = pMesh->mMaterialIndex;
+	m_iMaterialIndex = MeshData.iMaterialIndex;
 
-	strcpy_s(m_szName, pMesh->mName.data);
+	strcpy_s(m_szName, MeshData.szName.c_str());
 
 	m_iVertexBuffersNum = 1;
-	m_iVertexNum = pMesh->mNumVertices;
+	m_iVertexNum = eType == CModel::TYPE::TYPE_ANIM ? MeshData.vecVerticesAnim.size() : MeshData.vecVerticesNonAim.size();
 	
-	m_iIndexNum = pMesh->mNumFaces * 3;
+	m_iIndexNum = MeshData.vecIndices.size() * 3;
 	m_iIndexStride = 4;
 	m_eIndexForMat =  DXGI_FORMAT_R32_UINT;
 	m_eTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	HRESULT hr = eType == CModel::TYPE::TYPE_ANIM ? Anim_Vertex(pMesh, pBones) : NonAnim_Vertex(pMesh, matPivot);
+	HRESULT hr = eType == CModel::TYPE::TYPE_ANIM ? Anim_Vertex(MeshData, pBones) : NonAnim_Vertex(MeshData, matPivot);
 
 	if (FAILED(hr))
 		return E_FAIL;
@@ -48,14 +48,14 @@ HRESULT CMesh::Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh,
 
 	_uint iNumIndex = { 0 };
 
-	for (_uint i = 0; i < pMesh->mNumFaces; i++)
+	for (_uint i = 0; i < MeshData.vecIndices.size(); i++)
 	{
-		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[0];
-		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[1];
-		pIndex[iNumIndex++] = pMesh->mFaces[i].mIndices[2];
+		pIndex[iNumIndex++] = MeshData.vecIndices[i].iX;
+		pIndex[iNumIndex++] = MeshData.vecIndices[i].iY;
+		pIndex[iNumIndex++] = MeshData.vecIndices[i].iZ;
 
-		m_vecIndexInfo.push_back(_uint3(pMesh->mFaces[i].mIndices[0],
-			pMesh->mFaces[i].mIndices[1], pMesh->mFaces[i].mIndices[2]));
+		m_vecIndexInfo.push_back(_uint3(MeshData.vecIndices[i].iX,
+			MeshData.vecIndices[i].iY, MeshData.vecIndices[i].iZ));
 	}
 
 	m_SubResource_Data.pSysMem = pIndex;
@@ -109,7 +109,7 @@ HRESULT CMesh::Bind_Blend(CShader* pShader, const _char* strName, CModel::BONES&
 	return pShader->Bind_Matrixes(strName, BoneMatrices, 256);
 }
 
-HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
+HRESULT CMesh::Anim_Vertex(MESH MeshData, CModel::BONES& pBones)
 {
 	m_iVertexStride = sizeof(VTXANIMMESH);
 
@@ -129,71 +129,80 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
 
 	for (size_t i = 0; i < m_iVertexNum; i++)
 	{
-		memcpy(&pVerpostex[i].vPosition, &pMesh->mVertices[i], sizeof(_float3));
+		memcpy(&pVerpostex[i].vPosition, &MeshData.vecVerticesAnim[i].vPosition, sizeof(_float3));
 		m_vecVertexInfo.push_back(pVerpostex[i].vPosition);
+		
+		memcpy(&pVerpostex[i].vTangent, &MeshData.vecVerticesAnim[i].vTangent, sizeof(_float3));
+		memcpy(&pVerpostex[i].vNormal, &MeshData.vecVerticesAnim[i].vNormal, sizeof(_float3));
+		memcpy(&pVerpostex[i].vTexCoord, &MeshData.vecVerticesAnim[i].vTexCoord, sizeof(_float2));
+		memcpy(&pVerpostex[i].vBlendIndices, &MeshData.vecVerticesAnim[i].vBlendIndices, sizeof(XMINT4));
+		memcpy(&pVerpostex[i].vBlendWeights, &MeshData.vecVerticesAnim[i].vBlendWeights, sizeof(XMFLOAT4));
 
-		memcpy(&pVerpostex[i].vTangent, &pMesh->mTangents[i], sizeof(_float3));
-		memcpy(&pVerpostex[i].vNormal, &pMesh->mNormals[i], sizeof(_float3));
-		memcpy(&pVerpostex[i].vTexCoord, &pMesh->mTextureCoords[0][i], sizeof(_float2));
-
-		//m_vecAnimVertexInfo.push_back(pVerpostex[i]);
 	}
 
-	m_iNumBones = pMesh->mNumBones;
+	m_iNumBones = MeshData.vecMeshBoneIndices.size();
 
-	for (size_t i = 0; i < m_iNumBones; i++)
+	for (_uint i = 0; i < m_iNumBones; i++)
 	{
-		aiBone* pBone = pMesh->mBones[i];
-
-		_float4x4 matOffset;
-
-		memcpy(&matOffset, &pBone->mOffsetMatrix,sizeof(_float4x4));
-		XMStoreFloat4x4(&matOffset,XMMatrixTranspose(XMLoadFloat4x4(&matOffset)));
-
-		m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬을 저장
-
-		_uint iBoneIndex = { 0 };
-
-		auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pB) {
-			
-			if (false==strcmp(pBone->mName.data, pB->Get_BoneName()))
-				return true;
-
-			++iBoneIndex;
-
-			return false;
-		});
-
-		if (iter == pBones.end())
-			return E_FAIL;
-
-		m_vecBoneIndices.push_back(iBoneIndex);
-
-		/* pAIBone->mWeights[j].mVertexId : 이 뼈가 영향을 주는 j번째 정점의 인덱스 */
-		for (size_t j = 0; j < pBone->mNumWeights; j++)
-		{
-			if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x == 0.f)
-			{
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.x = (int32_t)i;
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x = pBone->mWeights[j].mWeight;
-			}
-			else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y == 0.f)
-			{
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.y = (int32_t)i;
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y = pBone->mWeights[j].mWeight;
-			}
-			else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z == 0.f)
-			{
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.z = (int32_t)i;
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z = pBone->mWeights[j].mWeight;
-			}
-			else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w == 0.f)
-			{
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.w = (int32_t)i;
-				pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w = pBone->mWeights[j].mWeight;
-			}
-		}
+		m_vecOffsetMatrix.push_back(pBones[MeshData.vecMeshBoneIndices[i]]->Get_OffsetMatrixt());
+		m_vecBoneIndices.push_back(MeshData.vecMeshBoneIndices[i]);
 	}
+
+	//m_iNumBones = pMesh->mNumBones;
+
+	//for (size_t i = 0; i < m_iNumBones; i++)
+	//{
+	//	aiBone* pBone = pMesh->mBones[i];
+
+	//	_float4x4 matOffset;
+
+	//	memcpy(&matOffset, &pBone->mOffsetMatrix,sizeof(_float4x4));
+	//	XMStoreFloat4x4(&matOffset,XMMatrixTranspose(XMLoadFloat4x4(&matOffset)));
+
+	//	m_vecOffsetMatrix.push_back(matOffset); // Offset 행렬을 저장
+
+	//	_uint iBoneIndex = { 0 };
+
+	//	auto iter = find_if(pBones.begin(), pBones.end(), [&](CBone* pB) {
+	//		
+	//		if (false==strcmp(pBone->mName.data, pB->Get_BoneName()))
+	//			return true;
+
+	//		++iBoneIndex;
+
+	//		return false;
+	//	});
+
+	//	if (iter == pBones.end())
+	//		return E_FAIL;
+
+	//	m_vecBoneIndices.push_back(iBoneIndex);
+
+	//	/* pAIBone->mWeights[j].mVertexId : 이 뼈가 영향을 주는 j번째 정점의 인덱스 */
+	//	for (size_t j = 0; j < pBone->mNumWeights; j++)
+	//	{
+	//		if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x == 0.f)
+	//		{
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.x = (int32_t)i;
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.x = pBone->mWeights[j].mWeight;
+	//		}
+	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y == 0.f)
+	//		{
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.y = (int32_t)i;
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.y = pBone->mWeights[j].mWeight;
+	//		}
+	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z == 0.f)
+	//		{
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.z = (int32_t)i;
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.z = pBone->mWeights[j].mWeight;
+	//		}
+	//		else if (pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w == 0.f)
+	//		{
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendIndices.w = (int32_t)i;
+	//			pVerpostex[pBone->mWeights[j].mVertexId].vBlendWeights.w = pBone->mWeights[j].mWeight;
+	//		}
+	//	}
+	//}
 
 	m_SubResource_Data.pSysMem = pVerpostex;
 
@@ -235,7 +244,7 @@ HRESULT CMesh::Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones)
 	return S_OK;
 }
 
-HRESULT CMesh::NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot)
+HRESULT CMesh::NonAnim_Vertex(MESH MeshData, _fmatrix matPivot)
 {
 	m_iVertexStride = sizeof(VTXMESH);
 
@@ -254,17 +263,17 @@ HRESULT CMesh::NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot)
 
 	for (size_t i = 0; i < m_iVertexNum; i++)
 	{
-		memcpy(&pVerpostex[i].vPosition, &pMesh->mVertices[i], sizeof(_float3));
+		memcpy(&pVerpostex[i].vPosition, &MeshData.vecVerticesNonAim[i].vPosition, sizeof(_float3));
 		XMStoreFloat3(&pVerpostex[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVerpostex[i].vPosition), matPivot));
 
 		m_vecVertexInfo.push_back(pVerpostex[i].vPosition);
 
-		memcpy(&pVerpostex[i].vTangent, &pMesh->mTangents[i], sizeof(_float3));
+		memcpy(&pVerpostex[i].vTangent, &MeshData.vecVerticesNonAim[i].vTangent, sizeof(_float3));
 
-		memcpy(&pVerpostex[i].vNormal, &pMesh->mNormals[i], sizeof(_float3));
+		memcpy(&pVerpostex[i].vNormal, &MeshData.vecVerticesNonAim[i].vNormal, sizeof(_float3));
 		XMStoreFloat3(&pVerpostex[i].vNormal, XMVector3TransformNormal(XMLoadFloat3(&pVerpostex[i].vNormal), matPivot));
 
-		memcpy(&pVerpostex[i].vTexCoord, &pMesh->mTextureCoords[0][i], sizeof(_float2));
+		memcpy(&pVerpostex[i].vTexCoord, &MeshData.vecVerticesNonAim[i].vTexCoord, sizeof(_float2));
 
 	}
 
@@ -278,12 +287,12 @@ HRESULT CMesh::NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot)
 	return S_OK;
 }
 
-CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, const aiMesh* pMesh,
+CMesh* CMesh::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, MESH MeshData,
 	_fmatrix matPivot, CModel::BONES& pBones)
 {
 	CMesh* pInstance = new CMesh(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(eType, pMesh, matPivot, pBones))) {
+	if (FAILED(pInstance->Initialize_ProtoType(eType, MeshData, matPivot, pBones))) {
 		MSG_BOX("Failed to Created : CMesh");
 		Safe_Release(pInstance);
 	}

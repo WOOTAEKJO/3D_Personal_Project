@@ -12,7 +12,7 @@ private:
 	virtual	~CAnimation() = default;
 
 public:
-	HRESULT	Initialize(aiAnimation* paiAnimation, const CModel::BONES& vecBones);
+	HRESULT	Initialize(ANIMATION Animation, const CModel::BONES& vecBones);
 	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones);
 
 private:
@@ -27,7 +27,8 @@ private:
 	_bool				m_bFinished = { false };
 
 public:
-	static	CAnimation* Create(aiAnimation* paiAnimation, const CModel::BONES& vecBones);
+	//static	CAnimation* Create(aiAnimation* paiAnimation, const CModel::BONES& vecBones);
+	static	CAnimation* Create(ANIMATION Animation, const CModel::BONES& vecBones);
 	virtual	void	Free() override;
 };
 

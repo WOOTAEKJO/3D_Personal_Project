@@ -11,7 +11,8 @@ private:
 	virtual	~CMesh() = default;
 
 public:
-	virtual	HRESULT	Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh, _fmatrix matPivot, CModel::BONES& pBones);
+	//virtual	HRESULT	Initialize_ProtoType(CModel::TYPE eType, const aiMesh* pMesh, _fmatrix matPivot, CModel::BONES& pBones);
+	virtual	HRESULT	Initialize_ProtoType(CModel::TYPE eType, MESH MeshData, _fmatrix matPivot, CModel::BONES& pBones);
 	virtual	HRESULT	Initialize(void* pArg);
 
 public:
@@ -33,11 +34,12 @@ private:
 	vector<_float4x4>		m_vecOffsetMatrix;
 
 private:
-	HRESULT	Anim_Vertex(const aiMesh* pMesh, CModel::BONES& pBones);
-	HRESULT	NonAnim_Vertex(const aiMesh* pMesh, _fmatrix matPivot);
+	HRESULT	Anim_Vertex(MESH MeshData, CModel::BONES& pBones);
+	HRESULT	NonAnim_Vertex(MESH MeshData, _fmatrix matPivot);
 
 public:
-	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CModel::TYPE eType, const aiMesh* pMesh,_fmatrix matPivot, CModel::BONES& pBones);
+	//static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CModel::TYPE eType, const aiMesh* pMesh,_fmatrix matPivot, CModel::BONES& pBones);
+	static	CMesh* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CModel::TYPE eType, MESH MeshData, _fmatrix matPivot, CModel::BONES& pBones);
 	virtual	CComponent* Clone(void* pArg) override;
 	virtual	void	Free() override;
 };

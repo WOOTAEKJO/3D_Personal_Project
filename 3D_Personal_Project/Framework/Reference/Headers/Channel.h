@@ -10,7 +10,7 @@ private:
 	virtual	~CChannel() = default;
 
 public:
-	HRESULT	Initialize(aiNodeAnim* paiChannel, const CModel::BONES& vecBones);
+	HRESULT	Initialize(CHANNEL Channel, const CModel::BONES& vecBones);
 	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones);
 
 private:
@@ -23,7 +23,8 @@ private:
 	vector<KEYFRAME>	m_vecKeyFrame;
 
 public:
-	static CChannel* Create(aiNodeAnim* paiChannel, const CModel::BONES& vecBones);
+	//static CChannel* Create(aiNodeAnim* paiChannel, const CModel::BONES& vecBones);
+	static CChannel* Create(CHANNEL Channel, const CModel::BONES& vecBones);
 	virtual	void	Free() override;
 };
 

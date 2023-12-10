@@ -88,11 +88,18 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 	if (FAILED(Ready_Meshes(MeshData)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Materials(MeshData)))
+	if (FAILED(Ready_Materials(MeshData, strModelFilePath)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Animation(MeshData)))
 		return E_FAIL;
+
+	Safe_Release(pMeshData);
+
+	m_vecAnimation;
+	m_vecBones;
+	m_vecMaterial;
+	m_vecMesh;
 
 	return S_OK;
 }
@@ -265,23 +272,94 @@ HRESULT CModel::Ready_Meshes(CMeshData::MESHDATADESC MeshData)
 
 	m_vecMesh.reserve(m_iMeshesNum);
 
+	for (_uint i = 0; i < m_iMeshesNum; i++)
+	{
+		CMesh* pMesh = CMesh::Create(m_pDevice, m_pContext, m_eType, MeshData.vecMesh[i], XMLoadFloat4x4(&m_matPivot), m_vecBones);
+		if (pMesh == nullptr)
+			return E_FAIL;
+		
+		m_vecMesh.push_back(pMesh);
+	}
+
 	return S_OK;
 }
 
-HRESULT CModel::Ready_Materials(CMeshData::MESHDATADESC MeshData)
+HRESULT CModel::Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& strModelFilePath)
 {
+	m_iMaterialsNum = MeshData.iMaterialNum;
+
+	for (_uint i = 0; i < m_iMaterialsNum; i++)
+	{
+		MATERIAL_DESC Material_Desc = {};
+
+		for (_uint j = 1; j < 18; j++)
+		{
+			_char szDdrive[MAX_PATH] = "";
+			_char szDirectory[MAX_PATH] = "";
+			
+			_splitpath_s(strModelFilePath.c_str(), szDdrive, MAX_PATH, szDirectory, MAX_PATH,
+				nullptr, 0, nullptr, 0);
+
+			string	szGetPath = MeshData.vecMaterial[i].vecMaterialPath[j];
+			if (!strcmp(szGetPath.c_str(), ""))
+				continue;
+			
+			_char	szFileName[MAX_PATH] = "";
+			_char	szExc[MAX_PATH] = "";
+			
+			_splitpath_s(szGetPath.c_str(), nullptr, 0, nullptr, 0,
+				szFileName, MAX_PATH, szExc, MAX_PATH);
+			
+			_char	szTmp[MAX_PATH] = "";
+			
+			strcpy_s(szTmp, szDdrive);
+			strcat_s(szTmp, szDirectory);
+			strcat_s(szTmp, szFileName);
+			strcat_s(szTmp, szExc);
+			
+			_tchar	szFullPath[MAX_PATH] = TEXT("");
+			
+			MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullPath, MAX_PATH);
+			
+			Material_Desc.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, szFullPath, 1);
+			if (Material_Desc.pMtrlTexture[j] == nullptr)
+				return E_FAIL;
+		}
+		m_vecMaterial.push_back(Material_Desc);
+	}
+
 	return S_OK;
 }
 
 HRESULT CModel::Ready_Bones(CMeshData::MESHDATADESC MeshData)
 {
-	
+	_uint iBoneNum = MeshData.iAnimBoneNum;
+
+	for (_uint i = 0; i < iBoneNum; i++)
+	{
+		CBone* pBone = CBone::Create(MeshData.vecAnimBone[i]);
+		if (pBone == nullptr)
+			return E_FAIL;
+
+		m_vecBones.push_back(pBone);
+	}
 
 	return S_OK;
 }
 
 HRESULT CModel::Ready_Animation(CMeshData::MESHDATADESC MeshData)
 {
+	m_iAnimationNum = MeshData.iAnimAnimationNum;
+
+	for (_uint i = 0; i < m_iAnimationNum; i++)
+	{
+		CAnimation* pAnimation = CAnimation::Create(MeshData.vecAnimAnimation[i], m_vecBones);
+		if (pAnimation == nullptr)
+			return E_FAIL;
+
+		m_vecAnimation.push_back(pAnimation);
+	}
+
 	return S_OK;
 }
 

@@ -46,7 +46,11 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 
 				fout.write(reinterpret_cast<const char*>(&m_vecMesh[i].iMaterialIndex), sizeof(_uint));
 
-				_uint iSize = m_vecMesh[i].vecVerticesAnim.size();
+				_uint iSize = m_vecMesh[i].vecMeshBoneIndices.size();
+				fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+				fout.write(reinterpret_cast<const char*>(m_vecMesh[i].vecMeshBoneIndices.data()), iSize * sizeof(_uint));
+
+				iSize = m_vecMesh[i].vecVerticesAnim.size();
 				fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
 				fout.write(reinterpret_cast<const char*>(m_vecMesh[i].vecVerticesAnim.data()), iSize*sizeof(VTXANIMMESH));
 
@@ -144,7 +148,7 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 		case Engine::CMeshData::NONANIM:
 			break;
 		case Engine::CMeshData::ANIM:
-			
+
 			fIn.read(reinterpret_cast<char*>(&m_iMeshNum), sizeof(m_iMeshNum));
 			fIn.read(reinterpret_cast<char*>(&m_iMaterialNum), sizeof(m_iMaterialNum));
 			fIn.read(reinterpret_cast<char*>(&m_iAnimBoneNum), sizeof(m_iAnimBoneNum));
@@ -162,6 +166,10 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 				fIn.read(reinterpret_cast<char*>(&Mesh.iMaterialIndex), sizeof(_uint));
 
 				_uint iSize = {};
+
+				fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+				Mesh.vecMeshBoneIndices.resize(iSize);
+				fIn.read(reinterpret_cast<char*>(Mesh.vecMeshBoneIndices.data()), iSize * sizeof(_uint));
 
 				fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 				Mesh.vecVerticesAnim.resize(iSize);
@@ -203,6 +211,8 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 				fIn.read(reinterpret_cast<char*>(&Bone.iParentIndex), sizeof(_int));
 				fIn.read(reinterpret_cast<char*>(&Bone.matTransformation), sizeof(_float4x4));
 				fIn.read(reinterpret_cast<char*>(&Bone.matOffsetMatrix), sizeof(_float4x4));
+
+				m_vecAnimBone.push_back(Bone);
 			}
 				
 
@@ -255,15 +265,15 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 				fIn.read(reinterpret_cast<char*>(&tTerrain), sizeof(VTXMESH));
 				m_vecMeshVertices.push_back(tTerrain);
 			}
-			break;
-		}
 
-		for (_uint i = 0; i < m_iNumFaces; i++)
-		{
-			_uint3 iIndex = {};
-			fIn.read(reinterpret_cast<char*>(&iIndex), sizeof(_uint3));
-			
-			m_vecIndices.push_back(iIndex);
+			for (_uint i = 0; i < m_iNumFaces; i++)
+			{
+				_uint3 iIndex = {};
+				fIn.read(reinterpret_cast<char*>(&iIndex), sizeof(_uint3));
+
+				m_vecIndices.push_back(iIndex);
+			}
+			break;
 		}
 	}
 	else

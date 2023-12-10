@@ -61,7 +61,7 @@ private:
 	HRESULT	Ready_Animation();*/
 
 	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);
-	HRESULT	Ready_Materials(CMeshData::MESHDATADESC MeshData);
+	HRESULT	Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& strModelFilePath);
 	HRESULT	Ready_Bones(CMeshData::MESHDATADESC MeshData);
 	HRESULT	Ready_Animation(CMeshData::MESHDATADESC MeshData);
 

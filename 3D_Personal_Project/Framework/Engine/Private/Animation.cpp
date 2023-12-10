@@ -5,18 +5,18 @@ CAnimation::CAnimation()
 {
 }
 
-HRESULT CAnimation::Initialize(aiAnimation* paiAnimation, const CModel::BONES& vecBones)
+HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBones)
 {
-	strcpy_s(m_szName, paiAnimation->mName.data);
+	strcpy_s(m_szName, Animation.szName.c_str());
 
-	m_fDuration = paiAnimation->mDuration;
-	m_fTicksPerSecond = paiAnimation->mTicksPerSecond;
+	m_fDuration = Animation.fDuration;
+	m_fTicksPerSecond = Animation.fTicksPerSecond;
 	
-	m_iChannelNum = paiAnimation->mNumChannels;
+	m_iChannelNum = Animation.vecChannel.size();
 
 	for (_uint i = 0; i < m_iChannelNum; i++)
 	{
-		CChannel* pChannel = CChannel::Create(paiAnimation->mChannels[i], vecBones);
+		CChannel* pChannel = CChannel::Create(Animation.vecChannel[i], vecBones);
 		if (pChannel == nullptr)
 			return E_FAIL;
 
@@ -48,11 +48,11 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,
 	}
 }
 
-CAnimation* CAnimation::Create(aiAnimation* paiAnimation, const CModel::BONES& vecBones)
+CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(paiAnimation, vecBones))) {
+	if (FAILED(pInstance->Initialize(Animation, vecBones))) {
 		MSG_BOX("Failed to Created : CAnimation");
 		Safe_Release(pInstance);
 	}

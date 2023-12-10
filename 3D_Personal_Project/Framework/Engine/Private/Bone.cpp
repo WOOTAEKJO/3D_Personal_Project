@@ -4,14 +4,17 @@ CBone::CBone()
 {
 }
 
-HRESULT CBone::Initialize(aiNode* pNode, _int iParentIndex)
+HRESULT CBone::Initialize(BONE Bone)
 {
-	m_iParentIndex = iParentIndex;
+	m_iParentIndex = Bone.iParentIndex;
 
-	strcpy_s(m_szName, pNode->mName.data);
+	strcpy_s(m_szName, Bone.szName.c_str());
 
-	memcpy(&m_matTransformation, &pNode->mTransformation,sizeof(_float4x4));
-	XMStoreFloat4x4(&m_matTransformation,XMMatrixTranspose(XMLoadFloat4x4(&m_matTransformation)));
+	m_matOffset = Bone.matOffsetMatrix;
+
+	/*memcpy(&m_matTransformation, &pNode->mTransformation,sizeof(_float4x4));
+	XMStoreFloat4x4(&m_matTransformation,XMMatrixTranspose(XMLoadFloat4x4(&m_matTransformation)));*/
+	m_matTransformation = Bone.matTransformation;
 
 	XMStoreFloat4x4(&m_matCombinedTransformation, XMMatrixIdentity());
 
@@ -29,11 +32,11 @@ void CBone::Invalidate_MatCombined(class CModel::BONES& pBones, _fmatrix matPivo
 	}
 }
 
-CBone* CBone::Create(aiNode* pNode, _int iParentIndex)
+CBone* CBone::Create(BONE Bone)
 {
 	CBone* pInstance = new CBone();
 
-	if (FAILED(pInstance->Initialize(pNode, iParentIndex))) {
+	if (FAILED(pInstance->Initialize(Bone))) {
 		MSG_BOX("Failed to Created : CBone");
 		Safe_Release(pInstance);
 	}

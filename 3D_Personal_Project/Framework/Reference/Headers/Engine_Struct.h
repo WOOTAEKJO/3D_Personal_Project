@@ -110,6 +110,8 @@ namespace Engine
 
 		_uint				iMaterialIndex;
 
+		vector<_uint>		vecMeshBoneIndices;
+
 		vector<VTXANIMMESH> vecVerticesAnim;
 		vector<VTXMESH>		vecVerticesNonAim;
 

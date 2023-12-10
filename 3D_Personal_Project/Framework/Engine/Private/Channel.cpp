@@ -5,14 +5,15 @@ CChannel::CChannel()
 {
 }
 
-HRESULT CChannel::Initialize(aiNodeAnim* paiChannel, const CModel::BONES& vecBones)
+HRESULT CChannel::Initialize(CHANNEL Channel, const CModel::BONES& vecBones)
 {
-	strcpy_s(m_szName, paiChannel->mNodeName.data);
-	
-	m_iKeyFrameNum = max(paiChannel->mNumScalingKeys, paiChannel->mNumRotationKeys);
-	m_iKeyFrameNum = max(paiChannel->mNumPositionKeys, m_iKeyFrameNum);
+	strcpy_s(m_szName, Channel.szName.c_str());
 
-	_float3 vPos;
+	m_iKeyFrameNum = Channel.vecKeyFrame.size();
+
+	m_vecKeyFrame = Channel.vecKeyFrame;
+
+	/*_float3 vPos;
 	_float3 vScale;
 	_float4 vRot;
 
@@ -44,7 +45,7 @@ HRESULT CChannel::Initialize(aiNodeAnim* paiChannel, const CModel::BONES& vecBon
 		KeyFrame.vScale = vScale;
 
 		m_vecKeyFrame.push_back(KeyFrame);
-	}
+	}*/
 
 	_uint iBoneIndex = { 0 };
 
@@ -112,11 +113,11 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, con
 	vecBones[m_iBoneIndex]->Set_TransformationMatrix(matTransformation);
 }
 
-CChannel* CChannel::Create(aiNodeAnim* paiChannel, const CModel::BONES& vecBones)
+CChannel* CChannel::Create(CHANNEL Channel, const CModel::BONES& vecBones)
 {
 	CChannel* pInstance = new CChannel();
 
-	if (FAILED(pInstance->Initialize(paiChannel, vecBones))) {
+	if (FAILED(pInstance->Initialize(Channel, vecBones))) {
 		MSG_BOX("Failed to Created : CChannel");
 		Safe_Release(pInstance);
 	}

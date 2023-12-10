@@ -97,7 +97,6 @@ HRESULT CConverter_Model::Ready_Meshes()
 	m_iBonesNum = m_vecBone.size();
 
 	m_iMeshesNum = m_pAiScene->mNumMeshes;
-
 	m_vecMesh.reserve(m_iMeshesNum);
 
 	for (_uint i = 0; i < m_iMeshesNum; i++)
@@ -154,7 +153,9 @@ HRESULT CConverter_Model::Ready_Meshes()
 					return false;
 				});
 
-				m_vecBone[j].matOffsetMatrix = matOffset;
+				Mesh.vecMeshBoneIndices.push_back(iBoneIndex);
+
+				m_vecBone[iBoneIndex].matOffsetMatrix = matOffset;
 
 				for (_uint k = 0; k < pBone->mNumWeights; k++)
 				{
@@ -238,7 +239,7 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 
 		aiMaterial* pMaterial = m_pAiScene->mMaterials[i];
 
-		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
 			_char szDdrive[MAX_PATH] = "";
 			_char szDirectory[MAX_PATH] = "";
@@ -247,7 +248,7 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 				nullptr, 0, nullptr, 0);
 
 			aiString	szGetPath;
-			if (FAILED(pMaterial->GetTexture((aiTextureType)j, 0, &szGetPath)))
+			if (FAILED(pMaterial->GetTexture(aiTextureType(j), 0, &szGetPath)))
 				continue;
 
 			_char	szFileName[MAX_PATH] = "";
@@ -264,7 +265,7 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 			strcat_s(szTmp, szExc);
 
 
-			Material.vecMaterialPath[i] = szTmp;
+			Material.vecMaterialPath[j] = szTmp;
 		}
 
 		m_vecMaterial.push_back(Material);
@@ -285,6 +286,8 @@ HRESULT CConverter_Model::Ready_Bones(aiNode* pNode, _int iParentIndex)
 
 	memcpy(&Bone.matTransformation, &pNode->mTransformation, sizeof(_float4x4));
 	XMStoreFloat4x4(&Bone.matTransformation, XMMatrixTranspose(XMLoadFloat4x4(&Bone.matTransformation)));
+
+
 	
 	m_vecBone.push_back(Bone);
 
