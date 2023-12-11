@@ -11,7 +11,7 @@ private:
 
 public:
 	HRESULT	Initialize(CHANNEL Channel, const CModel::BONES& vecBones);
-	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones,_uint* iCurrentKeyFrameIndex);
+	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones,_uint* iCurrentKeyFrameIndex, _bool* bAnimChange);
 
 private:
 	_char				m_szName[MAX_PATH] = "";
@@ -20,6 +20,8 @@ private:
 	_uint				m_iBoneIndex = { 0 };
 
 	vector<KEYFRAME>	m_vecKeyFrame;
+
+	KEYFRAME			m_PrevKeyFrame;
 
 public:
 	static CChannel* Create(CHANNEL Channel, const CModel::BONES& vecBones);

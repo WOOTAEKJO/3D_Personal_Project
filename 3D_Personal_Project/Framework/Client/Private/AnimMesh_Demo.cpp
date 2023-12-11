@@ -32,9 +32,9 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	m_pModelCom->Set_AnimationIndex(rand() % 20);
+	/*m_pModelCom->Set_AnimationIndex(rand() % 20);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(rand() % 20, 0.f, rand() % 20, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(rand() % 20, 0.f, rand() % 20, 1.f));*/
 
 	return S_OK;
 }
@@ -45,6 +45,16 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(DIK_P))
+	{
+		if (m_iAnimKey == 0)
+			m_iAnimKey = 3;
+		else
+			m_iAnimKey = 0;
+
+		m_pModelCom->Set_AnimationIndex(m_iAnimKey);
+	}
+
 	m_pModelCom->Play_Animation(fTimeDelta,true);
 }
 

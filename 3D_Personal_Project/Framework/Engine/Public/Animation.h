@@ -14,7 +14,7 @@ private:
 
 public:
 	HRESULT	Initialize(ANIMATION Animation, const CModel::BONES& vecBones);
-	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones);
+	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones, _bool* bAnimChange);
 
 private:
 	_char				m_szName[MAX_PATH] = "";

@@ -51,6 +51,9 @@ private:
 	_float4		m_vObjectPos = {};	
 
 private:
+	_uint		m_iAnimKey = { 0 };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 

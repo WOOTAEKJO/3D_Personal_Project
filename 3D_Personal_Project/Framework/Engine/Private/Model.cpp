@@ -99,6 +99,10 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	}
 }
 
+void CModel::Move_Next_Animation()
+{
+}
+
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
 {
 	if (m_vecMesh.empty())

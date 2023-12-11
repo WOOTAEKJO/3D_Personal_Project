@@ -40,7 +40,7 @@ HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBone
 	return S_OK;
 }
 
-void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop, const CModel::BONES& vecBones)
+void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop, const CModel::BONES& vecBones, _bool* bAnimChange)
 {
 	m_fTrackPosition += m_fTicksPerSecond * fTimeDelta;
 
