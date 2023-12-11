@@ -53,7 +53,6 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 	if (FAILED(pMeshData->Data_Get(MeshData)))
 		return E_FAIL;
 
-
 	if (FAILED(Ready_Bones(MeshData)))
 		return E_FAIL;
 
@@ -67,11 +66,6 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 		return E_FAIL;
 
 	Safe_Release(pMeshData);
-
-	m_vecAnimation;
-	m_vecBones;
-	m_vecMaterial;
-	m_vecMesh;
 
 	return S_OK;
 }
