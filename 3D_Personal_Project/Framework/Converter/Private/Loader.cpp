@@ -116,18 +116,18 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_FIONA_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_FIONA_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_FIONA_PATH))))
-		return E_FAIL;
+		return E_FAIL;*/
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_PINETREE_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_PINETREE_PATH))))
 		return E_FAIL;*/
 
-	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_JACK_TAG,
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_JACK_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_JACK_PATH))))
-		return E_FAIL;*/
-	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_RAT_TAG,
-		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_RAT_PATH))))
+		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_BAT_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_BAT_PATH))))
 		return E_FAIL;*/
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
