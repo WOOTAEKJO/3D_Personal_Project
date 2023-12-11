@@ -150,11 +150,11 @@
   <ItemGroup>
     <ClInclude Include="..\Imgui\imconfig.h" />
     <ClInclude Include="..\Imgui\imgui.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\dirent\dirent.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image_resize.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\dirent\dirent.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h" />
     <ClInclude Include="..\Imgui\imgui_impl_dx11.h" />
     <ClInclude Include="..\Imgui\imgui_impl_win32.h" />
     <ClInclude Include="..\Imgui\imgui_internal.h" />
@@ -178,7 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Imgui\imgui.cpp" />
-    <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
+    <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\Imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp" />

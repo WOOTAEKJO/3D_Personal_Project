@@ -37,6 +37,7 @@ private:
 
 public:
 	static	CBone* Create(BONE Bone);
+	CBone* Clone();
 	virtual	void	Free() override;
 };
 

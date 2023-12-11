@@ -228,10 +228,19 @@
     <ClInclude Include="..\Public\AnimMesh_Demo.h">
       <Filter>02.GameObjects\98. Demo\02. ObjectAnimMesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h">
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h">
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialogConfig.h">
+      <Filter>97. ImGui\ImGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\dirent\dirent.h">
+      <Filter>97. ImGui\ImGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image.h">
+      <Filter>97. ImGui\ImGuiFileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
   </ItemGroup>
@@ -335,7 +344,7 @@
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp">
       <Filter>02.GameObjects\98. Demo\02. ObjectAnimMesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp">
+    <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClCompile>
   </ItemGroup>

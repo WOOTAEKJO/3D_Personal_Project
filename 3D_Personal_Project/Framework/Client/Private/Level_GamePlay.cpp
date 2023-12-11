@@ -80,16 +80,18 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 
 	CAnimMesh_Demo::ANIMDEMOVALUE AnimMeshDemoValue;
 
-	AnimMeshDemoValue.strModelTag = MODEL_PINETREE_TAG;
+	AnimMeshDemoValue.strModelTag = ANIMMODEL_FIONA_TAG;
 	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
 
-	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_ANIMMESH_DEMO_TAG,
+	for (_uint i = 0; i < 20; i++) {
+		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_ANIMMESH_DEMO_TAG,
+			&AnimMeshDemoValue)))
+			return E_FAIL;
+	}
+
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
 		&AnimMeshDemoValue)))
 		return E_FAIL;*/
-
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
-		&AnimMeshDemoValue)))
-		return E_FAIL;
 	
 	return S_OK;
 }

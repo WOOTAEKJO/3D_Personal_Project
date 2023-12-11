@@ -32,6 +32,10 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	m_pModelCom->Set_AnimationIndex(rand() % 20);
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(rand() % 20, 0.f, rand() % 20, 1.f));
+
 	return S_OK;
 }
 

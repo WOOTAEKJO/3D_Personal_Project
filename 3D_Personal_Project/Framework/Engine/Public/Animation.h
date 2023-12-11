@@ -9,6 +9,7 @@ class CAnimation final : public CBase
 {
 private:
 	CAnimation();
+	CAnimation(const CAnimation& rhs);
 	virtual	~CAnimation() = default;
 
 public:
@@ -23,11 +24,13 @@ private:
 
 	_uint				m_iChannelNum = {0};
 	vector<CChannel*>	m_vecChannel;
+	vector<_uint>		m_vecCurrentKeyFrameIndex;
 
 	_bool				m_bFinished = { false };
 
 public:
 	static	CAnimation* Create(ANIMATION Animation, const CModel::BONES& vecBones);
+	CAnimation* Clone();
 	virtual	void	Free() override;
 };
 

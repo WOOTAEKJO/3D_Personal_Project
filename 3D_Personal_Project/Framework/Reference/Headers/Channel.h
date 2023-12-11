@@ -11,12 +11,11 @@ private:
 
 public:
 	HRESULT	Initialize(CHANNEL Channel, const CModel::BONES& vecBones);
-	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones);
+	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones,_uint* iCurrentKeyFrameIndex);
 
 private:
 	_char				m_szName[MAX_PATH] = "";
 	_uint				m_iKeyFrameNum = { 0 };
-	_uint				m_iCurrentKeyFrameIndex = { 0 };
 
 	_uint				m_iBoneIndex = { 0 };
 

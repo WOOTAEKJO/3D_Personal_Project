@@ -33,10 +33,10 @@ HRESULT CChannel::Initialize(CHANNEL Channel, const CModel::BONES& vecBones)
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones)
+void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones, _uint* iCurrentKeyFrameIndex)
 {
 	if (fCurrentTrackPosition == 0.f)
-		m_iCurrentKeyFrameIndex = 0;
+		*iCurrentKeyFrameIndex = 0;
 
 	_vector	vScale, vRot, vPos;
 
@@ -50,23 +50,23 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, con
 	}
 	else {
 
-		while(fCurrentTrackPosition >= m_vecKeyFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition)
-			++m_iCurrentKeyFrameIndex;
+		while(fCurrentTrackPosition >= m_vecKeyFrame[*iCurrentKeyFrameIndex + 1].fTrackPosition)
+			++* iCurrentKeyFrameIndex;
 
 		_float3 vSourScale, vDestScale;
 		_float4 vSourRot, vDestRot;
 		_float3 vSourPos, vDestPos;
 
-		vSourScale = m_vecKeyFrame[m_iCurrentKeyFrameIndex].vScale;
-		vSourRot = m_vecKeyFrame[m_iCurrentKeyFrameIndex].vRotation;
-		vSourPos = m_vecKeyFrame[m_iCurrentKeyFrameIndex].vPosition;
+		vSourScale = m_vecKeyFrame[*iCurrentKeyFrameIndex].vScale;
+		vSourRot = m_vecKeyFrame[*iCurrentKeyFrameIndex].vRotation;
+		vSourPos = m_vecKeyFrame[*iCurrentKeyFrameIndex].vPosition;
 
-		vDestScale = m_vecKeyFrame[m_iCurrentKeyFrameIndex+1].vScale;
-		vDestRot = m_vecKeyFrame[m_iCurrentKeyFrameIndex+1].vRotation;
-		vDestPos = m_vecKeyFrame[m_iCurrentKeyFrameIndex+1].vPosition;
+		vDestScale = m_vecKeyFrame[*iCurrentKeyFrameIndex +1].vScale;
+		vDestRot = m_vecKeyFrame[*iCurrentKeyFrameIndex +1].vRotation;
+		vDestPos = m_vecKeyFrame[*iCurrentKeyFrameIndex +1].vPosition;
 
-		_float fRatio = (fCurrentTrackPosition - m_vecKeyFrame[m_iCurrentKeyFrameIndex].fTrackPosition)/
-			(m_vecKeyFrame[m_iCurrentKeyFrameIndex + 1].fTrackPosition - m_vecKeyFrame[m_iCurrentKeyFrameIndex].fTrackPosition);
+		_float fRatio = (fCurrentTrackPosition - m_vecKeyFrame[*iCurrentKeyFrameIndex].fTrackPosition)/
+			(m_vecKeyFrame[*iCurrentKeyFrameIndex + 1].fTrackPosition - m_vecKeyFrame[*iCurrentKeyFrameIndex].fTrackPosition);
 
 		vScale = XMVectorLerp(XMLoadFloat3(&vSourScale), XMLoadFloat3(&vDestScale), fRatio);
 		vRot = XMQuaternionSlerp(XMLoadFloat4(&vSourRot), XMLoadFloat4(&vDestRot), fRatio);

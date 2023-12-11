@@ -17,11 +17,9 @@ CModel::CModel(const CModel& rhs)
 	m_iMaterialsNum(rhs.m_iMaterialsNum),
 	m_vecMesh(rhs.m_vecMesh),
 	m_vecMaterial(rhs.m_vecMaterial),
-	m_vecBones(rhs.m_vecBones),
 	m_matPivot(rhs.m_matPivot),
 	m_iAnimationNum(rhs.m_iAnimationNum),
-	m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex),
-	m_vecAnimation(rhs.m_vecAnimation)
+	m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
 {
 	for (auto& iter1 : m_vecMaterial)
 	{
@@ -32,11 +30,11 @@ CModel::CModel(const CModel& rhs)
 	for (auto& iter : m_vecMesh)
 		Safe_AddRef(iter);
 
-	for (auto& iter : m_vecBones)
-		Safe_AddRef(iter);
+	for (auto& iter : rhs.m_vecBones)
+		m_vecBones.push_back(iter->Clone());
 
-	for (auto& iter : m_vecAnimation)
-		Safe_AddRef(iter);
+	for (auto& iter : rhs.m_vecAnimation)
+		m_vecAnimation.push_back(iter->Clone());
 }
 
 HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)

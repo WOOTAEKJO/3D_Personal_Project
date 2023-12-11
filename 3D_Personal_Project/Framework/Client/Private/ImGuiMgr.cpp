@@ -2,8 +2,8 @@
 #include "../Imgui/imgui.h"
 #include "../Imgui/imgui_impl_win32.h"
 #include "../Imgui/imgui_impl_dx11.h"
-#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialogConfig.h"
-#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialog.h"
+#include "../Imgui/ImGuiFileDialog/ImGuiFileDialogConfig.h"
+#include "../Imgui/ImGuiFileDialog/ImGuiFileDialog.h"
 
 #include "../Public/ImGuiMgr.h"
 
@@ -169,8 +169,7 @@ HRESULT CImGuiMgr::Render()
 
     if (m_eFileMode != FILEMODE_END)
         File_Render();
-       
-
+  
     if (m_bGrid)
         Grid_Draw();
 
@@ -340,7 +339,6 @@ void CImGuiMgr::File_Render()
 
         // close
         ImGuiFileDialog::Instance()->Close();
-
         m_eFileMode = FILEMODE_END;
     }
     // 파일 다이얼로그만 키면 누수가 남
