@@ -122,8 +122,8 @@
 xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
 attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
 xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
-xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y
-xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Converter\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Converter\Bin\" /y
 xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\ShaderFiles\" /y /e</Command>
     </PostBuildEvent>
     <FxCompile>
@@ -176,7 +176,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
 xcopy "$(SolutionDir)Engine\Public\*.*" "$(SolutionDir)Reference\Headers\" /y /e
 attrib +r "$(SolutionDir)Reference\Headers\*.*" /s
 xcopy "$(OutDir)$(TargetName).lib" "$(SolutionDir)Reference\Librarys\$(Configuration)\$(PlatformTarget)\" /y
-xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\Export\$(Configuration)\$(PlatformTarget)\" /y
+xcopy "$(OutDir)$(TargetName).dll" "$(SolutionDir)Client\Bin\" /y
 xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\ShaderFiles\" /y /e</Command>
     </PostBuildEvent>
     <FxCompile>
