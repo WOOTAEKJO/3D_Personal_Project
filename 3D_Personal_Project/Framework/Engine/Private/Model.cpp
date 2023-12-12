@@ -67,6 +67,11 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 
 	Safe_Release(pMeshData);
 
+	m_vecAnimation;
+	m_vecBones;
+	m_vecMaterial;
+	m_vecMesh;
+
 	return S_OK;
 }
 
@@ -123,6 +128,9 @@ HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint
 		return E_FAIL;
 
 	_uint	iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
+
+	if (m_vecMaterial[iMaterialIndex].pMtrlTexture[eType] == nullptr)
+		return S_OK;
 
 	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }
