@@ -58,7 +58,7 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,
 
 	for (_uint i = 0; i < m_iChannelNum; i++)
 	{
-		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones,&m_vecCurrentKeyFrameIndex[i]);
+		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones,&m_vecCurrentKeyFrameIndex[i], bAnimChange);
 	}
 }
 

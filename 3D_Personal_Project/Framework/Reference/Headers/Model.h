@@ -25,9 +25,15 @@ public:
 	void	Play_Animation(_float fTimeDelta, _bool bLoop);
 
 public:
+	void	Move_Next_Animation();
+
+public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 
-	void	Set_AnimationIndex(_uint iIndex) { m_iCurrentAnimationIndex = iIndex; }
+	void	Set_AnimationIndex(_uint iIndex) { 
+		m_iCurrentAnimationIndex = iIndex;
+		m_bAnimChange = true;
+	}
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
@@ -51,6 +57,9 @@ private:
 	TYPE					m_eType = { TYPE_END };
 
 	_float4x4				m_matPivot;
+
+private:
+	_bool					m_bAnimChange = { false };
 
 private:
 	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);

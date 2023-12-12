@@ -24,6 +24,14 @@ namespace Engine
 
 	}_uint3;
 
+	typedef struct tagfloat3x3
+	{
+		_float3 vVertex0;
+		_float3 vVertex1;
+		_float3 vVertex2;
+
+	}FLOAT3X3;
+
 	typedef struct tagRay
 	{
 		XMFLOAT3		vOrigin;
@@ -46,6 +54,14 @@ namespace Engine
 	{
 		class CTexture* pMtrlTexture[TEXTURETYPE::TYPE_UNKNOWN];
 	}MATERIAL_DESC;
+
+	typedef struct ENGINE_DLL tagVertex_Position
+	{
+		XMFLOAT3	fPosition;
+
+		static const unsigned int	iElementsNum = 1;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}VTXPOS;
 
 	typedef struct ENGINE_DLL tagVertex_Position_TexCoord
 	{

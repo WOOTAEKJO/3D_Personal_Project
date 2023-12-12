@@ -91,7 +91,7 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
 		return;
 
-	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta, bLoop,m_vecBones);
+	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta, bLoop,m_vecBones,&m_bAnimChange);
 
 	for (auto& iter : m_vecBones)
 	{
