@@ -11,7 +11,11 @@ private:
 
 public:
 	HRESULT	Initialize(CHANNEL Channel, const CModel::BONES& vecBones);
-	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones,_uint* iCurrentKeyFrameIndex, _bool* bAnimChange);
+	void	Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones,_uint* iCurrentKeyFrameIndex);
+	void	Invalidate_Interval_TransformationMatrix(_float fCurrentTrackPosition, _float fIntervalDuration, const CModel::BONES& vecBones, KEYFRAME PrevKeyFrame, _uint* iCurrentKeyFrameIndex);
+
+public:
+	KEYFRAME	Get_PrevKeyFram() { return m_PrevKeyFrame; }
 
 private:
 	_char				m_szName[MAX_PATH] = "";

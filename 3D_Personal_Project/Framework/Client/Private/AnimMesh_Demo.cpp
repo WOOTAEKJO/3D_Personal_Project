@@ -45,14 +45,22 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_P))
-	{
-		if (m_iAnimKey == 0)
-			m_iAnimKey = 3;
-		else
-			m_iAnimKey = 0;
 
-		m_pModelCom->Set_AnimationIndex(m_iAnimKey);
+	if (m_pGameInstance->Key_Down(DIK_UP))
+	{
+		m_pModelCom->Set_AnimationIndex(4);
+	}
+	else if (m_pGameInstance->Key_Down(DIK_Q))
+	{
+		m_pModelCom->Set_AnimationIndex(0);
+	}
+	else if (m_pGameInstance->Key_Down(DIK_SPACE))
+	{
+		m_pModelCom->Set_AnimationIndex(17);
+	}
+	else if(m_pGameInstance->Key_Down(DIK_DOWN)){
+
+		m_pModelCom->Set_AnimationIndex(3);
 	}
 
 	m_pModelCom->Play_Animation(fTimeDelta,true);

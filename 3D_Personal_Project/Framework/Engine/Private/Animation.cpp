@@ -40,7 +40,7 @@ HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBone
 	return S_OK;
 }
 
-void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop, const CModel::BONES& vecBones, _bool* bAnimChange)
+void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop, const CModel::BONES& vecBones)
 {
 	m_fTrackPosition += m_fTicksPerSecond * fTimeDelta;
 
@@ -58,8 +58,30 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,
 
 	for (_uint i = 0; i < m_iChannelNum; i++)
 	{
-		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones,&m_vecCurrentKeyFrameIndex[i], bAnimChange);
+		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones,&m_vecCurrentKeyFrameIndex[i]);
 	}
+}
+
+_bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _float fIntervalDuration, const CModel::BONES& vecBones, vector<CChannel*>& vecChannel)
+{
+	m_fInterverTime += fTimeDelta;
+
+	if (m_fInterverTime >= fIntervalDuration) {
+		m_fInterverTime = 0.f;
+		return true;
+	}
+
+	_uint iPrevChannelSize = vecChannel.size();
+
+	for (_uint i = 0; i < m_iChannelNum; i++)
+	{
+		if (iPrevChannelSize <= i)
+			continue;
+
+		m_vecChannel[i]->Invalidate_Interval_TransformationMatrix(m_fInterverTime, fIntervalDuration, vecBones, vecChannel[i]->Get_PrevKeyFram(), &m_vecCurrentKeyFrameIndex[i]);
+	}
+
+	return false;
 }
 
 CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)

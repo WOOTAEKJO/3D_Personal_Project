@@ -14,7 +14,11 @@ private:
 
 public:
 	HRESULT	Initialize(ANIMATION Animation, const CModel::BONES& vecBones);
-	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones, _bool* bAnimChange);
+	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones);
+	_bool	Invalidate_Interval_TransformationMatrix(_float fTimeDelta,_float fIntervalDuration, const CModel::BONES& vecBones, vector<CChannel*>& vecChannel);
+
+public:
+	vector<CChannel*>&	Get_Channels() { return m_vecChannel; }
 
 private:
 	_char				m_szName[MAX_PATH] = "";
@@ -27,6 +31,9 @@ private:
 	vector<_uint>		m_vecCurrentKeyFrameIndex;
 
 	_bool				m_bFinished = { false };
+
+private:
+	_float				m_fInterverTime = { 0.f };
 
 public:
 	static	CAnimation* Create(ANIMATION Animation, const CModel::BONES& vecBones);

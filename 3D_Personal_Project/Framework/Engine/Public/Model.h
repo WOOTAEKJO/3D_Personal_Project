@@ -31,8 +31,12 @@ public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 
 	void	Set_AnimationIndex(_uint iIndex) { 
-		m_iCurrentAnimationIndex = iIndex;
-		m_bAnimChange = true;
+
+		if (m_bChnageAnim)
+			return;
+
+		m_iNextAnimationIndex = iIndex;
+		m_bChnageAnim = true;
 	}
 
 public:
@@ -59,7 +63,8 @@ private:
 	_float4x4				m_matPivot;
 
 private:
-	_bool					m_bAnimChange = { false };
+	_uint					m_iNextAnimationIndex = { 0 };
+	_bool					m_bChnageAnim = { false };
 
 private:
 	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);
