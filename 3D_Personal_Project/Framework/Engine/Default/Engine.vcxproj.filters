@@ -549,9 +549,4 @@
       <Filter>01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNavigation.hlsl">
-      <Filter>98. ShaderFiles</Filter>
-    </FxCompile>
-  </ItemGroup>
 </Project>
