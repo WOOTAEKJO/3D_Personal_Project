@@ -64,6 +64,9 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,
 
 _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _float fIntervalDuration, const CModel::BONES& vecBones, vector<CChannel*>& vecChannel)
 {
+	if (m_fInterverTime == 0.f)
+		Reset_Animation();
+
 	m_fInterverTime += fTimeDelta;
 
 	if (m_fInterverTime >= fIntervalDuration) {
@@ -82,6 +85,16 @@ _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _f
 	}
 
 	return false;
+}
+
+void CAnimation::Reset_Animation()
+{
+	m_fTrackPosition = 0.f;
+	for (auto& iter : m_vecCurrentKeyFrameIndex)
+	{
+		iter = 0;
+	}
+	m_bFinished = false;
 }
 
 CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)

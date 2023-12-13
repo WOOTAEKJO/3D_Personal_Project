@@ -25,9 +25,6 @@ public:
 	void	Play_Animation(_float fTimeDelta, _bool bLoop);
 
 public:
-	void	Move_Next_Animation();
-
-public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 
 	void	Set_AnimationIndex(_uint iIndex) { 
@@ -38,6 +35,8 @@ public:
 		m_iNextAnimationIndex = iIndex;
 		m_bChnageAnim = true;
 	}
+
+	void	Ocne_Animation_Run(_uint iIndex);
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);

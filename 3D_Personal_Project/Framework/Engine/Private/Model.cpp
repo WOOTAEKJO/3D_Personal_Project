@@ -117,8 +117,9 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	}
 }
 
-void CModel::Move_Next_Animation()
+void CModel::Ocne_Animation_Run(_uint iIndex)
 {
+	
 }
 
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)

@@ -103,10 +103,16 @@ public: /* For.Component_Manager*/
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM, strModelFilePath, matPivot));
 	}
 
-	HRESULT	Add_Terrain_Buffer_ProtoType(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	HRESULT	Add_Terrain_ProtoType_Height(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, strHeightFilePath));
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_HEIGHT, strHeightFilePath));
+	}
+
+	HRESULT	Add_Terrain_ProtoType_Binary(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_BINARY, strHeightFilePath));
 	}
 
 	template <typename T>

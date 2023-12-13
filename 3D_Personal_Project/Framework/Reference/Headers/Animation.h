@@ -17,6 +17,7 @@ public:
 	void	Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,const CModel::BONES& vecBones);
 	_bool	Invalidate_Interval_TransformationMatrix(_float fTimeDelta,_float fIntervalDuration, const CModel::BONES& vecBones, vector<CChannel*>& vecChannel);
 
+	void	Reset_Animation();
 public:
 	vector<CChannel*>&	Get_Channels() { return m_vecChannel; }
 

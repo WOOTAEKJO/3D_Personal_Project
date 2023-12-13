@@ -15,6 +15,7 @@
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
 #define BUFFER_TERRAIN_HEIGHT_PATH	TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")
+#define BUFFER_TERRAIN_BIN_PATH		TEXT("../Bin/Data/Terrain/Terrain.bin")
 
 #define BUFFER_DTERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_DTerrain")
 
