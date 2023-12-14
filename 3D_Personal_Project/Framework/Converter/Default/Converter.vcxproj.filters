@@ -99,21 +99,6 @@
     <ClInclude Include="..\Imgui\imstb_truetype.h">
       <Filter>97. Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image.h">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\stb\stb_image_resize.h">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\dirent\dirent.h">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGuiMgr.h">
       <Filter>96. Manager\00. ImGui_Manager</Filter>
     </ClInclude>
@@ -125,6 +110,21 @@
     </ClInclude>
     <ClInclude Include="..\Public\Mesh_Demo.h">
       <Filter>03. Demo\00. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.h">
+      <Filter>97. Imgui\FileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialogConfig.h">
+      <Filter>97. Imgui\FileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image.h">
+      <Filter>97. Imgui\FileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
+      <Filter>97. Imgui\FileDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\dirent\dirent.h">
+      <Filter>97. Imgui\FileDialog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +175,6 @@
     <ClCompile Include="..\Imgui\imgui_widgets.cpp">
       <Filter>97. Imgui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp">
-      <Filter>97. Imgui\FileDialog</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\ImGuiMgr.cpp">
       <Filter>96. Manager\00. ImGui_Manager</Filter>
     </ClCompile>
@@ -186,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Mesh_Demo.cpp">
       <Filter>03. Demo\00. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
+      <Filter>97. Imgui\FileDialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

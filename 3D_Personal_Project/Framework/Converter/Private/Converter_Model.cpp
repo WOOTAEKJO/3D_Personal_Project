@@ -259,10 +259,10 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 				continue;
 
 			_char	szFileName[MAX_PATH] = "";
-			_char	szExc[MAX_PATH] = "";
+			_char	szExc[MAX_PATH] = ".dds";
 
 			_splitpath_s(szGetPath.data, nullptr, 0, nullptr, 0,
-				szFileName, MAX_PATH, szExc, MAX_PATH);
+				szFileName, MAX_PATH, nullptr, 0);
 
 			_char	szTmp[MAX_PATH] = "";
 

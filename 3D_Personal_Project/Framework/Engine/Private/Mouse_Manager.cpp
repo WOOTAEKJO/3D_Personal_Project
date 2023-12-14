@@ -56,6 +56,17 @@ _bool CMouse_Manager::Intersect(_float3* pOut, _float* fDist, _fvector vV1, _fve
     return false;
 }
 
+_bool CMouse_Manager::Intersect_Sphere(BoundingSphere* pSphere, _float* fDist)
+{
+
+	if (pSphere->Intersects(XMLoadFloat3(&m_pRay.vOrigin), XMVector3Normalize( XMLoadFloat3(&m_pRay.vDir)), *fDist))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void CMouse_Manager::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)
 {
 	Mouse_Key();

@@ -5,6 +5,18 @@ CAnimation::CAnimation()
 {
 }
 
+CAnimation::CAnimation(const CAnimation& rhs)
+	:m_fDuration(rhs.m_fDuration),m_fTicksPerSecond(rhs.m_fTicksPerSecond),m_fTrackPosition(rhs.m_fTrackPosition),
+	m_iChannelNum(rhs.m_iChannelNum),m_vecChannel(rhs.m_vecChannel),m_vecCurrentKeyFrameIndex(rhs.m_vecCurrentKeyFrameIndex),
+	m_bFinished(rhs.m_bFinished)
+{
+	strcpy_s(m_szName, rhs.m_szName);
+	
+	for (auto& iter : m_vecChannel)
+		Safe_AddRef(iter);
+
+}
+
 HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBones)
 {
 	strcpy_s(m_szName, Animation.szName.c_str());
@@ -13,6 +25,8 @@ HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBone
 	m_fTicksPerSecond = Animation.fTicksPerSecond;
 	
 	m_iChannelNum = Animation.vecChannel.size();
+
+	m_vecCurrentKeyFrameIndex.resize(m_iChannelNum);
 
 	for (_uint i = 0; i < m_iChannelNum; i++)
 	{
@@ -44,8 +58,43 @@ void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop,
 
 	for (_uint i = 0; i < m_iChannelNum; i++)
 	{
-		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones);
+		m_vecChannel[i]->Invalidate_TransformationMatrix(m_fTrackPosition, vecBones,&m_vecCurrentKeyFrameIndex[i]);
 	}
+}
+
+_bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _float fIntervalDuration, const CModel::BONES& vecBones, vector<CChannel*>& vecChannel)
+{
+	if (m_fInterverTime == 0.f)
+		Reset_Animation();
+
+	m_fInterverTime += fTimeDelta;
+
+	if (m_fInterverTime >= fIntervalDuration) {
+		m_fInterverTime = 0.f;
+		return true;
+	}
+
+	_uint iPrevChannelSize = vecChannel.size();
+
+	for (_uint i = 0; i < m_iChannelNum; i++)
+	{
+		if (iPrevChannelSize <= i)
+			continue;
+
+		m_vecChannel[i]->Invalidate_Interval_TransformationMatrix(m_fInterverTime, fIntervalDuration, vecBones, vecChannel[i]->Get_PrevKeyFram(), &m_vecCurrentKeyFrameIndex[i]);
+	}
+
+	return false;
+}
+
+void CAnimation::Reset_Animation()
+{
+	m_fTrackPosition = 0.f;
+	for (auto& iter : m_vecCurrentKeyFrameIndex)
+	{
+		iter = 0;
+	}
+	m_bFinished = false;
 }
 
 CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)
@@ -58,6 +107,11 @@ CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBone
 	}
 
 	return pInstance;
+}
+
+CAnimation* CAnimation::Clone()
+{
+	return new CAnimation(*this);
 }
 
 void CAnimation::Free()

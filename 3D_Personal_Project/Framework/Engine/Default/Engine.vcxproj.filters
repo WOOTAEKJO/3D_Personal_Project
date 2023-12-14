@@ -181,6 +181,21 @@
     <Filter Include="01.Utility\03. Component\04. Model\02. Animation\00. Channel">
       <UniqueIdentifier>{4bb5768f-3a4e-455c-a5cb-04df71825a1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\05. Navigation">
+      <UniqueIdentifier>{c3b708c5-ea8d-41b5-9001-ea9ed90f38c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\05. Navigation\00. Cell">
+      <UniqueIdentifier>{d8303354-8fab-4274-9884-aa2bf6de3f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell">
+      <UniqueIdentifier>{edbe64ce-50da-4830-bb74-1e16f17754b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ShaderFiles">
+      <UniqueIdentifier>{6f6a34e4-5cd4-4479-8616-16ac9e8a2597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\00. DebugDraw">
+      <UniqueIdentifier>{6e2198dd-f960-4d93-b0c3-2b4d494a257d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -360,6 +375,18 @@
     <ClInclude Include="..\Public\Channel.h">
       <Filter>01.Utility\03. Component\04. Model\02. Animation\00. Channel</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Navigation.h">
+      <Filter>01.Utility\03. Component\05. Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Cell.h">
+      <Filter>01.Utility\03. Component\05. Navigation\00. Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Cell.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>99.Defines\00. DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -517,6 +544,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Channel.cpp">
       <Filter>01.Utility\03. Component\04. Model\02. Animation\00. Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Navigation.cpp">
+      <Filter>01.Utility\03. Component\05. Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cell.cpp">
+      <Filter>01.Utility\03. Component\05. Navigation\00. Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>99.Defines\00. DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,9 +6,17 @@ BEGIN(Client)
 class CTerrain_Window final : public CImGui_Window
 {
 public:
-	
+	enum TERRAINMODE {MODE_HEIGHT,MODE_NAVIGATION,MODE_END};
+
+	typedef	struct tagNaviDemo_Desc
+	{
+		_float3 vPosition;
+		_bool	bCheck = false;
+
+	}NAVIDEMO_DESC;
+
 private:
-	CTerrain_Window();
+	CTerrain_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CTerrain_Window() = default;
 
 public:
@@ -27,18 +35,36 @@ private: /* For. Terrain*/ // 여기서 조정해주는 값
 	_float	m_fSharpness = { 0.f };
 	_bool	m_bWireFrame = false;
 
-private: /* For.object*/ // 외부에서 받아 와야 하는 값
+private: // 외부에서 받아 와야 하는 값
 	_float4 m_vPickPos = {};
 
 	//TERRAINDATA	m_Test;
+private: /* For. Navigation*/
+	TERRAINMODE				m_eCurrentMode = { MODE_END };
+	NAVIDEMO_DESC			m_vNaviPos[3] = {};
+
+	vector<BoundingSphere*>					m_vecSphere = { nullptr };
+	PrimitiveBatch<VertexPositionColor>*	m_pBatch = { nullptr };
+	BasicEffect*							m_pEffect = { nullptr };
+	ID3D11InputLayout*						m_pInputLayout = { nullptr };
+
+	_uint					m_iCurrentSphereIndex = { 0 };
 
 private:
 	void	HeightMap();
 	void	Terrain_Update();
 	void	Create_HeightMap();	
 
+private:
+	void	Navigation();
+	void	Navigation_Update();
+	_bool	Set_NaviPickPos();
+	void	Reset_NaviPickPos();
+
+	void	Sphere_Render();
+
 public:
-	static	CTerrain_Window* Create(void* pArg);
+	static	CTerrain_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);
 	virtual	void	Free() override;
 };
 

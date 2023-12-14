@@ -13,7 +13,8 @@
 
 
 
-CObject_Window::CObject_Window()
+CObject_Window::CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CImGui_Window(pDevice, pContext)
 {
 }
 
@@ -167,7 +168,6 @@ void CObject_Window::ObjectMesh()
 
 		size_t pos = iter.rfind(L"_");
 		wstring wstr = iter.substr(pos + 1);
-
 		string str;
 		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
 		if (ImGui::Selectable(str.c_str(), iter == m_strPickModelTag))
@@ -291,9 +291,9 @@ void CObject_Window::NotGuizmo()
 	}
 }
 
-CObject_Window* CObject_Window::Create(void* pArg)
+CObject_Window* CObject_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)
 {
-	CObject_Window* pInstance = new CObject_Window();
+	CObject_Window* pInstance = new CObject_Window(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{

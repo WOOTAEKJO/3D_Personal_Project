@@ -15,7 +15,6 @@ public:
 		vector<VTXTBN>		vecTBNVertices;
 		vector<VTXMESH>		vecMeshVertices;
 
-		
 		vector<MESH>		vecMesh;
 		vector<MATERIAL>	vecMaterial;
 		vector<ANIMATION>	vecAnimAnimation;
@@ -23,10 +22,10 @@ public:
 
 		vector<_uint3>		vecIndices;
 
-		_uint					iMeshNum ;
-		_uint					iMaterialNum ;
-		_uint					iAnimAnimationNum ;
-		_uint					iAnimBoneNum ;
+		_uint				iMeshNum ;
+		_uint				iMaterialNum ;
+		_uint				iAnimAnimationNum ;
+		_uint				iAnimBoneNum ;
 
 		_uint				iNumVertices;
 		_uint				iNumFaces;

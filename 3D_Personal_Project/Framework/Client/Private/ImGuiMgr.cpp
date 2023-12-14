@@ -2,8 +2,8 @@
 #include "../Imgui/imgui.h"
 #include "../Imgui/imgui_impl_win32.h"
 #include "../Imgui/imgui_impl_dx11.h"
-#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialogConfig.h"
-#include "../Imgui/ImGuiFileDialog-master/ImGuiFileDialog.h"
+#include "../Imgui/ImGuiFileDialog/ImGuiFileDialogConfig.h"
+#include "../Imgui/ImGuiFileDialog/ImGuiFileDialog.h"
 
 #include "../Public/ImGuiMgr.h"
 
@@ -169,8 +169,7 @@ HRESULT CImGuiMgr::Render()
 
     if (m_eFileMode != FILEMODE_END)
         File_Render();
-       
-
+  
     if (m_bGrid)
         Grid_Draw();
 
@@ -199,7 +198,7 @@ void CImGuiMgr::Set_Terrain_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(m_pDevice,m_pContext,&ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Object_Edit()
@@ -211,7 +210,7 @@ void CImGuiMgr::Set_Object_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Camera_Edit()
@@ -223,7 +222,7 @@ void CImGuiMgr::Set_Camera_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Update_Terrain_Pick()
@@ -340,7 +339,6 @@ void CImGuiMgr::File_Render()
 
         // close
         ImGuiFileDialog::Instance()->Close();
-
         m_eFileMode = FILEMODE_END;
     }
     // 파일 다이얼로그만 키면 누수가 남

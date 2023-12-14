@@ -27,6 +27,17 @@ public:
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 
+	void	Set_AnimationIndex(_uint iIndex) { 
+
+		if (m_bChnageAnim)
+			return;
+
+		m_iNextAnimationIndex = iIndex;
+		m_bChnageAnim = true;
+	}
+
+	void	Ocne_Animation_Run(_uint iIndex);
+
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, TEXTURETYPE eType);
@@ -42,13 +53,17 @@ private:
 	BONES	m_vecBones;
 
 	_uint					m_iAnimationNum = { 0 };
-	_uint					m_iCurrentAnimationIndex = { 1 };
+	_uint					m_iCurrentAnimationIndex = { 0 };
 	vector<CAnimation*>		m_vecAnimation;
 
 private:
 	TYPE					m_eType = { TYPE_END };
 
 	_float4x4				m_matPivot;
+
+private:
+	_uint					m_iNextAnimationIndex = { 0 };
+	_bool					m_bChnageAnim = { false };
 
 private:
 	HRESULT	Ready_Meshes(CMeshData::MESHDATADESC MeshData);

@@ -15,6 +15,7 @@
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
 #define BUFFER_TERRAIN_HEIGHT_PATH	TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")
+#define BUFFER_TERRAIN_BIN_PATH		TEXT("../Bin/Data/Terrain/Terrain.bin")
 
 #define BUFFER_DTERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_DTerrain")
 
@@ -51,6 +52,9 @@
 #define	ANIMMODEL_BAT_TAG		TEXT("Prototype_Component_AnimModel_Bat")
 #define	ANIMMODEL_BAT_PATH		"../Bin/Resources/Models/AnimModel/Bat/Bat.fbx"
 
+#define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
+#define	ANIMMODEL_JACK_PATH		"../Bin/Resources/Models/AnimModel/Jack/Jack.bin"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨
@@ -75,6 +79,9 @@
 
 #define COM_STATEMACHINE_TAG	TEXT("Prototype_Component_StateMachine")
 #define COM_AI_TAG				TEXT("Prototype_Component_AI")
+
+#define	COM_NAVIGATION_TAG		TEXT("Prototype_Component_Navigation")
+#define COM_NAVOGATION_PAHT		("")
 
 #pragma endregion
 

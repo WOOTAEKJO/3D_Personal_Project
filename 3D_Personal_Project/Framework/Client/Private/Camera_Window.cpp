@@ -8,7 +8,8 @@
 
 #include "GameInstance.h"
 
-CCamera_Window::CCamera_Window()
+CCamera_Window::CCamera_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CImGui_Window(pDevice, pContext)
 {
 }
 
@@ -59,9 +60,9 @@ HRESULT CCamera_Window::Load_Data(const _char* strFilePath)
 	return S_OK;
 }
 
-CCamera_Window* CCamera_Window::Create(void* pArg)
+CCamera_Window* CCamera_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)
 {
-	CCamera_Window* pInstance = new CCamera_Window();
+	CCamera_Window* pInstance = new CCamera_Window(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{

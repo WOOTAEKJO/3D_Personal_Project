@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\Export\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>..\Bin\</OutDir>
     <IntDir>..\Bin\Intermediate\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\Bin\Export\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <OutDir>..\Bin\</OutDir>
     <IntDir>..\Bin\Intermediate\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -114,7 +114,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;DirectXTKd.lib;d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -161,7 +161,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -180,8 +180,11 @@
   <ItemGroup>
     <ClInclude Include="..\Imgui\imconfig.h" />
     <ClInclude Include="..\Imgui\imgui.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.h" />
-    <ClInclude Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\dirent\dirent.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialogConfig.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image.h" />
+    <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h" />
     <ClInclude Include="..\Imgui\imgui_impl_dx11.h" />
     <ClInclude Include="..\Imgui\imgui_impl_win32.h" />
     <ClInclude Include="..\Imgui\imgui_internal.h" />
@@ -193,6 +196,7 @@
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
+    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -221,7 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Imgui\imgui.cpp" />
-    <ClCompile Include="..\Imgui\ImGuiFileDialog-master\ImGuiFileDialog.cpp" />
+    <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="..\Imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Imgui\imgui_draw.cpp" />
     <ClCompile Include="..\Imgui\imgui_impl_dx11.cpp" />
@@ -231,6 +235,7 @@
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
+    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />

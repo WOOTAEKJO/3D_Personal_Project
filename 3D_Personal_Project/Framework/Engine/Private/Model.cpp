@@ -17,11 +17,9 @@ CModel::CModel(const CModel& rhs)
 	m_iMaterialsNum(rhs.m_iMaterialsNum),
 	m_vecMesh(rhs.m_vecMesh),
 	m_vecMaterial(rhs.m_vecMaterial),
-	m_vecBones(rhs.m_vecBones),
 	m_matPivot(rhs.m_matPivot),
 	m_iAnimationNum(rhs.m_iAnimationNum),
-	m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex),
-	m_vecAnimation(rhs.m_vecAnimation)
+	m_iCurrentAnimationIndex(rhs.m_iCurrentAnimationIndex)
 {
 	for (auto& iter1 : m_vecMaterial)
 	{
@@ -32,11 +30,11 @@ CModel::CModel(const CModel& rhs)
 	for (auto& iter : m_vecMesh)
 		Safe_AddRef(iter);
 
-	for (auto& iter : m_vecBones)
-		Safe_AddRef(iter);
+	for (auto& iter : rhs.m_vecBones)
+		m_vecBones.push_back(iter->Clone());
 
-	for (auto& iter : m_vecAnimation)
-		Safe_AddRef(iter);
+	for (auto& iter : rhs.m_vecAnimation)
+		m_vecAnimation.push_back(iter->Clone());
 }
 
 HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath, _fmatrix	matPivot)
@@ -54,7 +52,6 @@ HRESULT CModel::Initialize_ProtoType(TYPE eType, const string& strModelFilePath,
 
 	if (FAILED(pMeshData->Data_Get(MeshData)))
 		return E_FAIL;
-
 
 	if (FAILED(Ready_Bones(MeshData)))
 		return E_FAIL;
@@ -99,12 +96,30 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
 		return;
 
-	m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta, bLoop,m_vecBones);
+	if(m_bChnageAnim){
+		
+		vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
+
+		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecCurChannel))
+		{
+			m_bChnageAnim = false;
+			m_iCurrentAnimationIndex = m_iNextAnimationIndex;
+		}
+
+	}
+	else {
+		m_vecAnimation[m_iCurrentAnimationIndex]->Invalidate_TransformationMatrix(fTimeDelta, bLoop, m_vecBones);
+	}
 
 	for (auto& iter : m_vecBones)
 	{
 		iter->Invalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
 	}
+}
+
+void CModel::Ocne_Animation_Run(_uint iIndex)
+{
+	
 }
 
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
@@ -127,6 +142,9 @@ HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint
 		return E_FAIL;
 
 	_uint	iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
+
+	if (m_vecMaterial[iMaterialIndex].pMtrlTexture[eType] == nullptr)
+		return S_OK;
 
 	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }

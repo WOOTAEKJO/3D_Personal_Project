@@ -1,4 +1,5 @@
 #pragma once
+#include "VIBuffer_Cell.h"
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
@@ -9,6 +10,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "AICom.h"
+#include "Navigation.h"
 
 BEGIN(Engine)
 

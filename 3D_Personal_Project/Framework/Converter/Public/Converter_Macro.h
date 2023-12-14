@@ -52,6 +52,9 @@
 #define	ANIMMODEL_BAT_TAG		TEXT("Prototype_Component_AnimModel_Bat")
 #define	ANIMMODEL_BAT_PATH		"../Bin/Resources/Models/AnimModel/Bat/Bat.fbx"
 
+#define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
+#define	ANIMMODEL_JACK_PATH		"../Bin/Resources/Models/AnimModel/Jack/Jack.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

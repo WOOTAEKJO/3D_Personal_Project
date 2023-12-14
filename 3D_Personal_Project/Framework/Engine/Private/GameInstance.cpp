@@ -336,6 +336,14 @@ _bool CGameInstance::Intersect(_float3* pOut, _float* fDist, _fvector vV1, _fvec
 	return m_pMouse_Manager->Intersect( pOut, fDist, vV1, vV2, vV3, matWorld);
 }
 
+_bool CGameInstance::Intersect_Sphere(BoundingSphere* pSphere, _float* fDist)
+{
+	if (nullptr == m_pMouse_Manager)
+		return false;
+
+	return m_pMouse_Manager->Intersect_Sphere(pSphere, fDist);
+}
+
 void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)
 {
 	if (nullptr == m_pMouse_Manager)

@@ -6,7 +6,7 @@ BEGIN(Client)
 class CCamera_Window final : public CImGui_Window
 {
 private:
-	CCamera_Window();
+	CCamera_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CCamera_Window() = default;
 
 public:
@@ -22,7 +22,7 @@ public:
 private:
 
 public:
-	static CCamera_Window* Create(void* pArg);
+	static CCamera_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);
 	virtual	void	Free() override;
 };
 

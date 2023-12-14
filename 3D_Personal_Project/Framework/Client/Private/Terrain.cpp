@@ -87,21 +87,6 @@ HRESULT CTerrain::Bind_ShaderResources()
 
 HRESULT CTerrain::Ready_Component()
 {
-	
-	//CVIBuffer_DTerrain::DTERRAINDESC tDTerrainDesc;
-
-	//tDTerrainDesc.iVerticesXNum = 300;
-	//tDTerrainDesc.iVerticesZNum = 300;
-
-	///* For.Com_VIBuffer*/
-	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_DTerrain"),
-	//	TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom), &tDTerrainDesc)))
-	//	return E_FAIL;
-
-	///* For.Com_Shader*/
-	//if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Shader_VTXTBN"),
-	//	TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-	//	return E_FAIL;
 
 	/* For.Com_VIBuffer*/ 
 	if (FAILED(Add_Component(LEVEL_GAMEPLAY, BUFFER_TERRAIN_TAG,
@@ -109,7 +94,7 @@ HRESULT CTerrain::Ready_Component()
 		return E_FAIL;
 
 	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, SHADER_NOR_TAG,
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, SHADER_MESH_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 

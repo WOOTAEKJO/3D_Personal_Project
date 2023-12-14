@@ -14,6 +14,11 @@ namespace Engine
 	};
 }
 
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/Effects.h>
+#include <DirectXTK/VertexTypes.h>
+#include <DirectXTK/SpriteBatch.h>
+#include <DirectXTK/SpriteFont.h>
 
 #include <d3d11.h>
 #include <DirectXMath.h>
