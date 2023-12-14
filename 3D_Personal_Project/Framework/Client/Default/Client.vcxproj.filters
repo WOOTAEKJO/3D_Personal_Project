@@ -112,6 +112,9 @@
     <Filter Include="97. ImGui\ImGuiFileDialog">
       <UniqueIdentifier>{5ddcb7e7-5639-4bd2-b3c5-fe5a992e26d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\00. DebugDraw">
+      <UniqueIdentifier>{9c03ce65-4def-45e5-96c5-33a3bf2510f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>99.Defines\00. DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -346,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>99.Defines\00. DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

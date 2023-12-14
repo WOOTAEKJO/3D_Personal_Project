@@ -115,6 +115,18 @@ public: /* For.Component_Manager*/
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_BINARY, strHeightFilePath));
 	}
 
+	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag,const string& strNavigationFilePath)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CNavigation::Create(m_pDevice, m_pContext, true, strNavigationFilePath.c_str()));
+	}
+
+	HRESULT	Add_Navigation_ProtoType_Demo(const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CNavigation::Create(m_pDevice, m_pContext, false, nullptr));
+	}
+
 	template <typename T>
 	HRESULT	Add_Buffer_ProtoType(const wstring& strProtoTypeTag)
 	{
@@ -132,6 +144,7 @@ public: /* For.Component_Manager*/
 public: /* For.Mouse_Manager*/
 	void	Update_Mouse();
 	_bool	Intersect(_float3 * pOut, _float * fDist, _fvector vV1, _fvector vV2, _fvector vV3, _matrix matWorld);
+	_bool	Intersect_Sphere(BoundingSphere* pSphere, _float* fDist);
 	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform * pTransCom);
 	_float4	Get_WorldMouse_Float4();
 	_vector	Get_WorldMouse_Vector();

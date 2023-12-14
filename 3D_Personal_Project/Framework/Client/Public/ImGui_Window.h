@@ -42,7 +42,7 @@ public:
 		wstring m_strTest2 = { L"test2" };
 	};
 protected:
-	CImGui_Window();
+	CImGui_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CImGui_Window() = default;
 
 public:
@@ -58,9 +58,12 @@ public:
 	virtual	HRESULT	Load_Data(const _char* strFilePath) { return S_OK; }
 public:
 	void	ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo);
+	void	ImGuizmo(ImGuizmo::MODE eMode, _float3* vPosition);
 
 protected:
-	CGameInstance*	m_pGameInstance = { nullptr };
+	ID3D11Device*			m_pDevice = { nullptr };
+	ID3D11DeviceContext*	m_pContext = { nullptr };
+	CGameInstance*			m_pGameInstance = { nullptr };
 
 protected:
 	CTerrain_Demo*	m_pTerrain = { nullptr };

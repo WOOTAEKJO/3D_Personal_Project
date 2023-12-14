@@ -114,7 +114,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;DirectXTKd.lib;d3d11.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -161,7 +161,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Reference/Librarys/$(Configuration)/$(PlatformTarget)/;../ThirdPartyLib/;../Imgui/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;imguizmod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;imguizmod.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -196,6 +196,7 @@
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
+    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
+    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />

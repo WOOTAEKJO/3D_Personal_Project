@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "AICom.h"
+#include "Navigation.h"
 
 BEGIN(Engine)
 

@@ -59,7 +59,7 @@ HRESULT CLevel_Tool::Ready_Layer_Camera(const wstring& strLayerTag)
 	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
 	DynamicCameraDesc.fNear = 0.1f;
 	DynamicCameraDesc.fFar = 1000.f;
-	DynamicCameraDesc.fSpeedPerSec = 20.f;
+	DynamicCameraDesc.fSpeedPerSec = 5.f;
 	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_DynamicCamera"), &DynamicCameraDesc)))

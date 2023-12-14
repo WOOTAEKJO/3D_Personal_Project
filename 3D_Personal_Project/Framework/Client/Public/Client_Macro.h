@@ -80,6 +80,9 @@
 #define COM_STATEMACHINE_TAG	TEXT("Prototype_Component_StateMachine")
 #define COM_AI_TAG				TEXT("Prototype_Component_AI")
 
+#define	COM_NAVIGATION_TAG		TEXT("Prototype_Component_Navigation")
+#define COM_NAVOGATION_PAHT		("")
+
 #pragma endregion
 
 #pragma region ÅØ½ºÃÄ

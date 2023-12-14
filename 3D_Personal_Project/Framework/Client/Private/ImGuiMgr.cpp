@@ -198,7 +198,7 @@ void CImGuiMgr::Set_Terrain_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_TERRAIN].emplace(WS_MAIN, CTerrain_Window::Create(m_pDevice,m_pContext,&ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Object_Edit()
@@ -210,7 +210,7 @@ void CImGuiMgr::Set_Object_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_OBJECT].emplace(WS_MAIN, CObject_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Set_Camera_Edit()
@@ -222,7 +222,7 @@ void CImGuiMgr::Set_Camera_Edit()
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
     ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
 
-    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(&ImguiMrgWinDesc));
+    m_mapWindow[MODE_CAMERA].emplace(WS_MAIN, CCamera_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Update_Terrain_Pick()

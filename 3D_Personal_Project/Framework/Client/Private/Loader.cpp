@@ -212,6 +212,9 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEAD_TREE2_TAG, MODEL_DEAD_TREE2_PATH, matPivot))) return E_FAIL;
 
+	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
+	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_Demo(COM_NAVIGATION_TAG))) return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 
 	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG, SHADER_BTN_PATH))) return E_FAIL;

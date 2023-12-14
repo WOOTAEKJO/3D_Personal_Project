@@ -8,7 +8,8 @@
 
 #include "GameInstance.h"
 
-CMouse_Window::CMouse_Window()
+CMouse_Window::CMouse_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CImGui_Window(pDevice, pContext)
 {
 }
 
@@ -45,9 +46,9 @@ void CMouse_Window::Demo_Picked()
 {
 }
 
-CMouse_Window* CMouse_Window::Create(void* pArg)
+CMouse_Window* CMouse_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)
 {
-	CMouse_Window* pInstance = new CMouse_Window();
+	CMouse_Window* pInstance = new CMouse_Window(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{

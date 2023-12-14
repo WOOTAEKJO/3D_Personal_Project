@@ -69,6 +69,8 @@ HRESULT CTerrain_Demo::Render()
 			m_pShaderCom->Set_RenderState(CShader::RENDERSTATE::RS_SOLID);
 
 		m_pVIBufferCom->Render();
+
+		m_pNavigationCom->Render();
 	}
 
 	return S_OK;
@@ -174,6 +176,11 @@ HRESULT CTerrain_Demo::Ready_Component()
 		TEXT("Com_Brush"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]))))
 		return E_FAIL;
 
+	/* For.Com_Navigation*/
+	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_TAG,
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -244,6 +251,17 @@ HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
 	return S_OK;
 }
 
+HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pNavigationCom->Add_Cell(pPoints)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTerrain_Demo* pInstance = new CTerrain_Demo(pDevice, pContext);
@@ -278,6 +296,7 @@ void CTerrain_Demo::Free()
 	{
 		Safe_Release(m_pTextureCom[i]);
 	}
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 }

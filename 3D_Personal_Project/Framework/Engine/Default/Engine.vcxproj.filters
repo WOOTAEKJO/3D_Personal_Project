@@ -193,6 +193,9 @@
     <Filter Include="98. ShaderFiles">
       <UniqueIdentifier>{6f6a34e4-5cd4-4479-8616-16ac9e8a2597}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Defines\00. DebugDraw">
+      <UniqueIdentifier>{6e2198dd-f960-4d93-b0c3-2b4d494a257d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -381,6 +384,9 @@
     <ClInclude Include="..\Public\VIBuffer_Cell.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>99.Defines\00. DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\04. VIBuffer_Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>99.Defines\00. DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

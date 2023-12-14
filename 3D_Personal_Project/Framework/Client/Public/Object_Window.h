@@ -12,7 +12,7 @@ public:
 	{
 	}OBJECTWINDOWDESC;
 private:
-	CObject_Window();
+	CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CObject_Window() = default;
 
 public:
@@ -47,7 +47,7 @@ private:
 	void	NotGuizmo();
 
 public:
-	static	CObject_Window* Create(void* pArg);
+	static	CObject_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);
 	virtual	void	Free() override;
 };
 

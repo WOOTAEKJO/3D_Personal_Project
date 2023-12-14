@@ -6,7 +6,7 @@ BEGIN(Client)
 class CMouse_Window final : public CImGui_Window
 {
 private:
-	CMouse_Window();
+	CMouse_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CMouse_Window() = default;
 
 public:
@@ -20,7 +20,7 @@ public:
 private:
 
 public:
-	static CMouse_Window* Create(void* pArg);
+	static CMouse_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);
 	virtual	void	Free() override;
 };
 

@@ -11,10 +11,13 @@
 #include <sstream>
 
 
-CImGui_Window::CImGui_Window()
-	:m_pGameInstance(CGameInstance::GetInstance())
+CImGui_Window::CImGui_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:m_pGameInstance(CGameInstance::GetInstance()),
+	m_pDevice(pDevice), m_pContext(pContext)
 {
 	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pDevice);
+	Safe_AddRef(m_pContext);
 
 }
 
@@ -95,6 +98,77 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 
 	pDemo->Set_WorldMatrix(matW);
 	
+	ImGuizmo::SetDrawlist();
+}
+
+void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, _float3* vPosition)
+{
+	ImGuizmo::SetOrthographic(false);
+	//ImGuizmo::SetDrawlist(); 
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	static ImGuizmo::MODE mCurrentGizmoMode(eMode);
+
+	_float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
+	_float arrView[] = { matView._11,matView._12,matView._13,matView._14,
+					matView._21,matView._22,matView._23,matView._24,
+					matView._31,matView._32,matView._33,matView._34,
+					matView._41,matView._42,matView._43,matView._44 };
+
+	_float4x4 matProj = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ);
+	_float arrProj[] = { matProj._11,matProj._12,matProj._13,matProj._14,
+					matProj._21,matProj._22,matProj._23,matProj._24,
+					matProj._31,matProj._32,matProj._33,matProj._34,
+					matProj._41,matProj._42,matProj._43,matProj._44 };
+
+	//_float4x4 matWorld = pDemo->Get_WorldMatrix();
+	_float arrWorld[] = { 1.f,0.f,0.f,0.f,
+					 0.f,1.f,0.f,0.f,
+					 0.f,0.f,1.f,0.f,
+					 vPosition->x,vPosition->y,vPosition->z,1.f };
+
+	_float fPos[3], fRot[3], fScale[3];
+
+	ImGuizmo::DecomposeMatrixToComponents(arrWorld, fPos, fRot, fScale);
+
+	Arrow_Button("Interval", 0.1f, &m_fInterval);
+
+	switch (m_eOperationType)
+	{
+	case ImGuizmo::TRANSLATE:
+		Arrow_Button("Pos_X", m_fInterval, &fPos[0]);
+		Arrow_Button("Pos_Y", m_fInterval, &fPos[1]);
+		Arrow_Button("Pos_Z", m_fInterval, &fPos[2]);
+		break;
+	case ImGuizmo::ROTATE:
+		Arrow_Button("Pos_X", m_fInterval, &fRot[0]);
+		Arrow_Button("Pos_Y", m_fInterval, &fRot[1]);
+		Arrow_Button("Pos_Z", m_fInterval, &fRot[2]);
+		break;
+	case ImGuizmo::SCALE:
+		Arrow_Button("Pos_X", m_fInterval, &fScale[0]);
+		Arrow_Button("Pos_Y", m_fInterval, &fScale[1]);
+		Arrow_Button("Pos_Z", m_fInterval, &fScale[2]);
+		break;
+	default:
+		break;
+	}
+
+	ImGuizmo::RecomposeMatrixFromComponents(fPos, fRot, fScale, arrWorld);
+
+	Arrow_Button("ImGuizmo_Snap", 0.1f, &m_fSnap);
+
+	ImGuizmo::Manipulate(arrView, arrProj, m_eOperationType, mCurrentGizmoMode, arrWorld, NULL, &m_fSnap);
+
+	_float4x4 matW = { arrWorld[0],arrWorld[1],arrWorld[2],arrWorld[3],
+				arrWorld[4],arrWorld[5],arrWorld[6],arrWorld[7],
+				arrWorld[8],arrWorld[9],arrWorld[10],arrWorld[11],
+				arrWorld[12],arrWorld[13],arrWorld[14],arrWorld[15] };
+
+	//pDemo->Set_WorldMatrix(matW);
+	*vPosition = _float3(arrWorld[12], arrWorld[13], arrWorld[14]);
+
 	ImGuizmo::SetDrawlist();
 }
 
@@ -201,5 +275,7 @@ void CImGui_Window::Free()
 	__super::Free();
 	
 	Safe_Release(m_pTerrain);
+	Safe_Release(m_pDevice);
+	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);
 }

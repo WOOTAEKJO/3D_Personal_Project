@@ -15,7 +15,14 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 HRESULT CCell::Initialize(FLOAT3X3 pPoints)
 {
-	memcpy(&m_pPoints, &pPoints, sizeof(_float3));
+	memcpy(&m_pPoints, &pPoints, sizeof(_float3)*3);
+
+	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
+	XMStoreFloat3(&m_vLineNormal[LINE_AB], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
+	Line = XMLoadFloat3(&m_pPoints[POINT_C]) - XMLoadFloat3(&m_pPoints[POINT_B]);
+	XMStoreFloat3(&m_vLineNormal[LINE_BC], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
+	Line = XMLoadFloat3(&m_pPoints[POINT_A]) - XMLoadFloat3(&m_pPoints[POINT_C]);
+	XMStoreFloat3(&m_vLineNormal[LINE_CA], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
 
 #ifdef _DEBUG
 	m_pBufferCom = CVIBuffer_Cell::Create(m_pDevice,m_pContext, m_pPoints);
@@ -47,6 +54,51 @@ HRESULT CCell::Render(CShader* pShader, _float4x4 matView, _float4x4 matProj)
 	m_pBufferCom->Render();
 
 	return S_OK;
+}
+
+_bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
+{
+	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&SourPoint)))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&DestPoint)))
+			return true;
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
+			return true;
+	}
+
+	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&SourPoint)))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&DestPoint)))
+			return true;
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
+			return true;
+	}
+
+	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&SourPoint)))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&DestPoint)))
+			return true;
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&DestPoint)))
+			return true;
+	}
+}
+
+_bool CCell::IsIn(_fvector vPosition, _int* iNeighborIndex)
+{
+	for (_uint i = 0; i < LINE_END; i++)
+	{
+		_vector vDir = vPosition - XMLoadFloat3(&m_pPoints[i]);
+
+		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir),
+			XMVector3Normalize(XMLoadFloat3(&m_vLineNormal[i])))))
+		{
+			*iNeighborIndex = m_iNeighborIndex[i];
+			return false;
+		}
+			
+	}
+
+	return true;
 }
 
 CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints)

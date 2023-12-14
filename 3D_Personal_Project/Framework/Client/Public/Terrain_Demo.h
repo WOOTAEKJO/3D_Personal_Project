@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CVIBuffer_DTerrain;
+class CNavigation;
 
 END
 
@@ -43,11 +44,14 @@ public:
 	HRESULT	Save_Terrain(const _char* strPath);
 	HRESULT	Load_Terrain(const _char* strPath);
 
-private:
-	CVIBuffer_DTerrain* m_pVIBufferCom = { nullptr };
-	CShader* m_pShaderCom = { nullptr };
-	CTexture* m_pTextureCom[TYPE_END] = { nullptr };
+public:
+	HRESULT	Add_Navigation_Cell(_float3* pPoints);
 
+private:
+	CVIBuffer_DTerrain*		m_pVIBufferCom = { nullptr };
+	CShader*				m_pShaderCom = { nullptr };
+	CTexture*				m_pTextureCom[TYPE_END] = { nullptr };
+	CNavigation*			m_pNavigationCom = { nullptr };
 private:
 	_bool	m_bWireFrame = { false };
 
