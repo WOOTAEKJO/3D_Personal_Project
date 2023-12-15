@@ -263,6 +263,17 @@ HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints)
 	return S_OK;
 }
 
+HRESULT CTerrain_Demo::Save_Navigation(const _char* strPath)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pNavigationCom->Save_Navigation(strPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTerrain_Demo* pInstance = new CTerrain_Demo(pDevice, pContext);

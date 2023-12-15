@@ -19,6 +19,9 @@ public:
 	void	Update(_float4x4 matWorld);
 	_bool	IsMove(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints);
+	
+public:
+	HRESULT	Save_Navigation(const _char * strFilePath);
 
 #ifdef _DEBUG
 private:

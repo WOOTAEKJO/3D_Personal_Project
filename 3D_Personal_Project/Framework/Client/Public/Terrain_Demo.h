@@ -46,6 +46,7 @@ public:
 
 public:
 	HRESULT	Add_Navigation_Cell(_float3* pPoints);
+	HRESULT	Save_Navigation(const _char* strPath);
 
 private:
 	CVIBuffer_DTerrain*		m_pVIBufferCom = { nullptr };

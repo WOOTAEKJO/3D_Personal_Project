@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "Cell.h"
 
+#include "MeshData.h"
+
 _float4x4 CNavigation::m_matWorld = {};
 
 CNavigation::CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -145,6 +147,30 @@ HRESULT CNavigation::Add_Cell(_float3* pPoints)
 	m_vecCell.push_back(pCell);
 
 	if (FAILED(Init_Neighbor()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
+{
+	
+	CMeshData::MESHDATADESC MeshDataDesc = {};
+
+	MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::NAVIGATION;
+	
+	for (auto& iter : m_vecCell)
+	{
+		FLOAT3X3	Float33 = {};
+
+		Float33.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
+		Float33.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
+		Float33.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
+
+		MeshDataDesc.vecNaviPoints.push_back(Float33);
+	}
+
+	if (FAILED(m_pGameInstance->Save_Data_Mesh(strFilePath, MeshDataDesc)))
 		return E_FAIL;
 
 	return S_OK;

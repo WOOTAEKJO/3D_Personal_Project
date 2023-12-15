@@ -80,7 +80,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 
 	CAnimMesh_Demo::ANIMDEMOVALUE AnimMeshDemoValue;
 
-	AnimMeshDemoValue.strModelTag = ANIMMODEL_FIONA_TAG;
+	AnimMeshDemoValue.strModelTag = ANIMMODEL_JACK_TAG;
 	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
 
 	for (_uint i = 0; i < 2; i++) {

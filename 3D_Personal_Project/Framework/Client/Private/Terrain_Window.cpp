@@ -133,8 +133,16 @@ HRESULT CTerrain_Window::Save_Data(const _char* strFilePath)
 	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pTerrain->Save_Terrain(strFilePath)))
-		return E_FAIL;
+	if (m_eCurrentMode == TERRAINMODE::MODE_HEIGHT) {
+
+		if (FAILED(m_pTerrain->Save_Terrain(strFilePath)))
+			return E_FAIL;
+	}
+	else if (m_eCurrentMode == TERRAINMODE::MODE_NAVIGATION)
+	{
+		if (FAILED(m_pTerrain->Save_Navigation(strFilePath)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

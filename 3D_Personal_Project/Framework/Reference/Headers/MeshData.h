@@ -6,7 +6,7 @@ BEGIN(Engine)
 class ENGINE_DLL CMeshData final : public CBase
 {
 public:
-	enum MODEL_TYPE {NONANIM, ANIM, TERRAIN, TYPE_END};
+	enum MODEL_TYPE {NONANIM, ANIM, TERRAIN, NAVIGATION , TYPE_END};
 
 	typedef	struct tagMesh_Data_Desc
 	{
@@ -29,6 +29,8 @@ public:
 
 		_uint				iNumVertices;
 		_uint				iNumFaces;
+
+		vector<FLOAT3X3>	vecNaviPoints;
 
 		MODEL_TYPE			eModel_Type = TYPE_END;
 	}MESHDATADESC;
@@ -53,7 +55,7 @@ private:
 	
 	vector<_uint3>		m_vecIndices;
 	
-private: /* For. Anim*/
+private:
 	
 	vector<MESH>			m_vecMesh;
 	vector<MATERIAL>		m_vecMaterial;
@@ -70,6 +72,9 @@ private:
 	_uint				m_iNumFaces;
 
 	MODEL_TYPE			m_eModel_Type = { TYPE_END };
+
+private:
+	vector<FLOAT3X3>	m_vecNaviPoints;
 
 private:
 	HRESULT	Set_Data(MESHDATADESC MeshDataDesc);
