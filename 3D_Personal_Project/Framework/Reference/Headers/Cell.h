@@ -16,11 +16,11 @@ public:
 	HRESULT	Initialize(FLOAT3X3 pPoints);
 
 #ifdef _DEBUG
-	HRESULT	Render(class CShader* pShader, _float4x4 matView, _float4x4 matProj);
+	HRESULT	Render();
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
-	_bool	IsIn(_fvector vPosition, _int* iNeighborIndex);
+	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex);
 
 public:
 	_uint	Get_Index() { return m_iIndex; }

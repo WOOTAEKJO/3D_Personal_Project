@@ -3,6 +3,8 @@
 
 BEGIN(Engine)
 
+class CNavigation;
+
 class ENGINE_DLL CTransform final : public CComponent
 {
 public:
@@ -51,7 +53,7 @@ public:
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_matWorldMatrix)); }
 
 public: /* 카메라에 사용*/
-	void	Go_Straight(_float fTimeDelta);
+	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 	void	Go_Left(_float fTimeDelta);
 	void	Go_Right(_float fTimeDelta);
 	void	Go_BackWard(_float fTimeDelta);

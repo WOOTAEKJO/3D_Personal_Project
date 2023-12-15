@@ -33,6 +33,7 @@ HRESULT CTerrain_Demo::Initialize(void* pArg)
 
 void CTerrain_Demo::Priority_Tick(_float fTimeDelta)
 {
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Float4x4());
 }
 
 void CTerrain_Demo::Tick(_float fTimeDelta)

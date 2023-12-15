@@ -34,21 +34,8 @@ HRESULT CCell::Initialize(FLOAT3X3 pPoints)
 	return S_OK;
 }
 
-HRESULT CCell::Render(CShader* pShader, _float4x4 matView, _float4x4 matProj)
+HRESULT CCell::Render()
 {
-
-	_float4x4		matWorld;
-	XMStoreFloat4x4(&matWorld, XMMatrixIdentity());
-
-	if (FAILED(pShader->Bind_Matrix("g_matWorld", &matWorld)))
-		return E_FAIL;
-	if (FAILED(pShader->Bind_Matrix("g_matView", &matView)))
-		return E_FAIL;
-	if (FAILED(pShader->Bind_Matrix("g_matProj", &matProj)))
-		return E_FAIL;
-;
-	pShader->Begin(0);
-
 	m_pBufferCom->Bind_Buffer();
 
 	m_pBufferCom->Render();
@@ -83,14 +70,17 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 	}
 }
 
-_bool CCell::IsIn(_fvector vPosition, _int* iNeighborIndex)
+_bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex)
 {
 	for (_uint i = 0; i < LINE_END; i++)
 	{
-		_vector vDir = vPosition - XMLoadFloat3(&m_pPoints[i]);
+		_vector vStartPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pPoints[i]), matWorld);
+		_vector vNormal = XMVector3TransformNormal(XMLoadFloat3(&m_vLineNormal[i]), matWorld);
+
+		_vector vDir = vPosition - vStartPoint;
 
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir),
-			XMVector3Normalize(XMLoadFloat3(&m_vLineNormal[i])))))
+			XMVector3Normalize(vNormal))))
 		{
 			*iNeighborIndex = m_iNeighborIndex[i];
 			return false;

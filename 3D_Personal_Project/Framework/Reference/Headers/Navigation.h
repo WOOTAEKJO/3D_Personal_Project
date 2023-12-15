@@ -16,6 +16,7 @@ public:
 	virtual	HRESULT	Render();
 
 public:
+	void	Update(_float4x4 matWorld);
 	_bool	IsMove(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints);
 
@@ -28,7 +29,10 @@ private:
 	vector<class CCell*>	m_vecCell;
 
 private:
-	_uint					m_iCurrentCellIndex = { 0 };
+	_int					m_iCurrentCellIndex = { -1 };
+
+private:
+	static _float4x4		m_matWorld;
 
 private:
 	HRESULT	Init_Neighbor();

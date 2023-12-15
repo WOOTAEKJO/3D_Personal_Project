@@ -26,7 +26,6 @@ HRESULT CVIBuffer_DTerrain::Initialize(void* pArg)
 			return E_FAIL;
 	}
 	
-
 	return S_OK;
 }
 

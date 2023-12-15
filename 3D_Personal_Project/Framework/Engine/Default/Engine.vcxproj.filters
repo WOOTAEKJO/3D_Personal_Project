@@ -558,4 +558,9 @@
       <Filter>99.Defines\00. DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNavigation.hlsl">
+      <Filter>98. ShaderFiles</Filter>
+    </FxCompile>
+  </ItemGroup>
 </Project>

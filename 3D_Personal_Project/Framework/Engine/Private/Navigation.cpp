@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "Cell.h"
 
+_float4x4 CNavigation::m_matWorld = {};
+
 CNavigation::CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
@@ -53,24 +55,57 @@ HRESULT CNavigation::Render()
 {
 
 #ifdef _DEBUG
+
 	_float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
 	_float4x4 matProj = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ);
 
-	for (auto& iter : m_vecCell)
+	_float4 vColor = {};
+
+	if (m_iCurrentCellIndex == -1)
+		vColor = { 0.f,1.f,0.f,1.f };
+	else {
+		vColor = { 1.f,0.f,0.f,1.f };
+		m_matWorld.m[3][1] += 0.1f;
+	}
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorld)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &matView)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &matProj)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(0);
+
+	if (m_iCurrentCellIndex != -1)
 	{
-		if (iter != nullptr)
-			iter->Render(m_pShaderCom, matView, matProj);
+		m_vecCell[m_iCurrentCellIndex]->Render();
+
+	}
+	else {
+		for (auto& iter : m_vecCell)
+		{
+			if (iter != nullptr)
+				iter->Render();
+		}
 	}
 #endif
 
 	return S_OK;
 }
 
+void CNavigation::Update(_float4x4 matWorld)
+{
+	m_matWorld = matWorld;
+}
+
 _bool CNavigation::IsMove(_fvector vPosition)
 {
 	_int iNeighborIndex = -1;
 
-	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition, &iNeighborIndex))
+	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition,XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
 		return true;
 	else 
 	{
@@ -82,7 +117,7 @@ _bool CNavigation::IsMove(_fvector vPosition)
 
 			while (true)
 			{
-				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, &iNeighborIndex))
+				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
