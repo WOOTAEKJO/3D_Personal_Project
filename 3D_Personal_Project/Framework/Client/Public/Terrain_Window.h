@@ -66,6 +66,7 @@ private: /* For. Navigation*/
 	ID3D11InputLayout*						m_pInputLayout = { nullptr };
 
 	_uint									m_iCurrentSphereIndex = { 0 };
+	_uint									m_iCurrentCellIndex = { 0 };
 
 	_int									m_iCalculate[3];
 private:
@@ -81,6 +82,7 @@ private:
 	void	Navigation_Update();
 
 	void	Calculate_Cell();
+	void	Picked_Navigation();
 
 	_bool	Set_NaviPickPos();
 	void	Reset_NaviPickPos();
@@ -89,6 +91,7 @@ private:
 	void	Sphere_Render();
 
 	void	All_Delete_Cell();
+	void	Selected_Delete_Cell();
 
 public:
 	static	CTerrain_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);

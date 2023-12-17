@@ -28,8 +28,12 @@ public:
 	void	Update(_float4x4 matWorld);
 	_bool	IsMove(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex);
+	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Delete_Cell(_uint iCellIndex);
+
+public:
+	_bool	Compute_MousePos(_uint* iCellIndex);
 	
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);
@@ -37,8 +41,7 @@ public:
 
 public:
 	vector<class CCell*> Get_Navigation_Cells();
-	void	Update_Buffer(_uint iCellIndex,FLOAT3X3 vPositions);
-
+	
 #ifdef _DEBUG
 private:
 	class CShader*	m_pShaderCom = { nullptr };

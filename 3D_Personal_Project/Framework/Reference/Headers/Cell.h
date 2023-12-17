@@ -22,6 +22,7 @@ public:
 
 public:
 	_uint	Get_Index() { return m_iIndex; }
+	void	Set_Index(_uint iIndex) { m_iIndex = iIndex; }
 	_float3	Get_Point(POINTS eType) {
 		return m_pPoints[eType];
 	}

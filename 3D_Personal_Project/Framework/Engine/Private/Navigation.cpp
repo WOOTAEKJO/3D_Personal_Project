@@ -175,6 +175,37 @@ void CNavigation::Delete_Cell(_uint iCellIndex)
 
 	Safe_Release(m_vecCell[iCellIndex]);
 	m_vecCell.erase(m_vecCell.begin() + iCellIndex);
+
+	for (auto& iter : m_vecCell)
+	{
+		if (iter->Get_Index() > iCellIndex)
+		{
+			iter->Set_Index(iter->Get_Index() - 1);
+		}
+	}
+
+	if (FAILED(Init_Neighbor()))
+		return;
+}
+
+_bool CNavigation::Compute_MousePos(_uint* iCellIndex)
+{
+	_float fDist = 0.f;
+	_float3 vPos = {};
+
+	for (auto& iter : m_vecCell)
+	{
+		if(	m_pGameInstance->Intersect(&vPos, &fDist,
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_A)),
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_B)),
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_C)), XMLoadFloat4x4(&m_matWorld)))
+		{
+			*iCellIndex = iter->Get_Index();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 HRESULT CNavigation::Save_Navigation(const _char* strFilePath)

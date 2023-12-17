@@ -117,15 +117,10 @@ void CTerrain_Window::Demo_Picked()
 
 		if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
-			for (size_t i = 0; i < m_vecSphere.size(); i++)
-			{
-				_float fDist = 0.f;
 
-				if (m_pGameInstance->Intersect_Sphere(m_vecSphere[i], &fDist))
-				{
-					m_iCurrentSphereIndex = i;
-				}
-			}
+			Picked_Navigation();
+
+			
 		}
 
 		Fix_Navigation();
@@ -235,7 +230,7 @@ void CTerrain_Window::HeightMap()
 void CTerrain_Window::Navigation()
 {
 	ImVec2 vSize = ImVec2(250, 100);
-	ImGui::BeginListBox("Points", vSize);
+	ImGui::BeginListBox("Sphere", vSize);
 	_uint iSize = m_vecSphere.size();
 	for (_uint i = 0; i < iSize; i++)
 	{
@@ -246,9 +241,22 @@ void CTerrain_Window::Navigation()
 	}
 	ImGui::EndListBox();
 
-	ImGui::RadioButton("Sphere", &m_iCurrentNaviModeRadioButton, 0);
+	ImGui::BeginListBox("Cell", vSize);
+	iSize = m_vecCell.size();
+	for (_uint i = 0; i < iSize; i++)
+	{
+		string str = to_string(i);
+		if (ImGui::Selectable(str.c_str(), i == m_iCurrentCellIndex)) {
+			m_iCurrentCellIndex = i;
+		}
+	}
+	ImGui::EndListBox();
+
+	ImGui::RadioButton("None", &m_iCurrentNaviModeRadioButton, 0);
 	ImGui::SameLine();
-	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 1);
+	ImGui::RadioButton("Sphere", &m_iCurrentNaviModeRadioButton, 1);
+	ImGui::SameLine();
+	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 2);
 
 	if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
 
@@ -258,6 +266,13 @@ void CTerrain_Window::Navigation()
 	if (ImGui::Button("All_Delete"))
 	{
 		All_Delete_Cell();
+	}
+
+	if (m_iCurrentNaviModeRadioButton == 2) {
+		if (ImGui::Button("Selected_Delete"))
+		{
+			Selected_Delete_Cell();
+		}
 	}
 
 	Sphere_Render();
@@ -411,6 +426,8 @@ void CTerrain_Window::Fix_Navigation()
 	switch (m_iCurrentNaviModeRadioButton)
 	{
 	case 0:
+		break;
+	case 1:
 
 		for (auto& iter : m_vecCell)
 		{
@@ -428,7 +445,36 @@ void CTerrain_Window::Fix_Navigation()
 		}
 
 		break;
+	case 2:
+		break;
+	}
+}
+
+void CTerrain_Window::Picked_Navigation()
+{
+	switch (m_iCurrentNaviModeRadioButton)
+	{
+	case 0:
+		break;
 	case 1:
+		for (size_t i = 0; i < m_vecSphere.size(); i++)
+		{
+			_float fDist = 0.f;
+
+			if (m_pGameInstance->Intersect_Sphere(m_vecSphere[i], &fDist))
+			{
+				m_iCurrentSphereIndex = i;
+			}
+		}
+		break;
+	case 2:
+	{
+		_uint iCellIndex = 0;
+		if (m_pTerrain->Picked_Cell(&iCellIndex))
+		{
+			m_iCurrentCellIndex = iCellIndex;
+		}
+	}
 		break;
 	}
 }
@@ -464,6 +510,60 @@ void CTerrain_Window::Terrain_Update()
 	tTerrainDemoValue.bWireFrame = m_bWireFrame;
 
 	m_pTerrain->Set_Control_Variable(&tTerrainDemoValue);
+}
+
+void CTerrain_Window::Selected_Delete_Cell()
+{
+	if (m_iCurrentCellIndex >= m_vecCell.size())
+		return;
+
+	m_pTerrain->Selected_Delete_Cell(m_iCurrentCellIndex);
+
+	NAVIDEMO_DESC SphereIndex[3] = {};
+
+	SphereIndex[0].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[0];
+	SphereIndex[1].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[1];
+	SphereIndex[2].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[2];
+
+	m_vecCell.erase(m_vecCell.begin() + m_iCurrentCellIndex);
+
+	for (auto& iter : m_vecCell)
+	{
+		if (iter.iCellIndex > m_iCurrentCellIndex)
+		{
+			iter.iCellIndex -= 1;
+		}
+
+		for (_uint i = 0; i < 3; i++)
+		{
+			if (iter.iSphereIndex[i] == SphereIndex[0].iSphereIndex)
+				SphereIndex[0].bCheck = true;
+			if (iter.iSphereIndex[i] == SphereIndex[1].iSphereIndex)
+				SphereIndex[1].bCheck = true;
+			if (iter.iSphereIndex[i] == SphereIndex[2].iSphereIndex)
+				SphereIndex[2].bCheck = true;
+		}
+	}
+
+	for (_uint i = 0; i < 3; i++)
+	{
+		if (!SphereIndex[i].bCheck)
+		{
+			Safe_Delete(m_vecSphere[SphereIndex[i].iSphereIndex]);
+			m_vecSphere.erase(m_vecSphere.begin() + SphereIndex[i].iSphereIndex);
+
+			for (auto& iter : m_vecCell)
+			{
+				for (_uint j = 0; j < 3; j++)
+				{
+					if (iter.iSphereIndex[j] > SphereIndex[i].iSphereIndex)
+					{
+						iter.iSphereIndex[j] -= 1;
+					}
+				}
+			}
+		}
+	}
 }
 
 CTerrain_Window* CTerrain_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

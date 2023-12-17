@@ -51,6 +51,9 @@ public:
 	HRESULT	Load_Navigation(const _char* strPath);
 	void	Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
+	void	Selected_Delete_Cell(_uint iCellIndex);
+
+	_bool	Picked_Cell(_uint* iCellIndex);
 
 	vector<CCell*>	Get_Navigation_Cells();
 

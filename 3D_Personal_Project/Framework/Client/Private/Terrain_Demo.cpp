@@ -298,6 +298,22 @@ void CTerrain_Demo::All_Delete_Cell()
 	m_pNavigationCom->All_Delete_Cell();
 }
 
+void CTerrain_Demo::Selected_Delete_Cell(_uint iCellIndex)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Delete_Cell(iCellIndex);
+}
+
+_bool CTerrain_Demo::Picked_Cell(_uint* iCellIndex)
+{
+	if (m_pNavigationCom == nullptr)
+		return false;
+
+	return m_pNavigationCom->Compute_MousePos(iCellIndex);
+}
+
 vector<CCell*> CTerrain_Demo::Get_Navigation_Cells()
 {
 	return m_pNavigationCom->Get_Navigation_Cells();
