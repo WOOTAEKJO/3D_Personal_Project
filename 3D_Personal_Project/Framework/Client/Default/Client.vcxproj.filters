@@ -112,6 +112,9 @@
     <Filter Include="97. ImGui\ImGuiFileDialog">
       <UniqueIdentifier>{5ddcb7e7-5639-4bd2-b3c5-fe5a992e26d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03. Plateform">
+      <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Plateform.h">
+      <Filter>02.GameObjects\03. Plateform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -346,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform.cpp">
+      <Filter>02.GameObjects\03. Plateform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

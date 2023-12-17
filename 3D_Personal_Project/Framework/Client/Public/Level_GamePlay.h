@@ -17,6 +17,7 @@ public:
 	virtual HRESULT Render() override;
 public:
 	HRESULT	Ready_Layer_BackGround(const wstring& strLayerTag);
+	HRESULT	Ready_Layer_Plateform(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Object(const wstring& strLayerTag);
 	
