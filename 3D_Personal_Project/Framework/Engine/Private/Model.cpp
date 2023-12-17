@@ -98,9 +98,10 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 
 	if(m_bChnageAnim){
 		
-		vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
+		//vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
+		vector<KEYFRAME> vecPrevKeyFrame = m_vecAnimation[m_iCurrentAnimationIndex]->Get_PrevKeyFrame();
 
-		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecCurChannel))
+		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecPrevKeyFrame))
 		{
 			m_bChnageAnim = false;
 			m_iCurrentAnimationIndex = m_iNextAnimationIndex;
