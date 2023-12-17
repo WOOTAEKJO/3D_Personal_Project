@@ -31,17 +31,12 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 void CTerrain::Priority_Tick(_float fTimeDelta)
 {
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Float4x4());
 }
 
 void CTerrain::Tick(_float fTimeDelta)
 {
-	/*if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-	{
-		m_pGameInstance->Update_Mouse();
-		_float3	vMousePos;
-		m_pVIBufferCom->Compute_MousePos(&vMousePos, m_pTransformCom->Get_WorldMatrix_Matrix());
-		m_pVIBufferCom->Update_Buffer(XMLoadFloat3(&vMousePos), 10.f, 10.f, 0.f);
-	}*/
+	
 }
 
 void CTerrain::Late_Tick(_float fTimeDelta)
@@ -60,6 +55,8 @@ HRESULT CTerrain::Render()
 	m_pVIBufferCom->Bind_Buffer();
 
 	m_pVIBufferCom->Render();
+
+	m_pNavigationCom->Render();
 
 	return S_OK;
 }
@@ -107,6 +104,11 @@ HRESULT CTerrain::Ready_Component()
 	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEX_TERRAIN_MASK_TAG,
 		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
 		return E_FAIL;
+
+	/* For.Com_Navigation*/
+	if (FAILED(Add_Component(LEVEL_GAMEPLAY, COM_NAVIGATION_TAG,
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
+		return E_FAIL;
 	
 
 	return S_OK;
@@ -147,6 +149,7 @@ void CTerrain::Free()
 		Safe_Release(m_pTextureCom[i]);
 	}
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);
 }

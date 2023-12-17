@@ -18,6 +18,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Plateform(TEXT("Plateform"))))
+		return E_FAIL;
+	
 	if (FAILED(Ready_Layer_Camera(TEXT("Camera"))))
 		return E_FAIL;
 
@@ -43,6 +46,29 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_TERRAIN_TAG)))
 		return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
+{
+
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(JSON_STAGE1_PATH, jLoad)))
+		return E_FAIL;
+
+	for (auto& iter : jLoad["Demo"])
+	{
+		CGameObject* pObject_Demo = nullptr;
+
+		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TAG,
+			nullptr, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+			return E_FAIL;
+
+		pObject_Demo->Load_FromJson(iter);
+
+	}
+
 	return S_OK;
 }
 
@@ -80,10 +106,12 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 
 	CAnimMesh_Demo::ANIMDEMOVALUE AnimMeshDemoValue;
 
-	AnimMeshDemoValue.strModelTag = ANIMMODEL_FIONA_TAG;
+	AnimMeshDemoValue.strModelTag = ANIMMODEL_JACK_TAG;
 	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
+	AnimMeshDemoValue.fRotationPerSec = XMConvertToRadians(90.f);
+	AnimMeshDemoValue.fSpeedPerSec = 3.f;
 
-	for (_uint i = 0; i < 2; i++) {
+	for (_uint i = 0; i < 20; i++) {
 
 		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_ANIMMESH_DEMO_TAG,
 			&AnimMeshDemoValue)))

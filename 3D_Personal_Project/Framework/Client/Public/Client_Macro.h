@@ -9,6 +9,12 @@
 
 #pragma endregion	
 
+#pragma region 제이슨 파일 주소
+
+#define	JSON_STAGE1_PATH			"../Bin/Data/Object/Stage1.json"
+
+#pragma endregion
+
 #pragma region 버퍼
 
 #define BUFFER_RECT_TAG				TEXT("Prototype_Component_VIBuffer_Rect")
@@ -80,8 +86,9 @@
 #define COM_STATEMACHINE_TAG	TEXT("Prototype_Component_StateMachine")
 #define COM_AI_TAG				TEXT("Prototype_Component_AI")
 
-#define	COM_NAVIGATION_TAG		TEXT("Prototype_Component_Navigation")
-#define COM_NAVOGATION_PAHT		("")
+#define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
+#define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navigation")
+#define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navi.bin"
 
 #pragma endregion
 
@@ -116,5 +123,7 @@
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
 
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
+
+#define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 
 #pragma endregion

@@ -196,6 +196,9 @@
     <Filter Include="99.Defines\00. DebugDraw">
       <UniqueIdentifier>{6e2198dd-f960-4d93-b0c3-2b4d494a257d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell">
+      <UniqueIdentifier>{74f5e622-b60c-4726-83db-08ce96a59ae4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -387,6 +390,9 @@
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>99.Defines\00. DebugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_DCell.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -557,5 +563,13 @@
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>99.Defines\00. DebugDraw</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_DCell.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNavigation.hlsl">
+      <Filter>98. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

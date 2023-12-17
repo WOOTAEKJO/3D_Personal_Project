@@ -196,7 +196,6 @@
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
-    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -212,6 +211,7 @@
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
+    <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
     <ClInclude Include="..\Public\Terrain_Window.h" />
@@ -235,7 +235,6 @@
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
-    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
@@ -251,6 +250,7 @@
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
+    <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain_Window.cpp" />
@@ -278,6 +278,9 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Bin\ShaderFiles\Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

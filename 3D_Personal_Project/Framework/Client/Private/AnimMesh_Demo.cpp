@@ -35,6 +35,7 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	m_pModelCom->Set_AnimationIndex(rand() % 20);
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(rand() % 20, 0.f, rand() % 20, 1.f));
+	//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
 
 	return S_OK;
 }
@@ -48,9 +49,10 @@ void CAnimMesh_Demo::Tick(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
+		//m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
 		m_pModelCom->Set_AnimationIndex(4);
 	}
-	else if (m_pGameInstance->Key_Pressing(DIK_Q))
+	else if (m_pGameInstance->Key_Down(DIK_Q))
 	{
 		m_pModelCom->Set_AnimationIndex(0);
 	}
@@ -58,9 +60,19 @@ void CAnimMesh_Demo::Tick(_float fTimeDelta)
 	{
 		m_pModelCom->Set_AnimationIndex(17);
 	}
-	else if(m_pGameInstance->Key_Down(DIK_DOWN)){
+	else if(m_pGameInstance->Key_Pressing(DIK_DOWN)){
 
+		//m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
 		m_pModelCom->Set_AnimationIndex(3);
+	}
+
+	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+	}
+	else if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	{
+		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
 	}
 
 	m_pModelCom->Play_Animation(fTimeDelta,true);
@@ -93,6 +105,10 @@ HRESULT CAnimMesh_Demo::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+#ifdef _DEBUG
+	m_pNavigationCom->Render();
+#endif
 
 	return S_OK;
 }
@@ -192,6 +208,15 @@ HRESULT CAnimMesh_Demo::Ready_Component()
 		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
+	/* For.Com_Navigation*/
+
+	CNavigation::NAVIGATION_DESC NavigationDesc = {};
+	NavigationDesc.iCurrentIndex = 0;
+
+	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), COM_NAVIGATION_TAG,
+		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom),&NavigationDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -225,6 +250,7 @@ void CAnimMesh_Demo::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

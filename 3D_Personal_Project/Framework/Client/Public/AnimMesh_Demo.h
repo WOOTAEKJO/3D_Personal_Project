@@ -12,7 +12,7 @@ BEGIN(Client)
 class CAnimMesh_Demo final : public CDemo
 {
 public:
-	typedef struct tagAnimMeshDemoValue
+	typedef struct tagAnimMeshDemoValue : public CGameObject::GAMEOBJECT_DESC
 	{
 		wstring		strModelTag;
 		_float4		vPos;
@@ -45,6 +45,7 @@ public:
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
+	CNavigation* m_pNavigationCom = { nullptr };
 
 private:
 	wstring		m_strModelTag;

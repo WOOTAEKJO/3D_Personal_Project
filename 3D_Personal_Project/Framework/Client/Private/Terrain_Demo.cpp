@@ -33,6 +33,7 @@ HRESULT CTerrain_Demo::Initialize(void* pArg)
 
 void CTerrain_Demo::Priority_Tick(_float fTimeDelta)
 {
+	m_pNavigationCom->Update(m_pTransformCom->Get_WorldMatrix_Float4x4());
 }
 
 void CTerrain_Demo::Tick(_float fTimeDelta)
@@ -177,7 +178,7 @@ HRESULT CTerrain_Demo::Ready_Component()
 		return E_FAIL;
 
 	/* For.Com_Navigation*/
-	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_TAG,
+	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_DEMO_TAG,
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
 		return E_FAIL;
 
@@ -251,15 +252,71 @@ HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
 	return S_OK;
 }
 
-HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints)
+HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex)
 {
 	if (m_pNavigationCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pNavigationCom->Add_Cell(pPoints)))
+    return m_pNavigationCom->Add_Cell(pPoints, iCellIndex);
+}
+
+HRESULT CTerrain_Demo::Save_Navigation(const _char* strPath)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pNavigationCom->Save_Navigation(strPath)))
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CTerrain_Demo::Load_Navigation(const _char* strPath)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pNavigationCom->File_Load(strPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CTerrain_Demo::Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Update_Buffer(iCellIndex, vPositions);
+}
+
+void CTerrain_Demo::All_Delete_Cell()
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->All_Delete_Cell();
+}
+
+void CTerrain_Demo::Selected_Delete_Cell(_uint iCellIndex)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Delete_Cell(iCellIndex);
+}
+
+_bool CTerrain_Demo::Picked_Cell(_uint* iCellIndex)
+{
+	if (m_pNavigationCom == nullptr)
+		return false;
+
+	return m_pNavigationCom->Compute_MousePos(iCellIndex);
+}
+
+vector<CCell*> CTerrain_Demo::Get_Navigation_Cells()
+{
+	return m_pNavigationCom->Get_Navigation_Cells();
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

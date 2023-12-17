@@ -4,6 +4,10 @@
 #include "Shader.h"
 #include "Cell.h"
 
+#include "MeshData.h"
+
+_float4x4 CNavigation::m_matWorld = {};
+
 CNavigation::CNavigation(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
@@ -15,6 +19,7 @@ CNavigation::CNavigation(const CNavigation& rhs)
 #ifdef _DEBUG
 	,m_pShaderCom(rhs.m_pShaderCom)
 #endif
+	, m_eNaviType(rhs.m_eNaviType)
 {
 	for (auto& iter : m_vecCell)
 		Safe_AddRef(iter);
@@ -27,12 +32,12 @@ CNavigation::CNavigation(const CNavigation& rhs)
 
 }
 
-HRESULT CNavigation::Initialize_ProtoType(_bool bLoad,const _char* strNavigationPath)
+HRESULT CNavigation::Initialize_ProtoType(NAVITYPE eType,const _char* strNavigationPath)
 {
-	if (bLoad) {
+	m_eNaviType = eType;
+
+	if (m_eNaviType == NAVITYPE::TYPE_LOAD) {
 		File_Load(strNavigationPath);
-		if (FAILED(Init_Neighbor()))
-			return E_FAIL;
 	}
 
 #ifdef _DEBUG
@@ -46,6 +51,11 @@ HRESULT CNavigation::Initialize_ProtoType(_bool bLoad,const _char* strNavigation
 
 HRESULT CNavigation::Initialize(void* pArg)
 {
+	if (pArg != nullptr)
+	{
+		m_iCurrentCellIndex = ((NAVIGATION_DESC*)pArg)->iCurrentIndex;
+	}
+
 	return S_OK;
 }
 
@@ -53,36 +63,69 @@ HRESULT CNavigation::Render()
 {
 
 #ifdef _DEBUG
+
 	_float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
 	_float4x4 matProj = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ);
 
-	for (auto& iter : m_vecCell)
+	_float4 vColor = {};
+
+	if (m_iCurrentCellIndex == -1)
+		vColor = { 0.f,1.f,0.f,1.f };
+	else {
+		vColor = { 1.f,0.f,0.f,1.f };
+		m_matWorld.m[3][1] += 0.1f;
+	}
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorld)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &matView)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &matProj)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	m_pShaderCom->Begin(0);
+
+	if (m_iCurrentCellIndex != -1)
 	{
-		if (iter != nullptr)
-			iter->Render(m_pShaderCom, matView, matProj);
+		m_vecCell[m_iCurrentCellIndex]->Render();
+
+	}
+	else {
+		for (auto& iter : m_vecCell)
+		{
+			if (iter != nullptr)
+				iter->Render();
+		}
 	}
 #endif
 
 	return S_OK;
 }
 
+void CNavigation::Update(_float4x4 matWorld)
+{
+	m_matWorld = matWorld;
+}
+
 _bool CNavigation::IsMove(_fvector vPosition)
 {
 	_int iNeighborIndex = -1;
 
-	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition, &iNeighborIndex))
+	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition,XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
 		return true;
 	else 
 	{
 		if (iNeighborIndex != -1)
 		{
 
-			if (iNeighborIndex == -1)
-				return false;
-
 			while (true)
 			{
-				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, &iNeighborIndex))
+				if (iNeighborIndex == -1)
+					return false;
+
+				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
@@ -96,20 +139,94 @@ _bool CNavigation::IsMove(_fvector vPosition)
 	}
 }
 
-HRESULT CNavigation::Add_Cell(_float3* pPoints)
+HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex)
 {
 	FLOAT3X3 float33 = {};
 	float33.vVertex0 = pPoints[0];
 	float33.vVertex1 = pPoints[1];
 	float33.vVertex2 = pPoints[2];
 
-	CCell* pCell = CCell::Create(m_pDevice, m_pContext, float33);
+    CCell* pCell = CCell::Create(m_pDevice, m_pContext, float33,m_vecCell.size(), m_eNaviType);
 	if (pCell == nullptr)
 		return E_FAIL;
+
+	*iCellIndex = pCell->Get_Index();
 
 	m_vecCell.push_back(pCell);
 
 	if (FAILED(Init_Neighbor()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CNavigation::All_Delete_Cell()
+{
+	for (auto& iter : m_vecCell)
+		Safe_Release(iter);
+	m_vecCell.clear();
+
+}
+
+void CNavigation::Delete_Cell(_uint iCellIndex)
+{
+	if (iCellIndex >= m_vecCell.size())
+		return;
+
+	Safe_Release(m_vecCell[iCellIndex]);
+	m_vecCell.erase(m_vecCell.begin() + iCellIndex);
+
+	for (auto& iter : m_vecCell)
+	{
+		if (iter->Get_Index() > iCellIndex)
+		{
+			iter->Set_Index(iter->Get_Index() - 1);
+		}
+	}
+
+	if (FAILED(Init_Neighbor()))
+		return;
+}
+
+_bool CNavigation::Compute_MousePos(_uint* iCellIndex)
+{
+	_float fDist = 0.f;
+	_float3 vPos = {};
+
+	for (auto& iter : m_vecCell)
+	{
+		if(	m_pGameInstance->Intersect(&vPos, &fDist,
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_A)),
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_B)),
+			XMLoadFloat3(&iter->Get_Point(CCell::POINT_C)), XMLoadFloat4x4(&m_matWorld)))
+		{
+			*iCellIndex = iter->Get_Index();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
+{
+	
+	CMeshData::MESHDATADESC MeshDataDesc = {};
+
+	MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::NAVIGATION;
+	
+	for (auto& iter : m_vecCell)
+	{
+		FLOAT3X3	Float33 = {};
+
+		Float33.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
+		Float33.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
+		Float33.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
+
+		MeshDataDesc.vecNaviPoints.push_back(Float33);
+	}
+
+	if (FAILED(m_pGameInstance->Save_Data_Mesh(strFilePath, MeshDataDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -121,17 +238,20 @@ HRESULT CNavigation::Init_Neighbor()
 	{
 		for (auto& DestCell : m_vecCell)
 		{
+			if (SourCell == DestCell)
+				continue;
+
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_A), SourCell->Get_Point(CCell::POINTS::POINT_B)))
 			{
-				DestCell->Set_NeighborIndex(CCell::LINES::LINE_AB, SourCell->Get_Index());
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, DestCell->Get_Index());
 			}
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_B), SourCell->Get_Point(CCell::POINTS::POINT_C)))
 			{
-				DestCell->Set_NeighborIndex(CCell::LINES::LINE_BC, SourCell->Get_Index());
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, DestCell->Get_Index());
 			}
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_C), SourCell->Get_Point(CCell::POINTS::POINT_A)))
 			{
-				DestCell->Set_NeighborIndex(CCell::LINES::LINE_CA, SourCell->Get_Index());
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, DestCell->Get_Index());
 			}
 		}
 	}
@@ -141,36 +261,50 @@ HRESULT CNavigation::Init_Neighbor()
 
 HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 {
-	ifstream ifs;
+	
+	CMeshData::MESHDATADESC MeshDataDesc;
 
-	ifs.open(strNavigationPath);
+	CMeshData* pMeshData = CMeshData::Create(MeshDataDesc);
 
-	if (ifs.is_open())
+	if (FAILED(pMeshData->Load_Data(strNavigationPath)))
+		return E_FAIL;
+
+	if (FAILED(pMeshData->Data_Get(MeshDataDesc)))
+		return E_FAIL;
+
+	_uint iSize = MeshDataDesc.vecNaviPoints.size();
+	for (_uint i = 0; i < iSize; i++)
 	{
-		_uint iSize = 0;
-		ifs.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
-		for (_uint i = 0; i < iSize; i++)
-		{
-			FLOAT3X3 Float33;
-			ifs.read(reinterpret_cast<char*>(&Float33), sizeof(FLOAT3X3));
+		CCell* pCell = CCell::Create(m_pDevice, m_pContext, MeshDataDesc.vecNaviPoints[i],m_vecCell.size(), m_eNaviType);
+		if (pCell == nullptr)
+			return E_FAIL;
 
-			CCell* pCell = nullptr;
-			pCell = CCell::Create(m_pDevice, m_pContext, Float33);
-			if (pCell == nullptr)
-				return E_FAIL;
-
-			m_vecCell.push_back(pCell);
-		}
+		m_vecCell.push_back(pCell);
 	}
+
+	Safe_Release(pMeshData);
+
+	if (FAILED(Init_Neighbor()))
+		return E_FAIL;
 
 	return S_OK;
 }
 
-CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _bool bLoad, const _char* strNavigationPath)
+vector<CCell*> CNavigation::Get_Navigation_Cells()
+{
+	return m_vecCell;
+}
+
+void CNavigation::Update_Buffer(_uint iCellIndex,FLOAT3X3 vPositions)
+{
+	m_vecCell[iCellIndex]->Update_Buffer(vPositions);
+}
+
+CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, NAVITYPE eType, const _char* strNavigationPath)
 {
 	CNavigation* pInstance = new CNavigation(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(bLoad,strNavigationPath))) {
+	if (FAILED(pInstance->Initialize_ProtoType(eType,strNavigationPath))) {
 		MSG_BOX("Failed to Created : CNavigation");
 		Safe_Release(pInstance);
 	}

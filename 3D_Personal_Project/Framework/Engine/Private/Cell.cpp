@@ -1,6 +1,8 @@
 #include "..\Public\Cell.h"
 #include "VIBuffer_Cell.h"
+#include "VIBuffer_DCell.h"
 #include "Shader.h"
+#include "Navigation.h"
 
 CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -13,9 +15,13 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 #endif
 }
 
-HRESULT CCell::Initialize(FLOAT3X3 pPoints)
+HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
 {
 	memcpy(&m_pPoints, &pPoints, sizeof(_float3)*3);
+
+	m_iIndex = iIndex;
+
+	m_eNaviType = eType;
 
 	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
 	XMStoreFloat3(&m_vLineNormal[LINE_AB], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
@@ -25,33 +31,40 @@ HRESULT CCell::Initialize(FLOAT3X3 pPoints)
 	XMStoreFloat3(&m_vLineNormal[LINE_CA], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
 
 #ifdef _DEBUG
-	m_pBufferCom = CVIBuffer_Cell::Create(m_pDevice,m_pContext, m_pPoints);
-	if (m_pBufferCom == nullptr)
-		return E_FAIL;
+
+	if (m_eNaviType == CNavigation::NAVITYPE::TYPE_LOAD) {
+
+		m_pBufferCom = CVIBuffer_Cell::Create(m_pDevice, m_pContext, m_pPoints);
+		if (m_pBufferCom == nullptr)
+			return E_FAIL;
+	}
+	else if (m_eNaviType == CNavigation::NAVITYPE::TYPE_DEMO)
+	{
+		m_pDBufferCom = CVIBuffer_DCell::Create(m_pDevice, m_pContext, m_pPoints);
+		if (m_pDBufferCom == nullptr)
+			return E_FAIL;
+	}
 
 #endif
 
 	return S_OK;
 }
 
-HRESULT CCell::Render(CShader* pShader, _float4x4 matView, _float4x4 matProj)
+HRESULT CCell::Render()
 {
 
-	_float4x4		matWorld;
-	XMStoreFloat4x4(&matWorld, XMMatrixIdentity());
+	if(m_eNaviType== CNavigation::NAVITYPE::TYPE_LOAD)
+	{
+		m_pBufferCom->Bind_Buffer();
 
-	if (FAILED(pShader->Bind_Matrix("g_matWorld", &matWorld)))
-		return E_FAIL;
-	if (FAILED(pShader->Bind_Matrix("g_matView", &matView)))
-		return E_FAIL;
-	if (FAILED(pShader->Bind_Matrix("g_matProj", &matProj)))
-		return E_FAIL;
-;
-	pShader->Begin(0);
+		m_pBufferCom->Render();
+	}
+	else if (m_eNaviType == CNavigation::NAVITYPE::TYPE_DEMO)
+	{
+		m_pDBufferCom->Bind_Buffer();
 
-	m_pBufferCom->Bind_Buffer();
-
-	m_pBufferCom->Render();
+		m_pDBufferCom->Render();
+	}
 
 	return S_OK;
 }
@@ -68,9 +81,9 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 
 	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&SourPoint)))
 	{
-		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&DestPoint)))
-			return true;
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
+			return true;
+		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&DestPoint)))
 			return true;
 	}
 
@@ -81,16 +94,21 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&DestPoint)))
 			return true;
 	}
+
+	return false;
 }
 
-_bool CCell::IsIn(_fvector vPosition, _int* iNeighborIndex)
+_bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex)
 {
 	for (_uint i = 0; i < LINE_END; i++)
 	{
-		_vector vDir = vPosition - XMLoadFloat3(&m_pPoints[i]);
+		_vector vStartPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pPoints[i]), matWorld);
+		_vector vNormal = XMVector3TransformNormal(XMLoadFloat3(&m_vLineNormal[i]), matWorld);
+
+		_vector vDir = vPosition - vStartPoint;
 
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir),
-			XMVector3Normalize(XMLoadFloat3(&m_vLineNormal[i])))))
+			XMVector3Normalize(vNormal))))
 		{
 			*iNeighborIndex = m_iNeighborIndex[i];
 			return false;
@@ -101,11 +119,23 @@ _bool CCell::IsIn(_fvector vPosition, _int* iNeighborIndex)
 	return true;
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints)
+void CCell::Update_Buffer(FLOAT3X3 vPositions)
+{
+	if (m_pDBufferCom == nullptr)
+		return;
+
+	m_pPoints[0] = vPositions.vVertex0;
+	m_pPoints[1] = vPositions.vVertex1;
+	m_pPoints[2] = vPositions.vVertex2;
+
+	m_pDBufferCom->Update_Buffer(vPositions);
+}
+
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
 {
 	CCell* pInstance = new CCell(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize(pPoints))) {
+    if (FAILED(pInstance->Initialize(pPoints, iIndex, eType))) {
 		MSG_BOX("Failed to Created : CCell");
 		Safe_Release(pInstance);
 	}
@@ -119,6 +149,7 @@ void CCell::Free()
 
 #ifdef _DEBUG
 	Safe_Release(m_pBufferCom);
+	Safe_Release(m_pDBufferCom);
 
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);

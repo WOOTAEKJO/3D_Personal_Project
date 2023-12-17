@@ -165,6 +165,13 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 			}
 
 			break;
+		case Engine::CMeshData::NAVIGATION:
+
+			_uint iSize = m_vecNaviPoints.size();
+			fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
+			fout.write(reinterpret_cast<const char*>(m_vecNaviPoints.data()), iSize * sizeof(FLOAT3X3));
+
+			break;
 		}
 	}
 	else
@@ -382,6 +389,14 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 				m_vecIndices.push_back(iIndex);
 			}
 			break;
+		case Engine::CMeshData::NAVIGATION:
+
+			_uint iSize = {};
+			fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+			m_vecNaviPoints.resize(iSize);
+			fIn.read(reinterpret_cast<char*>(m_vecNaviPoints.data()), iSize * sizeof(FLOAT3X3));
+
+			break;
 		}
 	}
 	else
@@ -425,6 +440,9 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 		MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
 		MeshDataDesc.vecIndices = m_vecIndices;
 		break;
+	case Engine::CMeshData::NAVIGATION:
+		MeshDataDesc.vecNaviPoints = m_vecNaviPoints;
+		break;
 	}
 
 	return S_OK;
@@ -463,6 +481,9 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 		m_iNumVertices = MeshDataDesc.iNumVertices;
 		m_iNumFaces = MeshDataDesc.iNumFaces;
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
+		break;
+	case Engine::CMeshData::NAVIGATION:
+		m_vecNaviPoints = MeshDataDesc.vecNaviPoints;
 		break;
 	}
 

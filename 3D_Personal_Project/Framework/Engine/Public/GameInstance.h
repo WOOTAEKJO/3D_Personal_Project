@@ -118,13 +118,13 @@ public: /* For.Component_Manager*/
 	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag,const string& strNavigationFilePath)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CNavigation::Create(m_pDevice, m_pContext, true, strNavigationFilePath.c_str()));
+			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_LOAD, strNavigationFilePath.c_str()));
 	}
 
 	HRESULT	Add_Navigation_ProtoType_Demo(const wstring& strProtoTypeTag)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CNavigation::Create(m_pDevice, m_pContext, false, nullptr));
+			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_DEMO, nullptr));
 	}
 
 	template <typename T>
