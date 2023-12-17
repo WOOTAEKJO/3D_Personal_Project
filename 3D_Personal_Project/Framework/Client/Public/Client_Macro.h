@@ -65,17 +65,101 @@
 
 #pragma region ÀÏ¹Ý¸ðµ¨
 
+#pragma region ÀÏ¹Ý¸ðµ¨
+
 #define	MODEL_PINETREE_TAG			TEXT("Prototype_Component_Model_PineTree")
 #define	MODEL_PINETREE_PATH			"../Bin/Resources/Models/NonAnimModel/PineTree/PineTree.bin"
 
-#define	MODEL_SM_REED1_TAG			TEXT("Prototype_Component_Model_SM_Reed1")
-#define	MODEL_SM_REED1_PATH			"../Bin/Resources/Models/NonAnimModel/SM_Reed1/SM_Reed1.fbx"
+#define	MODEL_SM_REED1_TAG			TEXT("Prototype_Component_Model_SMReed1")
+#define	MODEL_SM_REED1_PATH			"../Bin/Resources/Models/NonAnimModel/SMReed1/SMReed1.bin"
 
-#define	MODEL_SM_REED2_TAG			TEXT("Prototype_Component_Model_SM_Reed2")
-#define	MODEL_SM_REED2_PATH			"../Bin/Resources/Models/NonAnimModel/SM_Reed2/SM_Reed2.fbx"
+#define	MODEL_SM_REED2_TAG			TEXT("Prototype_Component_Model_SMReed2")
+#define	MODEL_SM_REED2_PATH			"../Bin/Resources/Models/NonAnimModel/SMReed2/SMReed2.bin"
 
-#define	MODEL_DEAD_TREE2_TAG		TEXT("Prototype_Component_Model_DeadTree2")
-#define	MODEL_DEAD_TREE2_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree2/DeadTree2.fbx"
+#define	MODEL_DEADTREE2_TAG			TEXT("Prototype_Component_Model_DeadTree2")
+#define	MODEL_DEADTREE2_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree2/DeadTree2.bin"
+
+#define	MODEL_DEADTREE3_TAG			TEXT("Prototype_Component_Model_DeadTree3")
+#define	MODEL_DEADTREE3_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree3/DeadTree3.bin"
+
+#define	MODEL_DEADTREE4_TAG			TEXT("Prototype_Component_Model_DeadTree4")
+#define	MODEL_DEADTREE4_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree4/DeadTree4.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree01aTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree01aTrunck/DeadTree01aTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree01bTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree01bTrunck/DeadTree01bTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree01cTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree01cTrunck/DeadTree01cTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree02aTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree02aTrunck/DeadTree02aTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree02bTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree02bTrunck/DeadTree02bTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree02cTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree02cTrunck/DeadTree02cTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree03aTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree03aTrunck/DeadTree03aTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree03bTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree03bTrunck/DeadTree03bTrunck.bin"
+
+#define	MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_TAG			TEXT("Prototype_Component_Model_DeadTree03cTrunck")
+#define	MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/DeadTree03cTrunck/DeadTree03cTrunck.bin"
+
+#define	MODEL_FORESTTRUNK_TAG			TEXT("Prototype_Component_Model_ForestTrunk")
+#define	MODEL_FORESTTRUNK_PATH		"../Bin/Resources/Models/NonAnimModel/ForestTrunk/ForestTrunk.bin"
+
+#define	MODEL_SM_CPINE1_TAG			TEXT("Prototype_Component_Model_SMCpine1")
+#define	MODEL_SM_CPINE1_PATH		"../Bin/Resources/Models/NonAnimModel/SMCpine1/SMCpine1.bin"
+
+#define	MODEL_SM_CPINE2_TAG			TEXT("Prototype_Component_Model_SMCpine2")
+#define	MODEL_SM_CPINE2_PATH		"../Bin/Resources/Models/NonAnimModel/SMCpine2/SMCpine2.bin"
+
+#define	MODEL_SM_CPINE3_TAG			TEXT("Prototype_Component_Model_SMCpine3")
+#define	MODEL_SM_CPINE3_PATH		"../Bin/Resources/Models/NonAnimModel/SMCpine3/SMCpine3.bin"
+
+#define	MODEL_SM_MAPLE1_TAG			TEXT("Prototype_Component_Model_SMMaple1")
+#define	MODEL_SM_MAPLE1_PATH		"../Bin/Resources/Models/NonAnimModel/SMMaple1/SMMaple1.bin"
+
+#define	MODEL_SM_OWLTREE_TAG			TEXT("Prototype_Component_Model_SMOwlTree")
+#define	MODEL_SM_OWLTREE_PATH		"../Bin/Resources/Models/NonAnimModel/SMOwlTree/SMOwlTree.bin"
+
+#define	MODEL_SM_PINE1_TAG			TEXT("Prototype_Component_Model_SMPine1")
+#define	MODEL_SM_PINE1_PATH		"../Bin/Resources/Models/NonAnimModel/SMPine1/SMPine1.bin"
+
+#define	MODEL_SM_ROOTS_TAG			TEXT("Prototype_Component_Model_SMRoots")
+#define	MODEL_SM_ROOTS_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots/SMRoots.bin"
+
+#define	MODEL_SM_ROOTS1_TAG			TEXT("Prototype_Component_Model_SMRoots1")
+#define	MODEL_SM_ROOTS1_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots1/SMRoots1.bin"
+
+#define	MODEL_SM_ROOTS2_TAG			TEXT("Prototype_Component_Model_SMRoots2")
+#define	MODEL_SM_ROOTS2_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots2/SMRoots2.bin"
+
+#define	MODEL_SM_ROOTS3_TAG			TEXT("Prototype_Component_Model_SMRoots3")
+#define	MODEL_SM_ROOTS3_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots3/SMRoots3.bin"
+
+#define	MODEL_SM_ROOTS4_TAG			TEXT("Prototype_Component_Model_SMRoots4")
+#define	MODEL_SM_ROOTS4_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots4/SMRoots4.bin"
+
+#define	MODEL_SM_ROOTS5_TAG			TEXT("Prototype_Component_Model_SMRoots5")
+#define	MODEL_SM_ROOTS5_PATH		"../Bin/Resources/Models/NonAnimModel/SMRoots5/SMRoots5.bin"
+
+#define	MODEL_TREE_PLATEFORME01X01_TAG			TEXT("Prototype_Component_Model_TreePlateforme01x01")
+#define	MODEL_TREE_PLATEFORME01X01_PATH		"../Bin/Resources/Models/NonAnimModel/TreePlateforme01x01/TreePlateforme01x01.bin"
+
+#define	MODEL_TRUNKBREAK_TAG			TEXT("Prototype_Component_Model_TrunckBreak")
+#define	MODEL_TRUNKBREAK_PATH		"../Bin/Resources/Models/NonAnimModel/TrunckBreak/TrunckBreak.bin"
+
+#define	MODEL_WOODSTOMP_TAG			TEXT("Prototype_Component_Model_WoodStomp")
+#define	MODEL_WOODSTOMP_PATH		"../Bin/Resources/Models/NonAnimModel/WoodStomp/WoodStomp.bin"
+#pragma endregion
 
 #pragma endregion
 

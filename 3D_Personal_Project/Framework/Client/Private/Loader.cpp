@@ -169,11 +169,56 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	//if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_BAT_TAG, ANIMMODEL_BAT_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.0001f, 0.0001f, 0.0001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, ANIMMODEL_JACK_PATH, matPivot))) return E_FAIL;
+
+#pragma region FOREST
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEAD_TREE2_TAG, MODEL_DEAD_TREE2_PATH, matPivot))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE2_TAG, MODEL_DEADTREE2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE3_TAG, MODEL_DEADTREE3_PATH, matPivot))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE4_TAG, MODEL_DEADTREE4_PATH, matPivot))) return E_FAIL;
+	
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_FORESTTRUNK_TAG, MODEL_FORESTTRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE1_TAG, MODEL_SM_CPINE1_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE2_TAG, MODEL_SM_CPINE2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE3_TAG, MODEL_SM_CPINE3_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_MAPLE1_TAG, MODEL_SM_MAPLE1_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_OWLTREE_TAG, MODEL_SM_OWLTREE_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_PINE1_TAG, MODEL_SM_PINE1_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS_TAG, MODEL_SM_ROOTS_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS1_TAG, MODEL_SM_ROOTS1_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS2_TAG, MODEL_SM_ROOTS2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS3_TAG, MODEL_SM_ROOTS3_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS4_TAG, MODEL_SM_ROOTS4_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS5_TAG, MODEL_SM_ROOTS5_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_TREE_PLATEFORME01X01_TAG, MODEL_TREE_PLATEFORME01X01_PATH, matPivot))) return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_TRUNKBREAK_TAG, MODEL_TRUNKBREAK_PATH, matPivot))) return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WOODSTOMP_TAG, MODEL_WOODSTOMP_PATH, matPivot))) return E_FAIL;
+
+
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION_TAG, COM_NAVOGATION_PAHT))) return E_FAIL;
@@ -214,11 +259,56 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	_matrix	matPivot;
 
+#pragma region FOREST
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, MODEL_SM_REED2_PATH, matPivot))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEAD_TREE2_TAG, MODEL_DEAD_TREE2_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE2_TAG, MODEL_DEADTREE2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE3_TAG, MODEL_DEADTREE3_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREE4_TAG, MODEL_DEADTREE4_PATH, matPivot))) return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_TAG, MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_FORESTTRUNK_TAG, MODEL_FORESTTRUNK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE1_TAG, MODEL_SM_CPINE1_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE2_TAG, MODEL_SM_CPINE2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_CPINE3_TAG, MODEL_SM_CPINE3_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_MAPLE1_TAG, MODEL_SM_MAPLE1_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_OWLTREE_TAG, MODEL_SM_OWLTREE_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_PINE1_TAG, MODEL_SM_PINE1_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS_TAG, MODEL_SM_ROOTS_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS1_TAG, MODEL_SM_ROOTS1_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS2_TAG, MODEL_SM_ROOTS2_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS3_TAG, MODEL_SM_ROOTS3_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS4_TAG, MODEL_SM_ROOTS4_PATH, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_ROOTS5_TAG, MODEL_SM_ROOTS5_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_TREE_PLATEFORME01X01_TAG, MODEL_TREE_PLATEFORME01X01_PATH, matPivot))) return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_TRUNKBREAK_TAG, MODEL_TRUNKBREAK_PATH, matPivot))) return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WOODSTOMP_TAG, MODEL_WOODSTOMP_PATH, matPivot))) return E_FAIL;
+
+
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_Demo(COM_NAVIGATION_DEMO_TAG))) return E_FAIL;

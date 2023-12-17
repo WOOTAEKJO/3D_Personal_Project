@@ -178,8 +178,27 @@ void CImGuiMgr::File_Render()
 {
     const char* Path = nullptr;
     const char* Filter = nullptr;
-   
-    ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", ".bin", DATA_TERRAIN_PATH);
+
+    if (m_eCurrentType == TYPE_NONANIM)
+    {
+        Path = DATA_NONANIM_PATH;
+    }
+    else if (m_eCurrentType == TYPE_ANIM)
+    {
+        Path = DATA_ANIM_PATH;
+    }
+
+    wstring wstr = m_vecMesh_Demo[m_eCurrentType][m_iCurrentIndex]->Get_ModelTag();
+    string  str;
+    
+    _uint pos;
+    for (_uint i = 0; i < 3; i++) {
+        pos = wstr.find(L"_");
+        wstr = wstr.substr(pos + 1);
+    }
+    str.assign(wstr.begin(), wstr.end());
+
+    ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", ".bin", Path);
 
     // display
     if (ImGuiFileDialog::Instance()->Display("FileDialog"))
@@ -190,7 +209,10 @@ void CImGuiMgr::File_Render()
             string strFileName = ImGuiFileDialog::Instance()->GetFilePathName();
             string strFilePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 
-            Binarization(strFileName.c_str());
+            //strFileName = strFileName + str;
+            strFilePath = strFilePath + "\\" + str + ".bin";
+
+            Binarization(strFilePath.c_str());
         }
 
         // close

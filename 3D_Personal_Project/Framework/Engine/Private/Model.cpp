@@ -212,7 +212,11 @@ HRESULT CModel::Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& 
 			
 			Material_Desc.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, szFullPath, 1);
 			if (Material_Desc.pMtrlTexture[j] == nullptr)
-				return E_FAIL;
+			{
+				//return E_FAIL;
+				continue;
+			}
+				
 		}
 		m_vecMaterial.push_back(Material_Desc);
 	}
