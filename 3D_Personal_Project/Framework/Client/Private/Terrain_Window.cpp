@@ -255,6 +255,11 @@ void CTerrain_Window::Navigation()
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
 	}
 
+	if (ImGui::Button("All_Delete"))
+	{
+		All_Delete_Cell();
+	}
+
 	Sphere_Render();
 }
 
@@ -262,18 +267,22 @@ void CTerrain_Window::Navigation_Update()
 {
 	if (m_vNaviPos[0].bCheck && m_vNaviPos[1].bCheck && m_vNaviPos[2].bCheck)
 	{
-		_float3 vPoints[3] = { m_vNaviPos[0].vPosition,m_vNaviPos[1].vPosition,m_vNaviPos[2].vPosition };
+	
+		Calculate_Cell();
+
+		_float3 vPoints[3] = { m_vNaviPos[m_iCalculate[0]].vPosition,
+			m_vNaviPos[m_iCalculate[1]].vPosition,m_vNaviPos[m_iCalculate[2]].vPosition };
 
 		NAVI_CELL_DESC NaviCellDesc = {};
 
-		NaviCellDesc.iSphereIndex[0] = m_vNaviPos[0].iSphereIndex;
-		NaviCellDesc.iSphereIndex[1] = m_vNaviPos[1].iSphereIndex;
-		NaviCellDesc.iSphereIndex[2] = m_vNaviPos[2].iSphereIndex;
+		NaviCellDesc.iSphereIndex[0] = m_vNaviPos[m_iCalculate[0]].iSphereIndex;
+		NaviCellDesc.iSphereIndex[1] = m_vNaviPos[m_iCalculate[1]].iSphereIndex;
+		NaviCellDesc.iSphereIndex[2] = m_vNaviPos[m_iCalculate[2]].iSphereIndex;
 
         m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex);
 		m_vecCell.push_back(NaviCellDesc);
 		Reset_NaviPickPos();
-
+		 
 	}
 }
 
@@ -340,6 +349,63 @@ void CTerrain_Window::Sphere_Render()
 	m_pBatch->End();
 }
 
+void CTerrain_Window::Calculate_Cell()
+{
+	_int a(0), b(1), c(2);
+
+	for (_uint i = 0; i < 3; i++) {
+		
+		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[c].vPosition.z - m_vNaviPos[a].vPosition.z)
+			- (m_vNaviPos[c].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[a].vPosition.z);
+
+		if (0 > iResult)
+		{
+			m_iCalculate[0] = a;
+			m_iCalculate[1] = b;
+			m_iCalculate[2] = c;
+
+			return;
+		}
+
+		a -= 1;
+		if (a < 0)
+			a = 2;
+		b -= 1;
+		if (b < 0)
+			b = 2;
+		c -= 1;
+		if (c < 0)
+			c = 2;
+	}
+
+	for (_uint i = 0; i < 3; i++) {
+
+		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[a].vPosition.z - m_vNaviPos[c].vPosition.z)
+			- (m_vNaviPos[a].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[c].vPosition.z);
+
+		if (0 > iResult)
+		{
+			m_iCalculate[0] = c;
+			m_iCalculate[1] = b;
+			m_iCalculate[2] = a;
+
+			return;
+		}
+
+		a -= 1;
+		if (a < 0)
+			a = 2;
+		b -= 1;
+		if (b < 0)
+			b = 2;
+		c -= 1;
+		if (c < 0)
+			c = 2;
+	}
+
+	
+}
+
 void CTerrain_Window::Fix_Navigation()
 {
 	switch (m_iCurrentNaviModeRadioButton)
@@ -365,6 +431,20 @@ void CTerrain_Window::Fix_Navigation()
 	case 1:
 		break;
 	}
+}
+
+void CTerrain_Window::All_Delete_Cell()
+{
+	if (m_pTerrain == nullptr)
+		return;
+
+	m_pTerrain->All_Delete_Cell();
+
+	m_vecCell.clear();
+
+	for (auto& iter : m_vecSphere)
+		Safe_Delete(iter);
+	m_vecSphere.clear();
 }
 
 void CTerrain_Window::Create_HeightMap()
@@ -410,3 +490,5 @@ void CTerrain_Window::Free()
 	Safe_Delete(m_pEffect);
 	Safe_Release(m_pInputLayout);
 }
+
+

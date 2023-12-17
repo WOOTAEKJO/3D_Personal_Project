@@ -49,8 +49,8 @@ public:
 	HRESULT	Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex);
 	HRESULT	Save_Navigation(const _char* strPath);
 	HRESULT	Load_Navigation(const _char* strPath);
-
 	void	Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions);
+	void	All_Delete_Cell();
 
 	vector<CCell*>	Get_Navigation_Cells();
 

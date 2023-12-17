@@ -67,6 +67,7 @@ private: /* For. Navigation*/
 
 	_uint									m_iCurrentSphereIndex = { 0 };
 
+	_int									m_iCalculate[3];
 private:
 	_int									m_iCurrentNaviModeRadioButton = { 0 };
 
@@ -78,11 +79,16 @@ private:
 private:
 	void	Navigation();
 	void	Navigation_Update();
+
+	void	Calculate_Cell();
+
 	_bool	Set_NaviPickPos();
 	void	Reset_NaviPickPos();
 	void	Fix_Navigation();
 
 	void	Sphere_Render();
+
+	void	All_Delete_Cell();
 
 public:
 	static	CTerrain_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);
