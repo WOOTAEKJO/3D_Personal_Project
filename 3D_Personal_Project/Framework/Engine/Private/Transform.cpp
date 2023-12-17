@@ -63,12 +63,20 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(STATE::STATE_POS, vPos);
 }
 
-void CTransform::Go_BackWard(_float fTimeDelta)
+void CTransform::Go_BackWard(_float fTimeDelta, CNavigation* pNavigation)
 {
 	_vector	vPos = Get_State(STATE::STATE_POS);
 	_vector	vLook = Get_State(STATE::STATE_LOOK);
 
 	vPos -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
+
+	if (pNavigation != nullptr)
+	{
+		if (!pNavigation->IsMove(vPos))
+		{
+			return;
+		}
+	}
 
 	Set_State(STATE::STATE_POS, vPos);
 }

@@ -56,7 +56,7 @@ public: /* 카메라에 사용*/
 	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 	void	Go_Left(_float fTimeDelta);
 	void	Go_Right(_float fTimeDelta);
-	void	Go_BackWard(_float fTimeDelta);
+	void	Go_BackWard(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 	void	Turn(_fvector vAxis, _float fTimeDelta);
 	void	Rotation(_fvector vAxis, _float fRadian);
 	void	Rotation_Total(_float fX, _float fY, _float fZ);

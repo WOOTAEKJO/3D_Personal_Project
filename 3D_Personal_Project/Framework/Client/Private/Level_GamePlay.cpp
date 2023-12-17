@@ -82,8 +82,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
 
 	AnimMeshDemoValue.strModelTag = ANIMMODEL_JACK_TAG;
 	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
+	AnimMeshDemoValue.fRotationPerSec = XMConvertToRadians(90.f);
+	AnimMeshDemoValue.fSpeedPerSec = 1.f;
 
-	for (_uint i = 0; i < 2; i++) {
+	for (_uint i = 0; i < 1; i++) {
 
 		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_ANIMMESH_DEMO_TAG,
 			&AnimMeshDemoValue)))

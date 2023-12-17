@@ -178,7 +178,7 @@ HRESULT CTerrain_Demo::Ready_Component()
 		return E_FAIL;
 
 	/* For.Com_Navigation*/
-	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_TAG,
+	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_DEMO_TAG,
 		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
 		return E_FAIL;
 
@@ -252,15 +252,12 @@ HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
 	return S_OK;
 }
 
-HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints)
+HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex)
 {
 	if (m_pNavigationCom == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pNavigationCom->Add_Cell(pPoints)))
-		return E_FAIL;
-
-	return S_OK;
+    return m_pNavigationCom->Add_Cell(pPoints, iCellIndex);
 }
 
 HRESULT CTerrain_Demo::Save_Navigation(const _char* strPath)
@@ -272,6 +269,30 @@ HRESULT CTerrain_Demo::Save_Navigation(const _char* strPath)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CTerrain_Demo::Load_Navigation(const _char* strPath)
+{
+	if (m_pNavigationCom == nullptr)
+		return E_FAIL;
+
+	if (FAILED(m_pNavigationCom->File_Load(strPath)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CTerrain_Demo::Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Update_Buffer(iCellIndex, vPositions);
+}
+
+vector<CCell*> CTerrain_Demo::Get_Navigation_Cells()
+{
+	return m_pNavigationCom->Get_Navigation_Cells();
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

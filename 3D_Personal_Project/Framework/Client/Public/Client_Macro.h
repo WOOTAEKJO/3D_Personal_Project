@@ -80,8 +80,9 @@
 #define COM_STATEMACHINE_TAG	TEXT("Prototype_Component_StateMachine")
 #define COM_AI_TAG				TEXT("Prototype_Component_AI")
 
-#define	COM_NAVIGATION_TAG		TEXT("Prototype_Component_Navigation")
-#define COM_NAVOGATION_PAHT		("")
+#define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
+#define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navigation")
+#define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navi.bin"
 
 #pragma endregion
 

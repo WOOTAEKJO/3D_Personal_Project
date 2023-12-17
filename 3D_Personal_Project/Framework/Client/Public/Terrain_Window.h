@@ -1,6 +1,12 @@
 #pragma once
 #include "ImGui_Window.h"
 
+BEGIN(Engine)
+
+class CCell;
+
+END
+
 BEGIN(Client)
 
 class CTerrain_Window final : public CImGui_Window
@@ -12,8 +18,17 @@ public:
 	{
 		_float3 vPosition;
 		_bool	bCheck = false;
+		_uint   iSphereIndex;
 
 	}NAVIDEMO_DESC;
+
+	typedef	struct tagCell_Desc
+	{
+		
+		_uint iCellIndex;
+		_uint iSphereIndex[3];
+
+	}NAVI_CELL_DESC;
 
 private:
 	CTerrain_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -40,15 +55,20 @@ private: // 외부에서 받아 와야 하는 값
 
 	//TERRAINDATA	m_Test;
 private: /* For. Navigation*/
-	TERRAINMODE				m_eCurrentMode = { MODE_END };
-	NAVIDEMO_DESC			m_vNaviPos[3] = {};
+	TERRAINMODE								m_eCurrentMode = { MODE_END };
+	NAVIDEMO_DESC							m_vNaviPos[3] = {};
+
+	vector<NAVI_CELL_DESC>					m_vecCell;
 
 	vector<BoundingSphere*>					m_vecSphere = { nullptr };
 	PrimitiveBatch<VertexPositionColor>*	m_pBatch = { nullptr };
 	BasicEffect*							m_pEffect = { nullptr };
 	ID3D11InputLayout*						m_pInputLayout = { nullptr };
 
-	_uint					m_iCurrentSphereIndex = { 0 };
+	_uint									m_iCurrentSphereIndex = { 0 };
+
+private:
+	_int									m_iCurrentNaviModeRadioButton = { 0 };
 
 private:
 	void	HeightMap();
@@ -60,6 +80,7 @@ private:
 	void	Navigation_Update();
 	_bool	Set_NaviPickPos();
 	void	Reset_NaviPickPos();
+	void	Fix_Navigation();
 
 	void	Sphere_Render();
 

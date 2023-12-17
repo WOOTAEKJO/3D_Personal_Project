@@ -1,9 +1,10 @@
 #pragma once
-#include "Base.h"
+//#include "Base.h"
+#include "Navigation.h"
 
 BEGIN(Engine)
 
-class CCell final : public CBase
+class ENGINE_DLL CCell final : public CBase
 {
 public:
 	enum POINTS {POINT_A,POINT_B,POINT_C,POINT_END};
@@ -13,10 +14,7 @@ private:
 	virtual	~CCell() = default;
 
 public:
-	HRESULT	Initialize(FLOAT3X3 pPoints);
-
-#ifdef _DEBUG
-	HRESULT	Render();
+	HRESULT	Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType);
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
@@ -24,7 +22,7 @@ public:
 
 public:
 	_uint	Get_Index() { return m_iIndex; }
-	_float3	Get_Point(POINTS eType) { 
+	_float3	Get_Point(POINTS eType) {
 		return m_pPoints[eType];
 	}
 
@@ -33,12 +31,19 @@ public:
 		m_iNeighborIndex[eType] = iIndex;
 	}
 
+#ifdef _DEBUG
+	HRESULT	Render();
+
+public:
+	void	Update_Buffer(FLOAT3X3 vPositions);
+
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 private:
 	class CVIBuffer_Cell*	m_pBufferCom = { nullptr };
+	class CVIBuffer_DCell*	m_pDBufferCom = { nullptr };
 
 #endif
 
@@ -49,8 +54,11 @@ private:
 	_int		m_iNeighborIndex[LINE_END] = {-1,-1,-1};
 	_float3		m_vLineNormal[LINE_END] = {};
 
+private:
+	CNavigation::NAVITYPE	m_eNaviType = { CNavigation::NAVITYPE::TYPE_END };
+
 public:
-	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,FLOAT3X3 pPoints );
+	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,FLOAT3X3 pPoints,_uint iIndex, CNavigation::NAVITYPE eType);
 	virtual	void	Free() override;
 };
 

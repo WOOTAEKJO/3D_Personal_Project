@@ -13,6 +13,8 @@
 
 #include "DebugDraw.h"
 
+#include "Cell.h"
+
 CTerrain_Window::CTerrain_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CImGui_Window(pDevice, pContext)
 {
@@ -125,6 +127,8 @@ void CTerrain_Window::Demo_Picked()
 				}
 			}
 		}
+
+		Fix_Navigation();
 	}
 }
 
@@ -152,8 +156,55 @@ HRESULT CTerrain_Window::Load_Data(const _char* strFilePath)
 	if (m_pTerrain == nullptr)
 		return E_FAIL;
 
-	if (FAILED(m_pTerrain->Load_Terrain(strFilePath)))
-		return E_FAIL;
+	if (m_eCurrentMode == TERRAINMODE::MODE_HEIGHT) {
+
+		if (FAILED(m_pTerrain->Load_Terrain(strFilePath)))
+			return E_FAIL;
+	}
+	else if (m_eCurrentMode == TERRAINMODE::MODE_NAVIGATION)
+	{
+		for (auto& iter : m_vecSphere)
+			Safe_Delete(iter);
+		m_vecSphere.clear();
+		m_vecCell.clear();
+
+		if (FAILED(m_pTerrain->Load_Navigation(strFilePath)))
+			return E_FAIL;
+
+		vector<CCell*> vecCells = m_pTerrain->Get_Navigation_Cells();
+
+		_uint iSize = vecCells.size();
+		for (_uint i = 0; i < iSize; i++)
+		{
+			NAVI_CELL_DESC NaviCellDesc = {};
+
+			for (_uint j = 0; j < 3; j++) {
+
+				_bool bCheck = true;
+
+				_uint iSSize = m_vecSphere.size();
+				for (_uint k=0;k<iSSize;k++)
+				{
+					if (XMVector3Equal(XMLoadFloat3(&m_vecSphere[k]->Center), XMLoadFloat3(&vecCells[i]->Get_Point((CCell::POINTS)j))))
+					{
+						NaviCellDesc.iSphereIndex[j] = k;
+						bCheck = false;
+						break;
+					}
+				}
+
+				if (bCheck)
+				{
+					BoundingSphere* pSphere = new BoundingSphere(vecCells[i]->Get_Point((CCell::POINTS)j), 0.5f);
+					NaviCellDesc.iSphereIndex[j] = m_vecSphere.size();
+					m_vecSphere.push_back(pSphere);
+				}
+			}
+
+			NaviCellDesc.iCellIndex = i;
+			m_vecCell.push_back(NaviCellDesc);
+		}
+	}
 
 	return S_OK;
 }
@@ -195,6 +246,10 @@ void CTerrain_Window::Navigation()
 	}
 	ImGui::EndListBox();
 
+	ImGui::RadioButton("Sphere", &m_iCurrentNaviModeRadioButton, 0);
+	ImGui::SameLine();
+	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 1);
+
 	if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
 
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
@@ -209,7 +264,14 @@ void CTerrain_Window::Navigation_Update()
 	{
 		_float3 vPoints[3] = { m_vNaviPos[0].vPosition,m_vNaviPos[1].vPosition,m_vNaviPos[2].vPosition };
 
-		m_pTerrain->Add_Navigation_Cell(vPoints);
+		NAVI_CELL_DESC NaviCellDesc = {};
+
+		NaviCellDesc.iSphereIndex[0] = m_vNaviPos[0].iSphereIndex;
+		NaviCellDesc.iSphereIndex[1] = m_vNaviPos[1].iSphereIndex;
+		NaviCellDesc.iSphereIndex[2] = m_vNaviPos[2].iSphereIndex;
+
+        m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex);
+		m_vecCell.push_back(NaviCellDesc);
 		Reset_NaviPickPos();
 
 	}
@@ -222,17 +284,21 @@ _bool CTerrain_Window::Set_NaviPickPos()
 		if (!m_vNaviPos[i].bCheck)
 		{
 			m_vNaviPos[i].bCheck = true;
-			for (auto& iter : m_vecSphere)
+			_uint iSize = m_vecSphere.size();
+			for (_uint j = 0; j < iSize; j++)
 			{
 				_float fDist = 0.f;
-				if (m_pGameInstance->Intersect_Sphere(iter, &fDist))
+				if (m_pGameInstance->Intersect_Sphere(m_vecSphere[j], &fDist))
 				{
-					m_vNaviPos[i].vPosition = iter->Center;
+					m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
+					m_vNaviPos[i].iSphereIndex = j;
 					return false;
 				}
 			}
+
 			m_vNaviPos[i].vPosition = _float3(m_vPickPos.x, m_vPickPos.y + 0.001f, m_vPickPos.z);
      		BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.5f);
+			m_vNaviPos[i].iSphereIndex = m_vecSphere.size();
 			m_vecSphere.push_back(pSphere);
 			return false;
 		}
@@ -247,6 +313,7 @@ void CTerrain_Window::Reset_NaviPickPos()
 	{
 		m_vNaviPos[i].bCheck = false;
 		m_vNaviPos[i].vPosition = _float3(0.f,0.f,0.f);
+		m_vNaviPos[i].iSphereIndex = 0;
 	}
 }
 
@@ -271,6 +338,33 @@ void CTerrain_Window::Sphere_Render()
 	}
 
 	m_pBatch->End();
+}
+
+void CTerrain_Window::Fix_Navigation()
+{
+	switch (m_iCurrentNaviModeRadioButton)
+	{
+	case 0:
+
+		for (auto& iter : m_vecCell)
+		{
+			for (_uint i = 0; i < 3; i++) {
+				if (iter.iSphereIndex[i] == m_iCurrentSphereIndex)
+				{
+					FLOAT3X3 Flaot33 = {};
+					Flaot33.vVertex0 = m_vecSphere[iter.iSphereIndex[0]]->Center;
+					Flaot33.vVertex1 = m_vecSphere[iter.iSphereIndex[1]]->Center;
+					Flaot33.vVertex2 = m_vecSphere[iter.iSphereIndex[2]]->Center;
+
+					m_pTerrain->Update_Navigation_Cell(iter.iCellIndex, Flaot33);
+				}
+			}
+		}
+
+		break;
+	case 1:
+		break;
+	}
 }
 
 void CTerrain_Window::Create_HeightMap()

@@ -440,6 +440,9 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 		MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
 		MeshDataDesc.vecIndices = m_vecIndices;
 		break;
+	case Engine::CMeshData::NAVIGATION:
+		MeshDataDesc.vecNaviPoints = m_vecNaviPoints;
+		break;
 	}
 
 	return S_OK;
