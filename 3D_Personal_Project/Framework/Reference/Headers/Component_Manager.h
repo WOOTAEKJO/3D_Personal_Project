@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "AICom.h"
 #include "Navigation.h"
+#include "RigidBody.h"
 
 BEGIN(Engine)
 

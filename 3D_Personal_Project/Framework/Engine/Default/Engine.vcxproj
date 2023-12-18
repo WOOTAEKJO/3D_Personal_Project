@@ -230,6 +230,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClInclude Include="..\Public\Navigation.h" />
     <ClInclude Include="..\Public\Node.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
+    <ClInclude Include="..\Public\RigidBody.h" />
     <ClInclude Include="..\Public\PipeLine.h" />
     <ClInclude Include="..\Public\Renderer.h" />
     <ClInclude Include="..\Public\Repeator.h" />
@@ -289,6 +290,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClCompile Include="..\Private\Navigation.cpp" />
     <ClCompile Include="..\Private\Node.cpp" />
     <ClCompile Include="..\Private\Object_Manager.cpp" />
+    <ClCompile Include="..\Private\RigidBody.cpp" />
     <ClCompile Include="..\Private\PipeLine.cpp" />
     <ClCompile Include="..\Private\Renderer.cpp" />
     <ClCompile Include="..\Private\Repeator.cpp" />

@@ -5,7 +5,6 @@
 
 #define DATA_TERRAIN_PATH			"../Bin/Data/Terrain/"
 #define DATA_OBJECT_PATH			"../Bin/Data/Object/"
-//TEXT("C:/Users/Git/SourcTree/3D_Personal_Project/3D_Personal_Project/Framework/Client/Bin/Data/Terrain")
 
 #pragma endregion	
 
@@ -176,6 +175,8 @@
 #define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navigation")
 #define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navigation/Navi.bin"
 
+#define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
+
 #pragma endregion
 
 #pragma region 텍스쳐
@@ -216,5 +217,11 @@
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 
 #define GO_SKYBOX_TAG		TEXT("Prototype_GameObject_SkyBox")
+
+#pragma region 캐릭터
+
+#define GO_PLAYER_TAG		TEXT("Prototype_GameObject_PLAYER")
+
+#pragma endregion
 
 #pragma endregion

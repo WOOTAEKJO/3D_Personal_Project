@@ -47,43 +47,7 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
 
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-		//m_pModelCom->Set_AnimationIndex(54);
-	}
-	else if (m_pGameInstance->Key_Down(DIK_Q))
-	{
-		m_pModelCom->Set_AnimationIndex(2);
-	}
-	else if (m_pGameInstance->Key_Down(DIK_SPACE))
-	{
-		m_pModelCom->Set_AnimationIndex(93);
-	}
-	else if(m_pGameInstance->Key_Pressing(DIK_DOWN)){
-
-		m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
-		//m_pModelCom->Set_AnimationIndex(32);
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_E)) {
-
-		//m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
-		m_pModelCom->Set_AnimationIndex(32);
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_T)) {
-
-		//m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
-		m_pModelCom->Set_AnimationIndex(54);
-	}
-
-	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_LEFT))
-	{
-		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
-	}
+	
 
 	m_pModelCom->Play_Animation(fTimeDelta,true);
 }

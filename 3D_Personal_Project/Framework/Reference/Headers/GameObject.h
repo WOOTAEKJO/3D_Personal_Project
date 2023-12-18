@@ -35,6 +35,9 @@ public:
 	virtual HRESULT Render();
 
 public:
+	class CTransform* Get_Transform() { return m_pTransformCom; }
+
+public:
 	void	Set_WorldMatrix(_float4x4 matWorld);
 	_float4x4 Get_WorldMatrix();
 

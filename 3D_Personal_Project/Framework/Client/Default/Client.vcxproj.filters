@@ -118,6 +118,45 @@
     <Filter Include="02.GameObjects\04.Sky">
       <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character">
+      <UniqueIdentifier>{9213d9ae-3b36-4700-bead-33fd73624f7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player">
+      <UniqueIdentifier>{8d338008-ef76-4dd0-8e37-3dd29ea64281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player">
+      <UniqueIdentifier>{eead81d3-55e5-479b-a00c-24de35dd9735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\00. IDLE">
+      <UniqueIdentifier>{454d7068-de74-40b1-88ee-fa862fd13bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\01. Run">
+      <UniqueIdentifier>{f7de3072-5e43-46bf-ba33-c94047391cb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack">
+      <UniqueIdentifier>{fc198332-9b3d-417a-a481-0950da1fb760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\03. Jump">
+      <UniqueIdentifier>{5134381e-63ae-4705-9f9f-09a2a26f2ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common">
+      <UniqueIdentifier>{4f78f72c-e977-43e6-ad71-0915a96ba114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\03. Attack4">
+      <UniqueIdentifier>{6b307982-cb5e-4f36-923f-83c2a37042f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\02. Attack3">
+      <UniqueIdentifier>{823cc1b4-8995-4515-a3c4-7ddf3663b64e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\01. Attack2">
+      <UniqueIdentifier>{c08eee77-7600-4347-9026-675f15d168a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker">
+      <UniqueIdentifier>{ee130e22-a69a-436f-ae3c-f9c91a585f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack">
+      <UniqueIdentifier>{4eeb878d-ea6e-4d00-a75b-e3663c3b4cbd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -255,6 +294,27 @@
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObjects\04.Sky</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02.GameObjects\05. Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02.GameObjects\05. Character\00.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_State.h">
+      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Run.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\01. Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Jump.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\03. Jump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -364,6 +424,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObjects\04.Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp">
+      <Filter>02.GameObjects\05. Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_State.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Run.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\01. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Jump.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\03. Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

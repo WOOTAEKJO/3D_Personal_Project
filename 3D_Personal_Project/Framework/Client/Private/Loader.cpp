@@ -16,6 +16,7 @@
 
 #include "Plateform.h"
 #include "SkyBox.h"
+#include "Player.h"
 
 /* For.Prototype_Component_Shader_VTXTBN*/
 /*if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
@@ -159,6 +160,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 	
+	
+
 	//if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Height(BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_HEIGHT_PATH))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_BIN_PATH))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
@@ -167,8 +170,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	_matrix	matPivot;
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
 
-	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_FIONA_TAG, ANIMMODEL_FIONA_PATH, matPivot))) return E_FAIL;
-	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	//if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_FIONA_TAG, ANIMMODEL_FIONA_PATH, matPivot))) return E_FAIL;
+	//matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	//if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_BAT_TAG, ANIMMODEL_BAT_PATH, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.0005f, 0.0005f, 0.0005f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, ANIMMODEL_JACK_PATH, matPivot))) return E_FAIL;
@@ -241,6 +244,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CAnimMesh_Demo>(G0_ANIMMESH_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform>(GO_PLATEFORM_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkyBox>(GO_SKYBOX_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(GO_PLAYER_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

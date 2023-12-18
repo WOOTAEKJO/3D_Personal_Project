@@ -155,6 +155,18 @@ HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshInde
 	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones);
 }
 
+_bool CModel::Is_Animation_Finished()
+{
+	if (m_vecAnimation[m_iCurrentAnimationIndex]->Is_Finished())
+	{
+		m_vecAnimation[m_iCurrentAnimationIndex]->Set_ReStart();
+
+		return true;
+	}
+
+	return false;
+}
+
 HRESULT CModel::Ready_Meshes(CMeshData::MESHDATADESC MeshData)
 {	
 	m_iMeshesNum = MeshData.iMeshNum;

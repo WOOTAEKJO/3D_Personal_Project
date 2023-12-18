@@ -199,6 +199,9 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell">
       <UniqueIdentifier>{74f5e622-b60c-4726-83db-08ce96a59ae4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\96. RigidBody">
+      <UniqueIdentifier>{a4fe495b-e66b-481f-acf1-04da64b310ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -393,6 +396,9 @@
     <ClInclude Include="..\Public\VIBuffer_DCell.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RigidBody.h">
+      <Filter>01.Utility\03. Component\96. RigidBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -565,6 +571,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_DCell.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\05. VIBuffer_DCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RigidBody.cpp">
+      <Filter>01.Utility\03. Component\96. RigidBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

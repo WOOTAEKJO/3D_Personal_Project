@@ -22,6 +22,9 @@ public:
 	vector<CChannel*>&	Get_Channels() { return m_vecChannel; }
 	vector<KEYFRAME>& Get_PrevKeyFrame() { return m_vecPrevKeyFrame; }
 
+	_bool		Is_Finished() { return m_bFinished; }
+	void		Set_ReStart() { m_bFinished = false; }
+
 private:
 	_char				m_szName[MAX_PATH] = "";
 	_float				m_fDuration = { 0.f };
