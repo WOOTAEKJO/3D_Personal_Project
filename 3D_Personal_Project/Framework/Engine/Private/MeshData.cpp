@@ -152,6 +152,7 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 		case Engine::CMeshData::TERRAIN:
 
 			fout.write(reinterpret_cast<const char*>(&m_iNumVertices), sizeof(m_iNumVertices));
+			fout.write(reinterpret_cast<const char*>(&m_iVerticesXY), sizeof(m_iVerticesXY));
 			fout.write(reinterpret_cast<const char*>(&m_iNumFaces), sizeof(m_iNumFaces));
 
 			for (_uint i =0;i< m_iNumVertices;i++)
@@ -371,6 +372,7 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 		case Engine::CMeshData::TERRAIN:
 
 			fIn.read(reinterpret_cast<char*>(&m_iNumVertices), sizeof(m_iNumVertices));
+			fIn.read(reinterpret_cast<char*>(&m_iVerticesXY), sizeof(m_iVerticesXY));
 			fIn.read(reinterpret_cast<char*>(&m_iNumFaces), sizeof(m_iNumFaces));
 
 			for (_uint i = 0; i < m_iNumVertices; i++)
@@ -436,6 +438,7 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 		break;
 	case Engine::CMeshData::TERRAIN:
 		MeshDataDesc.iNumVertices = m_iNumVertices;
+		MeshDataDesc.iVerticesXY = m_iVerticesXY;
 		MeshDataDesc.iNumFaces = m_iNumFaces;
 		MeshDataDesc.vecMeshVertices = m_vecMeshVertices;
 		MeshDataDesc.vecIndices = m_vecIndices;
@@ -479,6 +482,7 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 		break;
 	case Engine::CMeshData::TERRAIN:
 		m_iNumVertices = MeshDataDesc.iNumVertices;
+		m_iVerticesXY = MeshDataDesc.iVerticesXY;
 		m_iNumFaces = MeshDataDesc.iNumFaces;
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
 		break;

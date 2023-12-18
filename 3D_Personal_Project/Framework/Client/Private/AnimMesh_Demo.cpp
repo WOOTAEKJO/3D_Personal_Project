@@ -50,7 +50,7 @@ void CAnimMesh_Demo::Tick(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta, m_pNavigationCom);
-		m_pModelCom->Set_AnimationIndex(54);
+		//m_pModelCom->Set_AnimationIndex(54);
 	}
 	else if (m_pGameInstance->Key_Down(DIK_Q))
 	{
@@ -63,7 +63,17 @@ void CAnimMesh_Demo::Tick(_float fTimeDelta)
 	else if(m_pGameInstance->Key_Pressing(DIK_DOWN)){
 
 		m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
+		//m_pModelCom->Set_AnimationIndex(32);
+	}
+	else if (m_pGameInstance->Key_Pressing(DIK_E)) {
+
+		//m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
 		m_pModelCom->Set_AnimationIndex(32);
+	}
+	else if (m_pGameInstance->Key_Pressing(DIK_T)) {
+
+		//m_pTransformCom->Go_BackWard(fTimeDelta, m_pNavigationCom);
+		m_pModelCom->Set_AnimationIndex(54);
 	}
 
 	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))

@@ -170,6 +170,8 @@ HRESULT CVIBuffer_DTerrain::Set_Buffer(const _char* strPath)
 
 	MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::TERRAIN;
 	MeshDataDesc.iNumVertices = m_iVertexNum;
+	MeshDataDesc.iVerticesXY.iX = m_iNumVerticesX;
+	MeshDataDesc.iVerticesXY.iY = m_iNumVerticesZ;
 	MeshDataDesc.iNumFaces = m_iIndexNum / 3;
 	MeshDataDesc.vecMeshVertices = m_vecVertexInfo;
 	MeshDataDesc.vecIndices = m_vecIndexInfo;
@@ -182,6 +184,9 @@ HRESULT CVIBuffer_DTerrain::Set_Buffer(const _char* strPath)
 
 HRESULT CVIBuffer_DTerrain::Init_Buffer(CMeshData::MESHDATADESC tMeshData)
 {
+	m_iNumVerticesX = tMeshData.iVerticesXY.iX;
+	m_iNumVerticesZ = tMeshData.iVerticesXY.iY;
+
 	m_iVertexBuffersNum = 1;
 	m_iVertexNum = tMeshData.iNumVertices;
 	m_iVertexStride = sizeof(VTXMESH);

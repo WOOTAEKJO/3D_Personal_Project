@@ -36,12 +36,14 @@
 #define	SHADER_BTN_TAG			TEXT("Prototype_Component_Shader_VTXTBN")
 #define	SHADER_MESH_TAG			TEXT("Prototype_Component_Shader_VTXMESH")
 #define	SHADER_ANIMMESH_TAG		TEXT("Prototype_Component_Shader_VTXANIMMESH")
+#define	SHADER_CUBE_TAG			TEXT("Prototype_Component_Shader_VTXCUBE")
 
 #define SHADER_POS_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl")
 #define SHADER_NOR_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl")
 #define SHADER_BTN_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxTBN.hlsl")
 #define	SHADER_MESH_PATH		TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl")
 #define	SHADER_ANIMMESH_PATH	TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl")
+#define	SHADER_CUBE_PATH	TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl")
 
 #pragma endregion
 
@@ -172,7 +174,7 @@
 
 #define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
 #define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navigation")
-#define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navi.bin"
+#define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navigation/Navi.bin"
 
 #pragma endregion
 
@@ -189,6 +191,9 @@
 
 #define TEX_TERRAIN_BRUSH_TAG	TEXT("Prototype_Component_Texture_Terrain_Brush")
 #define TEX_TERRAIN_BRUSH_PATH	TEXT("../Bin/Resources/Textures/Terrain/Brush.png")
+
+#define TEX_SKYBOX_TAG	TEXT("Prototype_Component_Texture_SKYBOX")
+#define TEX_SKYBOX_PATH	TEXT("../Bin/Resources/Textures/SkyBox/SkyBox%d.dds")
 
 #pragma endregion
 
@@ -209,5 +214,7 @@
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
+
+#define GO_SKYBOX_TAG		TEXT("Prototype_GameObject_SkyBox")
 
 #pragma endregion
