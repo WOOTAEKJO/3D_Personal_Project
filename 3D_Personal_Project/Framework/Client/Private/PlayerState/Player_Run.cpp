@@ -39,13 +39,7 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 		return CPlayer::STATE::ATTACK;
 	}
 
-	if (m_pGameInstance->Key_Down(DIK_SPACE))
-	{
-		//m_pOwner->Get_RigidBody()->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), 20.f, fTimeDelta);
-		m_pOwner->Get_RigidBody()->Force(m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_UP), 20.f, fTimeDelta);
-		m_pOwner->Get_RigidBody()->Set_Jump();
-		return CPlayer::STATE::JUMP;
-	}
+	
 
 	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 		m_pOwner->Get_Transform()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
@@ -61,6 +55,14 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 
 _uint CPlayer_Run::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Down(DIK_SPACE))
+	{
+		//m_pOwner->Get_RigidBody()->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), 20.f, fTimeDelta);
+		/*m_pOwner->Get_RigidBody()->Force(m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_UP), 20.f, fTimeDelta);
+		m_pOwner->Get_RigidBody()->Set_Jump();*/
+		return CPlayer::STATE::JUMP;
+	}
+
 	return m_iStateID;
 }
 

@@ -28,7 +28,7 @@ _uint CPlayer_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_UP))
+	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
 		return CPlayer::STATE::RUN;
 	}
@@ -40,8 +40,6 @@ _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(DIK_SPACE))
 	{
-		m_pOwner->Get_RigidBody()->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), 20.f, fTimeDelta);
-		m_pOwner->Get_RigidBody()->Set_Jump();
 		return CPlayer::STATE::JUMP;
 	}
 

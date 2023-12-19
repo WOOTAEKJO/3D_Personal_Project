@@ -14,6 +14,23 @@ BEGIN(Client)
 
 class CCharacter abstract : public CGameObject
 {
+public:
+	typedef struct tagPhysicsDesc
+	{
+		_float	fForwardSpeed = 7.f;
+
+		_float	fJumpPower = 10.f;
+		_float	fJumpGravity = -9.8f;
+		_float  fFallGravity = -30.f;
+
+		_bool	bGround = true;
+		_bool	bJump = false;
+		_bool	bDoubleJump = false;
+		_bool	bFall = false;
+		_bool	bLanding = false;
+
+	}PHYSICS_DESC;
+
 protected:
 	CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCharacter(const CCharacter& rhs);
@@ -32,6 +49,9 @@ public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
 	CNavigation* Get_Navigation() { return m_pNavigationCom; }
 
+public:
+	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
+
 protected:
 	CShader* m_pShaderCom = { nullptr };
 	CModel* m_pModelCom = { nullptr };
@@ -39,6 +59,8 @@ protected:
 
 protected:
 	wstring		m_strModelTag;
+	
+	PHYSICS_DESC	m_Physics_Desc;
 
 protected:
 	virtual HRESULT Bind_ShaderResources();

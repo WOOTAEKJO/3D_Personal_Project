@@ -8,6 +8,9 @@ class CGameObject;
 class ENGINE_DLL CRigidBody final : public CComponent
 {
 public:
+	enum TYPE {TYPE_VELOCITY,TYPE_ACCEL,TYPE_END};
+
+public:
 	typedef struct tagRigidBody_Desc
 	{
 		CGameObject* pOwner = nullptr;
@@ -27,26 +30,33 @@ public:
 	virtual void	Late_Tick(_float fTimeDelta) override;
 
 public:
-	void	Force(_fvector vDir, _float fPower, _float fTimeDelta);
+	void	Set_GravityPower(_float fPower) { m_fGravity = fPower; }
 
 public:
-	void	Set_Jump() { m_bJump = true; }
+	void	Jump(_float fJumpPower,_float fGravityPower);
+	_bool	Is_Land();
+	void	Land();
+
+public:
+	void	Force(_fvector vDir, _float fPower,TYPE eType);
+	void	Reset_Force(TYPE eType);
+	_bool	Is_Power_Zero(TYPE eType);
 
 public:
 	CGameObject*	m_pOwner = { nullptr };
 
 private:
-	_float			m_fGravity = 9.8f;
+	_float			m_fGravity = { -9.8f };
 
 private:
-	_bool			m_bJump = { false };
 	_bool			m_bGravity = { false };
+	_float3			m_vResist = {};
+	_float3			m_vPower[TYPE_END] = {};
 
-	_float3			m_vVelocity = _float3(0.f,0.f,0.f);
-
-	_float3			m_vMaxSpeed;
-	_float3			m_vMinSpeed;
-	_float3			m_vResist;
+private:
+	void	Update_Transform(TYPE eType, _float fTimeDelta);
+	void	Resistance(TYPE eType, _float fTimeDelta);
+	void	Near_Zero_Force(TYPE eType);
 
 public:
 	static	CRigidBody* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

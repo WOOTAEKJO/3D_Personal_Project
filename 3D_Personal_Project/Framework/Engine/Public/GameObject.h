@@ -36,6 +36,7 @@ public:
 
 public:
 	class CTransform* Get_Transform() { return m_pTransformCom; }
+	class CComponent* Get_Component(const wstring& strComponentTag);
 
 public:
 	void	Set_WorldMatrix(_float4x4 matWorld);

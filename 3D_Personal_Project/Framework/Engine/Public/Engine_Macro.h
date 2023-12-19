@@ -76,5 +76,8 @@
 			return dwRefCnt;									\
 		}
 
+#define TAG_RIGIDBODY TEXT("Com_RigidBody")
+#define TAG_NAVIGATION TEXT("Com_Navigation")
+
 
 #endif // Engine_Macro_h__

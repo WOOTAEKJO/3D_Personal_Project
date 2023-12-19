@@ -174,6 +174,27 @@ void CTransform::LookAt_OnLand(_fvector fTargetPos)
 	Set_State(STATE::STATE_LOOK, vLook);
 }
 
+void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
+{
+	/*_vector vPos = vTranslation;
+
+	if (vTranslation.m128_f32[1] != 0.f)
+	{
+		vPos = XMVectorSet(vTranslation.m128_f32[0], 0.f, vTranslation.m128_f32[2], vTranslation.m128_f32[3]);
+	}
+		
+
+	if (pNavigation != nullptr)
+	{
+		if (!pNavigation->IsMove(vPos))
+		{
+			return;
+		}
+	}*/
+
+	XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
+}
+
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)
 {
 	if (FAILED(pShader->Bind_Matrix(pMatrixName, &m_matWorldMatrix)))

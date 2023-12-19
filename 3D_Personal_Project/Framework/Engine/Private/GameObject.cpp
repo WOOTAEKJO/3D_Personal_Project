@@ -82,6 +82,15 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
+CComponent* CGameObject::Get_Component(const wstring& strComponentTag)
+{
+	CComponent* pComponent = Find_Component(strComponentTag);
+	if (pComponent == nullptr)
+		return nullptr;
+
+	return pComponent;
+}
+
 void CGameObject::Set_WorldMatrix(_float4x4 matWorld)
 {
 	if (m_pTransformCom == nullptr)

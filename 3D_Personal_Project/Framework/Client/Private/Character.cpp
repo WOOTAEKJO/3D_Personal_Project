@@ -103,7 +103,7 @@ HRESULT CCharacter::Ready_Component()
 	NavigationDesc.iCurrentIndex = 0;
 
 	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), COM_NAVIGATION_TAG,
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
+		TAG_NAVIGATION, reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
 		return E_FAIL;
 
 	return S_OK;
