@@ -23,6 +23,16 @@ public:
 	_ulong Release();
 
 public:
+	template<typename T>
+	wstring TAG_NAME()
+	{
+		_tchar szFullPath[MAX_PATH] = TEXT("");
+		const _char* szTmp = typeid(T).name();
+		MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullPath, MAX_PATH);
+		return szFullPath;
+	}
+
+public:
 	virtual void Write_Json(json& Out_Json) {};
 	virtual void Load_FromJson(const json& In_Json) {};
 

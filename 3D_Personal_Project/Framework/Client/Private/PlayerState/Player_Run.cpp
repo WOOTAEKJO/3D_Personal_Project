@@ -17,7 +17,7 @@ HRESULT CPlayer_Run::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Run::State_Enter()
 {
-	m_pOwner->Get_ModelCom()->Set_AnimationIndex(86);
+	m_pOwnerModel->Set_AnimationIndex(86);
 }
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
@@ -42,13 +42,13 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 	
 
 	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
-		m_pOwner->Get_Transform()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
+		m_pOnwerTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
 	else if(m_pGameInstance->Key_Pressing(DIK_LEFT))
-		m_pOwner->Get_Transform()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
+		m_pOnwerTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
 
-	m_pOwner->Get_Transform()->Go_Straight(fTimeDelta, m_pOwner->Get_Navigation());
+	m_pOnwerTransform->Go_Straight(fTimeDelta, m_pOnwerNavigation);
 
-	m_pOwner->Get_ModelCom()->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
 	return m_iStateID;
 }

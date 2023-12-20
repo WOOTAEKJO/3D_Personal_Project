@@ -26,6 +26,8 @@ HRESULT CRigidBody::Initialize(void* pArg)
 	m_vResist = _float3(0.2f, 0.2f, 0.2f);
 
 	m_pOwner = ((RIGIDBODY_DESC*)pArg)->pOwner;
+	m_pOwnerTransform = m_pOwner->Get_Component<CTransform>();
+	m_pOwnerNavigation = m_pOwner->Get_Component<CNavigation>();
 
 	return S_OK;
 }
@@ -62,7 +64,7 @@ void CRigidBody::Jump(_float fJumpPower, _float fGravityPower)
 
 _bool CRigidBody::Is_Land()
 {
-	if (m_pOwner->Get_Transform()->Get_WorldMatrix_Float4x4().m[3][1] <= 0.f)
+	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] <= 0.f)
 		return true;
 
 	return false;
@@ -74,12 +76,14 @@ void CRigidBody::Land()
 
 	Reset_Force(TYPE_VELOCITY);
 
-	if (m_pOwner->Get_Transform()->Get_WorldMatrix_Float4x4().m[3][1] < 0.f) {
+	
+
+	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] < 0.f) {
 
 		_float4 vPos;
-		memcpy(&vPos, &m_pOwner->Get_Transform()->Get_WorldMatrix_Float4x4().m[3], sizeof(_float4));
+		memcpy(&vPos, &m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3], sizeof(_float4));
 
-		m_pOwner->Get_Transform()->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(vPos.x, 0.f, vPos.z, vPos.w));
+		m_pOwnerTransform->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(vPos.x, 0.f, vPos.z, vPos.w));
 	}
 }
 
@@ -111,8 +115,8 @@ void CRigidBody::Reset_Force(TYPE eType)
 
 void CRigidBody::Update_Transform(TYPE eType, _float fTimeDelta)
 {
-	m_pOwner->Get_Transform()->Translate(XMLoadFloat3(&m_vPower[eType])* fTimeDelta,
-		dynamic_cast<CNavigation*>( m_pOwner->Get_Component(TAG_NAVIGATION)));
+	m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[eType])* fTimeDelta,
+		m_pOwnerNavigation);
 }
 
 void CRigidBody::Resistance(TYPE eType,_float fTimeDelta)

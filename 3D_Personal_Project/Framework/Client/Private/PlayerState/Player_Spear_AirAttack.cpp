@@ -17,7 +17,7 @@ HRESULT CPlayer_Spear_AirAttack::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Spear_AirAttack::State_Enter()
 {
-	m_pOwner->Get_ModelCom()->Set_AnimationIndex(76);
+	m_pOwnerModel->Set_AnimationIndex(76);
 }
 
 _uint CPlayer_Spear_AirAttack::State_Priority_Tick(_float fTimeDelta)
@@ -29,9 +29,9 @@ _uint CPlayer_Spear_AirAttack::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Spear_AirAttack::State_Tick(_float fTimeDelta)
 {
-	m_pOwner->Get_ModelCom()->Play_Animation(fTimeDelta, false);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
-	if (m_pOwner->Get_ModelCom()->Is_Animation_Finished())
+	if (m_pOwnerModel->Is_Animation_Finished())
 		return CPlayer::STATE::IDLE;
 
 	return m_iStateID;

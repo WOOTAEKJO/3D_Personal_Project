@@ -2,7 +2,6 @@
 
 #include "Base.h"
 
-
 BEGIN(Engine)
 
 class ENGINE_DLL CComponent abstract : public CBase
@@ -21,6 +20,10 @@ public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 	virtual void	Tick(_float fTimeDelta) {};
 	virtual void	Late_Tick(_float fTimeDelta) {};
 
+public:
+	string	Get_ClassName() { return m_strClassName; }
+	size_t	Get_ClassHashCode() { return m_Class_HashCode; }
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
@@ -30,6 +33,11 @@ protected:
 
 protected:
 	bool		m_bClone = { false };
+
+	string		m_strClassName = {};
+	size_t		m_Class_HashCode = { 0 };
+protected:
+	void		Init_ClassName();
 
 public:
 	virtual	CComponent* Clone(void* pArg)=0;

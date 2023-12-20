@@ -38,16 +38,12 @@ void CCharacter::Tick(_float fTimeDelta)
 
 void CCharacter::Late_Tick(_float fTimeDelta)
 {
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
-		return;
+	
 	CGameObject::Late_Tick(fTimeDelta);
 }
 
 HRESULT CCharacter::Render()
 {
-	/*if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;*/
-
 	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
 	for (size_t i = 0; i < iNumMeshs; i++)
@@ -90,12 +86,12 @@ HRESULT CCharacter::Ready_Component()
 {
 	/* For.Com_Shader*/
 	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_ANIMMESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+		COMPONENT_SHADER, reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Model*/
 	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
+		COMPONENT_MODEL, reinterpret_cast<CComponent**>(&m_pModelCom))))
 		return E_FAIL;
 
 	/* For.Com_Navigation*/
@@ -103,7 +99,7 @@ HRESULT CCharacter::Ready_Component()
 	NavigationDesc.iCurrentIndex = 0;
 
 	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), COM_NAVIGATION_TAG,
-		TAG_NAVIGATION, reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
+		COMPONENT_NAVIGATION, reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
 		return E_FAIL;
 
 	return S_OK;

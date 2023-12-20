@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\Public\Player_IDLE.h"
+#include "..\Public\PlayerState\Player_IDLE.h"
 
 #include "GameInstance.h"
 
@@ -17,18 +17,34 @@ HRESULT CPlayer_IDLE::Initialize(CGameObject* pGameObject)
 
 void CPlayer_IDLE::State_Enter()
 {
-	m_pOwner->Get_ModelCom()->Set_AnimationIndex(32);
+	m_pOwnerModel->Set_AnimationIndex(83);
 }
 
 _uint CPlayer_IDLE::State_Priority_Tick(_float fTimeDelta)
 {
-	
 
 	return m_iStateID;
 }
 
 _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 {
+	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	{
+		return CPlayer::STATE::RUN;
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_Q))
+	{
+		return CPlayer::STATE::ATTACK;
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_SPACE))
+	{
+		return CPlayer::STATE::JUMP;
+	}
+
+	m_pOwner->Get_BodyModel()->Play_Animation(fTimeDelta, true);
+
 	return m_iStateID;
 }
 

@@ -21,8 +21,16 @@ public:
 	virtual _uint	State_Tick(_float fTimeDelta) override;
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
+
 protected:
 	CPlayer*		m_pOwner = { nullptr };
+	CModel*			m_pOwnerModel = { nullptr };
+	CTransform*		m_pOnwerTransform = { nullptr };
+	CNavigation*	m_pOnwerNavigation = { nullptr };
+
+protected:
+	void	Translate(CTransform::STATE eType, _float fTimeDelta,_bool bTurn = false);
+
 public:
 	virtual	void			Free() override;
 };

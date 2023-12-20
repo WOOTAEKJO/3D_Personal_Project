@@ -157,6 +157,24 @@
     <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack">
       <UniqueIdentifier>{4eeb878d-ea6e-4d00-a75b-e3663c3b4cbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\00. Body">
+      <UniqueIdentifier>{b0b02599-f66d-4609-92ef-5f57a876faaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\01. Weapon">
+      <UniqueIdentifier>{7ee5992e-84b3-49ba-8738-18746dc60fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\02. Effect">
+      <UniqueIdentifier>{581684d6-69dd-439a-b09f-1bab86109e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\01. Weapon\00.Spear">
+      <UniqueIdentifier>{01007070-94e9-44ae-a143-aeb502a672ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\04. Animation_Window">
+      <UniqueIdentifier>{d1d24db2-b585-4029-b4e7-c09f5047264d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\03. SubObject">
+      <UniqueIdentifier>{ccd61366-39bc-478f-9a4b-e347f3f78d42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -297,12 +315,6 @@
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\05. Character</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player.h">
-      <Filter>02.GameObjects\05. Character\00.Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Player_State.h">
-      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PlayerState\Player_Run.h">
       <Filter>95. State\00. StatMachine_State\00. Player\01. Run</Filter>
     </ClInclude>
@@ -312,8 +324,26 @@
     <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player\Player_Body.h">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player\Player.h">
+      <Filter>02.GameObjects\05. Character\00.Player</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h">
       <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_State.h">
+      <Filter>95. State\00. StatMachine_State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h">
+      <Filter>02.GameObjects\05. Character\00.Player\01. Weapon\00.Spear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Animation_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\04. Animation_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SubObject_Demo.h">
+      <Filter>02.GameObjects\98. Demo\03. SubObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -428,15 +458,6 @@
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\05. Character</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02.GameObjects\05. Character\00.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_IDLE.cpp">
-      <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_State.cpp">
-      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Run.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\01. Run</Filter>
     </ClCompile>
@@ -445,6 +466,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player_Body.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_State.cpp">
+      <Filter>95. State\00. StatMachine_State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\01. Weapon\00.Spear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Animation_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\04. Animation_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SubObject_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\03. SubObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

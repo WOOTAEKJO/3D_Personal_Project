@@ -45,11 +45,6 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	CModel*		Get_ModelCom()	{ return m_pModelCom; }
-	CTransform* Get_Transform() { return m_pTransformCom; }
-	CNavigation* Get_Navigation() { return m_pNavigationCom; }
-
-public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
 
 protected:

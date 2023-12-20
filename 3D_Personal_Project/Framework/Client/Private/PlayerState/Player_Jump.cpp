@@ -17,7 +17,7 @@ HRESULT CPlayer_Jump::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Jump::State_Enter()
 {
-	m_pOwner->Get_ModelCom()->Set_AnimationIndex(84);
+	m_pOwnerModel->Set_AnimationIndex(84);
 
 	m_pOwner->Open_Physics_Desc()->bGround = false;
 	m_pOwner->Open_Physics_Desc()->bJump = true;
@@ -36,7 +36,7 @@ _uint CPlayer_Jump::State_Tick(_float fTimeDelta)
 {
 	Move(fTimeDelta);
 
-	m_pOwner->Get_ModelCom()->Play_Animation(fTimeDelta, false);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	/*if (m_pOwner->Get_ModelCom()->Is_Animation_Finished())
 		return CPlayer::STATE::IDLE;*/
@@ -94,27 +94,33 @@ void CPlayer_Jump::Move(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
-		_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_LOOK);
+		/*_vector vDir = m_pOnwerTransform->Get_State(CTransform::STATE::STATE_LOOK);
 		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta;
-		m_pOwner->Get_Transform()->Translate(vPos,m_pOwner->Get_Navigation());
+		m_pOnwerTransform->Translate(vPos,m_pOnwerNavigation);*/
+		Translate(CTransform::STATE::STATE_LOOK, fTimeDelta);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_DOWN))
 	{
-		_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_LOOK);
+		/*_vector vDir = m_pOnwerTransform->Get_State(CTransform::STATE::STATE_LOOK);
 		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta * -1.f;
-		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());
+		m_pOnwerTransform->Translate(vPos, m_pOwner->Get_Navigation());*/
+
+		Translate(CTransform::STATE::STATE_LOOK, fTimeDelta,true);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_LEFT))
 	{
-		_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
+		/*_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
 		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta * -1.f;
-		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());
+		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());*/
+		Translate(CTransform::STATE::STATE_RIGHT, fTimeDelta, true);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 	{
-		_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
+		/*_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
 		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta;
-		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());
+		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());*/
+		Translate(CTransform::STATE::STATE_RIGHT, fTimeDelta);
+
 	}
 }
 

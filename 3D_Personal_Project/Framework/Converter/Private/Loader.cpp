@@ -226,6 +226,14 @@ HRESULT CLoader::Loading_For_Converter_Level()
 
 #pragma endregion
 
+#pragma region 아이템
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SPEAR_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SPEAR_PATH))))
+		return E_FAIL;
+
+#pragma endregion 
+
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));

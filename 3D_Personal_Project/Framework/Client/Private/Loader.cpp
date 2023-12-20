@@ -16,31 +16,11 @@
 
 #include "Plateform.h"
 #include "SkyBox.h"
+
 #include "Player.h"
+#include "Player_Body.h"
+#include "Player_Weapon_Spear.h"
 
-/* For.Prototype_Component_Shader_VTXTBN*/
-/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
-	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"), VTXTBN::Elements, VTXTBN::iElementsNum))))
-	return E_FAIL;
-
-#define VTXTBN VTXTBN
-#define ELMENTS(type) (type::Elements)
-#define ELENENTSNUM(type) (type::iElementsNum)
-
-#define LOAD_SHADER_BTN(eLevel,szKey,szPath)			\
-	m_pGameInstance->Add_Component_ProtoType(			\
-eLevel,	szKey, 	CShader::Create(m_pDevice, m_pContext,	\	
-szPath, ELMENTS(VTXTBN), ELENENTSNUM(VTXTBN)));	*/		
-
-//m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
-//	TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"));
-
-#define GET_SINGLE(type) (type::GetInstance())
-#define GAMEINSTANCE GET_SINGLE(CGameInstance)
-
-#define SHADER_PROTOTYPE(type,eLevel,strProtoTag,strFilePaht)		\
-	GAMEINSTANCE->Add_Shader_ProtoType<type>(eLevel,strProtoTag,	\
-	strFilePaht);
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -51,8 +31,6 @@ CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 }
-
-// typedef unsigned(__stdcall* _beginthreadex_proc_type)(void*);
 
 _uint APIENTRY LoadingThread(void* pArg)
 {
@@ -177,6 +155,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, ANIMMODEL_JACK_PATH, matPivot))) return E_FAIL;
 
 #pragma region FOREST
+
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, MODEL_PINETREE_PATH, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, MODEL_SM_REED1_PATH, matPivot))) return E_FAIL;
@@ -226,6 +205,13 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 #pragma endregion
 
+#pragma region 아이템
+
+	matPivot = XMMatrixIdentity();
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SPEAR_TAG, MODEL_SPEAR_PATH, matPivot))) return E_FAIL;
+
+#pragma endregion
+
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION_TAG, COM_NAVOGATION_PAHT))) return E_FAIL;
 	
@@ -244,7 +230,10 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CAnimMesh_Demo>(G0_ANIMMESH_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform>(GO_PLATEFORM_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkyBox>(GO_SKYBOX_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(GO_PLAYER_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Body>(GO_PLAYER_BODY_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Spear>(GO_PLAYER_SPEAR_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

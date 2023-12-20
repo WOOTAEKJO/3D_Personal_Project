@@ -80,8 +80,8 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 
 	/* For.Prototype_Component_AI*/
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG))) return E_FAIL;
-	
-	/* For.Prototype_Component_*/
+
+	/* For.Prototype_Component_RigidBody*/
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CRigidBody>(COM_RIGIDBODY_TAG))) return E_FAIL;
 
 	return S_OK;

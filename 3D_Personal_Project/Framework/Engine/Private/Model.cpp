@@ -123,6 +123,22 @@ void CModel::Ocne_Animation_Run(_uint iIndex)
 	
 }
 
+CBone* CModel::Get_Bone(const _char* strBoneName)
+{
+	auto iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](CBone* pBone) {
+		
+		if (!strcmp(pBone->Get_BoneName(), strBoneName))
+			return true;
+
+		return false;
+	});
+
+	if (iter == m_vecBones.end())
+		return nullptr;
+
+	return *iter;
+}
+
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
 {
 	if (m_vecMesh.empty())

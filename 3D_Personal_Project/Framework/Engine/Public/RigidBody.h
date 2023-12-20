@@ -44,6 +44,8 @@ public:
 
 public:
 	CGameObject*	m_pOwner = { nullptr };
+	CTransform*		m_pOwnerTransform = { nullptr };
+	CNavigation*	m_pOwnerNavigation = { nullptr };
 
 private:
 	_float			m_fGravity = { -9.8f };

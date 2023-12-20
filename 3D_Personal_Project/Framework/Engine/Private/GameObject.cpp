@@ -41,10 +41,10 @@ HRESULT CGameObject::Initialize(void* pArg)
 	if (m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	if (Find_Component(g_pTransformTag) != nullptr)
+	if (Find_Component(TAG_NAME<CTransform>()) != nullptr)
 		return E_FAIL;
 
-	m_mapComponent.emplace(g_pTransformTag, m_pTransformCom);
+	m_mapComponent.emplace(TAG_NAME<CTransform>(), m_pTransformCom);
 	Safe_AddRef(m_pTransformCom);
 	
 	return S_OK;
@@ -80,15 +80,6 @@ void CGameObject::Late_Tick(_float fTimeDelta)
 HRESULT CGameObject::Render()
 {
 	return S_OK;
-}
-
-CComponent* CGameObject::Get_Component(const wstring& strComponentTag)
-{
-	CComponent* pComponent = Find_Component(strComponentTag);
-	if (pComponent == nullptr)
-		return nullptr;
-
-	return pComponent;
 }
 
 void CGameObject::Set_WorldMatrix(_float4x4 matWorld)

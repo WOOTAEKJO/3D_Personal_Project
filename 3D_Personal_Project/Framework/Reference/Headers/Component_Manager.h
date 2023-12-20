@@ -14,6 +14,8 @@
 #include "Navigation.h"
 #include "RigidBody.h"
 
+
+
 BEGIN(Engine)
 
 class CComponent_Manager final : public CBase
@@ -32,7 +34,7 @@ public:
 
 public:
 	PROTOTYPE Get_Com_ProtoType(const _uint& iLevelIndex);
-
+	
 private:
 	map<const wstring, class CComponent*>* m_mapCom_ProtoType;
 	

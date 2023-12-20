@@ -76,8 +76,24 @@
 			return dwRefCnt;									\
 		}
 
-#define TAG_RIGIDBODY TEXT("Com_RigidBody")
-#define TAG_NAVIGATION TEXT("Com_Navigation")
+#define	COMPONENT_BUFFER		TEXT("Com_Buffer")
+#define	COMPONENT_MODEL			TEXT("Com_Model")
+#define	COMPONENT_SHADER		TEXT("Com_Shader")
+#define	COMPONENT_STATEMACHINE	TEXT("Com_Statemachine")
+#define	COMPONENT_TRANSFORM		TEXT("Com_Transform")
+#define	COMPONENT_TEXTURE		TEXT("Com_Texture")
+#define	COMPONENT_AI			TEXT("Com_AI")
+#define	COMPONENT_NAVIGATION	TEXT("Com_Navigation")
+#define	COMPONENT_RIGIDBODY		TEXT("Com_RigidBody")
 
+//#define	COMPONENT_BUFFER_CELL	typeid(CVIBuffer_Cell).name()
+//#define	COMPONENT_MODEL			typeid(CModel).name()
+//#define	COMPONENT_SHADER		typeid(CShader).name()
+//#define	COMPONENT_STATEMACHINE	typeid(CStateMachine).name()
+//#define	COMPONENT_TRANSFORM		typeid(CTransform).name()
+//#define	COMPONENT_TEXTURE		typeid(CTexture).name()
+//#define	COMPONENT_AI			typeid(CAICom).name()
+//#define	COMPONENT_NAVIGATION	typeid(CNavigation).name()
+//#define	COMPONENT_RIGIDBODY		typeid(CRigidBody).name()
 
 #endif // Engine_Macro_h__

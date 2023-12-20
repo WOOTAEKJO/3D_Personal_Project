@@ -16,7 +16,7 @@ class CImGuiMgr final : public CBase
 {
 	DECLARE_SINGLETON(CImGuiMgr)
 public:
-	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN,MODE_OBJECT,MODE_CAMERA, MODE_END};
+	enum IMGUIMODE { MODE_STATIC,MODE_TERRAIN,MODE_OBJECT,MODE_CAMERA,MODE_ANIMATION, MODE_END};
 	enum WINDOWSTATE {WS_MAIN,WS_FILE,WS_SUB1, WS_SUB2, WS_SUB3, WS_SUB4,WS_END};
 	enum FILEMODE { FILEMODE_SAVE, FILEMODE_LOAD,FILEMODE_END};
 private:
@@ -55,6 +55,7 @@ private:
 	void		Set_Terrain_Edit();
 	void		Set_Object_Edit();
 	void		Set_Camera_Edit();
+	void		Set_Animation_Edit();
 
 private:
 	void		Update_Terrain_Pick();

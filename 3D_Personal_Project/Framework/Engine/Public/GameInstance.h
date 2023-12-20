@@ -56,6 +56,7 @@ public: /* For.Level_Manager */
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
 	HRESULT	Add_Clone(_uint iLevelIndex, const wstring & strLayerTag, const wstring & strProtoTypeTag, void* pArg = nullptr, CGameObject * *ppOut = nullptr);
+	CGameObject* Add_Independent_Clone(const wstring & strProtoTypeTag, void* pArg = nullptr);
 	_uint	Get_Current_Level();
 	void	Set_Current_Level(_uint iLevel);
 
