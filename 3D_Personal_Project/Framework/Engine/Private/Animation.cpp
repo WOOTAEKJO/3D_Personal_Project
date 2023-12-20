@@ -99,6 +99,15 @@ void CAnimation::Reset_Animation()
 	m_bFinished = false;
 }
 
+wstring CAnimation::Get_Name()
+{
+	_tchar szFullName[MAX_PATH] = TEXT("");
+	const _char* szTmp = m_szName;
+	MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullName, MAX_PATH);
+
+	return szFullName;
+}
+
 CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)
 {
 	CAnimation* pInstance = new CAnimation();

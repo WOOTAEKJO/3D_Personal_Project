@@ -27,21 +27,22 @@ HRESULT CPlayer_Weapon_Spear::Initialize_Prototype()
 
 HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 {
-	m_pParentsTransform = ((PLAYERSPEAR_DESC*)pArg)->pParentsTransform;
-	Safe_AddRef(m_pParentsTransform);
-	m_pSocketBone = ((PLAYERSPEAR_DESC*)pArg)->pSocketBone;
-	Safe_AddRef(m_pSocketBone);
+	
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Component()))
-		return E_FAIL;
+	/*if (FAILED(Ready_Component()))
+		return E_FAIL;*/
 
-	m_pTransformCom->Set_Scaling(20.f, 20.f, 20.f);
-	//m_pTransformCom->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(90.0f));
-	//m_pTransformCom->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(90.0f));
-	m_pTransformCom->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.0f));
+	if (FAILED(Load_Data("../Bin/Data/Animation/SubObject/Spear.json")))
+		return E_FAIL;
+	
+	m_pParentsTransform = ((PLAYERSPEAR_DESC*)pArg)->pParentsTransform;
+	Safe_AddRef(m_pParentsTransform);
+	m_pSocketBone = (((PLAYERSPEAR_DESC*)pArg)->pBones)[m_iSocketBoneIndex];
+	Safe_AddRef(m_pSocketBone);
+
 	return S_OK;
 }
 
@@ -82,6 +83,22 @@ HRESULT CPlayer_Weapon_Spear::Render()
 	return S_OK;
 }
 
+void CPlayer_Weapon_Spear::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("ModelTag") == In_Json.end())
+		return;
+
+	m_iSocketBoneIndex = In_Json["BoneIndex"];
+	string strTag = In_Json["ModelTag"];
+
+	m_strModelTag.assign(strTag.begin(), strTag.end());
+
+	CGameObject::Load_FromJson(In_Json);
+
+	if (FAILED(Ready_Component()))
+		return;
+}
+
 HRESULT CPlayer_Weapon_Spear::Bind_ShaderResources()
 {
 
@@ -104,7 +121,19 @@ HRESULT CPlayer_Weapon_Spear::Ready_Component()
 {
 
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
-	if (FAILED(Add_Component<CModel>(MODEL_SPEAR_TAG, &m_pModelCom))) return E_FAIL;
+	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Weapon_Spear::Load_Data(const _char* strFilePath)
+{
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
+		return E_FAIL;
+
+	Load_FromJson(jLoad);
 
 	return S_OK;
 }

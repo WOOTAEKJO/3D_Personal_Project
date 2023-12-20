@@ -239,7 +239,7 @@ void CImGuiMgr::Set_Animation_Edit()
     ImguiMrgWinDesc.strName = "Animation";
     ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
-    ImguiMrgWinDesc.vWinSize = _float2(300.f, 500.f);
+    ImguiMrgWinDesc.vWinSize = _float2(350.f, 700.f);
 
     m_mapWindow[MODE_ANIMATION].emplace(WS_MAIN, CAnimation_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
@@ -333,6 +333,10 @@ void CImGuiMgr::File_Render()
         break;
     case Client::CImGuiMgr::MODE_OBJECT:
         Path = DATA_OBJECT_PATH;
+        Filter = ".json";
+        break;
+    case Client::CImGuiMgr::MODE_ANIMATION:
+        Path = DATA_ANIMATION_PATH;
         Filter = ".json";
         break;
     case Client::CImGuiMgr::MODE_CAMERA:

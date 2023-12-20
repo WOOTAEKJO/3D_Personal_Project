@@ -164,7 +164,7 @@ HRESULT CPlayer::Ready_Parts()
 
 	CPlayer_Weapon_Spear::PLAYERSPEAR_DESC PlayerSpear_Desc = {};
 	PlayerSpear_Desc.pParentsTransform = m_pTransformCom;
-	PlayerSpear_Desc.pSocketBone = Get_BodyModel()->Get_Bone("RightHand");
+	PlayerSpear_Desc.pBones = Get_BodyModel()->Get_Bones();
 	if (FAILED(Add_Parts(GO_PLAYER_SPEAR_TAG, TEXT("Parts_Spear"), &PlayerSpear_Desc))) return E_FAIL;
 
 	return S_OK;

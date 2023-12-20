@@ -5,7 +5,7 @@ BEGIN(Engine)
 
 class CChannel;
 
-class CAnimation final : public CBase
+class ENGINE_DLL CAnimation final : public CBase
 {
 private:
 	CAnimation();
@@ -24,6 +24,7 @@ public:
 
 	_bool		Is_Finished() { return m_bFinished; }
 	void		Set_ReStart() { m_bFinished = false; }
+	wstring		Get_Name();
 
 private:
 	_char				m_szName[MAX_PATH] = "";

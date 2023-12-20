@@ -5,6 +5,7 @@
 
 #define DATA_TERRAIN_PATH			"../Bin/Data/Terrain/"
 #define DATA_OBJECT_PATH			"../Bin/Data/Object/"
+#define	DATA_ANIMATION_PATH			"../Bin/Data/Animation/"
 
 #pragma endregion	
 
@@ -164,7 +165,7 @@
 
 #pragma region 아이템
 
-#define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Model_Spear")
+#define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
 #define	MODEL_SPEAR_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Spear/Spear.bin"
 
 #pragma endregion
@@ -211,17 +212,16 @@
 
 #define G0_TERRAIN_TAG			TEXT("Prototype_GameObject_Terrain")
 
-#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
-
 #define G0_DCAMERA_TAG			TEXT("Prototype_GameObject_DynamicCamera")
 
+#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
-
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
+#define G0_SUBMESH_DEMO_TAG		TEXT("Prototype_GameObject_Submesh_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 
-#define GO_SKYBOX_TAG		TEXT("Prototype_GameObject_SkyBox")
+#define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
 #pragma region 캐릭터
 

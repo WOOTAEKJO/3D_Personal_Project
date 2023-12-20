@@ -28,8 +28,11 @@ public:
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 	CBone* Get_Bone(const _char* strBoneName);
+	CBone* Get_Bone(_uint iBoneIndex) { return m_vecBones[iBoneIndex]; }
+	vector<CAnimation*> Get_Animations() { return m_vecAnimation; }
+	BONES	Get_Bones() { return m_vecBones; }
 
-	void	Set_AnimationIndex(_uint iIndex) { 
+	void	Set_AnimationIndex(_uint iIndex) {
 
 		/*if (m_bChnageAnim)
 			return;*/

@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CBone final : public	CBase
+class ENGINE_DLL CBone final : public	CBase
 {
 private:
 	CBone();
@@ -14,6 +14,7 @@ public:
 
 public:
 	const _char*	Get_BoneName() const { return m_szName; }
+	wstring			Get_BoneName_wstr();
 	_matrix	Get_CombinedTransformationMatrix() const { 
 		return XMLoadFloat4x4(&m_matCombinedTransformation); }
 

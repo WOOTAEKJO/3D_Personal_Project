@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CModel;
+class CAnimation;
 
 END
 
@@ -12,10 +13,9 @@ BEGIN(Client)
 class CAnimMesh_Demo final : public CDemo
 {
 public:
-	typedef struct tagAnimMeshDemoValue : public CGameObject::GAMEOBJECT_DESC
+	typedef struct tagAnimMeshDemoValue : public DEMO_DESC
 	{
-		wstring		strModelTag;
-		_float4		vPos;
+		
 
 	}ANIMDEMOVALUE;
 private:
@@ -30,7 +30,7 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-	virtual HRESULT Set_Control_Variable(void* pArg) override;
+	virtual HRESULT Set_Control_Variable(void* pArg) override;	
 
 public:
 	void	Set_TransformState(CTransform::STATE eType, _float4 vVector);
@@ -39,20 +39,23 @@ public:
 	void	Rotation(_float fX, _float fY, _float fZ);
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
+	void	Set_AnimationIndex(_uint iIndex);
+	vector<CAnimation*> Get_Animations();
+
+	void	Set_Anim_Play(_bool bPlay) { m_bPlay = bPlay; }
+	CBone* Get_Bone(_uint iIndex);
+	vector<CBone*>	Get_Bones();
+
 public:
 	_bool	Get_Picked();
 
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
-	CNavigation* m_pNavigationCom = { nullptr };
-
-private:
-	wstring		m_strModelTag;
-	_float4		m_vObjectPos = {};	
 
 private:
 	_uint		m_iAnimKey = { 0 };
+	_bool		m_bPlay = {true};
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

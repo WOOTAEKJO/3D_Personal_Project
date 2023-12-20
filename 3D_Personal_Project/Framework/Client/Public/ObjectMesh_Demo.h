@@ -12,10 +12,8 @@ BEGIN(Client)
 class CObjectMesh_Demo final : public CDemo
 {
 public:
-	typedef struct tagObjectMeshDemoValue
+	typedef struct tagObjectMeshDemoValue : public DEMO_DESC
 	{
-		wstring		strModelTag;
-		_float4		vPos;
 
 	}OBDEMOVALUE;
 private:
@@ -40,9 +38,6 @@ public:
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
 public:
-	wstring	Get_ModelTag() { return m_strModelTag; }
-
-public:
 	_bool	Get_Picked();
 
 public:
@@ -52,10 +47,6 @@ public:
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
-
-private:
-	wstring		m_strModelTag;
-	_float4		m_vObjectPos = {};	
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;
