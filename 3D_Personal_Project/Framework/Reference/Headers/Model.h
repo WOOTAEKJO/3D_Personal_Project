@@ -23,25 +23,29 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render(_uint iMeshIndex);
 	void	Play_Animation(_float fTimeDelta, _bool bLoop);
+	void	Ocne_Animation_Run(_uint iIndex);
 
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
+	CBone* Get_Bone(const _char* strBoneName);
 
 	void	Set_AnimationIndex(_uint iIndex) { 
 
-		if (m_bChnageAnim)
-			return;
+		/*if (m_bChnageAnim)
+			return;*/
 
 		m_iNextAnimationIndex = iIndex;
 		m_bChnageAnim = true;
 	}
 
-	void	Ocne_Animation_Run(_uint iIndex);
+	
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, TEXTURETYPE eType);
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
+
+	_bool	Is_Animation_Finished();
 
 private:
 	_uint					m_iMeshesNum = { 0 };

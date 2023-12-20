@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CGameObject;
 class CStateMachine;
+class CGameInstance;
 
 class ENGINE_DLL CState abstract : public CBase
 {
@@ -21,6 +22,9 @@ public:
 
 public:
 	void	Set_StateID(const _uint & iStateID) { m_iStateID = iStateID; }
+
+protected:
+	CGameInstance*		m_pGameInstance = { nullptr };
 
 protected:
 	_uint				m_iStateID = { 0 };

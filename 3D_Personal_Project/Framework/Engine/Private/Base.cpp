@@ -7,6 +7,8 @@ CBase::CBase()
 _ulong CBase::AddRef()
 {
 	return ++m_dwRefCnt;
+
+	
 }
 
 /* 삭제하거나 감소시키거나. */

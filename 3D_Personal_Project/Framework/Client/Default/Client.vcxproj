@@ -107,7 +107,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -153,7 +153,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,9 +191,11 @@
     <ClInclude Include="..\Imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\Public\Animation_Window.h" />
     <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
+    <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Demo.h" />
@@ -212,6 +214,16 @@
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Plateform.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_IDLE.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Jump.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Run.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_State.h" />
+    <ClInclude Include="..\Public\Player\Player.h" />
+    <ClInclude Include="..\Public\Player\Player_Body.h" />
+    <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
+    <ClInclude Include="..\Public\SkyBox.h" />
+    <ClInclude Include="..\Public\SubObject_Demo.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
     <ClInclude Include="..\Public\Terrain_Window.h" />
@@ -232,9 +244,11 @@
     <ClCompile Include="..\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\Animation_Window.cpp" />
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
@@ -251,6 +265,16 @@
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Jump.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Run.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_State.cpp" />
+    <ClCompile Include="..\Private\Player\Player.cpp" />
+    <ClCompile Include="..\Private\Player\Player_Body.cpp" />
+    <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
+    <ClCompile Include="..\Private\SkyBox.cpp" />
+    <ClCompile Include="..\Private\SubObject_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain_Window.cpp" />
@@ -274,13 +298,11 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Bin\ShaderFiles\Shader_Defines.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

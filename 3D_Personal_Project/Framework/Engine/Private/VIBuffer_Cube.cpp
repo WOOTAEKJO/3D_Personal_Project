@@ -14,7 +14,7 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 {
 	m_iVertexBuffersNum = 1;
 	m_iVertexNum = 8;
-	m_iVertexStride = sizeof(VTXPOSTEX);
+	m_iVertexStride = sizeof(VTXCUBE);
 
 	m_iIndexNum = 36;
 	m_iIndexStride = 2;
@@ -32,31 +32,31 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 
 	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
 
-	VTXPOSTEX* pVerpostex = new VTXPOSTEX[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
+	VTXCUBE* pVerpostex = new VTXCUBE[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
 
-	pVerpostex[0].fPosition = _float3(-0.5f, 0.5f, -0.5f);
-	//pVerpostex[0].fTexCoord = _float2(0.f, 0.f);
+	pVerpostex[0].vPosition = _float3(-0.5f, 0.5f, -0.5f);
+	pVerpostex[0].vTexCoord = pVerpostex[0].vPosition;
 
-	pVerpostex[1].fPosition = _float3(0.5f, 0.5f, -0.5f);
-	//pVerpostex[1].fTexCoord = _float2(1.f, 0.f);
+	pVerpostex[1].vPosition = _float3(0.5f, 0.5f, -0.5f);
+	pVerpostex[1].vTexCoord = pVerpostex[1].vPosition;
 
-	pVerpostex[2].fPosition = _float3(0.5f, -0.5f, -0.5f);
-	//pVerpostex[2].fTexCoord = _float2(1.f, 1.f);
+	pVerpostex[2].vPosition = _float3(0.5f, -0.5f, -0.5f);
+	pVerpostex[2].vTexCoord = pVerpostex[2].vPosition;
 
-	pVerpostex[3].fPosition = _float3(-0.5f, -0.5f, -0.5f);
-	//pVerpostex[3].fTexCoord = _float2(0.f, 1.f);
+	pVerpostex[3].vPosition = _float3(-0.5f, -0.5f, -0.5f);
+	pVerpostex[3].vTexCoord = pVerpostex[3].vPosition;
 
-	pVerpostex[4].fPosition = _float3(-0.5f, 0.5f, 0.5f);
-	//pVerpostex[0].fTexCoord = _float2(0.f, 0.f);
+	pVerpostex[4].vPosition = _float3(-0.5f, 0.5f, 0.5f);
+	pVerpostex[4].vTexCoord = pVerpostex[4].vPosition;
 
-	pVerpostex[5].fPosition = _float3(0.5f, 0.5f, 0.5f);
-	//pVerpostex[1].fTexCoord = _float2(1.f, 0.f);
+	pVerpostex[5].vPosition = _float3(0.5f, 0.5f, 0.5f);
+	pVerpostex[5].vTexCoord = pVerpostex[5].vPosition;
 
-	pVerpostex[6].fPosition = _float3(0.5f, -0.5f, 0.5f);
-	//pVerpostex[2].fTexCoord = _float2(1.f, 1.f);
+	pVerpostex[6].vPosition = _float3(0.5f, -0.5f, 0.5f);
+	pVerpostex[6].vTexCoord = pVerpostex[6].vPosition;
 
-	pVerpostex[7].fPosition = _float3(-0.5f, -0.5f, 0.5f);
-	//pVerpostex[3].fTexCoord = _float2(0.f, 1.f);
+	pVerpostex[7].vPosition = _float3(-0.5f, -0.5f, 0.5f);
+	pVerpostex[7].vTexCoord = pVerpostex[7].vPosition;
 
 	m_SubResource_Data.pSysMem = pVerpostex;
 
@@ -87,7 +87,7 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 	pIndex[iNumIndex++] = 1;
 	pIndex[iNumIndex++] = 6;
 	pIndex[iNumIndex++] = 2;
-//---------------------
+//--------------------- +X
 	pIndex[iNumIndex++] = 4;
 	pIndex[iNumIndex++] = 0;
 	pIndex[iNumIndex++] = 3;
@@ -95,7 +95,7 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 	pIndex[iNumIndex++] = 4;
 	pIndex[iNumIndex++] = 3;
 	pIndex[iNumIndex++] = 7;
-//---------------------
+//--------------------- -X
 	pIndex[iNumIndex++] = 4;
 	pIndex[iNumIndex++] = 5;
 	pIndex[iNumIndex++] = 1;
@@ -103,7 +103,7 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 	pIndex[iNumIndex++] = 4;
 	pIndex[iNumIndex++] = 1;
 	pIndex[iNumIndex++] = 0;
-//---------------------
+//--------------------- +Y
 	pIndex[iNumIndex++] = 3;
 	pIndex[iNumIndex++] = 2;
 	pIndex[iNumIndex++] = 6;
@@ -112,6 +112,26 @@ HRESULT CVIBuffer_Cube::Initialize_ProtoType()
 	pIndex[iNumIndex++] = 6;
 	pIndex[iNumIndex++] = 7;
 
+//--------------------- -Y
+
+	pIndex[iNumIndex++] = 0;
+	pIndex[iNumIndex++] = 1;
+	pIndex[iNumIndex++] = 2;
+
+	pIndex[iNumIndex++] = 0;
+	pIndex[iNumIndex++] = 2;
+	pIndex[iNumIndex++] = 3;
+
+//--------------------- +Z
+	pIndex[iNumIndex++] = 7;
+	pIndex[iNumIndex++] = 6;
+	pIndex[iNumIndex++] = 5;
+
+	pIndex[iNumIndex++] = 7;
+	pIndex[iNumIndex++] = 5;
+	pIndex[iNumIndex++] = 4;
+
+//--------------------- -Z
 	m_SubResource_Data.pSysMem = pIndex;
 
 	if (FAILED(Create_Buffer(&m_pIB)))

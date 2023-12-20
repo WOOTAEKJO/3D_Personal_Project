@@ -35,7 +35,12 @@ CComponent* CComponent_Manager::Add_Component_Clone(const _uint& iLevelIndex, co
 {
 	CComponent* pComponent = Find_Com_ProtoType(iLevelIndex,strProtoTypeTag);
 	if (pComponent == nullptr)
-		return nullptr;
+	{
+		pComponent = Find_Com_ProtoType(0, strProtoTypeTag);
+		if (pComponent == nullptr)
+			return nullptr;
+	}
+		
 
 	CComponent* pClone = pComponent->Clone(pArg);
 	if (pClone == nullptr)

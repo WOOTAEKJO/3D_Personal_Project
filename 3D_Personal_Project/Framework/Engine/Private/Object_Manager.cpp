@@ -66,6 +66,18 @@ HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag
 	return S_OK;
 }
 
+CGameObject* CObject_Manager::Add_Independent_Clone(const wstring& strProtoTypeTag, void* pArg)
+{
+	CGameObject* pPrototype = Find_ProtoType(strProtoTypeTag);
+
+	if (pPrototype == nullptr)
+		return nullptr;
+
+	CGameObject* pClone = pPrototype->Clone(pArg);
+
+	return pClone;
+}
+
 void CObject_Manager::Priority_Tick(_float fTimeDelta)
 {
 	for (size_t i = 0; i < m_iNumLevel; i++) {

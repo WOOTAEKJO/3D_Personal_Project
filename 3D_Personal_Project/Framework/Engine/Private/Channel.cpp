@@ -33,7 +33,7 @@ HRESULT CChannel::Initialize(CHANNEL Channel, const CModel::BONES& vecBones)
 	return S_OK;
 }
 
-void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones, _uint* iCurrentKeyFrameIndex)
+void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, const CModel::BONES& vecBones, _uint* iCurrentKeyFrameIndex, KEYFRAME* PrevKeyFrame)
 {
 	if (fCurrentTrackPosition == 0.f)
 		*iCurrentKeyFrameIndex = 0;
@@ -72,10 +72,10 @@ void CChannel::Invalidate_TransformationMatrix(_float fCurrentTrackPosition, con
 		vRot = XMQuaternionSlerp(XMLoadFloat4(&vSourRot), XMLoadFloat4(&vDestRot), fRatio);
 		vPos = XMVectorLerp(XMLoadFloat3(&vSourPos), XMLoadFloat3(&vDestPos), fRatio);
 
-		 XMStoreFloat3(&m_PrevKeyFrame.vScale, vScale);
-		 XMStoreFloat4(&m_PrevKeyFrame.vRotation, vRot);
-		 XMStoreFloat3(&m_PrevKeyFrame.vPosition, vPos);
-		 m_PrevKeyFrame.fTrackPosition = fCurrentTrackPosition;
+		 XMStoreFloat3(&PrevKeyFrame->vScale, vScale);
+		 XMStoreFloat4(&PrevKeyFrame->vRotation, vRot);
+		 XMStoreFloat3(&PrevKeyFrame->vPosition, vPos);
+		 //m_PrevKeyFrame.fTrackPosition = fCurrentTrackPosition;
 
 	}
 

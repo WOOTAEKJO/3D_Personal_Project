@@ -65,6 +65,9 @@ public: /* 카메라에 사용*/
 	void	LookAt_OnLand(_fvector	fTargetPos);
 
 public:
+	void	Translate(_fvector vTranslation,CNavigation* pNavigation);
+
+public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);
 
 public:

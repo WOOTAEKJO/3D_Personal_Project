@@ -256,6 +256,14 @@ HRESULT CGameInstance::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag, 
 	return m_pObject_Manager->Add_Clone(iLevelIndex, strLayerTag, strProtoTypeTag, ppOut, pArg);
 }
 
+CGameObject* CGameInstance::Add_Independent_Clone(const wstring& strProtoTypeTag, void* pArg)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+
+	return m_pObject_Manager->Add_Independent_Clone(strProtoTypeTag, pArg);
+}
+
 _uint CGameInstance::Get_Current_Level()
 {
 	if (nullptr == m_pObject_Manager)

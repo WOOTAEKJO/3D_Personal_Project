@@ -12,7 +12,7 @@ CComponent::CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CComponent::CComponent(const CComponent& rhs)
 	:m_pDevice(rhs.m_pDevice),m_pContext(rhs.m_pContext), m_bClone(true),
-	m_pGameInstance(rhs.m_pGameInstance)
+	m_pGameInstance(rhs.m_pGameInstance), m_strClassName(rhs.m_strClassName)
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
@@ -27,6 +27,14 @@ HRESULT CComponent::Initialize_ProtoType()
 HRESULT CComponent::Initialize(void* pArg)
 {
 	return S_OK;
+}
+
+void CComponent::Init_ClassName()
+{
+	m_strClassName = typeid(this).name();
+	m_Class_HashCode = typeid(this).hash_code();
+
+	
 }
 
 void CComponent::Free()

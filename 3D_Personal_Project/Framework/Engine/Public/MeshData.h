@@ -30,6 +30,8 @@ public:
 		_uint				iNumVertices;
 		_uint				iNumFaces;
 
+		_uint2				iVerticesXY;
+
 		vector<FLOAT3X3>	vecNaviPoints;
 
 		MODEL_TYPE			eModel_Type = TYPE_END;
@@ -70,6 +72,8 @@ private:
 private:
 	_uint				m_iNumVertices;
 	_uint				m_iNumFaces;
+
+	_uint2				m_iVerticesXY;
 
 	MODEL_TYPE			m_eModel_Type = { TYPE_END };
 

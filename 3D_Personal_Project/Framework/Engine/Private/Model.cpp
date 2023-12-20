@@ -98,9 +98,10 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 
 	if(m_bChnageAnim){
 		
-		vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
+		//vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
+		vector<KEYFRAME> vecPrevKeyFrame = m_vecAnimation[m_iCurrentAnimationIndex]->Get_PrevKeyFrame();
 
-		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecCurChannel))
+		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecPrevKeyFrame))
 		{
 			m_bChnageAnim = false;
 			m_iCurrentAnimationIndex = m_iNextAnimationIndex;
@@ -120,6 +121,22 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 void CModel::Ocne_Animation_Run(_uint iIndex)
 {
 	
+}
+
+CBone* CModel::Get_Bone(const _char* strBoneName)
+{
+	auto iter = find_if(m_vecBones.begin(), m_vecBones.end(), [&](CBone* pBone) {
+		
+		if (!strcmp(pBone->Get_BoneName(), strBoneName))
+			return true;
+
+		return false;
+	});
+
+	if (iter == m_vecBones.end())
+		return nullptr;
+
+	return *iter;
 }
 
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
@@ -152,6 +169,18 @@ HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint
 HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshIndex)
 {
 	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones);
+}
+
+_bool CModel::Is_Animation_Finished()
+{
+	if (m_vecAnimation[m_iCurrentAnimationIndex]->Is_Finished())
+	{
+		m_vecAnimation[m_iCurrentAnimationIndex]->Set_ReStart();
+
+		return true;
+	}
+
+	return false;
 }
 
 HRESULT CModel::Ready_Meshes(CMeshData::MESHDATADESC MeshData)
@@ -211,7 +240,11 @@ HRESULT CModel::Ready_Materials(CMeshData::MESHDATADESC MeshData, const string& 
 			
 			Material_Desc.pMtrlTexture[j] = CTexture::Create(m_pDevice, m_pContext, szFullPath, 1);
 			if (Material_Desc.pMtrlTexture[j] == nullptr)
-				return E_FAIL;
+			{
+				//return E_FAIL;
+				continue;
+			}
+				
 		}
 		m_vecMaterial.push_back(Material_Desc);
 	}

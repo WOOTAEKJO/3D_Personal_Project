@@ -34,6 +34,9 @@ HRESULT CVIBuffer_Terrain::Initialize(void* pArg)
 
 HRESULT CVIBuffer_Terrain::Init_Buffer(CMeshData::MESHDATADESC tMeshData)
 {
+	m_iNumVerticesX = tMeshData.iVerticesXY.iX;
+	m_iNumVerticesZ = tMeshData.iVerticesXY.iY;
+
 	m_iVertexBuffersNum = 1;
 	m_iVertexNum = tMeshData.iNumVertices;
 	m_iVertexStride = sizeof(VTXMESH);

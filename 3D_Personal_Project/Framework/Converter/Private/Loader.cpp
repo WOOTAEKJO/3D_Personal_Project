@@ -7,30 +7,6 @@
 #include "Converter_Model.h"
 #include "Mesh_Demo.h"
 
-/* For.Prototype_Component_Shader_VTXTBN*/
-/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
-	CShader::Create(m_pDevice, m_pContext, TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"), VTXTBN::Elements, VTXTBN::iElementsNum))))
-	return E_FAIL;
-
-#define VTXTBN VTXTBN
-#define ELMENTS(type) (type::Elements)
-#define ELENENTSNUM(type) (type::iElementsNum)
-
-#define LOAD_SHADER_BTN(eLevel,szKey,szPath)			\
-	m_pGameInstance->Add_Component_ProtoType(			\
-eLevel,	szKey, 	CShader::Create(m_pDevice, m_pContext,	\	
-szPath, ELMENTS(VTXTBN), ELENENTSNUM(VTXTBN)));	*/		
-
-//m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(LEVEL_TOOL, TEXT("Prototype_Component_Shader_VTXTBN"),
-//	TEXT("../Bin/Export/Debug/x64/ShaderFiles/Shader_VtxTBN.hlsl"));
-
-#define GET_SINGLE(type) (type::GetInstance())
-#define GAMEINSTANCE GET_SINGLE(CGameInstance)
-
-#define SHADER_PROTOTYPE(type,eLevel,strProtoTag,strFilePaht)		\
-	GAMEINSTANCE->Add_Shader_ProtoType<type>(eLevel,strProtoTag,	\
-	strFilePaht);
-
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
 	, m_pContext(pContext)
@@ -119,16 +95,144 @@ HRESULT CLoader::Loading_For_Converter_Level()
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_FIONA_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_FIONA_PATH))))
 		return E_FAIL;*/
-	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_PINETREE_TAG,
-		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_PINETREE_PATH))))
-		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_JACK_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_JACK_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_JACK_PATH))))
-		return E_FAIL;
+		return E_FAIL;*/
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_BAT_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_BAT_PATH))))
 		return E_FAIL;*/
+#pragma region FOREST
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_REED1_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_REED1_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_REED2_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_REED2_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREE2_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREE2_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREE3_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREE3_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREE4_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREE4_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_01_A_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_01_B_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_01_C_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_02_A_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_02_B_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_02_C_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_03_A_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_03_B_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_DEADTREES_DEAD_TREE_03_C_TRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FORESTTRUNK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FORESTTRUNK_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_CPINE1_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_CPINE1_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_CPINE2_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_CPINE2_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_CPINE3_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_CPINE3_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_MAPLE1_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_MAPLE1_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_OWLTREE_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_OWLTREE_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_PINE1_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_PINE1_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS1_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS1_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS2_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS2_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS3_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS3_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS4_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS4_PATH))))
+		return E_FAIL;*/
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SM_ROOTS5_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SM_ROOTS5_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_TREE_PLATEFORME01X01_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_TREE_PLATEFORME01X01_PATH))))
+		return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_TRUNKBREAK_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_TRUNKBREAK_PATH))))
+		return E_FAIL;*/
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODSTOMP_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODSTOMP_PATH))))
+		return E_FAIL;*/
+
+#pragma endregion
+
+#pragma region 아이템
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SPEAR_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SPEAR_PATH))))
+		return E_FAIL;
+
+#pragma endregion 
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	

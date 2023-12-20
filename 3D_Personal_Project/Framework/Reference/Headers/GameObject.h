@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "GameInstance.h"
 
 BEGIN(Engine)
 
@@ -33,6 +34,19 @@ public:
 	// 업데이트를 먼저, 중간, 나중으로 나누어 사용한다.
 
 	virtual HRESULT Render();
+public:
+	template<typename T>
+	T* Get_Component()
+	{
+		CComponent* pComponent = Find_Component(TAG_NAME<T>());
+		if (pComponent == nullptr)
+		{
+			MSG_BOX("Failed Find Component");
+			return nullptr;
+		}
+
+		return dynamic_cast<T*>(pComponent);
+	}
 
 public:
 	void	Set_WorldMatrix(_float4x4 matWorld);
@@ -69,6 +83,28 @@ protected:
 protected:
 	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,
 		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
+
+	template<typename T>
+	HRESULT Add_Component(const wstring& strPrototypeTag, T** pCom, void* pArg = nullptr)
+	{
+		class CComponent* pComponent = Find_Component(TAG_NAME<T>());
+		if (pComponent != nullptr)
+			return E_FAIL;
+
+		class CComponent* Clone = m_pGameInstance->Add_Component_Clone(m_pGameInstance->Get_Current_Level()
+			, strPrototypeTag, pArg);
+		if (Clone == nullptr)
+			return E_FAIL;
+
+		*pCom = dynamic_cast<T*>(Clone);
+
+		m_mapComponent.emplace(TAG_NAME<T>(), Clone);
+
+		Safe_AddRef(Clone);
+
+		return S_OK;
+	}
+
 	class CComponent* Find_Component(const wstring & strComTag);
 	HRESULT Delete_Component(const wstring& strComTag);
 

@@ -45,6 +45,7 @@ using namespace DirectX;
 #include <typeinfo>
 #include <functional>
 #include <iostream>
+#include <tuple>
 using namespace std;
 
 namespace Engine
