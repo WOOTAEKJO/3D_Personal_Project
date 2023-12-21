@@ -41,6 +41,11 @@ private:
 
 	CAnimMesh_Demo*		m_pCurrentAnimModel = { nullptr };
 
+
+	vector<_uint>		m_vecAnimationIndex;
+	_uint	m_iCurrent_Anim_Count = { 0 };
+	_bool	m_bReserve = { false };
+
 private:
 	vector<wstring>					m_vecAnimPrototypeTag;
 	wstring							m_strPickModelTag;
@@ -50,12 +55,17 @@ private:
 	_int	m_iTransformRadioButton = { 0 };
 
 private:
+
+
+private:
 	void	Animation();
 	void	SubObject();
 
 private:
 	void	Create_Animation_Model(const wstring& strModelTag);
 	void	Create_Sub_Model(const wstring& strSubModelTag);
+
+	_bool	Reserve_Animation();
 
 public:
 	static CAnimation_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);

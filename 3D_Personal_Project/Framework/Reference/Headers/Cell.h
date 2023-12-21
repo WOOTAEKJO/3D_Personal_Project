@@ -19,6 +19,7 @@ public:
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
 	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex);
+	_float	Get_Height(_float3 vPos);
 
 public:
 	_uint	Get_Index() { return m_iIndex; }

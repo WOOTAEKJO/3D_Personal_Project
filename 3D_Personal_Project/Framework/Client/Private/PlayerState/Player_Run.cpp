@@ -36,10 +36,13 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(DIK_Q))
 	{
-		return CPlayer::STATE::ATTACK;
+		return CPlayer::STATE::ATTACK1;
 	}
 
-	
+	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		return CPlayer::STATE::ROLL;
+	}
 
 	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 		m_pOnwerTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);

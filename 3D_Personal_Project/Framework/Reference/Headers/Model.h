@@ -23,7 +23,6 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render(_uint iMeshIndex);
 	void	Play_Animation(_float fTimeDelta, _bool bLoop);
-	void	Ocne_Animation_Run(_uint iIndex);
 
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
@@ -41,7 +40,7 @@ public:
 		m_bChnageAnim = true;
 	}
 
-	
+	_float* Get_AnimExtraSpeed();
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
@@ -49,6 +48,10 @@ public:
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
 
 	_bool	Is_Animation_Finished();
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	_uint					m_iMeshesNum = { 0 };

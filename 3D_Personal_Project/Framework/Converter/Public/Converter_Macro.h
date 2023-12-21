@@ -55,6 +55,9 @@
 #define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
 #define	ANIMMODEL_JACK_PATH		"../Bin/Resources/Models/AnimModel/Jack/Jack.fbx"
 
+#define	ANIMMODEL_TEST_TAG			TEXT("Prototype_Component_AnimModel_Test")
+#define	ANIMMODEL_TEST_PATH		"../Bin/Resources/Test/BaseHumanSkeleton.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

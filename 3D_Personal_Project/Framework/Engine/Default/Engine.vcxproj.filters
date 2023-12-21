@@ -202,6 +202,21 @@
     <Filter Include="01.Utility\03. Component\96. RigidBody">
       <UniqueIdentifier>{a4fe495b-e66b-481f-acf1-04da64b310ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider">
+      <UniqueIdentifier>{71dc9079-d5a3-4b0f-8627-4572c025b7fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding">
+      <UniqueIdentifier>{e3c4ecb9-26a7-4441-a06a-c62412768a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\00. AABB">
+      <UniqueIdentifier>{d85a12ab-fc50-41fd-b763-2f662c314a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\01. OBB">
+      <UniqueIdentifier>{46cdf534-9195-4e85-baeb-0fae6e59f614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere">
+      <UniqueIdentifier>{7673f3f6-9237-40ae-9425-61fccc2e3fd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -399,6 +414,21 @@
     <ClInclude Include="..\Public\RigidBody.h">
       <Filter>01.Utility\03. Component\96. RigidBody</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider.h">
+      <Filter>01.Utility\03. Component\06. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding.h">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_AABB.h">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\00. AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_OBB.h">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\01. OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bounding_Sphere.h">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -574,6 +604,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\RigidBody.cpp">
       <Filter>01.Utility\03. Component\96. RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider.cpp">
+      <Filter>01.Utility\03. Component\06. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding.cpp">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_AABB.cpp">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\00. AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_OBB.cpp">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\01. OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_Sphere.cpp">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

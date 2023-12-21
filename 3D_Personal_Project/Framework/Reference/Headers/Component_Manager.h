@@ -13,6 +13,7 @@
 #include "AICom.h"
 #include "Navigation.h"
 #include "RigidBody.h"
+#include "Collider.h"
 
 
 

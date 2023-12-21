@@ -142,15 +142,6 @@
     <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common">
       <UniqueIdentifier>{4f78f72c-e977-43e6-ad71-0915a96ba114}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\03. Attack4">
-      <UniqueIdentifier>{6b307982-cb5e-4f36-923f-83c2a37042f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\02. Attack3">
-      <UniqueIdentifier>{823cc1b4-8995-4515-a3c4-7ddf3663b64e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\01. Attack2">
-      <UniqueIdentifier>{c08eee77-7600-4347-9026-675f15d168a2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker">
       <UniqueIdentifier>{ee130e22-a69a-436f-ae3c-f9c91a585f26}</UniqueIdentifier>
     </Filter>
@@ -174,6 +165,21 @@
     </Filter>
     <Filter Include="02.GameObjects\98. Demo\03. SubObject">
       <UniqueIdentifier>{ccd61366-39bc-478f-9a4b-e347f3f78d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common">
+      <UniqueIdentifier>{2356d2d3-b8df-4a95-9e42-3486857ded4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\00. Attack1">
+      <UniqueIdentifier>{c08eee77-7600-4347-9026-675f15d168a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\01. Attack2">
+      <UniqueIdentifier>{823cc1b4-8995-4515-a3c4-7ddf3663b64e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\02. Attack3">
+      <UniqueIdentifier>{6b307982-cb5e-4f36-923f-83c2a37042f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Player\04. Roll">
+      <UniqueIdentifier>{8efdc2a5-28ca-404f-993a-ae3ef4c2c6bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -345,6 +351,18 @@
     <ClInclude Include="..\Public\SubObject_Demo.h">
       <Filter>02.GameObjects\98. Demo\03. SubObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Spear_Attack1.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\00. Attack1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Spear_Attack2.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\01. Attack2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Spear_Attack3.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\02. Attack3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Roll.h">
+      <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -487,6 +505,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\SubObject_Demo.cpp">
       <Filter>02.GameObjects\98. Demo\03. SubObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Spear_Attack1.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\00. Attack1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Spear_Attack2.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\01. Attack2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Spear_Attack3.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\01. Linker\00. Common\02. Attack3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,12 +35,17 @@ _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(DIK_Q))
 	{
-		return CPlayer::STATE::ATTACK;
+		return CPlayer::STATE::ATTACK1;
 	}
 
 	if (m_pGameInstance->Key_Down(DIK_SPACE))
 	{
 		return CPlayer::STATE::JUMP;
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
+	{
+		return CPlayer::STATE::ROLL;
 	}
 
 	m_pOwner->Get_BodyModel()->Play_Animation(fTimeDelta, true);

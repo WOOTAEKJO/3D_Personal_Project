@@ -43,11 +43,23 @@ public:
 	vector<CAnimation*> Get_Animations();
 
 	void	Set_Anim_Play(_bool bPlay) { m_bPlay = bPlay; }
+	void	Set_Anim_Loop(_bool bLoop) { m_bLoop = bLoop; }
+
 	CBone* Get_Bone(_uint iIndex);
 	vector<CBone*>	Get_Bones();
 
+	_bool	Is_Finished_Animation();
+
+	_float* Get_ExtraSpeed();
+
 public:
 	_bool	Get_Picked();
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
+	HRESULT	Load_Data(const _char* strFilePath);
 
 private:
 	CShader*	m_pShaderCom = { nullptr };
@@ -56,6 +68,7 @@ private:
 private:
 	_uint		m_iAnimKey = { 0 };
 	_bool		m_bPlay = {true};
+	_bool		m_bLoop = { true };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

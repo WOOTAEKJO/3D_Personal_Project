@@ -32,6 +32,9 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	Load_Data("../Bin/Data/Animation/Jack.json");
+	
+
 	return S_OK;
 }
 
@@ -42,7 +45,7 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
 	if (m_bPlay) {
-		m_pModelCom->Play_Animation(fTimeDelta, true);
+		m_pModelCom->Play_Animation(fTimeDelta, m_bLoop);
 	}
 }
 
@@ -158,6 +161,22 @@ vector<CBone*> CAnimMesh_Demo::Get_Bones()
 	return m_pModelCom->Get_Bones();
 }
 
+_bool CAnimMesh_Demo::Is_Finished_Animation()
+{
+	if (m_pModelCom == nullptr)
+		return false;
+
+	return m_pModelCom->Is_Animation_Finished();
+}
+
+_float* CAnimMesh_Demo::Get_ExtraSpeed()
+{
+	if (m_pModelCom == nullptr)
+		return nullptr;
+
+	return m_pModelCom->Get_AnimExtraSpeed();
+}
+
 _bool CAnimMesh_Demo::Get_Picked()
 {
 	if (m_pModelCom == nullptr || 
@@ -172,6 +191,34 @@ _bool CAnimMesh_Demo::Get_Picked()
 		return true;
 	
 	return false;
+}
+
+void CAnimMesh_Demo::Write_Json(json& Out_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+	
+	m_pModelCom->Write_Json(Out_Json);
+}
+
+void CAnimMesh_Demo::Load_FromJson(const json& In_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Load_FromJson(In_Json);
+}
+
+HRESULT CAnimMesh_Demo::Load_Data(const _char* strFilePath)
+{
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
+		return E_FAIL;
+
+	Load_FromJson(jLoad);
+
+	return S_OK;
 }
 
 HRESULT CAnimMesh_Demo::Bind_ShaderResources()

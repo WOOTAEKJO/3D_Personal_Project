@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CStateMachine;
 class CRigidBody;
+class CCollider;
 
 END
 
@@ -13,7 +14,7 @@ BEGIN(Client)
 class CPlayer final : public CCharacter
 {
 public:
-	enum STATE {IDLE,RUN,ATTACK,JUMP,STATE_END};
+	enum STATE {IDLE,RUN,ATTACK1, ATTACK2, ATTACK3, AIR_ATTACK,JUMP,ROLL,STATE_END};
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& rhs);
@@ -37,6 +38,7 @@ public:
 private:
 	CStateMachine*	m_pStateMachineCom = { nullptr };
 	CRigidBody*		m_pRigidBodyCom = { nullptr };
+	CCollider*		m_pColliderCom = { nullptr };
 
 private:
 	map<const wstring, CGameObject*>	m_mapParts;

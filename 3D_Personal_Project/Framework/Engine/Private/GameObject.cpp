@@ -102,7 +102,8 @@ void CGameObject::Write_Json(json& Out_Json)
 {
 	for (auto& iter : m_mapComponent)
 	{
-		iter.second->Write_Json(Out_Json["Component"]);
+		if(iter.second->Get_UseJson())
+			iter.second->Write_Json(Out_Json["Component"]);
 	}
 }
 
@@ -110,7 +111,8 @@ void CGameObject::Load_FromJson(const json& In_Json)
 {
 	for (auto& iter : m_mapComponent)
 	{
-		iter.second->Load_FromJson(In_Json["Component"]);
+		if (iter.second->Get_UseJson())
+			iter.second->Load_FromJson(In_Json["Component"]);
 	}
 }
 

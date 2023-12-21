@@ -7,6 +7,9 @@ class CChannel;
 
 class ENGINE_DLL CAnimation final : public CBase
 {
+public:
+	enum SPEED_TYPE {TYPE_EXTRASPEED,TYPE_INTERVER_EXTRASPEED,TYPE_END};
+
 private:
 	CAnimation();
 	CAnimation(const CAnimation& rhs);
@@ -23,8 +26,16 @@ public:
 	vector<KEYFRAME>& Get_PrevKeyFrame() { return m_vecPrevKeyFrame; }
 
 	_bool		Is_Finished() { return m_bFinished; }
-	void		Set_ReStart() { m_bFinished = false; }
+	void		Set_ReStart();
+	void		Reset_InterverTime() { m_fInterverTime = 0.f; }
 	wstring		Get_Name();
+
+	_float*		Get_ExtraSpeed() { return m_fExtraSpeed; }
+	//_float*		Get_InterverExtraSpeed() { return &m_fInterverExtraSpeed; }
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	_char				m_szName[MAX_PATH] = "";
@@ -42,6 +53,10 @@ private:
 
 private:
 	_float				m_fInterverTime = { 0.f };
+	//_float				m_fInterverExtraSpeed = { 1.f };
+
+private:
+	_float				m_fExtraSpeed[TYPE_END] = { 1.f,1.f };
 
 public:
 	static	CAnimation* Create(ANIMATION Animation, const CModel::BONES& vecBones);

@@ -21,6 +21,7 @@ void CPlayer_Jump::State_Enter()
 
 	m_pOwner->Open_Physics_Desc()->bGround = false;
 	m_pOwner->Open_Physics_Desc()->bJump = true;
+	m_pOnwerTransform->Set_Ground(false);
 
 	Jump();
 }
@@ -55,7 +56,18 @@ _uint CPlayer_Jump::State_Late_Tick(_float fTimeDelta)
 
 	if (!m_pOwner->Open_Physics_Desc()->bFall)
 	{
+
 		Fall();
+	}
+
+	if (!m_pOwner->Open_Physics_Desc()->bDoubleJump)
+	{
+		if (m_pGameInstance->Key_Down(DIK_SPACE))
+		{
+			m_pOwner->Open_Physics_Desc()->bFall = false;
+			m_pOwner->Open_Physics_Desc()->bDoubleJump = true;
+			Jump();
+		}
 	}
 
 	return m_iStateID;
@@ -80,6 +92,7 @@ void CPlayer_Jump::Land()
 	m_pOwner->Open_Physics_Desc()->bFall = false;
 	m_pOwner->Open_Physics_Desc()->bJump = false;
 	m_pOwner->Open_Physics_Desc()->bLanding = true;
+	m_pOnwerTransform->Set_Ground(true);
 }
 
 void CPlayer_Jump::Fall()
@@ -94,33 +107,20 @@ void CPlayer_Jump::Move(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Pressing(DIK_UP))
 	{
-		/*_vector vDir = m_pOnwerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta;
-		m_pOnwerTransform->Translate(vPos,m_pOnwerNavigation);*/
-		Translate(CTransform::STATE::STATE_LOOK, fTimeDelta);
+		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_DOWN))
 	{
-		/*_vector vDir = m_pOnwerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta * -1.f;
-		m_pOnwerTransform->Translate(vPos, m_pOwner->Get_Navigation());*/
-
-		Translate(CTransform::STATE::STATE_LOOK, fTimeDelta,true);
+		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta,true);
 	}
-	else if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	
+	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
 	{
-		/*_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
-		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta * -1.f;
-		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());*/
-		Translate(CTransform::STATE::STATE_RIGHT, fTimeDelta, true);
+		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta, true);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 	{
-		/*_vector vDir = m_pOwner->Get_Transform()->Get_State(CTransform::STATE::STATE_RIGHT);
-		_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta;
-		m_pOwner->Get_Transform()->Translate(vPos, m_pOwner->Get_Navigation());*/
-		Translate(CTransform::STATE::STATE_RIGHT, fTimeDelta);
-
+		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
 	}
 }
 

@@ -131,6 +131,11 @@ void CAnimation_Window::Write_Json(json& Out_Json)
 	{
 	case MODE_ANIMATION:
 
+		if (m_pCurrentAnimModel == nullptr)
+			return;
+
+		m_pCurrentAnimModel->Write_Json(Out_Json);
+
 		break;
 	case MODE_SUBOBJECT:
 		
@@ -148,7 +153,7 @@ void CAnimation_Window::Load_FromJson(const json& In_Json)
 	switch (m_eCurrentMode)
 	{
 	case MODE_ANIMATION:
-
+		
 		break;
 	case MODE_SUBOBJECT:
 
@@ -207,6 +212,7 @@ void CAnimation_Window::Animation()
 
 		if (ImGui::Button("Play"))
 		{
+			m_pCurrentAnimModel->Set_Anim_Loop(true);
 			m_pCurrentAnimModel->Set_Anim_Play(true);
 		}
 		ImGui::SameLine();
@@ -214,6 +220,48 @@ void CAnimation_Window::Animation()
 		{
 			m_pCurrentAnimModel->Set_Anim_Play(false);
 		}
+
+		Arrow_Button("Speed", 0.1f, 
+			&m_pCurrentAnimModel->Get_Animations()[m_iCurrentAnimation]->Get_ExtraSpeed()[0]);
+		Arrow_Button("InterverSpeed", 0.1f,
+			&m_pCurrentAnimModel->Get_Animations()[m_iCurrentAnimation]->Get_ExtraSpeed()[1]);
+
+		ImGui::BeginListBox("Reserve", vSize);
+		iSize = m_vecAnimationIndex.size();
+		for (_uint i = 0; i < iSize; i++)
+		{
+			_uint iIndex = 0;
+
+			string str = to_string(m_vecAnimationIndex[i]);
+			string str2;
+			wstring wstr = m_pCurrentAnimModel->Get_Animations()[m_vecAnimationIndex[i]]->Get_Name();
+			str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+			if (ImGui::Selectable((str + "." + str2).c_str(), i == iIndex)) {
+				
+			}
+		}
+		ImGui::EndListBox();
+
+		if (ImGui::Button("Add_Anim"))
+		{
+			if(!m_bReserve)
+				m_vecAnimationIndex.push_back(m_iCurrentAnimation);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset"))
+		{
+			m_vecAnimationIndex.clear();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Start"))
+		{
+			if (!m_bReserve) {
+				m_pCurrentAnimModel->Set_Anim_Play(true);
+				m_bReserve = true;
+			}
+		}
+		if (m_bReserve)
+			m_bReserve = Reserve_Animation();
 	}
 }
 
@@ -349,6 +397,39 @@ void CAnimation_Window::Create_Sub_Model(const wstring& strSubModelTag)
 		return;
 
 	m_vecSubObjectDemo.push_back(dynamic_cast<CSubObject_Demo*>(pSubObject));
+}
+
+_bool CAnimation_Window::Reserve_Animation()
+{
+	if (m_pCurrentAnimModel == nullptr || m_vecAnimationIndex.empty())
+	{
+		m_iCurrent_Anim_Count = 0;
+		m_pCurrentAnimModel->Set_Anim_Play(false);
+		return false;
+	}
+
+	m_pCurrentAnimModel->Set_Anim_Loop(false);
+
+	if (m_iCurrent_Anim_Count == 0)
+	{
+		m_pCurrentAnimModel->Set_AnimationIndex(m_vecAnimationIndex[m_iCurrent_Anim_Count]);
+		++m_iCurrent_Anim_Count;
+	}
+	else {
+		if (m_pCurrentAnimModel->Is_Finished_Animation())
+		{
+			if (m_iCurrent_Anim_Count >= m_vecAnimationIndex.size()) {
+				m_iCurrent_Anim_Count = 0;
+				m_pCurrentAnimModel->Set_Anim_Play(false);
+				return false;
+			}
+
+			m_pCurrentAnimModel->Set_AnimationIndex(m_vecAnimationIndex[m_iCurrent_Anim_Count]);
+			++m_iCurrent_Anim_Count;
+		}
+	}
+
+	return true;
 }
 
 CAnimation_Window* CAnimation_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

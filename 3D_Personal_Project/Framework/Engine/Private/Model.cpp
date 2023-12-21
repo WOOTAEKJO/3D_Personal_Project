@@ -104,6 +104,7 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 		if (m_vecAnimation[m_iNextAnimationIndex]->Invalidate_Interval_TransformationMatrix(fTimeDelta,0.2f, m_vecBones, vecPrevKeyFrame))
 		{
 			m_bChnageAnim = false;
+			//m_vecAnimation[m_iCurrentAnimationIndex]->Reset_InterverTime();
 			m_iCurrentAnimationIndex = m_iNextAnimationIndex;
 		}
 
@@ -116,11 +117,6 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	{
 		iter->Invalidate_MatCombined(m_vecBones, XMLoadFloat4x4(&m_matPivot));
 	}
-}
-
-void CModel::Ocne_Animation_Run(_uint iIndex)
-{
-	
 }
 
 CBone* CModel::Get_Bone(const _char* strBoneName)
@@ -137,6 +133,14 @@ CBone* CModel::Get_Bone(const _char* strBoneName)
 		return nullptr;
 
 	return *iter;
+}
+
+_float* CModel::Get_AnimExtraSpeed()
+{
+	if (m_vecAnimation[m_iCurrentAnimationIndex] == nullptr)
+		return nullptr;
+
+	return m_vecAnimation[m_iCurrentAnimationIndex]->Get_ExtraSpeed();
 }
 
 _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
@@ -176,11 +180,31 @@ _bool CModel::Is_Animation_Finished()
 	if (m_vecAnimation[m_iCurrentAnimationIndex]->Is_Finished())
 	{
 		m_vecAnimation[m_iCurrentAnimationIndex]->Set_ReStart();
+		//m_vecAnimation[m_iCurrentAnimationIndex]->Reset_Animation();
 
 		return true;
 	}
 
 	return false;
+}
+
+void CModel::Write_Json(json& Out_Json)
+{
+	_uint iSize = m_vecAnimation.size();
+
+	for (_uint i = 0; i < iSize; i++)
+	{
+		m_vecAnimation[i]->Write_Json(Out_Json["Animation"][i]);
+	}
+}
+
+void CModel::Load_FromJson(const json& In_Json)
+{
+	_uint iSize = m_vecAnimation.size();
+	for (_uint i = 0; i < iSize; i++)
+	{
+		m_vecAnimation[i]->Load_FromJson(In_Json["Animation"][i]);
+	}
 }
 
 HRESULT CModel::Ready_Meshes(CMeshData::MESHDATADESC MeshData)

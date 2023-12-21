@@ -29,7 +29,10 @@ protected:
 	CNavigation*	m_pOnwerNavigation = { nullptr };
 
 protected:
-	void	Translate(CTransform::STATE eType, _float fTimeDelta,_bool bTurn = false);
+	_float			m_fTime = { 0.5f };
+
+protected:
+	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
 
 public:
 	virtual	void			Free() override;

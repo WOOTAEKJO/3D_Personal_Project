@@ -63,6 +63,9 @@
 #define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
 #define	ANIMMODEL_JACK_PATH		"../Bin/Resources/Models/AnimModel/Jack/Jack.bin"
 
+#define	ANIMMODEL_TEST_TAG			TEXT("Prototype_Component_AnimModel_Test")
+#define	ANIMMODEL_TEST_PATH		"../Bin/Resources/Models/AnimModel/Test/Test.bin"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨
@@ -182,6 +185,8 @@
 #define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navigation/Navi.bin"
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
+
+#define	COM_COLLIDER_TAG			TEXT("Prototype_Component_Collider")
 
 #pragma endregion
 

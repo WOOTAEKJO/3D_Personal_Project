@@ -9,7 +9,11 @@
 #include "Player_IDLE.h"
 #include "Player_Run.h"
 #include "Player_Spear_AirAttack.h"
+#include "Player_Spear_Attack1.h"
+#include "Player_Spear_Attack2.h"
+#include "Player_Spear_Attack3.h"
 #include "Player_Jump.h"
+#include "Player_Roll.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -98,6 +102,7 @@ HRESULT CPlayer::Render()
 
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
+	m_pColliderCom->Render();
 #endif
 
 	return S_OK;
@@ -139,6 +144,13 @@ HRESULT CPlayer::Ready_Component()
 	CRigidBody::RIGIDBODY_DESC RigidBody_Desc = {};
 	RigidBody_Desc.pOwner = this;
 	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom,&RigidBody_Desc))) return E_FAIL;
+
+	CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
+	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
+	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
+
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom,&AABB_Desc))) return E_FAIL;
 	
 	return S_OK;
 }
@@ -147,8 +159,12 @@ HRESULT CPlayer::Ready_State()
 {
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CPlayer_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::RUN, CPlayer_Run::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CPlayer_Spear_AirAttack::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK1, CPlayer_Spear_Attack1::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK2, CPlayer_Spear_Attack2::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK3, CPlayer_Spear_Attack3::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::AIR_ATTACK, CPlayer_Spear_AirAttack::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::JUMP, CPlayer_Jump::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ROLL, CPlayer_Roll::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
@@ -220,5 +236,6 @@ void CPlayer::Free()
 
 	Safe_Release(m_pStateMachineCom);
 	Safe_Release(m_pRigidBodyCom);
+	Safe_Release(m_pColliderCom);
 
 }
