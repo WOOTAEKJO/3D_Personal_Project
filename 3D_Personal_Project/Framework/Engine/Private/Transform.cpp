@@ -15,6 +15,8 @@ HRESULT CTransform::Initialize_ProtoType(_float fSpeedPerSec, _float fRotationPe
 
 	XMStoreFloat4x4(&m_matWorldMatrix, XMMatrixIdentity());
 
+	m_bUseJson = true;
+
 	return S_OK;
 }
 
@@ -176,23 +178,36 @@ void CTransform::LookAt_OnLand(_fvector fTargetPos)
 
 void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
 {
-	/*_vector vPos = vTranslation;
-
-	if (vTranslation.m128_f32[1] != 0.f)
-	{
-		vPos = XMVectorSet(vTranslation.m128_f32[0], 0.f, vTranslation.m128_f32[2], vTranslation.m128_f32[3]);
-	}
+	_vector vWorldPos = Get_State(STATE::STATE_POS);
+	vWorldPos += vTranslation;
 		
-
 	if (pNavigation != nullptr)
 	{
-		if (!pNavigation->IsMove(vPos))
+		if (!pNavigation->IsMove(vWorldPos))
 		{
 			return;
 		}
-	}*/
+	}
 
-	XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
+	if (m_bGround) {
+
+		_float3 fvPos = {};
+
+		XMStoreFloat3(&fvPos, vWorldPos);
+
+		_float fHeight = pNavigation->Get_Cell_Height(fvPos);
+
+		vWorldPos = XMVectorSet(vTranslation.m128_f32[0], 0.f, vTranslation.m128_f32[2], vTranslation.m128_f32[3]);
+
+		memcpy(&m_matWorldMatrix.m[3][1], &fHeight, sizeof(_float));
+		
+		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vWorldPos));
+	}
+	else {
+		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
+	}
+
+	
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)

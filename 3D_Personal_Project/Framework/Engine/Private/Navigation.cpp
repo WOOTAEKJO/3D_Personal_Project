@@ -208,6 +208,14 @@ _bool CNavigation::Compute_MousePos(_uint* iCellIndex)
 	return false;
 }
 
+_float CNavigation::Get_Cell_Height(_float3 vPos)
+{
+	if (m_vecCell[m_iCurrentCellIndex] == nullptr)
+		return _float();
+
+	return m_vecCell[m_iCurrentCellIndex]->Get_Height(vPos);
+}
+
 HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
 {
 	

@@ -9,6 +9,7 @@ class ENGINE_DLL CTransform final : public CComponent
 {
 public:
 	enum STATE {STATE_RIGHT,STATE_UP,STATE_LOOK,STATE_POS,STATE_END};
+
 private:
 	CTransform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CTransform() = default;
@@ -52,6 +53,9 @@ public:
 	_matrix	Get_WorldMatrix_Inverse_Matrix() { 
 		return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_matWorldMatrix)); }
 
+public:
+	void	Set_Ground(_bool bGround) { m_bGround = bGround; }
+
 public: /* 카메라에 사용*/
 	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr);
 	void	Go_Left(_float fTimeDelta);
@@ -79,6 +83,9 @@ private:
 	_float		m_fRotationPerSec = { 0.f };
 
 	_float4x4	m_matWorldMatrix = {};
+
+private:
+	_float		m_bGround = { true };
 
 public:
 	static	CTransform* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, _float fSpeedPerSec, _float fRotationPerSec);

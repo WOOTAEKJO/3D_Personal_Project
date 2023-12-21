@@ -34,14 +34,15 @@ public:
 
 public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
-	
+	_float	Get_Cell_Height(_float3 vPos);
+
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);
 	HRESULT	File_Load(const _char* strNavigationPath);
 
 public:
 	vector<class CCell*> Get_Navigation_Cells();
-	
+
 #ifdef _DEBUG
 private:
 	class CShader*	m_pShaderCom = { nullptr };

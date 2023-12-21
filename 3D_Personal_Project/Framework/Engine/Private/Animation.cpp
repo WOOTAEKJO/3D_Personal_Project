@@ -44,9 +44,9 @@ HRESULT CAnimation::Initialize(ANIMATION Animation, const CModel::BONES& vecBone
 
 void CAnimation::Invalidate_TransformationMatrix(_float fTimeDelta, _bool bLoop, const CModel::BONES& vecBones)
 {
-	m_fTrackPosition += m_fTicksPerSecond * fTimeDelta;
+	m_fTrackPosition += m_fExtraSpeed[TYPE_EXTRASPEED] * m_fTicksPerSecond * fTimeDelta;
 
-	if (m_fTrackPosition >= m_fDuration)
+		if (m_fTrackPosition >= m_fDuration)
 	{
 		m_bFinished = true;
 		m_fTrackPosition = m_fDuration;
@@ -69,7 +69,7 @@ _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _f
 	if (m_fInterverTime == 0.f)
 		Reset_Animation();
 
-	m_fInterverTime += fTimeDelta;
+	m_fInterverTime += m_fExtraSpeed[TYPE_INTERVER_EXTRASPEED] * fTimeDelta;
 
 	if (m_fInterverTime >= fIntervalDuration) {
 		m_fInterverTime = 0.f;
@@ -89,6 +89,18 @@ _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _f
 	return false;
 }
 
+void	CAnimation::Set_ReStart()
+{
+	//m_bFinished = false;
+	//m_fTrackPosition = 0.f;
+	m_bFinished = false;
+	/*if (m_fTrackPosition >= m_fDuration)
+	{
+		
+		m_fTrackPosition = 0.f;
+	}*/
+}
+
 void CAnimation::Reset_Animation()
 {
 	m_fTrackPosition = 0.f;
@@ -97,6 +109,27 @@ void CAnimation::Reset_Animation()
 		iter = 0;
 	}
 	m_bFinished = false;
+}
+
+wstring CAnimation::Get_Name()
+{
+	_tchar szFullName[MAX_PATH] = TEXT("");
+	const _char* szTmp = m_szName;
+	MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullName, MAX_PATH);
+
+	return szFullName;
+}
+
+void CAnimation::Write_Json(json& Out_Json)
+{
+	Out_Json.emplace("Animation_ExtraSpeed", m_fExtraSpeed[TYPE_EXTRASPEED]);
+	Out_Json.emplace("Animation_InterverExtraSpeed", m_fExtraSpeed[TYPE_INTERVER_EXTRASPEED]);
+}
+
+void CAnimation::Load_FromJson(const json& In_Json)
+{
+	m_fExtraSpeed[TYPE_EXTRASPEED] = In_Json["Animation_ExtraSpeed"];
+	m_fExtraSpeed[TYPE_INTERVER_EXTRASPEED] = In_Json["Animation_InterverExtraSpeed"];
 }
 
 CAnimation* CAnimation::Create(ANIMATION Animation, const CModel::BONES& vecBones)

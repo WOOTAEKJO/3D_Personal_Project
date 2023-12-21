@@ -72,14 +72,14 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 		Arrow_Button("Pos_Z", m_fInterval, &fPos[2]);
 		break;
 	case ImGuizmo::ROTATE:
-		Arrow_Button("Pos_X", m_fInterval, &fRot[0]);
-		Arrow_Button("Pos_Y", m_fInterval, &fRot[1]);
-		Arrow_Button("Pos_Z", m_fInterval, &fRot[2]);
+		Arrow_Button("Rot_X", m_fInterval, &fRot[0]);
+		Arrow_Button("Rot_Y", m_fInterval, &fRot[1]);
+		Arrow_Button("Rot_Z", m_fInterval, &fRot[2]);
 		break;
 	case ImGuizmo::SCALE:
-		Arrow_Button("Pos_X", m_fInterval, &fScale[0]);
-		Arrow_Button("Pos_Y", m_fInterval, &fScale[1]);
-		Arrow_Button("Pos_Z", m_fInterval, &fScale[2]);
+		Arrow_Button("Scal_X", m_fInterval, &fScale[0]);
+		Arrow_Button("Scal_Y", m_fInterval, &fScale[1]);
+		Arrow_Button("Scal_Z", m_fInterval, &fScale[2]);
 		break;
 	default:
 		break;

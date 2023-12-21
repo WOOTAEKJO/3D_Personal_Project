@@ -5,6 +5,7 @@
 
 #define DATA_TERRAIN_PATH			"../Bin/Data/Terrain/"
 #define DATA_OBJECT_PATH			"../Bin/Data/Object/"
+#define	DATA_ANIMATION_PATH			"../Bin/Data/Animation/"
 
 #pragma endregion	
 
@@ -61,6 +62,9 @@
 
 #define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
 #define	ANIMMODEL_JACK_PATH		"../Bin/Resources/Models/AnimModel/Jack/Jack.bin"
+
+#define	ANIMMODEL_TEST_TAG			TEXT("Prototype_Component_AnimModel_Test")
+#define	ANIMMODEL_TEST_PATH		"../Bin/Resources/Models/AnimModel/Test/Test.bin"
 
 #pragma endregion
 
@@ -164,7 +168,7 @@
 
 #pragma region 아이템
 
-#define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Model_Spear")
+#define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
 #define	MODEL_SPEAR_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Spear/Spear.bin"
 
 #pragma endregion
@@ -181,6 +185,8 @@
 #define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navigation/Navi.bin"
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
+
+#define	COM_COLLIDER_TAG			TEXT("Prototype_Component_Collider")
 
 #pragma endregion
 
@@ -211,17 +217,16 @@
 
 #define G0_TERRAIN_TAG			TEXT("Prototype_GameObject_Terrain")
 
-#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
-
 #define G0_DCAMERA_TAG			TEXT("Prototype_GameObject_DynamicCamera")
 
+#define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
-
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
+#define G0_SUBMESH_DEMO_TAG		TEXT("Prototype_GameObject_Submesh_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 
-#define GO_SKYBOX_TAG		TEXT("Prototype_GameObject_SkyBox")
+#define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
 #pragma region 캐릭터
 

@@ -119,6 +119,19 @@ _bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex)
 	return true;
 }
 
+_float CCell::Get_Height(_float3 vPos)
+{
+	_vector vTmp = XMPlaneFromPoints(XMLoadFloat3(&m_pPoints[POINT_A]),
+		XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&m_pPoints[POINT_C]));
+
+	_float4 vPlane = {};
+	XMStoreFloat4(&vPlane, vTmp);
+
+	_float fHeight = ((-vPlane.x * vPos.x) - (vPlane.z * vPos.z) - vPlane.w) / vPlane.y;
+
+	return fHeight;
+}
+
 void CCell::Update_Buffer(FLOAT3X3 vPositions)
 {
 	if (m_pDBufferCom == nullptr)

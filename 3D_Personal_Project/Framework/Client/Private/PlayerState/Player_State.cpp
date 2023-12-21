@@ -47,10 +47,10 @@ void CPlayer_State::State_Exit()
 {
 }
 
-void CPlayer_State::Translate(CTransform::STATE eType, _float fTimeDelta, _bool bTurn)
+void CPlayer_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta, _bool bTurn)
 {
 	_vector vDir = m_pOnwerTransform->Get_State(eType);
-	_vector vPos = XMVector3Normalize(vDir) * m_pOwner->Open_Physics_Desc()->fForwardSpeed * fTimeDelta
+	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
 		* (bTurn == false ? 1.f : -1.f);
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
 }

@@ -23,13 +23,15 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual	HRESULT	Render(_uint iMeshIndex);
 	void	Play_Animation(_float fTimeDelta, _bool bLoop);
-	void	Ocne_Animation_Run(_uint iIndex);
 
 public:
 	_uint	Get_MeshesNum() const { return m_iMeshesNum; }
 	CBone* Get_Bone(const _char* strBoneName);
+	CBone* Get_Bone(_uint iBoneIndex) { return m_vecBones[iBoneIndex]; }
+	vector<CAnimation*> Get_Animations() { return m_vecAnimation; }
+	BONES	Get_Bones() { return m_vecBones; }
 
-	void	Set_AnimationIndex(_uint iIndex) { 
+	void	Set_AnimationIndex(_uint iIndex) {
 
 		/*if (m_bChnageAnim)
 			return;*/
@@ -38,7 +40,7 @@ public:
 		m_bChnageAnim = true;
 	}
 
-	
+	_float* Get_AnimExtraSpeed();
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
@@ -46,6 +48,10 @@ public:
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
 
 	_bool	Is_Animation_Finished();
+
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	_uint					m_iMeshesNum = { 0 };

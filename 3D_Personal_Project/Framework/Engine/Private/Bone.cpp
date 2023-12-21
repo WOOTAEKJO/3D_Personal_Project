@@ -19,6 +19,15 @@ HRESULT CBone::Initialize(BONE Bone)
 	return  S_OK;
 }
 
+wstring CBone::Get_BoneName_wstr()
+{
+	_tchar szFullName[MAX_PATH] = TEXT("");
+	const _char* szTmp = m_szName;
+	MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullName, MAX_PATH);
+
+	return szFullName;
+}
+
 void CBone::Invalidate_MatCombined(class CModel::BONES& pBones, _fmatrix matPivot)
 {
 	if (-1 == m_iParentIndex)

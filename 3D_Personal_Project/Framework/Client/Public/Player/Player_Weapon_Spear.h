@@ -17,7 +17,7 @@ class CPlayer_Weapon_Spear final : public CGameObject
 public:
 	typedef struct tagPlayer_Weapon_Spear_Desc
 	{
-		CBone*		pSocketBone = nullptr;
+		vector<CBone*>		pBones;
 		CTransform* pParentsTransform = nullptr;
 
 	}PLAYERSPEAR_DESC;
@@ -34,19 +34,27 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void Load_FromJson(const json& In_Json) override;
+
 private:
 	CModel*		m_pModelCom = { nullptr };
 	CShader*	m_pShaderCom = { nullptr };
 
 private:
 	CBone*		m_pSocketBone = { nullptr };
+	_uint		m_iSocketBoneIndex = { 0 };
 
 	CTransform* m_pParentsTransform = { nullptr };
 	_float4x4	m_matWorldMat = {};
 
 private:
+	wstring		m_strModelTag;
+
+private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Component();
+	HRESULT	Load_Data(const _char* strFilePath);
 
 public:
 	static	CPlayer_Weapon_Spear* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

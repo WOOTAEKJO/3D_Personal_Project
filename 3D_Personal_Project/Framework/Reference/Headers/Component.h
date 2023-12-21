@@ -23,6 +23,7 @@ public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 public:
 	string	Get_ClassName() { return m_strClassName; }
 	size_t	Get_ClassHashCode() { return m_Class_HashCode; }
+	_bool	Get_UseJson() { return m_bUseJson; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -36,6 +37,10 @@ protected:
 
 	string		m_strClassName = {};
 	size_t		m_Class_HashCode = { 0 };
+
+protected:
+	_bool		m_bUseJson = { false };
+
 protected:
 	void		Init_ClassName();
 

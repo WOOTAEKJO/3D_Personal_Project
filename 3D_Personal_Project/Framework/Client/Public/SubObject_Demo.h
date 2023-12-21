@@ -12,13 +12,10 @@ BEGIN(Client)
 class CSubObject_Demo final : public CDemo
 {
 public:
-	typedef struct tagSubObject_Demo_Desc
+	typedef struct tagSubObject_Demo_Desc : public DEMO_DESC
 	{
 		CBone* pSocketBone = nullptr;
 		CTransform* pParentsTransform = nullptr;
-
-		wstring		strModelTag;
-		_float4		vPos;
 
 	}SUBOBJECTDEMO_DESC;
 private:
@@ -36,7 +33,9 @@ public:
 	virtual HRESULT Set_Control_Variable(void* pArg) override;
 
 public:
-	wstring	Get_ModelTag() { return m_strModelTag; }
+	void	Set_SocketBone(CBone* pBone);
+
+	_float4x4	Get_matWorld() { return m_matWorldMat; }
 
 public:
 	_bool	Get_Picked();
@@ -53,10 +52,6 @@ private:
 	CTransform* m_pParentsTransform = { nullptr };
 	CBone*		m_pSocketBone = { nullptr };
 	_float4x4	m_matWorldMat;
-
-
-	wstring		m_strModelTag;
-	_float4		m_vObjectPos = {};	
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

@@ -32,10 +32,8 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	m_pModelCom->Set_AnimationIndex(rand() % 20);
-
-	//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(rand() % 20, 0.f, rand() % 20, 1.f));
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
+	Load_Data("../Bin/Data/Animation/Jack.json");
+	
 
 	return S_OK;
 }
@@ -46,10 +44,9 @@ void CAnimMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CAnimMesh_Demo::Tick(_float fTimeDelta)
 {
-
-	
-
-	m_pModelCom->Play_Animation(fTimeDelta,true);
+	if (m_bPlay) {
+		m_pModelCom->Play_Animation(fTimeDelta, m_bLoop);
+	}
 }
 
 void CAnimMesh_Demo::Late_Tick(_float fTimeDelta)
@@ -79,10 +76,6 @@ HRESULT CAnimMesh_Demo::Render()
 
 		m_pModelCom->Render(i);
 	}
-
-#ifdef _DEBUG
-	m_pNavigationCom->Render();
-#endif
 
 	return S_OK;
 }
@@ -136,6 +129,54 @@ void CAnimMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
 }
 
+void CAnimMesh_Demo::Set_AnimationIndex(_uint iIndex)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Set_AnimationIndex(iIndex);
+}
+
+vector<CAnimation*> CAnimMesh_Demo::Get_Animations()
+{
+	if (m_pModelCom == nullptr)
+		return vector<CAnimation*>();
+
+	return m_pModelCom->Get_Animations();
+}
+
+CBone* CAnimMesh_Demo::Get_Bone(_uint iIndex)
+{
+	if (m_pModelCom == nullptr)
+		return nullptr;
+
+	return m_pModelCom->Get_Bone(iIndex);
+}
+
+vector<CBone*> CAnimMesh_Demo::Get_Bones()
+{
+	if (m_pModelCom == nullptr)
+		return vector<CBone*>();
+
+	return m_pModelCom->Get_Bones();
+}
+
+_bool CAnimMesh_Demo::Is_Finished_Animation()
+{
+	if (m_pModelCom == nullptr)
+		return false;
+
+	return m_pModelCom->Is_Animation_Finished();
+}
+
+_float* CAnimMesh_Demo::Get_ExtraSpeed()
+{
+	if (m_pModelCom == nullptr)
+		return nullptr;
+
+	return m_pModelCom->Get_AnimExtraSpeed();
+}
+
 _bool CAnimMesh_Demo::Get_Picked()
 {
 	if (m_pModelCom == nullptr || 
@@ -150,6 +191,34 @@ _bool CAnimMesh_Demo::Get_Picked()
 		return true;
 	
 	return false;
+}
+
+void CAnimMesh_Demo::Write_Json(json& Out_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+	
+	m_pModelCom->Write_Json(Out_Json);
+}
+
+void CAnimMesh_Demo::Load_FromJson(const json& In_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Load_FromJson(In_Json);
+}
+
+HRESULT CAnimMesh_Demo::Load_Data(const _char* strFilePath)
+{
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
+		return E_FAIL;
+
+	Load_FromJson(jLoad);
+
+	return S_OK;
 }
 
 HRESULT CAnimMesh_Demo::Bind_ShaderResources()
@@ -172,24 +241,8 @@ HRESULT CAnimMesh_Demo::Bind_ShaderResources()
 HRESULT CAnimMesh_Demo::Ready_Component()
 {
 
-	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_ANIMMESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
-
-	/* For.Com_Model*/
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
-
-	/* For.Com_Navigation*/
-
-	CNavigation::NAVIGATION_DESC NavigationDesc = {};
-	NavigationDesc.iCurrentIndex = 0;
-
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), COM_NAVIGATION_TAG,
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom),&NavigationDesc)))
-		return E_FAIL;
+	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
 	return S_OK;
 }
@@ -224,7 +277,6 @@ void CAnimMesh_Demo::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 }

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Player_Body.h"
+#include "../Public/Player/Player_Body.h"
 
 #include "GameInstance.h"
 
@@ -27,6 +27,8 @@ HRESULT CPlayer_Body::Initialize(void* pArg)
 
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
+
+	Load_Data("../Bin/Data/Animation/Jack.json");
 
 	return S_OK;
 }
@@ -69,6 +71,34 @@ HRESULT CPlayer_Body::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+void CPlayer_Body::Write_Json(json& Out_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Write_Json(Out_Json);
+}
+
+void CPlayer_Body::Load_FromJson(const json& In_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Load_FromJson(In_Json);
+}
+
+HRESULT CPlayer_Body::Load_Data(const _char* strFilePath)
+{
+	json jLoad;
+
+	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
+		return E_FAIL;
+
+	Load_FromJson(jLoad);
 
 	return S_OK;
 }

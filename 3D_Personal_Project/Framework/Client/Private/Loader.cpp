@@ -9,9 +9,10 @@
 #include "Mark.h"
 #include "DynamicCamera.h"
 #include "GameObject_Test.h"
+
 #include "ObjectMesh_Demo.h"
 #include "AnimMesh_Demo.h"
-
+#include "SubObject_Demo.h"
 #include "Terrain_Demo.h"
 
 #include "Plateform.h"
@@ -308,6 +309,19 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 #pragma endregion
 
+#pragma region 아이템
+
+	matPivot = XMMatrixIdentity();
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SPEAR_TAG, MODEL_SPEAR_PATH, matPivot))) return E_FAIL;
+
+#pragma endregion
+
+	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f);
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, ANIMMODEL_JACK_PATH, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_TEST_TAG, ANIMMODEL_TEST_PATH, matPivot))) return E_FAIL;
+	
+
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_Demo(COM_NAVIGATION_DEMO_TAG))) return E_FAIL;
 
@@ -319,10 +333,12 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain_Demo>(G0_TERRAIN_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CDynamicCamera>(G0_DCAMERA_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain_Demo>(G0_TERRAIN_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CObjectMesh_Demo>(G0_OBJECTMESH_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CAnimMesh_Demo>(G0_ANIMMESH_DEMO_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSubObject_Demo>(G0_SUBMESH_DEMO_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

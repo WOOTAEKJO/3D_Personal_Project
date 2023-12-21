@@ -84,23 +84,13 @@ HRESULT CCharacter::Bind_ShaderResources()
 
 HRESULT CCharacter::Ready_Component()
 {
-	/* For.Com_Shader*/
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_ANIMMESH_TAG,
-		COMPONENT_SHADER, reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
 
-	/* For.Com_Model*/
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
-		COMPONENT_MODEL, reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
-
-	/* For.Com_Navigation*/
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
+	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), COM_NAVIGATION_TAG,
-		COMPONENT_NAVIGATION, reinterpret_cast<CComponent**>(&m_pNavigationCom), &NavigationDesc)))
-		return E_FAIL;
+	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
 	return S_OK;
 }

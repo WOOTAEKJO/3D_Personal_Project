@@ -352,6 +352,8 @@ void CTerrain_Window::Sphere_Render()
 	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::VIEW));
 	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::PROJ));
 
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
 	m_pEffect->Apply(m_pContext);
 
 	m_pBatch->Begin();
