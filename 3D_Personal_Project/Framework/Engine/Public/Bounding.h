@@ -20,7 +20,13 @@ protected:
 	virtual	~CBounding() = default;
 
 public:
+	virtual	void	Update(_fmatrix	matWorld) = 0;
+	_bool	Colision(TYPE eType ,class CCollider* pTargetCollider);
+
+#ifdef _DEBUG
+public:
 	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch) = 0;
+#endif
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };

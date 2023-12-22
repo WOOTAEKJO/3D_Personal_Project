@@ -26,7 +26,7 @@ public:
 
 private:
 	CBounding::TYPE			m_eType = { CBounding::TYPE_END };
-	CBounding*		m_pBounding = { nullptr };
+	CBounding*				m_pBounding = { nullptr };
 
 #ifdef _DEBUG
 
