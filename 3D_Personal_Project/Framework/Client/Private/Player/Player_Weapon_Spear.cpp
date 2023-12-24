@@ -34,8 +34,11 @@ HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 	/*if (FAILED(Ready_Component()))
 		return E_FAIL;*/
 
-	if (FAILED(Load_Data((CUtility_String::WString_To_string(m_pGameInstance->
+	/*if (FAILED(Load_Data((CUtility_String::WString_To_string(m_pGameInstance->
 		PathFinder(GO_PLAYER_SPEAR_TAG,CSaveLoad_Manager::TYPE_DATA)).c_str()))))
+		return E_FAIL;*/
+
+	if (FAILED(Load_Data(m_pGameInstance->Load_Data_Path(GO_PLAYER_SPEAR_TAG).c_str())))
 		return E_FAIL;
 
 	m_pParentsTransform = ((PLAYERSPEAR_DESC*)pArg)->pParentsTransform;

@@ -223,6 +223,9 @@
     <Filter Include="01.Utility\95. Utility\00. Utility_String">
       <UniqueIdentifier>{8502c968-547c-4795-a147-cec4bdc6cfac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\97. Manager\03. FIle_Manager">
+      <UniqueIdentifier>{ce589b26-f271-4111-ae99-abfb15001097}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -438,6 +441,9 @@
     <ClInclude Include="..\Public\Utility_String.h">
       <Filter>01.Utility\95. Utility\00. Utility_String</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\File_Manager.h">
+      <Filter>01.Utility\97. Manager\03. FIle_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -631,6 +637,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Utility_String.cpp">
       <Filter>01.Utility\95. Utility\00. Utility_String</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\File_Manager.cpp">
+      <Filter>01.Utility\97. Manager\03. FIle_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

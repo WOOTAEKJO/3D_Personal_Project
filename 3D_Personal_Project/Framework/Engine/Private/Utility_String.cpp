@@ -57,4 +57,17 @@ string CUtility_String::WString_To_string(wstring str)
 	return strTmp.assign(str.begin() + 0, str.begin() + iLength);
 }
 
+wstring CUtility_String::Remove_Numbers(wstring str)
+{
+	wstring strTmp;
+
+	for (auto& iter : str)
+	{
+		if (iter < 48 || iter > 57)
+			strTmp.push_back(iter);
+	}
+
+	return strTmp;
+}
+
 

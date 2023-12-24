@@ -20,10 +20,8 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iBackBufferSizeX = g_iWinSizeX;
 	GraphicDesc.iBackBufferSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END,GraphicDesc, g_hInst, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END,TEXT("../Bin/"), GraphicDesc, g_hInst, &m_pDevice, &m_pContext)))
 		return E_FAIL;
-
-	m_pGameInstance->Setting_FilePath(DATA_PATH,SHADER_PATH,RESOURCE_PATH);
 
 	if (FAILED(Ready_ProtoType_Component_ForStaticLevel()))
 		return E_FAIL;
@@ -72,7 +70,7 @@ HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
 HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 {
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Rect>(BUFFER_RECT_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG, SHADER_POS_PATH))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG))) return E_FAIL;

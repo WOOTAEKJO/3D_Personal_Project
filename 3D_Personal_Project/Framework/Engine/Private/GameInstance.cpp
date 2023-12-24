@@ -6,6 +6,7 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 #include "Mouse_Manager.h"
+#include "SaveLoad_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -13,7 +14,8 @@ CGameInstance::CGameInstance()
 {
 }
 
-HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFilePath, const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst,
+	_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
 {
 	/* 그래픽 디바이스를 초기화 하자.*/
 	m_pGraphic_Device = CGraphic_Device::Create(GraphicDesc, ppDevice, ppContext);
@@ -68,6 +70,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const GRAPHIC_DESC& G
 	/* 세이브 및 로드 사용 준비*/
 	m_pSaveLoad_Manager = CSaveLoad_Manager::Create();
 	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	/* 파일 매니저 사용 준비*/
+	m_pFile_Manager = CFile_Manager::Create(strFilePath);
+	if (nullptr == m_pFile_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -447,20 +454,36 @@ HRESULT CGameInstance::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileNa
 	return m_pSaveLoad_Manager->Load_Data_Mesh(pBuffer, strFileName);
 }
 
-wstring CGameInstance::PathFinder(wstring strTag, CSaveLoad_Manager::PAHT_TYPE eType)
+string CGameInstance::Load_Data_Path(wstring strTag)
 {
-	if (nullptr == m_pSaveLoad_Manager)
-		return wstring();
+	if (nullptr == m_pFile_Manager)
+		return string();
 
-	return m_pSaveLoad_Manager->PathFinder(strTag, eType);
+	return m_pFile_Manager->Load_Data_Path(strTag);
 }
 
-void CGameInstance::Setting_FilePath(const wstring& strDataPath, const wstring& strShaderPath, const wstring& strResourcePath)
+string CGameInstance::Load_ShaderFiles_Path(wstring strTag)
 {
-	if (nullptr == m_pSaveLoad_Manager)
-		return;
+	if (nullptr == m_pFile_Manager)
+		return string();
 
-	m_pSaveLoad_Manager->Setting_FilePath(strDataPath, strShaderPath, strResourcePath);
+	return m_pFile_Manager->Load_ShaderFiles_Path(strTag);
+}
+
+string CGameInstance::Load_Models_Path(wstring strTag)
+{
+	if (nullptr == m_pFile_Manager)
+		return string();
+
+	return m_pFile_Manager->Load_Models_Path(strTag);
+}
+
+string CGameInstance::Load_Texture_Path(wstring strTag)
+{
+	if (nullptr == m_pFile_Manager)
+		return string();
+
+	return m_pFile_Manager->Load_Texture_Path(strTag);
 }
 
 void CGameInstance::Release_Manager()
@@ -468,6 +491,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pFile_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pEvent_Manager);

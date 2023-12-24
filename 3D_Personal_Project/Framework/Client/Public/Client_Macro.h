@@ -31,19 +31,19 @@
 
 #pragma region 쉐이더
 
-#define	SHADER_POS_TAG			TEXT("Prototype_Component_Shader_VTXPOSTEX")
-#define SHADER_NOR_TAG			TEXT("Prototype_Component_Shader_VTXNORTEX")
-#define	SHADER_BTN_TAG			TEXT("Prototype_Component_Shader_VTXTBN")
-#define	SHADER_MESH_TAG			TEXT("Prototype_Component_Shader_VTXMESH")
-#define	SHADER_ANIMMESH_TAG		TEXT("Prototype_Component_Shader_VTXANIMMESH")
-#define	SHADER_CUBE_TAG			TEXT("Prototype_Component_Shader_VTXCUBE")
+#define	SHADER_POS_TAG			TEXT("Prototype_Component_Shader_VtxPosTex")
+#define SHADER_NOR_TAG			TEXT("Prototype_Component_Shader_VtxNorTex")
+#define	SHADER_BTN_TAG			TEXT("Prototype_Component_Shader_VtxTBN")
+#define	SHADER_MESH_TAG			TEXT("Prototype_Component_Shader_VtxMesh")
+#define	SHADER_ANIMMESH_TAG		TEXT("Prototype_Component_Shader_VtxAnimMesh")
+#define	SHADER_CUBE_TAG			TEXT("Prototype_Component_Shader_VtxCube")
 
 #define SHADER_POS_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxPosTex.hlsl")
 #define SHADER_NOR_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl")
 #define SHADER_BTN_PATH			TEXT("../Bin/ShaderFiles/Shader_VtxTBN.hlsl")
 #define	SHADER_MESH_PATH		TEXT("../Bin/ShaderFiles/Shader_VtxMesh.hlsl")
 #define	SHADER_ANIMMESH_PATH	TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl")
-#define	SHADER_CUBE_PATH	TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl")
+#define	SHADER_CUBE_PATH		TEXT("../Bin/ShaderFiles/Shader_VtxCube.hlsl")
 
 #pragma endregion
 
@@ -181,7 +181,7 @@
 #define COM_AI_TAG				TEXT("Prototype_Component_AI")
 
 #define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
-#define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navigation")
+#define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navi")
 #define COM_NAVOGATION_PAHT		"../Bin/Data/Terrain/Navigation/Navi.bin"
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
@@ -192,10 +192,10 @@
 
 #pragma region 텍스쳐
 
-#define TEX_BACKGROUND_TAG		TEXT("Prototype_Component_Texture_BackGround")
+#define TEX_BACKGROUND_TAG		TEXT("Prototype_Component_Texture_Default")
 #define TEX_BACKGROUND_PATH		TEXT("../Bin/Resources/Textures/Default%d.jpg")
 
-#define TEX_TERRAIN_TAG			TEXT("Prototype_Component_Texture_Terrain")
+#define TEX_TERRAIN_TAG			TEXT("Prototype_Component_Texture_Tile")
 #define TEX_TERRAIN_PATH		TEXT("../Bin/Resources/Textures/Terrain/Tile%d.dds")
 
 #define TEX_TERRAIN_MASK_TAG	TEXT("Prototype_Component_Texture_Terrain_Mask")
@@ -204,7 +204,7 @@
 #define TEX_TERRAIN_BRUSH_TAG	TEXT("Prototype_Component_Texture_Terrain_Brush")
 #define TEX_TERRAIN_BRUSH_PATH	TEXT("../Bin/Resources/Textures/Terrain/Brush.png")
 
-#define TEX_SKYBOX_TAG	TEXT("Prototype_Component_Texture_SKYBOX")
+#define TEX_SKYBOX_TAG	TEXT("Prototype_Component_Texture_SkyBox")
 #define TEX_SKYBOX_PATH	TEXT("../Bin/Resources/Textures/SkyBox/SkyBox%d.dds")
 
 #pragma endregion

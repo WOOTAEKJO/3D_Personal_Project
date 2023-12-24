@@ -17,6 +17,8 @@ public:
 
 	static wstring string_To_Wstring(string str);
 	static string WString_To_string(wstring str);
+
+	static wstring Remove_Numbers(wstring str);
 };
 
 END
