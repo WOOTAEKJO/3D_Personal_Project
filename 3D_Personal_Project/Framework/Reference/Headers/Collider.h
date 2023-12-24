@@ -18,6 +18,8 @@ public:
 	virtual	HRESULT	Initialize_ProtoType();
 	virtual	HRESULT	Initialize(void* pArg) override;
 
+	void	Update(_fmatrix	matWorld);
+
 #ifdef _DEBUG
 
 	HRESULT	Render();
@@ -36,6 +38,9 @@ private:
 	ID3D11InputLayout*						m_pInputLayout = { nullptr };
 
 #endif
+
+private:
+	_bool					m_bColision = { false };
 
 public:
 	static	CCollider* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

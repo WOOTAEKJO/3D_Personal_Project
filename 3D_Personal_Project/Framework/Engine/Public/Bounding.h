@@ -20,7 +20,7 @@ protected:
 	virtual	~CBounding() = default;
 
 public:
-	virtual	void	Update(_fmatrix	matWorld) = 0;
+	//virtual	void	Update(_fmatrix	matWorld) = 0;
 	_bool	Colision(TYPE eType ,class CCollider* pTargetCollider);
 
 #ifdef _DEBUG
