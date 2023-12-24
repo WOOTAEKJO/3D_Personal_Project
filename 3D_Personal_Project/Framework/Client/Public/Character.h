@@ -1,0 +1,69 @@
+#pragma once
+#include "Client_Defines.h"
+#include "GameObject.h"
+
+BEGIN(Engine)
+
+class CModel;
+class CShader;
+class CNavigation;
+
+END
+
+BEGIN(Client)
+
+class CCharacter abstract : public CGameObject
+{
+public:
+	typedef struct tagPhysicsDesc
+	{
+		_float	fForwardSpeed = 7.f;
+
+		_float	fJumpPower = 10.f;
+		_float	fJumpGravity = -9.8f;
+		_float  fFallGravity = -30.f;
+
+		_bool	bGround = true;
+		_bool	bJump = false;
+		_bool	bDoubleJump = false;
+		_bool	bFall = false;
+		_bool	bLanding = false;
+
+	}PHYSICS_DESC;
+
+protected:
+	CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	CCharacter(const CCharacter& rhs);
+	virtual	~CCharacter() = default;
+
+public:
+	virtual HRESULT Initialize_Prototype() override;
+	virtual HRESULT Initialize(void* pArg) override;
+	virtual void Priority_Tick(_float fTimeDelta) override;
+	virtual void Tick(_float fTimeDelta) override;
+	virtual void Late_Tick(_float fTimeDelta) override;
+	virtual HRESULT Render() override;
+
+public:
+	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
+
+protected:
+	CShader* m_pShaderCom = { nullptr };
+	CModel* m_pModelCom = { nullptr };
+	CNavigation* m_pNavigationCom = { nullptr };
+
+protected:
+	wstring		m_strModelTag;
+	
+	PHYSICS_DESC	m_Physics_Desc;
+
+protected:
+	virtual HRESULT Bind_ShaderResources();
+	virtual HRESULT Ready_Component();
+
+public:
+	virtual CGameObject* Clone(void* pArg) = 0;
+	virtual	void	Free() override;
+};
+
+END
