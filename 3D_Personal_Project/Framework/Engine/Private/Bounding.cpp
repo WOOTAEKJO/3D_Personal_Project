@@ -7,6 +7,21 @@ CBounding::CBounding(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	Safe_AddRef(m_pContext);
 }
 
+_bool CBounding::Colision(TYPE eType,CCollider* pTargetCollider)
+{
+
+	switch (eType)
+	{
+	case Engine::CBounding::TYPE_AABB:
+		break;
+	case Engine::CBounding::TYPE_OBB:
+		break;
+	case Engine::CBounding::TYPE_SPHERE:
+		break;
+	}
+
+	return _bool();
+}
 
 void CBounding::Free()
 {

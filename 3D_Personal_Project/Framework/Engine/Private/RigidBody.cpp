@@ -82,14 +82,6 @@ void CRigidBody::Land()
 
 	Reset_Force(TYPE_VELOCITY);
 
-	/*if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] < 0.f) {
-
-		_float4 vPos;
-		memcpy(&vPos, &m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3], sizeof(_float4));
-
-		m_pOwnerTransform->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(vPos.x, 0.f, vPos.z, vPos.w));
-	}*/
-
 	_float3 vOnwerPos = {};
 
 	XMStoreFloat3(&vOnwerPos, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));

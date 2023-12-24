@@ -67,6 +67,10 @@ HRESULT CCollider::Initialize(void* pArg)
 	return S_OK;
 }
 
+void CCollider::Update(_fmatrix matWorld)
+{
+}
+
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()
@@ -124,9 +128,12 @@ void CCollider::Free()
 
 #ifdef _DEBUG
 
-	/*Safe_Delete(m_pBatch);
-	Safe_Delete(m_pEffect);
-	Safe_Release(m_pInputLayout);*/
+	if (!m_bClone) {
+		Safe_Delete(m_pBatch);
+		Safe_Delete(m_pEffect);
+	}
+
+	Safe_Release(m_pInputLayout);
 
 #endif
 
