@@ -16,6 +16,10 @@ public:
 	HRESULT	Save_Data_Mesh(const _char* strFileName,CMeshData::MESHDATADESC MeshDataDesc);
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer,const _char* strFileName);
 
+public:
+	HRESULT	Save_Data_Json(const _char* strFilePath, CGameObject* pObject);
+	HRESULT	Load_Data_Json(const wstring& strTag, CGameObject* pObject);
+
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
 

@@ -20,7 +20,7 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iBackBufferSizeX = g_iWinSizeX;
 	GraphicDesc.iBackBufferSizeY = g_iWinSizeY;
 
-	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END,TEXT("../Bin/"), GraphicDesc, g_hInst, &m_pDevice, &m_pContext)))
+	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END, FILE_PATH, GraphicDesc, g_hInst, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
 	if (FAILED(Ready_ProtoType_Component_ForStaticLevel()))

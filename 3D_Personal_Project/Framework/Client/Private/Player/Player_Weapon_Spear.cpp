@@ -34,11 +34,7 @@ HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 	/*if (FAILED(Ready_Component()))
 		return E_FAIL;*/
 
-	/*if (FAILED(Load_Data((CUtility_String::WString_To_string(m_pGameInstance->
-		PathFinder(GO_PLAYER_SPEAR_TAG,CSaveLoad_Manager::TYPE_DATA)).c_str()))))
-		return E_FAIL;*/
-
-	if (FAILED(Load_Data(m_pGameInstance->Load_Data_Path(GO_PLAYER_SPEAR_TAG).c_str())))
+	if (FAILED(m_pGameInstance->Load_Data_Json(GO_PLAYER_SPEAR_TAG,this)))
 		return E_FAIL;
 
 	m_pParentsTransform = ((PLAYERSPEAR_DESC*)pArg)->pParentsTransform;
@@ -125,18 +121,6 @@ HRESULT CPlayer_Weapon_Spear::Ready_Component()
 
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CPlayer_Weapon_Spear::Load_Data(const _char* strFilePath)
-{
-	json jLoad;
-
-	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
-		return E_FAIL;
-
-	Load_FromJson(jLoad);
 
 	return S_OK;
 }

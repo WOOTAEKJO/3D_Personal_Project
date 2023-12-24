@@ -1,0 +1,16 @@
+파일의 이름과 클라이언트 내의 태그 이름이 같아야 한다.
+자동으로 주소를 찾아주기 때문.
+
+_는 구분자라고 생각.
+
+예)
+#define	MODEL_PINETREE_TAG	TEXT("Prototype_Component_Model_PineTree")
+#define	MODEL_PINETREE_PATH	"../Bin/Resources/Models/NonAnimModel/Forest/PineTree/PineTree.bin"
+
+#define	SHADER_ANIMMESH_TAG	TEXT("Prototype_Component_Shader_VtxAnimMesh")
+#define	SHADER_ANIMMESH_PATH	TEXT("../Bin/ShaderFiles/Shader_VtxAnimMesh.hlsl")
+
+#define BUFFER_TERRAIN_TAG		TEXT("Prototype_Component_VIBuffer_Terrain")
+#define BUFFER_TERRAIN_BIN_PATH	TEXT("../Bin/Data/Terrain/Terrain.bin")
+
+Data, Resource, Shader, Texture 전부 다

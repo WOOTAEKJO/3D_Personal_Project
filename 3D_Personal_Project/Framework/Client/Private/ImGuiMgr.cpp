@@ -321,7 +321,7 @@ void CImGuiMgr::Grid_Draw()
 
 void CImGuiMgr::File_Render()
 {
-    const char* Path = CUtility_String::WString_To_string(DATA_PATH).c_str();
+    const char* Path = CUtility_String::WString_To_string(FILE_PATH).c_str();
     const char* Filter = nullptr;
     switch (M_eCurentMode)
     {

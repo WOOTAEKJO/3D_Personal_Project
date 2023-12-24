@@ -54,7 +54,6 @@ private:
 private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Component();
-	HRESULT	Load_Data(const _char* strFilePath);
 
 public:
 	static	CPlayer_Weapon_Spear* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
