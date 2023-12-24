@@ -23,6 +23,8 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(LEVEL_END,GraphicDesc, g_hInst, &m_pDevice, &m_pContext)))
 		return E_FAIL;
 
+	m_pGameInstance->Setting_FilePath(DATA_PATH,SHADER_PATH,RESOURCE_PATH);
+
 	if (FAILED(Ready_ProtoType_Component_ForStaticLevel()))
 		return E_FAIL;
 

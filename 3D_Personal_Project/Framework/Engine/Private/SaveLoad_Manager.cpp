@@ -2,6 +2,7 @@
 #include "Json/Json_Utility.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include <filesystem>
 
 CSaveLoad_Manager::CSaveLoad_Manager()
 	:m_pGameInstance(CGameInstance::GetInstance())
@@ -56,6 +57,59 @@ HRESULT CSaveLoad_Manager::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFi
 	Safe_Release(pMeshData);
 
 	return S_OK;
+}
+
+wstring CSaveLoad_Manager::PathFinder(wstring strTag, PAHT_TYPE eType)
+{
+
+	wstring strFilePath = TEXT("");
+
+	switch (eType)
+	{
+	case PAHT_TYPE::TYPE_DATA:
+		strFilePath = m_strDataFilePath;
+		break;
+	case PAHT_TYPE::TYPE_SHADER:
+		strFilePath = m_strShaderFilePath;
+		break;
+	case PAHT_TYPE::TYPE_RESOURCE:
+		strFilePath = m_strResourceFilePath;
+		break;
+	default:
+		break;
+	}
+
+	wstring strTagName = CUtility_String::BackCut_Wstring(strTag, TEXT('_'));
+
+	for (filesystem::directory_entry entry : filesystem::recursive_directory_iterator(strFilePath))
+	{
+		wstring strFIleName = entry.path().c_str();
+
+		strFIleName = CUtility_String::Cut_Wstring(strFIleName, TEXT('/'));
+		wstring strTmp = CUtility_String::BackCut_Wstring(strFIleName, TEXT('.'));
+
+		if (wcscmp(strTmp.c_str(), strFIleName.c_str()) == 0)
+			continue;
+
+		strFIleName = CUtility_String::BackCut_Wstring(strFIleName, TEXT('\\'));
+
+		strFIleName = CUtility_String::Split_Wstring(strFIleName, TEXT('.'));
+
+		if (wcscmp(strTagName.c_str(), strFIleName.c_str()) == 0)
+		{
+			int a = 0;
+			return entry.path().c_str();
+		}
+	}
+
+	return wstring();
+}
+
+void CSaveLoad_Manager::Setting_FilePath(const wstring& strDataPath, const wstring& strShaderPath, const wstring& strResourcePath)
+{
+	m_strDataFilePath = strDataPath;
+	m_strShaderFilePath = strShaderPath;
+	m_strResourceFilePath = strResourcePath;
 }
 
 CSaveLoad_Manager* CSaveLoad_Manager::Create()

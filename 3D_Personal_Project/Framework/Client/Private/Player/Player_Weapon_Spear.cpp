@@ -27,7 +27,6 @@ HRESULT CPlayer_Weapon_Spear::Initialize_Prototype()
 
 HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 {
-	
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -35,9 +34,10 @@ HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 	/*if (FAILED(Ready_Component()))
 		return E_FAIL;*/
 
-	if (FAILED(Load_Data("../Bin/Data/Animation/SubObject/Spear.json")))
+	if (FAILED(Load_Data((CUtility_String::WString_To_string(m_pGameInstance->
+		PathFinder(GO_PLAYER_SPEAR_TAG,CSaveLoad_Manager::TYPE_DATA)).c_str()))))
 		return E_FAIL;
-	
+
 	m_pParentsTransform = ((PLAYERSPEAR_DESC*)pArg)->pParentsTransform;
 	Safe_AddRef(m_pParentsTransform);
 	m_pSocketBone = (((PLAYERSPEAR_DESC*)pArg)->pBones)[m_iSocketBoneIndex];

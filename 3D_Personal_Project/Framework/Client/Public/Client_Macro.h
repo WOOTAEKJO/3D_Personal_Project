@@ -3,9 +3,9 @@
 
 #pragma region 单捞磐 颇老 林家
 
-#define DATA_TERRAIN_PATH			"../Bin/Data/Terrain/"
-#define DATA_OBJECT_PATH			"../Bin/Data/Object/"
-#define	DATA_ANIMATION_PATH			"../Bin/Data/Animation/"
+#define DATA_PATH					TEXT("../Bin/Data/")
+#define SHADER_PATH					TEXT("../Bin/ShaderFiles/")
+#define RESOURCE_PATH				TEXT("../Bin/Resources/")
 
 #pragma endregion	
 

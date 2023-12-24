@@ -4,6 +4,9 @@
 #include "Component_Manager.h"
 #include "PipeLine.h"
 #include "Json/Json_Utility.h"
+#include "SaveLoad_Manager.h"
+
+#include "Utility_String.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -104,6 +107,13 @@ public: /* For.Component_Manager*/
 			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM, strModelFilePath, matPivot));
 	}
 
+	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM,
+				CUtility_String::WString_To_string( PathFinder(strProtoTypeTag,CSaveLoad_Manager::TYPE_RESOURCE)), matPivot));
+	}
+
 	HRESULT	Add_Terrain_ProtoType_Height(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
@@ -162,6 +172,8 @@ public: /* For.PipeLine*/
 public: /* For. SaveLoad_Manager*/
 	HRESULT	Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc);
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
+	wstring	PathFinder(wstring strTag, CSaveLoad_Manager::PAHT_TYPE eType);
+	void	Setting_FilePath(const wstring& strDataPath, const wstring& strShaderPath, const wstring& strResourcePath);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };

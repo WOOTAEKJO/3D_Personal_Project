@@ -217,6 +217,12 @@
     <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere">
       <UniqueIdentifier>{7673f3f6-9237-40ae-9425-61fccc2e3fd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\95. Utility">
+      <UniqueIdentifier>{21810524-3141-4051-b6dd-3b78821b6d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\95. Utility\00. Utility_String">
+      <UniqueIdentifier>{8502c968-547c-4795-a147-cec4bdc6cfac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -429,6 +435,9 @@
     <ClInclude Include="..\Public\Bounding_Sphere.h">
       <Filter>01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Utility_String.h">
+      <Filter>01.Utility\95. Utility\00. Utility_String</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -619,6 +628,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bounding_Sphere.cpp">
       <Filter>01.Utility\03. Component\06. Collider\00.Bounding\02. Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utility_String.cpp">
+      <Filter>01.Utility\95. Utility\00. Utility_String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

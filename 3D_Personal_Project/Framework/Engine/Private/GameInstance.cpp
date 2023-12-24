@@ -6,7 +6,6 @@
 #include "Object_Manager.h"
 #include "Event_Manager.h"
 #include "Mouse_Manager.h"
-#include "SaveLoad_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -446,6 +445,22 @@ HRESULT CGameInstance::Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileNa
 		return E_FAIL;
 
 	return m_pSaveLoad_Manager->Load_Data_Mesh(pBuffer, strFileName);
+}
+
+wstring CGameInstance::PathFinder(wstring strTag, CSaveLoad_Manager::PAHT_TYPE eType)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return wstring();
+
+	return m_pSaveLoad_Manager->PathFinder(strTag, eType);
+}
+
+void CGameInstance::Setting_FilePath(const wstring& strDataPath, const wstring& strShaderPath, const wstring& strResourcePath)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return;
+
+	m_pSaveLoad_Manager->Setting_FilePath(strDataPath, strShaderPath, strResourcePath);
 }
 
 void CGameInstance::Release_Manager()
