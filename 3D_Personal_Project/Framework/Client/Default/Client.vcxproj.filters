@@ -181,6 +181,15 @@
     <Filter Include="95. State\00. StatMachine_State\00. Player\04. Roll">
       <UniqueIdentifier>{8efdc2a5-28ca-404f-993a-ae3ef4c2c6bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster">
+      <UniqueIdentifier>{b3771ddd-6bc0-4b13-b364-540f9d4c5062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal">
+      <UniqueIdentifier>{3898e13b-db2b-49f9-8bbf-565739bbfb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss">
+      <UniqueIdentifier>{8542fb10-d53b-4774-a1ac-f68624cd6a3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

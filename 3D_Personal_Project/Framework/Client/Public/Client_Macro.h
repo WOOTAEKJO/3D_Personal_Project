@@ -41,15 +41,19 @@
 
 #pragma region 애니메이션 모델
 
-#define	ANIMMODEL_FIONA_TAG			TEXT("Prototype_Component_AnimModel_Fiona")
+#define	ANIMMODEL_FIONA_TAG				TEXT("Prototype_Component_AnimModel_Fiona")
 
-#define	ANIMMODEL_RAT_TAG		TEXT("Prototype_Component_AnimModel_Rat")
+#define	ANIMMODEL_RAT_TAG				TEXT("Prototype_Component_AnimModel_Rat")
 
-#define	ANIMMODEL_BAT_TAG		TEXT("Prototype_Component_AnimModel_Bat")
+#define	ANIMMODEL_BAT_TAG				TEXT("Prototype_Component_AnimModel_Bat")
 
-#define	ANIMMODEL_JACK_TAG		TEXT("Prototype_Component_AnimModel_Jack")
+#define	ANIMMODEL_JACK_TAG				TEXT("Prototype_Component_AnimModel_Jack")
 
-#define	ANIMMODEL_TEST_TAG			TEXT("Prototype_Component_AnimModel_Test")
+#define	ANIMMODEL_HELICOSCARROW_TAG		TEXT("Prototype_Component_AnimModel_HelicoScarrow")
+
+#define	ANIMMODEL_SKULLCROSSBOW_TAG		TEXT("Prototype_Component_AnimModel_SkullCrossBow")
+
+#define	ANIMMODEL_SPOOKETON_TAG			TEXT("Prototype_Component_AnimModel_Spooketon")
 
 #pragma endregion
 

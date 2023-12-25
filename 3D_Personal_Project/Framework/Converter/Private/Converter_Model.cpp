@@ -246,7 +246,7 @@ HRESULT CConverter_Model::Ready_Materials(const string& strModelFilePath)
 
 		aiMaterial* pMaterial = m_pAiScene->mMaterials[i];
 
-		for (_uint j = 1; j < AI_TEXTURE_TYPE_MAX; j++)
+		for (_uint j = 0; j < AI_TEXTURE_TYPE_MAX; j++)
 		{
 			_char szDdrive[MAX_PATH] = "";
 			_char szDirectory[MAX_PATH] = "";
