@@ -1,12 +1,6 @@
 #pragma once
 #include "Character.h"
 
-BEGIN(Engine)
-
-class CStateMachine;
-
-END
-
 BEGIN(Client)
 
 class CPlayer final : public CCharacter
@@ -34,7 +28,7 @@ public:
 	CModel* Get_BodyModel();
 
 private:
-	CStateMachine*	m_pStateMachineCom = { nullptr };
+	
 	
 
 private:

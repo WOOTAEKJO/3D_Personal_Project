@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Spooketon.h"
 
+#include "NorMonster_IDLE.h"
+
 CSpooketon::CSpooketon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -29,6 +31,9 @@ HRESULT CSpooketon::Initialize(void* pArg)
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
+	if (FAILED(Ready_State()))
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
@@ -83,30 +88,12 @@ HRESULT CSpooketon::Ready_Component()
 	return S_OK;
 }
 
-HRESULT CSpooketon::Ready_Tree()
+HRESULT CSpooketon::Ready_State()
 {
-	CAICom::AIDESC AIDesc = {};
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 
-	CNode* pNodes[] = {
-		/*CBuilder().Leaf<CTestAction>().Build(),
-		CBuilder().Composite<CSequence>().Leaf<CTestAction>().End().Build(),
-		CBuilder().Decorator<CSucceeder>().Leaf<CTestAction>().End().Build()*/
-	};
-
-	wstring	pString[] = {
-		TEXT("AI1"),TEXT("AI2"),TEXT("AI3")
-	};
-
-	AIDesc.ppNodes = pNodes;
-	AIDesc.pstrNodeTags = pString;
-	AIDesc.iNodeNum = 3;
-
-	/* For.Com_AI*/
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_AI"),
-		TEXT("Com_AI"), reinterpret_cast<CComponent**>(&m_pAICom), &AIDesc)))
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
-
-	m_pAICom->Set_Tree(TEXT("AI1"));
 
 	return S_OK;
 }

@@ -21,7 +21,7 @@ public:
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
-	virtual HRESULT	Ready_Tree() override;
+	virtual HRESULT	Ready_State() override;
 
 public:
 	static	CSpooketon* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

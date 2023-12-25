@@ -66,6 +66,11 @@ HRESULT CMonster::Ready_Component()
 	return S_OK;
 }
 
+HRESULT CMonster::Ready_State()
+{
+	return S_OK;
+}
+
 void CMonster::Free()
 {
 	__super::Free();

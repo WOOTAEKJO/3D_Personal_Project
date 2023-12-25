@@ -42,13 +42,13 @@ public:
 private:
 	unordered_map<wstring, _bool>		m_umapBools;
 	unordered_map<wstring, _int>		m_umapInts;
-	unordered_map<wstring, _float>	m_umapFloats;
-	unordered_map<wstring, _double>	m_umapDoubles;
-	unordered_map<wstring, wstring>	m_umapWStrings;
+	unordered_map<wstring, _float>		m_umapFloats;
+	unordered_map<wstring, _double>		m_umapDoubles;
+	unordered_map<wstring, wstring>		m_umapWStrings;
 
 private:
-	class CGameObject*						m_pOwner = { nullptr };
-	class CGameObject*						m_pTarget = { nullptr };
+	class CGameObject*					m_pOwner = { nullptr };
+	class CGameObject*					m_pTarget = { nullptr };
 
 public:
 	static	CBlackBoard* Create();

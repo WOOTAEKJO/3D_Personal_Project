@@ -92,6 +92,7 @@ HRESULT CCharacter::Ready_Component()
 
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
+	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
 
 	CRigidBody::RIGIDBODY_DESC RigidBody_Desc = {};
 	RigidBody_Desc.pOwner = this;
@@ -116,4 +117,5 @@ void CCharacter::Free()
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pRigidBodyCom);
 	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pStateMachineCom);
 }

@@ -9,6 +9,7 @@ class CShader;
 class CNavigation;
 class CCollider;
 class CRigidBody;
+class CStateMachine;
 
 END
 
@@ -55,6 +56,7 @@ protected:
 	CNavigation*	m_pNavigationCom = { nullptr };
 	CCollider*		m_pColliderCom = { nullptr };
 	CRigidBody*		m_pRigidBodyCom = { nullptr };
+	CStateMachine* m_pStateMachineCom = { nullptr };
 
 protected:
 	wstring		m_strModelTag;

@@ -234,6 +234,4 @@ void CPlayer::Free()
 		Safe_Release(iter.second);
 	m_mapParts.clear();
 
-	Safe_Release(m_pStateMachineCom);
-
 }

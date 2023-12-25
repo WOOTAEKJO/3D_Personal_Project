@@ -11,6 +11,9 @@ BEGIN(Client)
 
 class CMonster abstract : public CCharacter
 {
+public:
+	enum STATE {IDLE, MOVE, ATTACK, DELAY, DEAD, STATE_END};
+
 protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CMonster(const CMonster& rhs);
@@ -30,7 +33,8 @@ protected:
 protected:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
-	virtual HRESULT	Ready_Tree() = 0;
+	virtual HRESULT	Ready_State();
+
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual	void	Free() override;

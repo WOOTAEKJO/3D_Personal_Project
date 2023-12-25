@@ -69,6 +69,7 @@ protected:
 
 protected:
 	class CTransform*			m_pTransformCom = { nullptr };
+	
 
 protected:
 	map<const wstring, class CComponent*>	m_mapComponent;
