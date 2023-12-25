@@ -211,6 +211,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Mark.h" />
+    <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
@@ -228,6 +229,7 @@
     <ClInclude Include="..\Public\Player\Player_Body.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
+    <ClInclude Include="..\Public\Spooketon.h" />
     <ClInclude Include="..\Public\SubObject_Demo.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
@@ -266,6 +268,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Mark.cpp" />
+    <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
@@ -283,6 +286,7 @@
     <ClCompile Include="..\Private\Player\Player_Body.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
+    <ClCompile Include="..\Private\Spooketon.cpp" />
     <ClCompile Include="..\Private\SubObject_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />

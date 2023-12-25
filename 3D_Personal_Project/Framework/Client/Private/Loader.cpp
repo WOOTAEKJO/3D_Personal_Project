@@ -22,6 +22,8 @@
 #include "Player_Body.h"
 #include "Player_Weapon_Spear.h"
 
+#include "Spooketon.h"
+
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -151,6 +153,10 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	//if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_BAT_TAG, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.0005f, 0.0005f, 0.0005f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, matPivot))) return E_FAIL;
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_HELICOSCARROW_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_SKULLCROSSBOW_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_SPOOKETON_TAG, matPivot))) return E_FAIL;
 
 #pragma region FOREST
 
@@ -231,6 +237,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(GO_PLAYER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Body>(GO_PLAYER_BODY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Spear>(GO_PLAYER_SPEAR_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(GO_SPOOKETON_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

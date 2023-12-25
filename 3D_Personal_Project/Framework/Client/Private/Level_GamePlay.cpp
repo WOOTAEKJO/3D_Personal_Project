@@ -21,11 +21,16 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Plateform(TEXT("Plateform"))))
 		return E_FAIL;
 	
+	if (FAILED(Ready_Layer_Player(TEXT("Player"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Object(TEXT("Object"))))
+	if (FAILED(Ready_Layer_Monster(TEXT("Monster"))))
 		return E_FAIL;
+
+	
 
 	return S_OK; 
 }
@@ -49,6 +54,14 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SKYBOX_TAG)))
 		return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_PLAYER_TAG)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -96,26 +109,12 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_GamePlay::Ready_Layer_Object(const wstring& strLayerTag)
+HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 {
-	/*CAnimMesh_Demo::ANIMDEMOVALUE AnimMeshDemoValue;
-
-	AnimMeshDemoValue.strModelTag = ANIMMODEL_JACK_TAG;
-	AnimMeshDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
-	AnimMeshDemoValue.fRotationPerSec = XMConvertToRadians(90.f);
-	AnimMeshDemoValue.fSpeedPerSec = 3.f;
-
-	for (_uint i = 0; i < 1; i++) {
-
-		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_ANIMMESH_DEMO_TAG,
-			&AnimMeshDemoValue)))
-			return E_FAIL;
-	}*/
-
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_PLAYER_TAG)))
+	
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG)))
 		return E_FAIL;
 
-	
 	return S_OK;
 }
 

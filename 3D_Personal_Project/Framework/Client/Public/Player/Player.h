@@ -4,8 +4,6 @@
 BEGIN(Engine)
 
 class CStateMachine;
-class CRigidBody;
-class CCollider;
 
 END
 
@@ -37,8 +35,7 @@ public:
 
 private:
 	CStateMachine*	m_pStateMachineCom = { nullptr };
-	CRigidBody*		m_pRigidBodyCom = { nullptr };
-	CCollider*		m_pColliderCom = { nullptr };
+	
 
 private:
 	map<const wstring, CGameObject*>	m_mapParts;

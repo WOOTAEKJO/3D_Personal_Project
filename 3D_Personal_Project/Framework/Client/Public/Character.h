@@ -7,6 +7,8 @@ BEGIN(Engine)
 class CModel;
 class CShader;
 class CNavigation;
+class CCollider;
+class CRigidBody;
 
 END
 
@@ -48,9 +50,11 @@ public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
 
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-	CNavigation* m_pNavigationCom = { nullptr };
+	CShader*		m_pShaderCom = { nullptr };
+	CModel*			m_pModelCom = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
+	CCollider*		m_pColliderCom = { nullptr };
+	CRigidBody*		m_pRigidBodyCom = { nullptr };
 
 protected:
 	wstring		m_strModelTag;

@@ -235,7 +235,5 @@ void CPlayer::Free()
 	m_mapParts.clear();
 
 	Safe_Release(m_pStateMachineCom);
-	Safe_Release(m_pRigidBodyCom);
-	Safe_Release(m_pColliderCom);
 
 }

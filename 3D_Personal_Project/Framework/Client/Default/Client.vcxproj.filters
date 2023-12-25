@@ -190,6 +190,15 @@
     <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss">
       <UniqueIdentifier>{8542fb10-d53b-4774-a1ac-f68624cd6a3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon">
+      <UniqueIdentifier>{e307f72b-9f4d-4c29-9c8e-dfd6555d66ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow">
+      <UniqueIdentifier>{836144b6-7437-4b76-8dd9-27a78a00c1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow">
+      <UniqueIdentifier>{e0407a50-8916-4898-93bc-cdbc2b1c4426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -372,6 +381,12 @@
     <ClInclude Include="..\Public\PlayerState\Player_Roll.h">
       <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02.GameObjects\05. Character\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Spooketon.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -526,6 +541,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Spooketon.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

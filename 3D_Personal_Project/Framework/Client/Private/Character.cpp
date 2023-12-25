@@ -60,6 +60,7 @@ HRESULT CCharacter::Render()
 
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
+	//m_pColliderCom->Render();
 #endif
 
 	return S_OK;
@@ -92,6 +93,17 @@ HRESULT CCharacter::Ready_Component()
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
+	CRigidBody::RIGIDBODY_DESC RigidBody_Desc = {};
+	RigidBody_Desc.pOwner = this;
+	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom, &RigidBody_Desc))) return E_FAIL;
+
+	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
+	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
+	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
+
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
+
 	return S_OK;
 }
 
@@ -102,4 +114,6 @@ void CCharacter::Free()
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pNavigationCom);
+	Safe_Release(m_pRigidBodyCom);
+	Safe_Release(m_pColliderCom);
 }

@@ -174,4 +174,11 @@
 
 #pragma endregion
 
+#pragma region ∏ÛΩ∫≈Õ
+
+#define GO_SPOOKETON_TAG		TEXT("Prototype_GameObject_SPOOKETON")
+
+
+#pragma endregion
+
 #pragma endregion
