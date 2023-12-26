@@ -1,0 +1,72 @@
+#include "stdafx.h"
+#include "..\Public\MonsterState\NorMonster_Move.h"
+#include "StateMachine.h"
+
+
+CNorMonster_Move::CNorMonster_Move()
+{
+}
+
+HRESULT CNorMonster_Move::Initialize(CGameObject* pGameObject)
+{
+	if (FAILED(CMonster_State::Initialize(pGameObject)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CNorMonster_Move::State_Enter()
+{
+	
+	m_pOwnerModel->Set_AnimationIndex(7);
+}
+
+_uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
+{
+	m_pOwner->TargetLook();
+
+	return m_iStateID;
+}
+
+_uint CNorMonster_Move::State_Tick(_float fTimeDelta)
+{
+	
+	if (!m_pOwner->Is_Target_Range())
+	{
+		return CMonster::STATE::IDLE;
+	}
+
+	Translate(CTransform::STATE::STATE_LOOK, 3.f, fTimeDelta);
+
+	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+
+	return m_iStateID;
+}
+
+_uint CNorMonster_Move::State_Late_Tick(_float fTimeDelta)
+{
+
+	return m_iStateID;
+}
+
+void CNorMonster_Move::State_Exit()
+{
+}
+
+CNorMonster_Move* CNorMonster_Move::Create(CGameObject* pGameObject)
+{
+	CNorMonster_Move* pInstance = new CNorMonster_Move();
+
+	if (FAILED(pInstance->Initialize(pGameObject)))
+	{
+		MSG_BOX("Failed to Cloned : CNorMonster_Move");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+void CNorMonster_Move::Free()
+{
+	__super::Free();
+
+}

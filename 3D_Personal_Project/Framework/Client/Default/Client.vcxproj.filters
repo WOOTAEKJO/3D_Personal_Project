@@ -441,6 +441,9 @@
     <ClInclude Include="..\Public\MonsterState\NorMonster_IDLE.h">
       <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\00. IDLE</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -610,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState\NorMonster_IDLE.cpp">
       <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 #include "..\Public\Spooketon.h"
 
 #include "NorMonster_IDLE.h"
+#include "NorMonster_Move.h"
 
 CSpooketon::CSpooketon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -36,7 +37,10 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(30.f, 0.f, 10.f, 1.f));
+	m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+
+	m_fAroundDist = 7.f;
 
 	return S_OK;
 }
@@ -91,6 +95,7 @@ HRESULT CSpooketon::Ready_Component()
 HRESULT CSpooketon::Ready_State()
 {
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;

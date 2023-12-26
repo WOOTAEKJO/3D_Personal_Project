@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState\Monster_State.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_IDLE.h" />
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\AI_Normal_Monster_IDLE.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState\Monster_State.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_IDLE.cpp" />
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\AI_Normal_Monster_IDLE.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />

@@ -23,6 +23,8 @@ public:
 	_uint	Get_Current_Level() { return m_iCurrentLevel; }
 	void	Set_Current_Level(_uint iLevel) { m_iCurrentLevel = iLevel; }
 
+	list<class CGameObject*>	Get_ObjectList(_uint iLevelIndex, const wstring& strLayerTag);
+
 private:
 	map<const wstring, class CGameObject*> m_mapProtoType;				// 원형 객체 보관
 	map<const wstring, class CLayer*>* m_mapLayer = {nullptr};		   // 사본 객체 보관

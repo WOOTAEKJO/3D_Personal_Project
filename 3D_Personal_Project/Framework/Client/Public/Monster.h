@@ -27,8 +27,21 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+
+public:
+	void	TargetLook();
+	_bool	Is_Target_Range();
+	_bool	Is_Attack_Range();
+
 protected:
 	CAICom*		m_pAICom = { nullptr };
+
+protected:
+	class CPlayer*	m_pPlayer = { nullptr };
+	CTransform*		m_pPlayer_Transform = { nullptr };
+
+protected:
+	_float			m_fAroundDist = { 0.f };
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;

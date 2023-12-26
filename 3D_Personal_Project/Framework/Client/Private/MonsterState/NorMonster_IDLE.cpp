@@ -27,6 +27,12 @@ _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNorMonster_IDLE::State_Tick(_float fTimeDelta)
 {
+
+	if (m_pOwner->Is_Target_Range())
+	{
+		return CMonster::STATE::MOVE;
+	}
+
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
 	return m_iStateID;

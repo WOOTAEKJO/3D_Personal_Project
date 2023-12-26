@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Public\Monster.h"
+#include "Player.h"
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -20,6 +21,14 @@ HRESULT CMonster::Initialize(void* pArg)
 {
 	
 	if (FAILED(CCharacter::Initialize(&pArg)))
+		return E_FAIL;
+
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY, TEXT("Player")).front());
+	if (m_pPlayer == nullptr)
+		return E_FAIL;
+
+	m_pPlayer_Transform = m_pPlayer->Get_Component<CTransform>();
+	if (m_pPlayer_Transform == nullptr)
 		return E_FAIL;
 
 	return S_OK;
@@ -46,6 +55,27 @@ HRESULT CMonster::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CMonster::TargetLook()
+{
+	m_pTransformCom->LookAt_OnLand(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+}
+
+_bool CMonster::Is_Target_Range()
+{
+	_float vDist = XMVectorGetX(XMVector3Length((m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS)
+		- m_pTransformCom->Get_State(CTransform::STATE::STATE_POS))));
+
+	if (vDist <= m_fAroundDist)
+		return true;
+
+	return false;
+}
+
+_bool CMonster::Is_Attack_Range()
+{
+	return _bool();
 }
 
 HRESULT CMonster::Bind_ShaderResources()

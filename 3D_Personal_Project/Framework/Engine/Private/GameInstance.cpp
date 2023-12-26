@@ -286,6 +286,15 @@ void CGameInstance::Set_Current_Level(_uint iLevel)
 	m_pObject_Manager->Set_Current_Level(iLevel);
 }
 
+list<class CGameObject*> CGameInstance::Get_ObjectList(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return list<class CGameObject*>();
+
+
+	return m_pObject_Manager->Get_ObjectList(iLevelIndex, strLayerTag);
+}
+
 HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameObject* pGameObject)
 {
 	if (nullptr == m_pRenderer)

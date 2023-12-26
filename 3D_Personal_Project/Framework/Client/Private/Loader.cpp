@@ -153,7 +153,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	//if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_BAT_TAG, matPivot))) return E_FAIL;
 	matPivot = XMMatrixScaling(0.0005f, 0.0005f, 0.0005f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, matPivot))) return E_FAIL;
-	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_HELICOSCARROW_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_SKULLCROSSBOW_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_SPOOKETON_TAG, matPivot))) return E_FAIL;

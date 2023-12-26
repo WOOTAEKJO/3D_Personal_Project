@@ -27,6 +27,7 @@ public:
 public:
 	void	Update(_float4x4 matWorld);
 	_bool	IsMove(_fvector vPosition);
+	void	Find_CurrentCell(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex);
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
