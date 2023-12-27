@@ -68,6 +68,12 @@ void CMonster_State::Is_Attack_Time(_float fTimeDelta, _float fTime)
 	}
 }
 
+CMonster::STATE CMonster_State::Dead()
+{
+	if (m_pOwner->Open_Status_Desc()->iCurHP <= 0)
+		return CMonster::STATE::DEAD;
+}
+
 void CMonster_State::Free()
 {
 	__super::Free();

@@ -58,8 +58,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;
 
-	m_Status_Desc.iMaxHP = 3;
-	m_Status_Desc.iCurHP = 3;
+	m_Status_Desc.iMaxHP = 5;
+	m_Status_Desc.iCurHP = 5;
 
 	return S_OK;
 }
@@ -82,6 +82,9 @@ void CSpooketon::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	if (m_Status_Desc.iCurHP <= 0)
+		Set_Dead();
 }
 
 HRESULT CSpooketon::Render()
@@ -117,9 +120,13 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
-		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDET_LAYER::COL_PLAYER_BULLET)
+		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDET_LAYER::COL_PLAYER_BULLET 
+			&& !m_Status_Desc.bHited)
 		{
-			m_Status_Desc.bHited = true;
+			if (m_pStateMachineCom->Get_StateID() != (_uint)STATE::ATTACK)
+			{
+				m_Status_Desc.bHited = true;
+			}
 			m_Status_Desc.iCurHP -= 1.f;
 		}
 	}

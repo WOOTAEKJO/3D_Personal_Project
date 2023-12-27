@@ -22,7 +22,6 @@ void CNorMonster_IDLE::State_Enter()
 
 _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
 {
-
 	return m_iStateID;
 }
 
@@ -33,6 +32,9 @@ _uint CNorMonster_IDLE::State_Tick(_float fTimeDelta)
 	{
 		return CMonster::STATE::MOVE;
 	}
+
+	if (m_pOwner->Open_Status_Desc()->bHited)
+		return CMonster::STATE::HITED;
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

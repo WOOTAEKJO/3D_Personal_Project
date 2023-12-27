@@ -22,6 +22,9 @@ void CNorMonster_Delay::State_Enter()
 
 _uint CNorMonster_Delay::State_Priority_Tick(_float fTimeDelta)
 {
+	if (m_pOwner->Open_Status_Desc()->bHited)
+		return CMonster::STATE::HITED;
+
 	return m_iStateID;
 }
 

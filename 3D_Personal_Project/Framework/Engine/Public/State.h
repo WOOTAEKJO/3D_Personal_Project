@@ -22,6 +22,7 @@ public:
 
 public:
 	void	Set_StateID(const _uint & iStateID) { m_iStateID = iStateID; }
+	_uint	Get_StateID() { return m_iStateID; }
 
 protected:
 	CGameInstance*		m_pGameInstance = { nullptr };

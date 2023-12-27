@@ -32,7 +32,6 @@ public:
 	void	TargetLook();
 	void	Turn(_float fTimeDelta);
 	_bool	Is_Target_Range(_float fRange);
-	void	Hited();
 
 public:
 	CCollider* Get_WeaponCollider();

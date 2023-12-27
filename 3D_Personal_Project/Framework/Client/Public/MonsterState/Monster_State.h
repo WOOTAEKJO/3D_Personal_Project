@@ -35,6 +35,7 @@ protected:
 protected:
 	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
 	void	Is_Attack_Time(_float fTimeDelta,_float fTime);
+	CMonster::STATE	Dead();
 
 public:
 	virtual	void			Free() override;

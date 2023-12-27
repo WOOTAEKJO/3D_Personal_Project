@@ -16,13 +16,12 @@ HRESULT CNorMonster_Hited::Initialize(CGameObject* pGameObject)
 }
 
 void CNorMonster_Hited::State_Enter()
-{
+{		
 	m_pOwnerModel->Set_AnimationIndex(7);
 }
 
 _uint CNorMonster_Hited::State_Priority_Tick(_float fTimeDelta)
 {
-
 	return m_iStateID;
 }
 
@@ -46,6 +45,7 @@ _uint CNorMonster_Hited::State_Late_Tick(_float fTimeDelta)
 
 void CNorMonster_Hited::State_Exit()
 {
+	m_pOwner->Open_Status_Desc()->bHited = false;
 }
 
 CNorMonster_Hited* CNorMonster_Hited::Create(CGameObject* pGameObject)

@@ -38,10 +38,7 @@ void CCharacter::Tick(_float fTimeDelta)
 }
 
 void CCharacter::Late_Tick(_float fTimeDelta)
-{
-	if (m_Status_Desc.iCurHP <= 0)
-		Set_Dead();
-
+{	
 	CGameObject::Late_Tick(fTimeDelta);
 }
 
