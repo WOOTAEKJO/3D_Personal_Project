@@ -7,6 +7,7 @@
 #include "Event_Manager.h"
 #include "Mouse_Manager.h"
 #include "SaveLoad_Manager.h"
+#include "Collider_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -77,6 +78,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pFile_Manager)
 		return E_FAIL;
 
+	/* 콜라이더 매니저 사용 준비*/
+	m_pCollider_Manager = CCollider_Manager::Create();
+	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
@@ -96,6 +102,7 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pPipeLine->Tick();
+	m_pCollider_Manager->Update();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 	
@@ -511,6 +518,22 @@ string CGameInstance::Load_Texture_Path(wstring strTag)
 	return m_pFile_Manager->Load_Texture_Path(strTag);
 }
 
+HRESULT CGameInstance::Add_Collision(_uint iColLayer, CCollider* pCollider)
+{
+	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
+	return m_pCollider_Manager->Add_Collision(iColLayer, pCollider);
+}
+
+HRESULT CGameInstance::Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer)
+{
+	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
+	return m_pCollider_Manager->Add_Pair_Collision(iSourColLayer, iDestColLayer);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
@@ -518,6 +541,7 @@ void CGameInstance::Release_Manager()
 
 	Safe_Release(m_pFile_Manager);
 	Safe_Release(m_pPipeLine);
+	Safe_Release(m_pCollider_Manager);
 	Safe_Release(m_pObject_Manager);
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pMouse_Manager);

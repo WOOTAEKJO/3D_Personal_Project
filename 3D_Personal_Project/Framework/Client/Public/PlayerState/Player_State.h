@@ -27,6 +27,7 @@ protected:
 	CModel*			m_pOwnerModel = { nullptr };
 	CTransform*		m_pOnwerTransform = { nullptr };
 	CNavigation*	m_pOnwerNavigation = { nullptr };
+	CRigidBody*		m_pOnwerRigidBody = { nullptr };
 
 protected:
 	_float			m_fTime = { 0.f };

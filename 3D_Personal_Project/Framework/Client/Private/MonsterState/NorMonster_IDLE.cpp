@@ -22,13 +22,14 @@ void CNorMonster_IDLE::State_Enter()
 
 _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
 {
+
 	return m_iStateID;
 }
 
 _uint CNorMonster_IDLE::State_Tick(_float fTimeDelta)
 {
 
-	if (m_pOwner->Is_Target_Range())
+	if (m_pOwner->Is_Target_Range(7.f))
 	{
 		return CMonster::STATE::MOVE;
 	}

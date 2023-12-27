@@ -28,7 +28,10 @@ HRESULT CPlayer_Body::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	Load_Data("../Bin/Data/Animation/Jack.json");
+	//Load_Data("../Bin/Data/Animation/Jack.json");
+
+	if (FAILED(m_pGameInstance->Load_Data_Json(ANIMMODEL_JACK_TAG, this)))
+		return E_FAIL;
 
 	return S_OK;
 }

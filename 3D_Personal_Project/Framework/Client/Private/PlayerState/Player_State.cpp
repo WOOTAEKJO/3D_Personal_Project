@@ -19,6 +19,8 @@ HRESULT CPlayer_State::Initialize(CGameObject* pGameObject)
 	Safe_AddRef(m_pOnwerTransform);
 	m_pOnwerNavigation = m_pOwner->Get_Component<CNavigation>();
 	Safe_AddRef(m_pOnwerNavigation);
+	m_pOnwerRigidBody = m_pOwner->Get_Component<CRigidBody>();
+	Safe_AddRef(m_pOnwerRigidBody);
 
 	return S_OK;
 }
@@ -62,4 +64,5 @@ void CPlayer_State::Free()
 	Safe_Release(m_pOwnerModel);
 	Safe_Release(m_pOnwerTransform);
 	Safe_Release(m_pOnwerNavigation);
+	Safe_Release(m_pOnwerRigidBody);
 }

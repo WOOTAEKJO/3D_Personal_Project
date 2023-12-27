@@ -23,6 +23,8 @@ namespace Engine
 	typedef		float						_float;
 	typedef		double						_double;	
 
+	typedef		unsigned long long			_ulonglong;
+
 	/* 저장용 데이터 타입. */
 	typedef		XMFLOAT3X3					_float3x3;
 	typedef		XMFLOAT4X4					_float4x4;

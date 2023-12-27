@@ -48,7 +48,7 @@ _uint CPlayer_Jump::State_Tick(_float fTimeDelta)
 _uint CPlayer_Jump::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwner->Open_Physics_Desc()->bFall && !m_pOwner->Open_Physics_Desc()->bLanding
-		&& m_pOwner->Get_RigidBody()->Is_Land())
+		&& m_pOnwerRigidBody->Is_Land())
 	{
 		Land();
 		return CPlayer::STATE::IDLE;
@@ -81,12 +81,12 @@ void CPlayer_Jump::State_Exit()
 
 void CPlayer_Jump::Jump()
 {
-	m_pOwner->Get_RigidBody()->Jump(m_pOwner->Open_Physics_Desc()->fJumpPower, m_pOwner->Open_Physics_Desc()->fJumpGravity);
+	m_pOnwerRigidBody->Jump(m_pOwner->Open_Physics_Desc()->fJumpPower, m_pOwner->Open_Physics_Desc()->fJumpGravity);
 }
 
 void CPlayer_Jump::Land()
 {
-	m_pOwner->Get_RigidBody()->Land();
+	m_pOnwerRigidBody->Land();
 
 	m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
 	m_pOwner->Open_Physics_Desc()->bFall = false;
@@ -97,9 +97,9 @@ void CPlayer_Jump::Land()
 
 void CPlayer_Jump::Fall()
 {
-	if (m_pOwner->Get_RigidBody()->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY)) {
+	if (m_pOnwerRigidBody->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY)) {
 		m_pOwner->Open_Physics_Desc()->bFall = true;
-		m_pOwner->Get_RigidBody()->Set_GravityPower(m_pOwner->Open_Physics_Desc()->fFallGravity);
+		m_pOnwerRigidBody->Set_GravityPower(m_pOwner->Open_Physics_Desc()->fFallGravity);
 	}
 }
 

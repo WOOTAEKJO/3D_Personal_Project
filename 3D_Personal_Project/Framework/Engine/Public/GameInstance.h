@@ -183,6 +183,10 @@ public: /* For. File_Manager*/
 	string	Load_Models_Path(wstring strTag);
 	string	Load_Texture_Path(wstring strTag);
 
+public: /* For. Collider_Manager*/
+	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
+	HRESULT	Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer);
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -197,6 +201,7 @@ private:
 	class CPipeLine*				m_pPipeLine = { nullptr };
 	class CSaveLoad_Manager*		m_pSaveLoad_Manager = { nullptr };
 	class CFile_Manager*			m_pFile_Manager = { nullptr };
+	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

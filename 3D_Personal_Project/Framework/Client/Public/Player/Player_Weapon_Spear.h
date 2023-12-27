@@ -7,6 +7,7 @@ class CTransform;
 class CModel;
 class CShader;
 class CBone;
+class CCollider;
 
 END
 
@@ -37,9 +38,15 @@ public:
 public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
+
 private:
 	CModel*		m_pModelCom = { nullptr };
 	CShader*	m_pShaderCom = { nullptr };
+	CCollider*	m_pColliderCom[4] = { nullptr };
 
 private:
 	CBone*		m_pSocketBone = { nullptr };

@@ -393,9 +393,6 @@
     <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player\Player_Body.h">
-      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player\Player.h">
       <Filter>02.GameObjects\05. Character\00.Player</Filter>
     </ClInclude>
@@ -443,6 +440,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h">
       <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Attack.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Delay.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\03. Delay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player\Player_Body.h">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -566,9 +572,6 @@
     <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player\Player_Body.cpp">
-      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Player\Player.cpp">
       <Filter>02.GameObjects\05. Character\00.Player</Filter>
     </ClCompile>
@@ -616,6 +619,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp">
       <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Attack.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Delay.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\03. Delay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player_Body.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

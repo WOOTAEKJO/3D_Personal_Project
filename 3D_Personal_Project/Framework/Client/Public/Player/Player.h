@@ -3,6 +3,8 @@
 
 BEGIN(Client)
 
+
+
 class CPlayer final : public CCharacter
 {
 public:
@@ -21,15 +23,13 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	CRigidBody* Get_RigidBody() { return m_pRigidBodyCom; }
-
-public:
 	CGameObject* Find_Parts(const wstring& strPartsTag);
 	CModel* Get_BodyModel();
 
-private:
-	
-	
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
 
 private:
 	map<const wstring, CGameObject*>	m_mapParts;

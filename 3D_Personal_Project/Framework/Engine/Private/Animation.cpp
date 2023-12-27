@@ -99,6 +99,7 @@ void	CAnimation::Set_ReStart()
 		
 		m_fTrackPosition = 0.f;
 	}*/
+	//Reset_Animation();
 }
 
 void CAnimation::Reset_Animation()

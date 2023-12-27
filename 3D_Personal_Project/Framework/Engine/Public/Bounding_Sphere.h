@@ -18,7 +18,12 @@ private:
 
 public:
 	HRESULT	Initialize(BOUNDING_DESC* Bounding_Desc);
-	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch) override;
+	virtual	void	Update(_fmatrix	matWorld) override;
+	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
+	virtual _bool	Collision(class CCollider* pTargetCollider) override;
+
+public:
+	BoundingSphere*		Get_BoundingSphere() { return m_pSphere; }
 
 private:
 	BoundingSphere*	m_pOriSphere = { nullptr };

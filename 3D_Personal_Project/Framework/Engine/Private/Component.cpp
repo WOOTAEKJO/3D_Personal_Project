@@ -31,10 +31,8 @@ HRESULT CComponent::Initialize(void* pArg)
 
 void CComponent::Init_ClassName()
 {
-	m_strClassName = typeid(this).name();
-	m_Class_HashCode = typeid(this).hash_code();
-
-	
+	/*m_strClassName = typeid(this).name();
+	m_Class_HashCode = typeid(this).hash_code();*/
 }
 
 void CComponent::Free()

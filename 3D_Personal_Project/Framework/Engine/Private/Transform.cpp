@@ -85,7 +85,7 @@ void CTransform::Go_BackWard(_float fTimeDelta, CNavigation* pNavigation)
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
-	_matrix	matRotation = XMMatrixRotationAxis(vAxis, m_fRotationPerSec * fTimeDelta);
+	_matrix	matRotation = XMMatrixRotationAxis(vAxis, /*m_fRotationPerSec* */  fTimeDelta);
 
 	Set_State(STATE::STATE_RIGHT,XMVector3TransformNormal(Get_State(STATE::STATE_RIGHT), matRotation));
 	Set_State(STATE::STATE_UP,XMVector3TransformNormal(Get_State(STATE::STATE_UP), matRotation));
@@ -209,8 +209,6 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
 	else {
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
 	}
-
-	
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)

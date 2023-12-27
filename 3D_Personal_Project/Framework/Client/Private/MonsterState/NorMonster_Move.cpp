@@ -18,12 +18,12 @@ HRESULT CNorMonster_Move::Initialize(CGameObject* pGameObject)
 void CNorMonster_Move::State_Enter()
 {
 	
-	m_pOwnerModel->Set_AnimationIndex(7);
+	m_pOwnerModel->Set_AnimationIndex(10);
 }
 
 _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
 {
-	m_pOwner->TargetLook();
+	m_pOwner->Turn(fTimeDelta);
 
 	return m_iStateID;
 }
@@ -31,12 +31,17 @@ _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 {
 	
-	if (!m_pOwner->Is_Target_Range())
+	if (!m_pOwner->Is_Target_Range(7.f))
 	{
 		return CMonster::STATE::IDLE;
 	}
 
-	Translate(CTransform::STATE::STATE_LOOK, 3.f, fTimeDelta);
+	if (m_pOwner->Is_Target_Range(2.f))
+	{
+		return CMonster::STATE::ATTACK;
+	}
+
+	Translate(CTransform::STATE::STATE_LOOK, 2.f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

@@ -177,7 +177,9 @@ HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshInde
 
 _bool CModel::Is_Animation_Finished()
 {
-	if (m_vecAnimation[m_iCurrentAnimationIndex]->Is_Finished())
+	_bool bCheck = m_vecAnimation[m_iCurrentAnimationIndex]->Is_Finished();
+
+	if (bCheck)
 	{
 		m_vecAnimation[m_iCurrentAnimationIndex]->Set_ReStart();
 		//m_vecAnimation[m_iCurrentAnimationIndex]->Reset_Animation();

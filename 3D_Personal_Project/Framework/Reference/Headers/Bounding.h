@@ -10,8 +10,10 @@ public:
 
 	typedef struct tagBounding_Desc
 	{
-		TYPE eType = TYPE_END;
-		_float3	vCenter;
+		class CGameObject* pOnwer = nullptr;
+		TYPE		eType = TYPE_END;
+		_float3		vCenter;
+		_bool		bUseCol = false;
 
 	}BOUNDING_DESC;
 
@@ -20,17 +22,22 @@ protected:
 	virtual	~CBounding() = default;
 
 public:
-	//virtual	void	Update(_fmatrix	matWorld) = 0;
-	_bool	Colision(TYPE eType ,class CCollider* pTargetCollider);
+	virtual	void	Update(_fmatrix	matWorld) = 0;
+	virtual _bool	Collision(class CCollider* pTargetCollider) = 0;
 
 #ifdef _DEBUG
 public:
-	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch) = 0;
+	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) = 0;
 #endif
+
+public:
+	TYPE	Get_ColisionType() { return m_eType; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
+
+	TYPE					m_eType = { TYPE_END };
 
 public:
 	virtual	void	Free() override;

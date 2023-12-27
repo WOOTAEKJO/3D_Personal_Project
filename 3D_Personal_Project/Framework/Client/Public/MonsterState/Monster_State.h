@@ -30,9 +30,11 @@ protected:
 
 protected:
 	_float			m_fTime = { 0.f };
+	_bool			m_bAttack = { true };
 
 protected:
 	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
+	void	Is_Attack_Time(_float fTimeDelta,_float fTime);
 
 public:
 	virtual	void			Free() override;

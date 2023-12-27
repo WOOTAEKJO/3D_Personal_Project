@@ -55,6 +55,19 @@ void CMonster_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTi
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
 }
 
+void CMonster_State::Is_Attack_Time(_float fTimeDelta, _float fTime)
+{
+	if(m_bAttack)
+		m_fTime += fTimeDelta;
+
+	if (m_fTime > fTime && m_bAttack)
+	{
+		m_pOwner->Get_WeaponCollider()->Set_UseCol(true);
+		m_bAttack = false;
+		m_fTime = 0.f;
+	}
+}
+
 void CMonster_State::Free()
 {
 	__super::Free();

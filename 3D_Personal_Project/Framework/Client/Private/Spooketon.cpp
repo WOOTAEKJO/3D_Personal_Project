@@ -3,6 +3,9 @@
 
 #include "NorMonster_IDLE.h"
 #include "NorMonster_Move.h"
+#include "NorMonster_Attack.h"
+
+#include "Bone.h"
 
 CSpooketon::CSpooketon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -40,25 +43,36 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(30.f, 0.f, 10.f, 1.f));
 	m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
-	m_fAroundDist = 7.f;
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_MONSTER, m_pColliderCom)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_MONSTER_BULLET, m_pWeaponColliderCom)))
+		return E_FAIL;
+
+	m_pSocketBone = m_pModelCom->Get_Bone(34);
+	Safe_AddRef(m_pSocketBone);
+
+	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 void CSpooketon::Priority_Tick(_float fTimeDelta)
 {
+	m_pWeaponColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CMonster::Priority_Tick(fTimeDelta);
 }
 
 void CSpooketon::Tick(_float fTimeDelta)
 {
 	CMonster::Tick(fTimeDelta);
-
-	m_pModelCom->Play_Animation(fTimeDelta, true);
 }
 
 void CSpooketon::Late_Tick(_float fTimeDelta)
 {
+
+
 	CMonster::Late_Tick(fTimeDelta);
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
@@ -73,7 +87,36 @@ HRESULT CSpooketon::Render()
 	if (FAILED(CMonster::Render()))
 		return E_FAIL;
 
+#ifdef _DEBUG
+	m_pWeaponColliderCom->Render();
+#endif
+
+
 	return S_OK;
+}
+
+void CSpooketon::Load_FromJson(const json& In_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Load_FromJson(In_Json);
+}
+
+void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
+{
+	if (iColID == m_pWeaponColliderCom->Get_Collider_ID())
+	{
+		m_pWeaponColliderCom->Set_UseCol(false);
+	}
+}
+
+void CSpooketon::OnCollisionStay(CCollider* pCollider, _uint iColID)
+{
+}
+
+void CSpooketon::OnCollisionExit(CCollider* pCollider, _uint iColID)
+{
 }
 
 HRESULT CSpooketon::Bind_ShaderResources()
@@ -89,6 +132,21 @@ HRESULT CSpooketon::Ready_Component()
 	if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;
 
+	CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	AABB_Desc.pOnwer = this;
+	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
+	AABB_Desc.bUseCol = true;
+	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
+	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;
+
+	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.fRadius = 0.6f;
+	Sphere_Desc.vCenter = _float3(0.f, 0.1f, 0.3f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pWeaponColliderCom, &Sphere_Desc,1))) return E_FAIL;
+
 	return S_OK;
 }
 
@@ -96,6 +154,7 @@ HRESULT CSpooketon::Ready_State()
 {
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
@@ -130,4 +189,5 @@ CGameObject* CSpooketon::Clone(void* pArg)
 void CSpooketon::Free()
 {
 	__super::Free();
+	
 }

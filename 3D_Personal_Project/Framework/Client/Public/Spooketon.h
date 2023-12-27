@@ -18,6 +18,14 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void Load_FromJson(const json& In_Json) override;
+
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
+
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;

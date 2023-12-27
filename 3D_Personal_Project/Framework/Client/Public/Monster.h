@@ -30,18 +30,22 @@ public:
 
 public:
 	void	TargetLook();
-	_bool	Is_Target_Range();
-	_bool	Is_Attack_Range();
+	void	Turn(_float fTimeDelta);
+	_bool	Is_Target_Range(_float fRange);
+
+public:
+	CCollider* Get_WeaponCollider();
 
 protected:
 	CAICom*		m_pAICom = { nullptr };
 
 protected:
-	class CPlayer*	m_pPlayer = { nullptr };
-	CTransform*		m_pPlayer_Transform = { nullptr };
+	CBone*		m_pSocketBone = { nullptr };
+	CCollider*	m_pWeaponColliderCom = { nullptr };
 
 protected:
-	_float			m_fAroundDist = { 0.f };
+	class CPlayer*	m_pPlayer = { nullptr };
+	CTransform*		m_pPlayer_Transform = { nullptr };
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;

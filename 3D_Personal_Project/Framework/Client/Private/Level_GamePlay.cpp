@@ -30,7 +30,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Monster(TEXT("Monster"))))
 		return E_FAIL;
 
-	
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER_BULLET, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
 
 	return S_OK; 
 }

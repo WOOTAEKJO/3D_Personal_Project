@@ -36,9 +36,9 @@ public:
 	virtual HRESULT Render();
 public:
 	template<typename T>
-	T* Get_Component()
+	T* Get_Component(_uint iNum = 0)
 	{
-		CComponent* pComponent = Find_Component(TAG_NAME<T>());
+		CComponent* pComponent = Find_Component(TAG_NAME<T>() + to_wstring(iNum));
 		if (pComponent == nullptr)
 		{
 			MSG_BOX("Failed Find Component");
@@ -59,6 +59,11 @@ public:
 public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
+
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) {};
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) {};
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) {};
 
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
@@ -86,9 +91,11 @@ protected:
 		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
 
 	template<typename T>
-	HRESULT Add_Component(const wstring& strPrototypeTag, T** pCom, void* pArg = nullptr)
+	HRESULT Add_Component(const wstring& strPrototypeTag, T** pCom, void* pArg = nullptr, _uint iNum = 0)
 	{
-		class CComponent* pComponent = Find_Component(TAG_NAME<T>());
+		wstring strTag = TAG_NAME<T>() + to_wstring(iNum);
+
+		class CComponent* pComponent = Find_Component(strTag);
 		if (pComponent != nullptr)
 			return E_FAIL;
 
@@ -98,8 +105,9 @@ protected:
 			return E_FAIL;
 
 		*pCom = dynamic_cast<T*>(Clone);
+		Clone->Set_ClassName(strTag);
 
-		m_mapComponent.emplace(TAG_NAME<T>(), Clone);
+		m_mapComponent.emplace(strTag, Clone);
 
 		Safe_AddRef(Clone);
 
