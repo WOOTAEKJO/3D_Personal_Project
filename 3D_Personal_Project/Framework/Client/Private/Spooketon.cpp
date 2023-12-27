@@ -4,6 +4,9 @@
 #include "NorMonster_IDLE.h"
 #include "NorMonster_Move.h"
 #include "NorMonster_Attack.h"
+#include "NorMonster_Delay.h"
+#include "NorMonster_Dead.h"
+#include "NorMonster_Hited.h"
 
 #include "Bone.h"
 
@@ -55,6 +58,9 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;
 
+	m_Status_Desc.iMaxHP = 3;
+	m_Status_Desc.iCurHP = 3;
+
 	return S_OK;
 }
 
@@ -71,7 +77,6 @@ void CSpooketon::Tick(_float fTimeDelta)
 
 void CSpooketon::Late_Tick(_float fTimeDelta)
 {
-
 
 	CMonster::Late_Tick(fTimeDelta);
 
@@ -108,6 +113,15 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 	if (iColID == m_pWeaponColliderCom->Get_Collider_ID())
 	{
 		m_pWeaponColliderCom->Set_UseCol(false);
+	}
+
+	if (iColID == m_pColliderCom->Get_Collider_ID())
+	{
+		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDET_LAYER::COL_PLAYER_BULLET)
+		{
+			m_Status_Desc.bHited = true;
+			m_Status_Desc.iCurHP -= 1.f;
+		}
 	}
 }
 
@@ -155,6 +169,9 @@ HRESULT CSpooketon::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CNorMonster_Dead::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::DELAY, CNorMonster_Delay::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::HITED, CNorMonster_Hited::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;

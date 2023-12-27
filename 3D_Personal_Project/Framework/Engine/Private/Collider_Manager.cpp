@@ -26,6 +26,8 @@ void CCollider_Manager::Update()
 			}
 		}
 	}
+
+	Delete_Collider();
 }
 
 HRESULT CCollider_Manager::Add_Collision(_uint iColLayer, CCollider* pCollider)
@@ -72,7 +74,6 @@ HRESULT CCollider_Manager::Add_Pair_Collision(_uint iSourColLayer, _uint iDestCo
 void CCollider_Manager::Check_Collision(CCollider* SourpCollider, CCollider* DestpCollider)
 {
 	
-
 	COLLIDER_ID ID;
 	ID.iSour_ID = SourpCollider->Get_Collider_ID();
 	ID.iDest_ID = DestpCollider->Get_Collider_ID();
@@ -92,7 +93,6 @@ void CCollider_Manager::Check_Collision(CCollider* SourpCollider, CCollider* Des
 		iter->second = false;
 		return;
 	}
-		
 
 	if (SourpCollider->Collision(DestpCollider))
 	{
@@ -128,6 +128,16 @@ CCollider_Layer* CCollider_Manager::Find_Collider_Layer(_uint iColLayer)
 		return nullptr;
 
 	return iter->second;
+}
+
+void CCollider_Manager::Delete_Collider()
+{
+	
+	for (auto& iter : m_vecActiveCollider)
+	{
+		iter.first->Delete_Collider();
+		iter.second->Delete_Collider();
+	}
 }
 
 CCollider_Manager* CCollider_Manager::Create()

@@ -115,9 +115,6 @@
     <Filter Include="02.GameObjects\03. Plateform">
       <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Sky">
-      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05. Character">
       <UniqueIdentifier>{9213d9ae-3b36-4700-bead-33fd73624f7a}</UniqueIdentifier>
     </Filter>
@@ -243,6 +240,12 @@
     </Filter>
     <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead">
       <UniqueIdentifier>{a1d77599-3530-4fc7-ae4c-bcbcd2cc6f11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited">
+      <UniqueIdentifier>{c3dd9ecc-248a-4df8-a3f3-2771a4b84d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\04.Sky">
+      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -379,7 +382,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
-      <Filter>02.GameObjects\04.Sky</Filter>
+      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -449,6 +452,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Player\Player_Body.h">
       <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Dead.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Hited.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -558,7 +567,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
-      <Filter>02.GameObjects\04.Sky</Filter>
+      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -628,6 +637,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player\Player_Body.cpp">
       <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Hited.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

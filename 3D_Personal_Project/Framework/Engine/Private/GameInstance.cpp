@@ -102,13 +102,15 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pObject_Manager->Tick(fTimeDelta);
 	m_pPipeLine->Tick();
-	m_pCollider_Manager->Update();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
+	m_pCollider_Manager->Update();
 	
 	m_pLevel_Manager->Tick(fTimeDelta);
 
 	m_pInput_Device->LateUpdate_InputDev();
+
+	m_pObject_Manager->Delete_Objects();
 }
 
 HRESULT CGameInstance::Render_Engine()

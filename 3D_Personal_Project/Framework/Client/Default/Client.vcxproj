@@ -214,7 +214,9 @@
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState\Monster_State.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Attack.h" />
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Dead.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Delay.h" />
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Hited.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_IDLE.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
@@ -277,7 +279,9 @@
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState\Monster_State.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Attack.cpp" />
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Delay.cpp" />
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Hited.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_IDLE.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />

@@ -65,6 +65,9 @@ public:
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) {};
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) {};
 
+public:
+	void	Distroy();
+
 protected:
 	ID3D11Device*				m_pDevice = { nullptr };
 	ID3D11DeviceContext*		m_pContext = { nullptr };
@@ -75,7 +78,6 @@ protected:
 protected:
 	class CTransform*			m_pTransformCom = { nullptr };
 	
-
 protected:
 	map<const wstring, class CComponent*>	m_mapComponent;
 

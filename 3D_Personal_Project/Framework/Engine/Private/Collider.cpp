@@ -50,8 +50,8 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	CBounding::BOUNDING_DESC* pBounding_Desc = (CBounding::BOUNDING_DESC*)pArg;
 
-	m_pOnwer = pBounding_Desc->pOnwer;
-	if (FAILED(m_pOnwer == nullptr))
+	m_pOwner = pBounding_Desc->pOnwer;
+	if (FAILED(m_pOwner == nullptr))
 		return E_FAIL;
 
 	m_bUseCol = pBounding_Desc->bUseCol;
@@ -111,37 +111,37 @@ HRESULT CCollider::Render()
 
 _bool CCollider::Collision(CCollider* pTargetCollider)
 {
-	if (m_pBounding == nullptr)
+	if (m_pBounding == nullptr || m_pOwner == nullptr)
 		return false;
 
-	return m_pBounding->Collision(pTargetCollider);
+	return  m_pBounding->Collision(pTargetCollider);
 }
 
 void CCollider::OnCollisionEnter(CCollider* pOtherCollider)
 {
-	if (m_pOnwer == nullptr)
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
 		return;
 
 	m_bCollision = true;
 
-	m_pOnwer->OnCollisionEnter(pOtherCollider, m_iColID);
+	m_pOwner->OnCollisionEnter(pOtherCollider, m_iColID);
 }
 
 void CCollider::OnCollisionStay(CCollider* pOtherCollider)
 {
-	if (m_pOnwer == nullptr)
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
 		return;
 
-	m_pOnwer->OnCollisionStay(pOtherCollider, m_iColID);
+	m_pOwner->OnCollisionStay(pOtherCollider, m_iColID);
 }
 
 void CCollider::OnCollisionExit(CCollider* pOtherCollider)
 {
-	if (m_pOnwer == nullptr)
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
 		return;
 
 	m_bCollision = false;
-	m_pOnwer->OnCollisionExit(pOtherCollider,m_iColID);
+	m_pOwner->OnCollisionExit(pOtherCollider,m_iColID);
 }
 
 #endif

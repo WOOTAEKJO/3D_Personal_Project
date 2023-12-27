@@ -19,6 +19,8 @@ public:
 	void	Late_Tick(_float fTimeDelta);
 	void	Clear(_uint iLevelIndex);
 
+	void	Delete_Objects();
+
 public:
 	_uint	Get_Current_Level() { return m_iCurrentLevel; }
 	void	Set_Current_Level(_uint iLevel) { m_iCurrentLevel = iLevel; }

@@ -35,39 +35,61 @@ void CLayer::Tick(_float fTimeDelta)
 
 void CLayer::Late_Tick(_float fTimeDelta)
 {
-	/*for (auto& pGameObject : m_listClone) {
+	for (auto& pGameObject : m_listClone) {
 
 		if (pGameObject != nullptr)
 		{
 			pGameObject->Late_Tick(fTimeDelta);
 
-			if (pGameObject->Get_Dead())
-			{
-				Safe_Release(pGameObject);
-				m_listClone.erase(pGameObject);
-			}
+			//if (pGameObject->Get_Dead())
+			//{
+			//	Safe_Release(pGameObject);
+			//	m_listClone.erase(pGameObject);
+			//}
 		}
-	}*/
+	}
 
+	//for (auto& iter = m_listClone.begin(); iter != m_listClone.end();)
+	//{
+	//	if ((*iter) != nullptr)
+	//	{
+	//		(*iter)->Late_Tick(fTimeDelta);
+
+	//		//if ((*iter)->Get_Dead())
+	//		//{
+	//		//	(*iter)->Distroy();
+	//		//	Safe_Release((*iter));
+	//		//	iter = m_listClone.erase(iter);
+	//		//	//if(*iter == nullptr)
+	//		//	
+	//		//}
+	//		//else {
+	//		//	
+	//		//	iter++;
+	//		//}
+	//		iter++;
+	//	}
+	//	else {
+	//		iter++;
+	//	}
+	//}
+}
+
+void CLayer::Delete_Object()
+{
 	for (auto& iter = m_listClone.begin(); iter != m_listClone.end();)
 	{
-		if ((*iter) != nullptr)
+		if ((*iter)->Get_Dead())
 		{
-			(*iter)->Late_Tick(fTimeDelta);
-
-			if ((*iter)->Get_Dead())
-			{
-				Safe_Release((*iter));
-				iter = m_listClone.erase(iter);
-			}
-			else {
-				iter++;
-			}
+			(*iter)->Distroy();
+			Safe_Release((*iter));
+			iter = m_listClone.erase(iter);
 		}
 		else {
 			iter++;
 		}
 	}
+	
 }
 
 CLayer* CLayer::Create()

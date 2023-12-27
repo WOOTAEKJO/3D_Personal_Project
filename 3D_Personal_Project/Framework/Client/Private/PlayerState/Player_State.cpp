@@ -2,6 +2,7 @@
 #include "..\Public\PlayerState\Player_State.h"
 #include "StateMachine.h"
 
+#include "Player_Weapon_Spear.h"
 
 CPlayer_State::CPlayer_State()
 {
@@ -55,6 +56,13 @@ void CPlayer_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTim
 	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
 		* (bTurn == false ? 1.f : -1.f);
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
+}
+
+void CPlayer_State::Trans_Attack(_bool bCheck)
+{
+	for (_uint i = 0; i < (_uint)CPlayer_Weapon_Spear::WEAPON_COL::COL_END; i++) {
+		m_pOwner->Get_WeaponCollider(i)->Set_UseCol(bCheck);
+	}
 }
 
 void CPlayer_State::Free()

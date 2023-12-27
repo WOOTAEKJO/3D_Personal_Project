@@ -85,6 +85,11 @@ _bool CMonster::Is_Target_Range(_float fRange)
 	return false;
 }
 
+void CMonster::Hited()
+{
+	
+}
+
 CCollider* CMonster::Get_WeaponCollider()
 {
 	if (m_pWeaponColliderCom == nullptr)
@@ -120,7 +125,6 @@ void CMonster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pAICom);
 	Safe_Release(m_pSocketBone);
 	Safe_Release(m_pWeaponColliderCom);
 }

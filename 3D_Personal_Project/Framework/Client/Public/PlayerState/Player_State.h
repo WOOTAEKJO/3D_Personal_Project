@@ -34,6 +34,7 @@ protected:
 
 protected:
 	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
+	void	Trans_Attack(_bool bCheck);
 
 public:
 	virtual	void			Free() override;

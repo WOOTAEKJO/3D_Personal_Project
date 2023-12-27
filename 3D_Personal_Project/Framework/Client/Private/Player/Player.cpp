@@ -122,8 +122,19 @@ CGameObject* CPlayer::Find_Parts(const wstring& strPartsTag)
 CModel* CPlayer::Get_BodyModel()
 {
 	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>( Find_Parts(TEXT("Parts_Body")));
+	if (pBody == nullptr)
+		return nullptr;
 
 	return pBody->Get_Component<CModel>();
+}
+
+CCollider* CPlayer::Get_WeaponCollider(_uint iIndex)
+{
+	CGameObject* pWeapon = Find_Parts(TEXT("Parts_Spear"));
+	if (pWeapon == nullptr)
+		return nullptr;
+
+	return pWeapon->Get_Component<CCollider>(iIndex);
 }
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)

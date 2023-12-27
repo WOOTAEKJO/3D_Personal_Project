@@ -17,9 +17,6 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 private:
-	
-private:
-	void	Key_Input();
 
 public:
 	static	CPlayer_Spear_Attack2* Create(CGameObject * pGameObject);

@@ -36,7 +36,7 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(DIK_Q))
 	{
-		return CPlayer::STATE::ATTACK1;
+		return CPlayer::STATE::ATTACK2;
 	}
 
 	if (m_pGameInstance->Key_Down(DIK_LSHIFT))

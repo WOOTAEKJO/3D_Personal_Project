@@ -16,6 +16,9 @@ BEGIN(Client)
 class CPlayer_Weapon_Spear final : public CGameObject
 {	
 public:
+
+	enum WEAPON_COL {COL1,COL2,COL3,COL4,COL_END};
+
 	typedef struct tagPlayer_Weapon_Spear_Desc
 	{
 		vector<CBone*>		pBones;
@@ -46,7 +49,7 @@ public:
 private:
 	CModel*		m_pModelCom = { nullptr };
 	CShader*	m_pShaderCom = { nullptr };
-	CCollider*	m_pColliderCom[4] = { nullptr };
+	CCollider*	m_pColliderCom[COL_END] = { nullptr };
 
 private:
 	CBone*		m_pSocketBone = { nullptr };

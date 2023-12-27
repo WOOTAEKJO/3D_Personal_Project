@@ -12,7 +12,7 @@ BEGIN(Client)
 class CMonster abstract : public CCharacter
 {
 public:
-	enum STATE {IDLE, MOVE, ATTACK, DELAY, DEAD, STATE_END};
+	enum STATE {IDLE, MOVE, ATTACK, DELAY,HITED, DEAD, STATE_END};
 
 protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -32,12 +32,10 @@ public:
 	void	TargetLook();
 	void	Turn(_float fTimeDelta);
 	_bool	Is_Target_Range(_float fRange);
+	void	Hited();
 
 public:
 	CCollider* Get_WeaponCollider();
-
-protected:
-	CAICom*		m_pAICom = { nullptr };
 
 protected:
 	CBone*		m_pSocketBone = { nullptr };

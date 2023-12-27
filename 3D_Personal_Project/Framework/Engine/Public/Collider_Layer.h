@@ -13,6 +13,7 @@ private:
 
 public:
 	HRESULT	Add_Collider(CCollider* pCollider);
+	void	Delete_Collider();
 
 public:
 	list<CCollider*>& Get_ColliderList() { return m_listCollider; }

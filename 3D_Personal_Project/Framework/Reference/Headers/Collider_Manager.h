@@ -41,6 +41,7 @@ private:
 private:
 	void	Check_Collision(CCollider* SourpCollider, CCollider* DestpCollider);
 	CCollider_Layer* Find_Collider_Layer(_uint iColLayer);
+	void	Delete_Collider();
 
 public:
 	static	CCollider_Manager* Create();

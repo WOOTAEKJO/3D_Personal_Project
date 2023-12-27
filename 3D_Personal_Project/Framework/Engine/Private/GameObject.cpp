@@ -118,6 +118,16 @@ void CGameObject::Load_FromJson(const json& In_Json)
 	}
 }
 
+void CGameObject::Distroy()
+{
+	for (auto& iter : m_mapComponent) {
+		iter.second->Set_Owner(nullptr);
+	}
+	/*for (auto& iter : m_mapComponent)
+		Safe_Release(iter.second);
+	m_mapComponent.clear();*/
+}
+
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)
 {
 	CComponent* pComponent = Find_Component(strComTag);

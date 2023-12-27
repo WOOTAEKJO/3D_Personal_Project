@@ -22,13 +22,16 @@ void CNorMonster_Delay::State_Enter()
 
 _uint CNorMonster_Delay::State_Priority_Tick(_float fTimeDelta)
 {
-	m_pOwner->TargetLook();
-
 	return m_iStateID;
 }
 
 _uint CNorMonster_Delay::State_Tick(_float fTimeDelta)
 {
+
+	m_fTime += fTimeDelta;
+
+	if (m_fTime > 1.f)
+		return CMonster::STATE::IDLE;
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -43,6 +46,7 @@ _uint CNorMonster_Delay::State_Late_Tick(_float fTimeDelta)
 
 void CNorMonster_Delay::State_Exit()
 {
+	m_fTime = 0.f;
 }
 
 CNorMonster_Delay* CNorMonster_Delay::Create(CGameObject* pGameObject)

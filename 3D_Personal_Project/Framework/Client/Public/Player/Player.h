@@ -25,6 +25,7 @@ public:
 public:
 	CGameObject* Find_Parts(const wstring& strPartsTag);
 	CModel* Get_BodyModel();
+	CCollider* Get_WeaponCollider(_uint iIndex);
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;

@@ -40,7 +40,7 @@ _uint CNorMonster_Attack::State_Late_Tick(_float fTimeDelta)
 
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
-		return CMonster::STATE::IDLE;
+		return CMonster::STATE::DELAY;
 	}
 
 	return m_iStateID;

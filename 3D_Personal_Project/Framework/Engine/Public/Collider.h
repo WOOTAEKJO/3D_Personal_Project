@@ -42,7 +42,7 @@ public:
 
 private:
 	CBounding*				m_pBounding = { nullptr };
-	CGameObject*				m_pOnwer = { nullptr };
+	//CGameObject*				m_pOnwer = { nullptr };
 
 #ifdef _DEBUG
 

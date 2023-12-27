@@ -43,7 +43,7 @@ public:
 	_bool	Is_Power_Zero(TYPE eType);
 
 public:
-	CGameObject*	m_pOwner = { nullptr };
+	//CGameObject*	m_pOwner = { nullptr };
 	CTransform*		m_pOwnerTransform = { nullptr };
 	CNavigation*	m_pOwnerNavigation = { nullptr };
 

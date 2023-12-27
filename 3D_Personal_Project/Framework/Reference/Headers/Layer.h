@@ -15,6 +15,8 @@ public:
 	void	Tick(_float fTimeDelta);
 	void	Late_Tick(_float fTimeDelta);
 
+	void	Delete_Object();
+
 public:
 	list<class CGameObject*>	Get_ObjectList() { return m_listClone; }
 
