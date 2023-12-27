@@ -1,15 +1,9 @@
 #pragma once
 #include "Character.h"
 
-BEGIN(Engine)
-
-class CStateMachine;
-class CRigidBody;
-class CCollider;
-
-END
-
 BEGIN(Client)
+
+
 
 class CPlayer final : public CCharacter
 {
@@ -29,16 +23,14 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-	CRigidBody* Get_RigidBody() { return m_pRigidBodyCom; }
-
-public:
 	CGameObject* Find_Parts(const wstring& strPartsTag);
 	CModel* Get_BodyModel();
+	CCollider* Get_WeaponCollider(_uint iIndex);
 
-private:
-	CStateMachine*	m_pStateMachineCom = { nullptr };
-	CRigidBody*		m_pRigidBodyCom = { nullptr };
-	CCollider*		m_pColliderCom = { nullptr };
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
 
 private:
 	map<const wstring, CGameObject*>	m_mapParts;

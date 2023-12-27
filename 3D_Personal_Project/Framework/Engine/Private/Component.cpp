@@ -31,16 +31,15 @@ HRESULT CComponent::Initialize(void* pArg)
 
 void CComponent::Init_ClassName()
 {
-	m_strClassName = typeid(this).name();
-	m_Class_HashCode = typeid(this).hash_code();
-
-	
+	/*m_strClassName = typeid(this).name();
+	m_Class_HashCode = typeid(this).hash_code();*/
 }
 
 void CComponent::Free()
 {
 	__super::Free();
 
+	//Safe_Release(m_pOwner);
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 	Safe_Release(m_pGameInstance);

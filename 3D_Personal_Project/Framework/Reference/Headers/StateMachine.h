@@ -26,6 +26,9 @@ public:
 
 	void	Is_Change_State(const _uint & iStateID);
 
+public:
+	_uint	Get_StateID();
+
 private:
 	class CState*			m_pCurrentState = { nullptr };	// 현재 상태
 	_uint					m_iCurrentStateID = { 0 };		// 현재 상태 아이디

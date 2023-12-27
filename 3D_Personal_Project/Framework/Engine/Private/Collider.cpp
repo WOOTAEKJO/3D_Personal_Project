@@ -1,6 +1,9 @@
 #include "..\Public\Collider.h"
 
 #include "GameInstance.h"
+#include "GameObject.h"
+
+_uint CCollider::m_iNextID = 0;
 
 CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
@@ -47,9 +50,13 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	CBounding::BOUNDING_DESC* pBounding_Desc = (CBounding::BOUNDING_DESC*)pArg;
 
-	m_eType = pBounding_Desc->eType;
+	m_pOwner = pBounding_Desc->pOnwer;
+	if (FAILED(m_pOwner == nullptr))
+		return E_FAIL;
 
-	switch (m_eType)
+	m_bUseCol = pBounding_Desc->bUseCol;
+
+	switch (pBounding_Desc->eType)
 	{
 	case CBounding::TYPE_AABB:
 		m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBounding_Desc);
@@ -64,11 +71,17 @@ HRESULT CCollider::Initialize(void* pArg)
 	if (m_pBounding == nullptr)
 		return E_FAIL;
 
+	m_iColID = m_iNextID++;
+
 	return S_OK;
 }
 
 void CCollider::Update(_fmatrix matWorld)
 {
+	if (m_pBounding == nullptr)
+		return;
+
+	m_pBounding->Update(matWorld);
 }
 
 #ifdef _DEBUG
@@ -88,12 +101,47 @@ HRESULT CCollider::Render()
 
 	m_pEffect->Apply(m_pContext);
 
-	if (FAILED(m_pBounding->Render(m_pBatch)))
+	if (FAILED(m_pBounding->Render(m_pBatch, m_bCollision == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f))))
 		return E_FAIL;
-
+	
 	m_pBatch->End();
 
 	return S_OK;
+}
+
+_bool CCollider::Collision(CCollider* pTargetCollider)
+{
+	if (m_pBounding == nullptr || m_pOwner == nullptr)
+		return false;
+
+	return  m_pBounding->Collision(pTargetCollider);
+}
+
+void CCollider::OnCollisionEnter(CCollider* pOtherCollider)
+{
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
+		return;
+
+	m_bCollision = true;
+
+	m_pOwner->OnCollisionEnter(pOtherCollider, m_iColID);
+}
+
+void CCollider::OnCollisionStay(CCollider* pOtherCollider)
+{
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
+		return;
+
+	m_pOwner->OnCollisionStay(pOtherCollider, m_iColID);
+}
+
+void CCollider::OnCollisionExit(CCollider* pOtherCollider)
+{
+	if (m_pOwner == nullptr || pOtherCollider == nullptr)
+		return;
+
+	m_bCollision = false;
+	m_pOwner->OnCollisionExit(pOtherCollider,m_iColID);
 }
 
 #endif

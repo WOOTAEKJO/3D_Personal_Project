@@ -53,6 +53,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
 
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_PLAYER, m_pColliderCom)));
+
 	return S_OK;
 }
 
@@ -63,6 +65,8 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
 	}
+
+	
 
 	CCharacter::Priority_Tick(fTimeDelta);
 }
@@ -97,9 +101,6 @@ HRESULT CPlayer::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	/*if (FAILED(CCharacter::Render()))
-		return E_FAIL;*/
-
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
 	m_pColliderCom->Render();
@@ -121,8 +122,31 @@ CGameObject* CPlayer::Find_Parts(const wstring& strPartsTag)
 CModel* CPlayer::Get_BodyModel()
 {
 	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>( Find_Parts(TEXT("Parts_Body")));
+	if (pBody == nullptr)
+		return nullptr;
 
 	return pBody->Get_Component<CModel>();
+}
+
+CCollider* CPlayer::Get_WeaponCollider(_uint iIndex)
+{
+	CGameObject* pWeapon = Find_Parts(TEXT("Parts_Spear"));
+	if (pWeapon == nullptr)
+		return nullptr;
+
+	return pWeapon->Get_Component<CCollider>(iIndex);
+}
+
+void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
+{
+}
+
+void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
+{
+}
+
+void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
+{
 }
 
 HRESULT CPlayer::Bind_ShaderResources()
@@ -145,12 +169,17 @@ HRESULT CPlayer::Ready_Component()
 	RigidBody_Desc.pOwner = this;
 	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom,&RigidBody_Desc))) return E_FAIL;
 
-	CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
 	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
 	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
-	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom,&AABB_Desc))) return E_FAIL;
+	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.bUseCol = true;
+	Sphere_Desc.fRadius = 0.9f;
+	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom,&Sphere_Desc))) return E_FAIL;
 	
 	return S_OK;
 }
@@ -233,9 +262,5 @@ void CPlayer::Free()
 	for (auto& iter : m_mapParts)
 		Safe_Release(iter.second);
 	m_mapParts.clear();
-
-	Safe_Release(m_pStateMachineCom);
-	Safe_Release(m_pRigidBodyCom);
-	Safe_Release(m_pColliderCom);
 
 }

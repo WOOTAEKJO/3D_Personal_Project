@@ -321,22 +321,22 @@ void CImGuiMgr::Grid_Draw()
 
 void CImGuiMgr::File_Render()
 {
-    const char* Path = nullptr;
+    const char* Path = CUtility_String::WString_To_string(FILE_PATH).c_str();
     const char* Filter = nullptr;
     switch (M_eCurentMode)
     {
     case Client::CImGuiMgr::MODE_STATIC:
         return;
     case Client::CImGuiMgr::MODE_TERRAIN:
-        Path = DATA_TERRAIN_PATH;
+       // Path = DATA_PATH;
         Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_OBJECT:
-        Path = DATA_OBJECT_PATH;
+        //Path = DATA_OBJECT_PATH;
         Filter = ".json";
         break;
     case Client::CImGuiMgr::MODE_ANIMATION:
-        Path = DATA_ANIMATION_PATH;
+       // Path = DATA_ANIMATION_PATH;
         Filter = ".json";
         break;
     case Client::CImGuiMgr::MODE_CAMERA:

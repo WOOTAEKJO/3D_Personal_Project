@@ -41,10 +41,12 @@ HRESULT CGameObject::Initialize(void* pArg)
 	if (m_pTransformCom == nullptr)
 		return E_FAIL;
 
-	if (Find_Component(TAG_NAME<CTransform>()) != nullptr)
+	wstring strTag = TAG_NAME<CTransform>() + TEXT("0");
+
+	if (Find_Component(strTag) != nullptr)
 		return E_FAIL;
 
-	m_mapComponent.emplace(TAG_NAME<CTransform>(), m_pTransformCom);
+	m_mapComponent.emplace(strTag, m_pTransformCom);
 	Safe_AddRef(m_pTransformCom);
 	
 	return S_OK;
@@ -114,6 +116,16 @@ void CGameObject::Load_FromJson(const json& In_Json)
 		if (iter.second->Get_UseJson())
 			iter.second->Load_FromJson(In_Json["Component"]);
 	}
+}
+
+void CGameObject::Distroy()
+{
+	for (auto& iter : m_mapComponent) {
+		iter.second->Set_Owner(nullptr);
+	}
+	/*for (auto& iter : m_mapComponent)
+		Safe_Release(iter.second);
+	m_mapComponent.clear();*/
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)

@@ -21,9 +21,14 @@ public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 	virtual void	Late_Tick(_float fTimeDelta) {};
 
 public:
-	string	Get_ClassName() { return m_strClassName; }
+	wstring	Get_ClassName() { return m_strClassName; }
+	void	Set_ClassName(wstring strName) { m_strClassName = strName; }
+
 	size_t	Get_ClassHashCode() { return m_Class_HashCode; }
 	_bool	Get_UseJson() { return m_bUseJson; }
+
+	void	Set_Owner(class CGameObject* pOwner) { m_pOwner = pOwner; }
+	class CGameObject* Get_Owner() { return m_pOwner; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -33,9 +38,12 @@ protected:
 	class CGameInstance*	m_pGameInstance = { nullptr };
 
 protected:
+	class CGameObject*		m_pOwner = { nullptr };
+
+protected:
 	bool		m_bClone = { false };
 
-	string		m_strClassName = {};
+	wstring		m_strClassName = {};
 	size_t		m_Class_HashCode = { 0 };
 
 protected:

@@ -101,6 +101,14 @@ void CStateMachine::Is_Change_State(const _uint& iStateID)
 	}
 }
 
+_uint CStateMachine::Get_StateID()
+{
+	if(m_pCurrentState == nullptr)
+		return _uint();
+
+	return m_pCurrentState->Get_StateID();
+}
+
 CState* CStateMachine::Find_State(const _uint& iStateID)
 {
 	auto& iter = m_mapState.find(iStateID);

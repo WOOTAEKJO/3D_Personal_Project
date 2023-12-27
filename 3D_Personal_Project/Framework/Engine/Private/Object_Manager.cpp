@@ -122,6 +122,23 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_mapLayer[iLevelIndex].clear();
 }
 
+void CObject_Manager::Delete_Objects()
+{
+	for (size_t i = 0; i < m_iNumLevel; i++) {
+		for (auto& iter : m_mapLayer[i])
+			iter.second->Delete_Object();
+	}
+}
+
+list<class CGameObject*> CObject_Manager::Get_ObjectList(_uint iLevelIndex, const wstring& strLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
+	if (pLayer == nullptr)
+		list<class CGameObject*>();
+
+	return pLayer->Get_ObjectList();
+}
+
 CGameObject* CObject_Manager::Find_ProtoType(const wstring& strProtoTypeTag)
 {
 	auto& iter = m_mapProtoType.find(strProtoTypeTag);

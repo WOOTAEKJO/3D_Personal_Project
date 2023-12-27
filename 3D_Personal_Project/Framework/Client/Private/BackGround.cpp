@@ -96,12 +96,12 @@ HRESULT CBackGround::Ready_Component()
 		return E_FAIL;
 
 	/* For.Com_Shader*/
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_VTXPOSTEX"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, SHADER_POS_TAG,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	/* For.Com_Texture*/
-	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
+	if (FAILED(__super::Add_Component(LEVEL_LOGO, TEX_BACKGROUND_TAG,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

@@ -17,6 +17,7 @@ HRESULT CPlayer_Spear_Attack2::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Spear_Attack2::State_Enter()
 {
+	Trans_Attack(true);
 	m_pOwnerModel->Set_AnimationIndex(79);
 }
 
@@ -64,12 +65,9 @@ _uint CPlayer_Spear_Attack2::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack2::State_Exit()
 {
-	
+	Trans_Attack(false);
 }
 
-void CPlayer_Spear_Attack2::Key_Input()
-{
-}
 
 CPlayer_Spear_Attack2* CPlayer_Spear_Attack2::Create(CGameObject* pGameObject)
 {

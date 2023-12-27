@@ -1,6 +1,7 @@
 #include "..\Public\Bounding_OBB.h"
 
 #include "DebugDraw.h"
+#include "Collider.h"
 
 CBounding_OBB::CBounding_OBB(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBounding(pDevice, pContext)
@@ -11,27 +12,54 @@ HRESULT CBounding_OBB::Initialize(BOUNDING_DESC* Bounding_Desc)
 {
 	BOUNDING_OBB_DESC* OBB_Desc = (BOUNDING_OBB_DESC*)(Bounding_Desc);
 
+	m_eType = OBB_Desc->eType;
+
 	_float4 vQuaternion = {};
 
 	XMStoreFloat4(&vQuaternion, XMQuaternionRotationRollPitchYaw(OBB_Desc->vRotation.x, OBB_Desc->vRotation.y, OBB_Desc->vRotation.z));
 
-	m_pOBB = new BoundingOrientedBox(OBB_Desc->vCenter, OBB_Desc->vExtents, vQuaternion);
+	m_pOriOBB = new BoundingOrientedBox(OBB_Desc->vCenter, OBB_Desc->vExtents, vQuaternion);
+	if (m_pOriOBB == nullptr)
+		return E_FAIL;
+
+	m_pOBB = new BoundingOrientedBox(*m_pOriOBB);
 	if (m_pOBB == nullptr)
 		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch)
+void CBounding_OBB::Update(_fmatrix matWorld)
+{
+	m_pOriOBB->Transform(*m_pOBB, matWorld);
+}
+
+HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
 	if (m_pOBB == nullptr || pBatch == nullptr)
 		return E_FAIL;
 
-	_vector vColor = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-
 	DX::Draw(pBatch, *m_pOBB, vColor);
 
 	return S_OK;
+}
+
+_bool CBounding_OBB::Collision(CCollider* pTargetCollider)
+{
+	CBounding* pBounding = pTargetCollider->Get_Bounding();
+
+	switch (pBounding->Get_ColisionType())
+	{
+	case TYPE::TYPE_AABB:
+		return m_pOBB->Intersects(*dynamic_cast<CBounding_AABB*>(pBounding)->Get_BoundingAABB());
+		break;
+	case TYPE::TYPE_OBB:
+		return m_pOBB->Intersects(*dynamic_cast<CBounding_OBB*>(pBounding)->Get_BoundingOBB());
+		break;
+	case TYPE::TYPE_SPHERE:
+		return m_pOBB->Intersects(*dynamic_cast<CBounding_Sphere*>(pBounding)->Get_BoundingSphere());
+		break;
+	}
 }
 
 CBounding_OBB* CBounding_OBB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, BOUNDING_DESC* Bounding_Desc)
@@ -51,4 +79,5 @@ void CBounding_OBB::Free()
 	__super::Free();
 
 	Safe_Delete(m_pOBB);
+	Safe_Delete(m_pOriOBB);
 }

@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CLeaf abstract : public CNode
+class ENGINE_DLL CLeaf abstract : public CNode
 {
 protected:
 	CLeaf();

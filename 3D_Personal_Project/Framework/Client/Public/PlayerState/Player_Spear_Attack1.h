@@ -20,9 +20,6 @@ private:
 	_float		m_fRushTime = { 0.f };
 	_bool		m_bCheck = { true };
 
-private:
-	void	Key_Input();
-
 public:
 	static	CPlayer_Spear_Attack1* Create(CGameObject * pGameObject);
 	virtual	void			Free();

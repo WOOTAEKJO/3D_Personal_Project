@@ -4,6 +4,7 @@
 
 #pragma region 单捞磐 颇老 林家
 
+#define FILE_PATH					TEXT("../Bin/")
 #define DATA_NONANIM_PATH			"../Bin/Data/NonAnim/"
 #define DATA_ANIM_PATH			"../Bin/Data/Anim/"
 //TEXT("C:/Users/Git/SourcTree/3D_Personal_Project/3D_Personal_Project/Framework/Client/Bin/Data/Terrain")
@@ -57,6 +58,15 @@
 
 #define	ANIMMODEL_TEST_TAG			TEXT("Prototype_Component_AnimModel_Test")
 #define	ANIMMODEL_TEST_PATH		"../Bin/Resources/Test/BaseHumanSkeleton.fbx"
+
+#define	ANIMMODEL_HELICOSCARROW_TAG			TEXT("Prototype_Component_AnimModel_HelicoScarrow")
+#define	ANIMMODEL_HELICOSCARROW_PATH			"../Bin/Resources/Models/AnimModel/HelicoScarrow/HelicoScarrow.fbx"
+
+#define	ANIMMODEL_SKULLCROSSBOW_TAG			TEXT("Prototype_Component_AnimModel_SkullCrossBow")
+#define	ANIMMODEL_SKULLCROSSBOW_PATH			"../Bin/Resources/Models/AnimModel/SkullCrossBow/SkullCrossBow.fbx"
+
+#define	ANIMMODEL_SPOOKETON_TAG				TEXT("Prototype_Component_AnimModel_Spooketon")
+#define	ANIMMODEL_SPOOKETON_PATH			"../Bin/Resources/Models/AnimModel/Spooketon/Spooketon.fbx"
 
 #pragma endregion
 

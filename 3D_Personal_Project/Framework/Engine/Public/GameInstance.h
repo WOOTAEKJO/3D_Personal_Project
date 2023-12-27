@@ -4,6 +4,9 @@
 #include "Component_Manager.h"
 #include "PipeLine.h"
 #include "Json/Json_Utility.h"
+#include "File_Manager.h"
+
+#include "Utility_String.h"
 
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
@@ -23,7 +26,8 @@ private:
 
 public: /* For.Engine */
 	/* 엔진라이브러리를 사용하기위한 준비를 모두 거친다. */
-	HRESULT Initialize_Engine(_uint iNumLevels,const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+	HRESULT Initialize_Engine(_uint iNumLevels, const wstring & strFilePath,const GRAPHIC_DESC& GraphicDesc, HINSTANCE hInst,
+		_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
 	void Tick_Engine(_float fTimeDelta);
 	HRESULT Render_Engine();	// 렌더는 렌더러 클래스를 통해 실행된다.
 	void Clear(_uint iLevelIndex);
@@ -59,6 +63,7 @@ public: /* For.Object_Manager */
 	CGameObject* Add_Independent_Clone(const wstring & strProtoTypeTag, void* pArg = nullptr);
 	_uint	Get_Current_Level();
 	void	Set_Current_Level(_uint iLevel);
+	list<class CGameObject*>	Get_ObjectList(_uint iLevelIndex, const wstring & strLayerTag);
 
 	template <typename T>
 	HRESULT Add_GameObject_ProtoType(const wstring & strProtoTypeTag)
@@ -80,28 +85,33 @@ public: /* For.Component_Manager*/
 	CComponent_Manager::PROTOTYPE Get_Com_ProtoType(const _uint& iLevelIndex);
 
 	template <typename VertexType>
-	HRESULT	Add_Shader_ProtoType(const wstring & strProtoTypeTag, const wstring& strShaderFilePath)
+	HRESULT	Add_Shader_ProtoType(const wstring& strProtoTypeTag)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CShader::Create(m_pDevice, m_pContext, strShaderFilePath, VertexType::Elements, VertexType::iElementsNum));
+			CShader::Create(m_pDevice, m_pContext, 
+				CUtility_String::string_To_Wstring(Load_ShaderFiles_Path(strProtoTypeTag)),
+				VertexType::Elements, VertexType::iElementsNum));
 	}
 
-	HRESULT Add_Texture_ProtoType(const wstring& strProtoTypeTag, const wstring& strTextureFilePath, _uint iNum = 0)
+	HRESULT Add_Texture_ProtoType(const wstring& strProtoTypeTag, _uint iNum = 0)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CTexture::Create(m_pDevice, m_pContext, strTextureFilePath, iNum));
+			CTexture::Create(m_pDevice, m_pContext,
+				CUtility_String::string_To_Wstring( Load_Texture_Path(strProtoTypeTag)), iNum));
 	}
 
-	HRESULT	Add_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	HRESULT	Add_Model_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CModel::Create(m_pDevice, m_pContext,CModel::TYPE::TYPE_NONANIM ,strModelFilePath, matPivot));
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_NONANIM,
+				Load_Models_Path(strProtoTypeTag), matPivot));
 	}
 
-	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, const string& strModelFilePath, _fmatrix matPivot)
+	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM, strModelFilePath, matPivot));
+			CModel::Create(m_pDevice, m_pContext, CModel::TYPE::TYPE_ANIM,
+				Load_Models_Path(strProtoTypeTag), matPivot));
 	}
 
 	HRESULT	Add_Terrain_ProtoType_Height(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
@@ -110,16 +120,18 @@ public: /* For.Component_Manager*/
 			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_HEIGHT, strHeightFilePath));
 	}
 
-	HRESULT	Add_Terrain_ProtoType_Binary(const wstring& strProtoTypeTag, const wstring& strHeightFilePath)
+	HRESULT	Add_Terrain_ProtoType_Binary(const wstring& strProtoTypeTag)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_BINARY, strHeightFilePath));
+			CVIBuffer_Terrain::Create(m_pDevice, m_pContext, CVIBuffer_Terrain::LOADTYPE::TYPE_BINARY,
+				CUtility_String::string_To_Wstring(Load_Data_Path(strProtoTypeTag))));
 	}
 
-	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag,const string& strNavigationFilePath)
+	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
-			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_LOAD, strNavigationFilePath.c_str()));
+			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_LOAD,
+				Load_Data_Path(strProtoTypeTag).c_str()));
 	}
 
 	HRESULT	Add_Navigation_ProtoType_Demo(const wstring& strProtoTypeTag)
@@ -162,6 +174,19 @@ public: /* For.PipeLine*/
 public: /* For. SaveLoad_Manager*/
 	HRESULT	Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc);
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
+	HRESULT	Save_Data_Json(const _char* strFilePath, CGameObject* pObject);
+	HRESULT	Load_Data_Json(const wstring& strTag, CGameObject* pObject);
+
+public: /* For. File_Manager*/
+	string	Load_Data_Path(wstring strTag);
+	string	Load_ShaderFiles_Path(wstring strTag);
+	string	Load_Models_Path(wstring strTag);
+	string	Load_Texture_Path(wstring strTag);
+
+public: /* For. Collider_Manager*/
+	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
+	HRESULT	Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer);
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -175,6 +200,8 @@ private:
 	class CMouse_Manager*			m_pMouse_Manager = { nullptr };
 	class CPipeLine*				m_pPipeLine = { nullptr };
 	class CSaveLoad_Manager*		m_pSaveLoad_Manager = { nullptr };
+	class CFile_Manager*			m_pFile_Manager = { nullptr };
+	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

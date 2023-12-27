@@ -32,8 +32,7 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	Load_Data("../Bin/Data/Animation/Jack.json");
-	
+	m_pGameInstance->Load_Data_Json(m_strModelTag,this);
 
 	return S_OK;
 }
@@ -207,18 +206,6 @@ void CAnimMesh_Demo::Load_FromJson(const json& In_Json)
 		return;
 
 	m_pModelCom->Load_FromJson(In_Json);
-}
-
-HRESULT CAnimMesh_Demo::Load_Data(const _char* strFilePath)
-{
-	json jLoad;
-
-	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
-		return E_FAIL;
-
-	Load_FromJson(jLoad);
-
-	return S_OK;
 }
 
 HRESULT CAnimMesh_Demo::Bind_ShaderResources()

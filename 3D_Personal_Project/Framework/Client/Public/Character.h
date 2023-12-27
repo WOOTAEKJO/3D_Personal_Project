@@ -7,6 +7,9 @@ BEGIN(Engine)
 class CModel;
 class CShader;
 class CNavigation;
+class CCollider;
+class CRigidBody;
+class CStateMachine;
 
 END
 
@@ -31,6 +34,16 @@ public:
 
 	}PHYSICS_DESC;
 
+	typedef struct tagStatusDesc
+	{
+		_int	iMaxHP = 10;
+		_int	iCurHP = 10;
+
+		_bool	bHited = false;
+		_bool	bDead = false;
+
+	}STATUS_DESC;
+
 protected:
 	CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CCharacter(const CCharacter& rhs);
@@ -46,16 +59,21 @@ public:
 
 public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
+	STATUS_DESC*	Open_Status_Desc() { return &m_Status_Desc; }
 
 protected:
-	CShader* m_pShaderCom = { nullptr };
-	CModel* m_pModelCom = { nullptr };
-	CNavigation* m_pNavigationCom = { nullptr };
+	CShader*		m_pShaderCom = { nullptr };
+	CModel*			m_pModelCom = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
+	CCollider*		m_pColliderCom = { nullptr };
+	CRigidBody*		m_pRigidBodyCom = { nullptr };
+	CStateMachine*	m_pStateMachineCom = { nullptr };
 
 protected:
 	wstring		m_strModelTag;
 	
 	PHYSICS_DESC	m_Physics_Desc;
+	STATUS_DESC		m_Status_Desc;
 
 protected:
 	virtual HRESULT Bind_ShaderResources();

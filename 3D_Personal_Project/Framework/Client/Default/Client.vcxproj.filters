@@ -115,9 +115,6 @@
     <Filter Include="02.GameObjects\03. Plateform">
       <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\04.Sky">
-      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05. Character">
       <UniqueIdentifier>{9213d9ae-3b36-4700-bead-33fd73624f7a}</UniqueIdentifier>
     </Filter>
@@ -180,6 +177,75 @@
     </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Player\04. Roll">
       <UniqueIdentifier>{8efdc2a5-28ca-404f-993a-ae3ef4c2c6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster">
+      <UniqueIdentifier>{b3771ddd-6bc0-4b13-b364-540f9d4c5062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal">
+      <UniqueIdentifier>{3898e13b-db2b-49f9-8bbf-565739bbfb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss">
+      <UniqueIdentifier>{8542fb10-d53b-4774-a1ac-f68624cd6a3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon">
+      <UniqueIdentifier>{e307f72b-9f4d-4c29-9c8e-dfd6555d66ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow">
+      <UniqueIdentifier>{836144b6-7437-4b76-8dd9-27a78a00c1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow">
+      <UniqueIdentifier>{e0407a50-8916-4898-93bc-cdbc2b1c4426}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster">
+      <UniqueIdentifier>{4dda60cb-2dad-46fe-8419-3f9925a930ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster\00. IDLE">
+      <UniqueIdentifier>{cd5f76b9-5bf4-4773-8b43-c9ad32cf0246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster\01. Move">
+      <UniqueIdentifier>{0bfed82c-547e-4df3-99c0-6ccbb2cb13ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster\02. Attack">
+      <UniqueIdentifier>{9933cfd8-5f7a-4539-9de5-e3cb754fe145}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster\03. Delay">
+      <UniqueIdentifier>{6282416b-1d6a-4471-907c-b6638a478303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\00. Normal_Monster\04. Dead">
+      <UniqueIdentifier>{b9b3774d-4383-4ca5-b5a5-3ff34f24ce4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\01. Tree_State\01. Boss_Monster">
+      <UniqueIdentifier>{d3c3fa03-6cbe-4a22-9457-75821d7b8d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster">
+      <UniqueIdentifier>{ad1b62b8-a57a-4598-841b-753862bb6f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster">
+      <UniqueIdentifier>{5e1153f7-9236-4731-b973-c87f76129c3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\01. Boss_Monster">
+      <UniqueIdentifier>{f81bfbfc-7ae9-4793-a44f-59debb65e5dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\00. IDLE">
+      <UniqueIdentifier>{7ffc3d3e-d8ce-4dc7-8c1f-9a449be42fa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move">
+      <UniqueIdentifier>{0405fda7-2bc9-42bb-accc-fd5a9422c524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\02. Attack">
+      <UniqueIdentifier>{4cdfd76b-a067-4edb-8147-75315b47a6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\03. Delay">
+      <UniqueIdentifier>{b86b879d-42de-4bde-ae26-ab7956cc153a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead">
+      <UniqueIdentifier>{a1d77599-3530-4fc7-ae4c-bcbcd2cc6f11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited">
+      <UniqueIdentifier>{c3dd9ecc-248a-4df8-a3f3-2771a4b84d39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\04.Sky">
+      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,7 +382,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
-      <Filter>02.GameObjects\04.Sky</Filter>
+      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -330,17 +396,11 @@
     <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player\Player_Body.h">
-      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player\Player.h">
       <Filter>02.GameObjects\05. Character\00.Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h">
       <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PlayerState\Player_State.h">
-      <Filter>95. State\00. StatMachine_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h">
       <Filter>02.GameObjects\05. Character\00.Player\01. Weapon\00.Spear</Filter>
@@ -362,6 +422,42 @@
     </ClInclude>
     <ClInclude Include="..\Public\PlayerState\Player_Roll.h">
       <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02.GameObjects\05. Character\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Spooketon.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AI_Normal_Monster_IDLE.h">
+      <Filter>95. State\01. Tree_State\00. Normal_Monster\00. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_State.h">
+      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Monster_State.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\00. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Attack.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\02. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Delay.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\03. Delay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player\Player_Body.h">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Dead.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Hited.h">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -471,7 +567,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
-      <Filter>02.GameObjects\04.Sky</Filter>
+      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -485,17 +581,11 @@
     <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\02. Attack\00.Common\00. Spear_AirAttack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player\Player_Body.cpp">
-      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Player\Player.cpp">
       <Filter>02.GameObjects\05. Character\00.Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\00. IDLE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PlayerState\Player_State.cpp">
-      <Filter>95. State\00. StatMachine_State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp">
       <Filter>02.GameObjects\05. Character\00.Player\01. Weapon\00.Spear</Filter>
@@ -517,6 +607,42 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp">
       <Filter>95. State\00. StatMachine_State\00. Player\04. Roll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Spooketon.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\00. Spooketon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AI_Normal_Monster_IDLE.cpp">
+      <Filter>95. State\01. Tree_State\00. Normal_Monster\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_State.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Monster_State.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\01. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Attack.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Delay.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\03. Delay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player_Body.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\04. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Hited.cpp">
+      <Filter>95. State\00. StatMachine_State\01. Monster\00. Normal_Monster\05. Hited</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
