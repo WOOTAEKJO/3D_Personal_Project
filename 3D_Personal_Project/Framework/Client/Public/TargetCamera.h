@@ -37,7 +37,7 @@ private:
 
 private:
 	_uint			m_iRadiusX = { 9 };
-	_uint			m_iRadiusY = { 6 };
+	_uint			m_iRadiusY = { 5 };
 
 private:
 	void	Mouse_Input(_float fTimeDelta);

@@ -140,11 +140,6 @@ CCollider* CPlayer::Get_WeaponCollider()
 	return pWeapon->Get_Component<CCollider>();
 }
 
-void CPlayer::Mouse_Input(_float fTimeDelta)
-{
-
-}
-
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
 }
@@ -184,7 +179,7 @@ HRESULT CPlayer::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	//Sphere_Desc.bUseCol = true;
+	Sphere_Desc.bUseCol = true;
 	Sphere_Desc.fRadius = 0.9f;
 	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom,&Sphere_Desc))) return E_FAIL;

@@ -150,7 +150,8 @@ HRESULT CSubObject_Demo::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos", &m_pGameInstance->Get_Camera_Pos(), sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
+		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

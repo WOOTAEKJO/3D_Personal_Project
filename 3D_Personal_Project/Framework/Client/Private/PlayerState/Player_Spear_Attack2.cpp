@@ -48,6 +48,8 @@ _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 			return CPlayer::STATE::IDLE;
 		}
 	}
+	
+	m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 	return m_iStateID;

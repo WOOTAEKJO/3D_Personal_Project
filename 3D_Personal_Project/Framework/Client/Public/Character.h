@@ -26,6 +26,8 @@ public:
 		_float	fJumpGravity = -9.8f;
 		_float  fFallGravity = -30.f;
 
+		_float	fTurnSpeed = 25.f;
+
 		_bool	bGround = true;
 		_bool	bJump = false;
 		_bool	bDoubleJump = false;

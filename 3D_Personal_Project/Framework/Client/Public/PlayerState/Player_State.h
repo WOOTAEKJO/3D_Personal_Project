@@ -27,6 +27,7 @@ protected:
 	
 protected:
 	void	Trans_Attack(_bool bCheck);
+	_bool	Key_Input(_float fTimeDelta);
 
 public:
 	virtual	void			Free() override;

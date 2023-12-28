@@ -21,7 +21,11 @@ void CPipeLine::Tick()
 	{
 		XMStoreFloat4x4(&m_matTransformInverse[i], XMMatrixInverse(nullptr,  XMLoadFloat4x4(&m_matTransform[i])));
 	}
-	memcpy(&m_vCameraPos, &m_matTransformInverse[TRANSFORMSTATE::VIEW].m[3],sizeof(_float4));
+
+	for (_uint i = 0; i < CAMERASTATE::CAM_END; i++)
+	{
+		memcpy(&m_vCameraInfo[i], &m_matTransformInverse[TRANSFORMSTATE::VIEW].m[i], sizeof(_float4));
+	}
 }
 
 void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _float4x4 matMatrix)
@@ -52,11 +56,6 @@ _float4x4 CPipeLine::Get_Transform_Float4x4_Inverse(TRANSFORMSTATE eState)
 _matrix CPipeLine::Get_Transform_Matrix_Inverse(TRANSFORMSTATE eState)
 {
 	return XMLoadFloat4x4(&m_matTransformInverse[eState]);
-}
-
-_float4 CPipeLine::Get_Camera_Pos()
-{
-	return m_vCameraPos;
 }
 
 CPipeLine* CPipeLine::Create()

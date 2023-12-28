@@ -30,6 +30,12 @@ _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 {
 	if(m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		return CPlayer::STATE::RUN;
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+		return CPlayer::STATE::RUN;
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
+		return CPlayer::STATE::RUN;
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+		return CPlayer::STATE::RUN;
 
 	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		return CPlayer::STATE::ATTACK2;

@@ -385,6 +385,14 @@ void CGameInstance::Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTra
 	m_pMouse_Manager->Free_Mouse(fTimeDelta, fMouseSensitivity, pTransCom);
 }
 
+void CGameInstance::Mouse_Move(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom)
+{
+	if (nullptr == m_pMouse_Manager)
+		return;
+
+	m_pMouse_Manager->Mouse_Move(fTimeDelta, fMouseSensitivity, pTransCom);
+}
+
 _float4 CGameInstance::Get_WorldMouse_Float4()
 {
 	if (nullptr == m_pMouse_Manager)
@@ -449,12 +457,20 @@ _matrix CGameInstance::Get_Transform_Matrix_Inverse(CPipeLine::TRANSFORMSTATE eS
 	return m_pPipeLine->Get_Transform_Matrix_Inverse(eState);
 }
 
-_float4 CGameInstance::Get_Camera_Pos()
+_float4 CGameInstance::Get_CameraState(CPipeLine::CAMERASTATE eState)
 {
 	if (nullptr == m_pPipeLine)
 		return _float4();
 
-	return m_pPipeLine->Get_Camera_Pos();
+	return m_pPipeLine->Get_CameraState(eState);
+}
+
+_vector CGameInstance::Get_CameraState_Mat(CPipeLine::CAMERASTATE eState)
+{
+	if (nullptr == m_pPipeLine)
+		return _vector();
+
+	return m_pPipeLine->Get_CameraState_Mat(eState);
 }
 
 HRESULT CGameInstance::Save_Data_Mesh(const _char* strFileName, CMeshData::MESHDATADESC MeshDataDesc)

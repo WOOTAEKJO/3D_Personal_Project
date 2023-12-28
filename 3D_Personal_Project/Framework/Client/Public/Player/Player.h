@@ -34,9 +34,6 @@ public:
 	CCollider* Get_WeaponCollider();
 
 public:
-	void	Mouse_Input(_float fTimeDelta);
-
-public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;

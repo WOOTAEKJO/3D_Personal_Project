@@ -39,6 +39,7 @@ _uint CPlayer_State::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_State::State_Tick(_float fTimeDelta)
 {
+
 	return m_iStateID;
 }
 
@@ -55,6 +56,52 @@ void CPlayer_State::State_Exit()
 void CPlayer_State::Trans_Attack(_bool bCheck)
 {
 	m_pOwner->Get_WeaponCollider()->Set_UseCol(bCheck);
+}
+
+_bool CPlayer_State::Key_Input(_float fTimeDelta)
+{
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT)) {
+
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK), fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
+		}
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f, fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f);
+		}
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT), fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT));
+
+		}
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f, fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f);
+
+		}
+	}
+	else
+		return false;
+
+	return true;
 }
 
 void CPlayer_State::Free()

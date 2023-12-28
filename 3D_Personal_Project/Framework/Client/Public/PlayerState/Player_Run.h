@@ -18,8 +18,6 @@ public:
 	virtual void	State_Exit() override;
 private:
 	
-private:
-	void	Key_Input();
 
 public:
 	static	CPlayer_Run* Create(CGameObject * pGameObject);

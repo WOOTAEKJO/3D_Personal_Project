@@ -67,10 +67,12 @@ void CTargetCamera::Priority_Tick(_float fTimeDelta)
 
 void CTargetCamera::Tick(_float fTimeDelta)
 { 
-	if (m_pTargetStateMachine->Get_StateID() != (_uint)CPlayer::STATE::RUN)
+	/*if (m_pTargetStateMachine->Get_StateID() == (_uint)CPlayer::STATE::IDLE)
 		Mouse_Input(fTimeDelta);
 	else
-		Target_Follow(fTimeDelta);
+		Target_Follow(fTimeDelta);*/
+	
+	Mouse_Input(fTimeDelta);
 
 	__super::Tick(fTimeDelta);
 }
@@ -84,27 +86,32 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 {
 	_bool bCheck = true;
 
+	if (m_pTargetStateMachine->Get_StateID() == (_uint)CPlayer::STATE::IDLE)
+		bCheck = false;
+
 	_long MouseMove = 0;
 
-	_vector vPos, vDir, vEye;
+	_vector vTargetPos, vPos, vDir, vEye;
 
 	_matrix matRotY = XMMatrixIdentity();
 	_matrix matRotX = XMMatrixIdentity();
 
-	vPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
-	vEye = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
+	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vDir = XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
 
-	vDir = XMVector3Normalize(vPos - vEye);
-
-	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+	if(!bCheck)
 	{
-		_float fRadian = MouseMove * fTimeDelta * 0.5f;
-		_float fDegree = XMConvertToDegrees(fRadian);
-		
-		if (fDegree<90.f && fDegree > -90.f) {
-			
+		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
+		{
+			_float fRadian = MouseMove * fTimeDelta * 0.5f;
+			_float fDegree = XMConvertToDegrees(fRadian);
+
+			if (fDegree<90.f && fDegree > -90.f) {
+
+			}
+			matRotX = XMMatrixRotationX(fRadian);
 		}
-		matRotX = XMMatrixRotationX(fRadian);
 	}
 
 	if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_X))
@@ -115,15 +122,25 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 
 	}
 
-	vDir = XMVector3Normalize (XMVector3TransformNormal(vDir, matRotX * matRotY)) * m_iRadiusX;
+	vDir = (XMVector3TransformNormal(vDir, matRotX * matRotY)) * m_iRadiusX;
 
-	vEye = XMVectorSet(vPos.m128_f32[0] - (vDir.m128_f32[0]),
-		vPos.m128_f32[1] - vDir.m128_f32[1],
-		vPos.m128_f32[2] - (vDir.m128_f32[2]) , 1.f);
+	vEye = XMVectorSet(vTargetPos.m128_f32[0] - (vDir.m128_f32[0]),
+		bCheck == true ? vTargetPos.m128_f32[1] + (_float)m_iRadiusY : vTargetPos.m128_f32[1] - vDir.m128_f32[1],
+		vTargetPos.m128_f32[2] - (vDir.m128_f32[2]),
+		1.f);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vEye);
-	m_pTransformCom->LookAt(vPos);
+	if(bCheck)
+	{
+		vDir = (vEye - vPos);
+		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * 0.5f,
+			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * 5.f,
+			vPos.m128_f32[2] + vDir.m128_f32[2] * 0.5f, 1.f);
+		/*vDir = (vEye - vPos);
+		vPos += vDir * fTimeDelta * 5.f;*/
+	}
 
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, bCheck ? vPos : vEye);
+	m_pTransformCom->LookAt(vTargetPos);
 }
 
 void CTargetCamera::Mouse_Fix()
@@ -143,6 +160,8 @@ void CTargetCamera::Target_Follow(_float fTimeDelta)
 	
 	vDir = XMVector3Normalize(vDir) * m_iRadiusX;
 
+	//vDir = XMVector3Normalize(vTargetPos - vPos);
+
 	vEye = XMVectorSet((vTargetPos.m128_f32[0] - (vDir.m128_f32[0])),
 		(vTargetPos.m128_f32[1] + (_float)m_iRadiusY),
 		(vTargetPos.m128_f32[2] - (vDir.m128_f32[2])),
@@ -150,7 +169,7 @@ void CTargetCamera::Target_Follow(_float fTimeDelta)
 
 	vDir = (vEye - vPos);
 
-	vPos += vDir * fTimeDelta * 7.f ;
+	vPos += vDir * fTimeDelta * 5.f ;
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 	m_pTransformCom->LookAt(vTargetPos);
