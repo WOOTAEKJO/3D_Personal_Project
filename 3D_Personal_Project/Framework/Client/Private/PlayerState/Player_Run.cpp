@@ -29,24 +29,18 @@ _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 {
-	if (!m_pGameInstance->Key_Pressing(DIK_UP))
-	{
+	if (!m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		return CPlayer::STATE::IDLE;
-	}
 
-	if (m_pGameInstance->Key_Down(DIK_Q))
-	{
+	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		return CPlayer::STATE::ATTACK2;
-	}
 
-	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
-	{
+	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_ROLL))
 		return CPlayer::STATE::ROLL;
-	}
 
-	if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
+	if (m_pGameInstance->Key_Pressing(DIK_D))
 		m_pOnwerTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
-	else if(m_pGameInstance->Key_Pressing(DIK_LEFT))
+	else if(m_pGameInstance->Key_Pressing(DIK_A))
 		m_pOnwerTransform->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -1.f*fTimeDelta);
 
 	m_pOnwerTransform->Go_Straight(fTimeDelta, m_pOnwerNavigation);

@@ -1,14 +1,20 @@
 #pragma once
 #include "Character.h"
 
+BEGIN(Engine)
+
+class CController;
+
+END
+
 BEGIN(Client)
-
-
 
 class CPlayer final : public CCharacter
 {
 public:
 	enum STATE {IDLE,RUN,ATTACK1, ATTACK2, ATTACK3, AIR_ATTACK,JUMP,ROLL,STATE_END};
+	enum KEY_STATE {KEY_FRONT, KEY_BACK, KEY_RIGHT, KEY_LEFT, KEY_JUMP, KEY_LB_ATTACK,
+		KEY_RB_ATTACK, KEY_ROLL,KEY_STATE_END};
 private:
 	CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer(const CPlayer& rhs);
@@ -25,12 +31,18 @@ public:
 public:
 	CGameObject* Find_Parts(const wstring& strPartsTag);
 	CModel* Get_BodyModel();
-	CCollider* Get_WeaponCollider(_uint iIndex);
+	CCollider* Get_WeaponCollider();
+
+public:
+	void	Mouse_Input(_float fTimeDelta);
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
+
+private:
+	CController*	m_pControllerCom = { nullptr };
 
 private:
 	map<const wstring, CGameObject*>	m_mapParts;
@@ -42,6 +54,7 @@ private:
 private:
 	HRESULT	Ready_State();
 	HRESULT	Ready_Parts();
+	HRESULT	Ready_Controller();
 	HRESULT	Add_Parts(const wstring& strPrototypeTag, const wstring& strPartsTag, void* pArg = nullptr);
 
 public:

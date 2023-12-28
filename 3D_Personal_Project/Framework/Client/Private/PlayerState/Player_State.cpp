@@ -22,6 +22,8 @@ HRESULT CPlayer_State::Initialize(CGameObject* pGameObject)
 	Safe_AddRef(m_pOnwerNavigation);
 	m_pOnwerRigidBody = m_pOwner->Get_Component<CRigidBody>();
 	Safe_AddRef(m_pOnwerRigidBody);
+	m_pOnwerController = m_pOwner->Get_Component<CController>();
+	Safe_AddRef(m_pOnwerController);
 
 	return S_OK;
 }
@@ -50,27 +52,13 @@ void CPlayer_State::State_Exit()
 {
 }
 
-void CPlayer_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta, _bool bTurn)
-{
-	_vector vDir = m_pOnwerTransform->Get_State(eType);
-	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
-		* (bTurn == false ? 1.f : -1.f);
-	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
-}
-
 void CPlayer_State::Trans_Attack(_bool bCheck)
 {
-	for (_uint i = 0; i < (_uint)CPlayer_Weapon_Spear::WEAPON_COL::COL_END; i++) {
-		m_pOwner->Get_WeaponCollider(i)->Set_UseCol(bCheck);
-	}
+	m_pOwner->Get_WeaponCollider()->Set_UseCol(bCheck);
 }
 
 void CPlayer_State::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pOwnerModel);
-	Safe_Release(m_pOnwerTransform);
-	Safe_Release(m_pOnwerNavigation);
-	Safe_Release(m_pOnwerRigidBody);
 }

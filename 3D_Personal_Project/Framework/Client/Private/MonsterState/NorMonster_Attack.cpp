@@ -28,7 +28,7 @@ _uint CNorMonster_Attack::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Attack::State_Tick(_float fTimeDelta)
 {		
 
-	Is_Attack_Time(fTimeDelta,0.5f);
+	Is_Attack_Time(m_pOwner->Get_WeaponCollider(),fTimeDelta,0.5f);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -48,8 +48,7 @@ _uint CNorMonster_Attack::State_Late_Tick(_float fTimeDelta)
 
 void CNorMonster_Attack::State_Exit()
 {
-	m_pOwner->Get_WeaponCollider()->Set_UseCol(false);
-	m_bAttack = true;
+	Reset_Attack_Time(m_pOwner->Get_WeaponCollider());
 }
 
 CNorMonster_Attack* CNorMonster_Attack::Create(CGameObject* pGameObject)

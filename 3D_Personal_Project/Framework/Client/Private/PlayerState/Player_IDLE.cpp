@@ -28,25 +28,17 @@ _uint CPlayer_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
-	{
+	if(m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		return CPlayer::STATE::RUN;
-	}
 
-	if (m_pGameInstance->Key_Down(DIK_Q))
-	{
+	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		return CPlayer::STATE::ATTACK2;
-	}
 
-	if (m_pGameInstance->Key_Down(DIK_SPACE))
-	{
+	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_JUMP))
 		return CPlayer::STATE::JUMP;
-	}
 
-	if (m_pGameInstance->Key_Down(DIK_LSHIFT))
-	{
+	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_ROLL))
 		return CPlayer::STATE::ROLL;
-	}
 
 	m_pOwner->Get_BodyModel()->Play_Animation(fTimeDelta, true);
 

@@ -19,15 +19,22 @@ HRESULT CDynamicCamera::Initialize_Prototype()
 
 HRESULT CDynamicCamera::Initialize(void* pArg)
 {
-	if (pArg == nullptr)
+	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
+
+	DynamicCameraDesc.fMouseSensitivity = 0.1f;
+	DynamicCameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
+	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);
+	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
+	DynamicCameraDesc.fNear = 0.1f;
+	DynamicCameraDesc.fFar = 1000.f;
+	DynamicCameraDesc.fSpeedPerSec = 30.f;
+	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
+
+	if (FAILED(__super::Initialize(&DynamicCameraDesc)))
 		return E_FAIL;
 
-	DYNAMICCAMERADESC* pDynamicCameraDesc = (DYNAMICCAMERADESC*)pArg;
-
-	if (FAILED(__super::Initialize(pDynamicCameraDesc)))
-		return E_FAIL;
-
-	m_fMouseSensitivity = pDynamicCameraDesc->fMouseSensitivity;
+	m_fMouseSensitivity = 0.1f;
 
 	return S_OK;
 }

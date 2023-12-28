@@ -37,7 +37,9 @@ _uint CPlayer_Spear_Attack1::State_Tick(_float fTimeDelta)
 		m_fRushTime = 0.f;
 		m_fTime += fTimeDelta;
 
-		if (m_pGameInstance->Key_Down(DIK_Q))
+		Trans_Attack(false);
+
+		if(m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		{
 			m_fTime = 0.f;
 			return CPlayer::STATE::ATTACK2;
@@ -79,7 +81,6 @@ _uint CPlayer_Spear_Attack1::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack1::State_Exit()
 {
-	Trans_Attack(false);
 }
 
 CPlayer_Spear_Attack1* CPlayer_Spear_Attack1::Create(CGameObject* pGameObject)

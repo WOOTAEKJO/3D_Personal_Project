@@ -16,15 +16,13 @@ BEGIN(Client)
 class CPlayer_Weapon_Spear final : public CGameObject
 {	
 public:
-
-	enum WEAPON_COL {COL1,COL2,COL3,COL4,COL_END};
-
 	typedef struct tagPlayer_Weapon_Spear_Desc
 	{
 		vector<CBone*>		pBones;
 		CTransform* pParentsTransform = nullptr;
 
 	}PLAYERSPEAR_DESC;
+
 private:
 	CPlayer_Weapon_Spear(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CPlayer_Weapon_Spear(const CPlayer_Weapon_Spear& rhs);
@@ -49,7 +47,7 @@ public:
 private:
 	CModel*		m_pModelCom = { nullptr };
 	CShader*	m_pShaderCom = { nullptr };
-	CCollider*	m_pColliderCom[COL_END] = { nullptr };
+	CCollider*	m_pColliderCom = { nullptr };
 
 private:
 	CBone*		m_pSocketBone = { nullptr };

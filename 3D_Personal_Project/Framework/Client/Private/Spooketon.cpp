@@ -46,10 +46,10 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(30.f, 0.f, 10.f, 1.f));
 	m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
-	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_MONSTER, m_pColliderCom)))
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_MONSTER_BULLET, m_pWeaponColliderCom)))
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER_BULLET, m_pWeaponColliderCom)))
 		return E_FAIL;
 
 	m_pSocketBone = m_pModelCom->Get_Bone(34);
@@ -113,27 +113,28 @@ void CSpooketon::Load_FromJson(const json& In_Json)
 
 void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	if (iColID == m_pWeaponColliderCom->Get_Collider_ID())
+	/*if (iColID == m_pWeaponColliderCom->Get_Collider_ID())
 	{
 		m_pWeaponColliderCom->Set_UseCol(false);
-	}
+	}*/
 
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
-		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDET_LAYER::COL_PLAYER_BULLET 
-			&& !m_Status_Desc.bHited)
+		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET 
+			&&!m_Status_Desc.bHited)
 		{
 			if (m_pStateMachineCom->Get_StateID() != (_uint)STATE::ATTACK)
 			{
 				m_Status_Desc.bHited = true;
 			}
-			m_Status_Desc.iCurHP -= 1.f;
+			m_Status_Desc.iCurHP -= 1;
 		}
 	}
 }
 
 void CSpooketon::OnCollisionStay(CCollider* pCollider, _uint iColID)
 {
+
 }
 
 void CSpooketon::OnCollisionExit(CCollider* pCollider, _uint iColID)

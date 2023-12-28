@@ -110,6 +110,7 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	m_pInput_Device->LateUpdate_InputDev();
 
+	m_pCollider_Manager->Delete_Collider();
 	m_pObject_Manager->Delete_Objects();
 }
 

@@ -131,6 +131,8 @@
 
 #define	COM_COLLIDER_TAG			TEXT("Prototype_Component_Collider")
 
+#define	COM_CONTROLLER_TAG			TEXT("Prototype_Component_Controller")
+
 #pragma endregion
 
 #pragma region ÅØ½ºÃÄ
@@ -156,6 +158,7 @@
 #define G0_TERRAIN_TAG			TEXT("Prototype_GameObject_Terrain")
 
 #define G0_DCAMERA_TAG			TEXT("Prototype_GameObject_DynamicCamera")
+#define GO_TARGETCAMERA_TAG		TEXT("Prototype_GameObject_TargetCamera")
 
 #define G0_TERRAIN_DEMO_TAG		TEXT("Prototype_GameObject_Terrain_Demo")
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")

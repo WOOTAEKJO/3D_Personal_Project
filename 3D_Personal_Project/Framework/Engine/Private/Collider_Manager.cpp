@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Collider_Layer.h"
+#include "GameObject.h"
 
 CCollider_Manager::CCollider_Manager()
 	:m_pGameInstance(CGameInstance::GetInstance())
@@ -27,7 +28,7 @@ void CCollider_Manager::Update()
 		}
 	}
 
-	Delete_Collider();
+	//Delete_Collider();
 }
 
 HRESULT CCollider_Manager::Add_Collision(_uint iColLayer, CCollider* pCollider)
@@ -96,19 +97,31 @@ void CCollider_Manager::Check_Collision(CCollider* SourpCollider, CCollider* Des
 
 	if (SourpCollider->Collision(DestpCollider))
 	{
-		
-
 		if (iter->second) // 총돌을 했었는지
 		{
-			SourpCollider->OnCollisionStay(DestpCollider);
-			DestpCollider->OnCollisionStay(SourpCollider);
+			if (SourpCollider->Get_Owner()->Get_Dead() || DestpCollider->Get_Owner()->Get_Dead())
+			{
+				SourpCollider->OnCollisionExit(DestpCollider);
+				DestpCollider->OnCollisionExit(SourpCollider);
+				iter->second = false;
+			}
+			else {
+				SourpCollider->OnCollisionStay(DestpCollider);
+				DestpCollider->OnCollisionStay(SourpCollider);
+			}
 		}
 		else {							// 충돌이 처음이면
-
-			SourpCollider->OnCollisionEnter(DestpCollider);
-			DestpCollider->OnCollisionEnter(SourpCollider);
-			iter->second = true;
-
+			if (SourpCollider->Get_Owner()->Get_Dead() || DestpCollider->Get_Owner()->Get_Dead())
+			{
+				SourpCollider->OnCollisionExit(DestpCollider);
+				DestpCollider->OnCollisionExit(SourpCollider);
+				iter->second = false;
+			}
+			else {
+				SourpCollider->OnCollisionEnter(DestpCollider);
+				DestpCollider->OnCollisionEnter(SourpCollider);
+				iter->second = true;
+			}
 		}
 	}
 	else {

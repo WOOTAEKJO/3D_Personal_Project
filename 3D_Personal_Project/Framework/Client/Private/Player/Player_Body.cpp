@@ -44,8 +44,6 @@ void CPlayer_Body::Priority_Tick(_float fTimeDelta)
 void CPlayer_Body::Tick(_float fTimeDelta)
 {
 	
-
-	
 }
 
 void CPlayer_Body::Late_Tick(_float fTimeDelta)

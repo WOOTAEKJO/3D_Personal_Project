@@ -25,6 +25,7 @@ private:
 public:
 	HRESULT	Initialize();
 	void	Update();
+	void	Delete_Collider();
 
 public:
 	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
@@ -39,9 +40,8 @@ private:
 	map<_ulonglong, _bool>				m_mapJudgeColl;
 
 private:
-	void	Check_Collision(CCollider* SourpCollider, CCollider* DestpCollider);
+	void				Check_Collision(CCollider* SourpCollider, CCollider* DestpCollider);
 	CCollider_Layer* Find_Collider_Layer(_uint iColLayer);
-	void	Delete_Collider();
 
 public:
 	static	CCollider_Manager* Create();

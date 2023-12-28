@@ -56,20 +56,24 @@ HRESULT CCollider::Initialize(void* pArg)
 
 	m_bUseCol = pBounding_Desc->bUseCol;
 
+	CBounding* pBounding = nullptr;
+
 	switch (pBounding_Desc->eType)
 	{
 	case CBounding::TYPE_AABB:
-		m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBounding_Desc);
+		pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
 	case CBounding::TYPE_OBB:
-		m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pBounding_Desc);
+		pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
 	case CBounding::TYPE_SPHERE:
-		m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
+		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
 	}
-	if (m_pBounding == nullptr)
+	if (pBounding == nullptr)
 		return E_FAIL;
+
+	m_vecBounding.push_back(pBounding);
 
 	m_iColID = m_iNextID++;
 
@@ -78,17 +82,23 @@ HRESULT CCollider::Initialize(void* pArg)
 
 void CCollider::Update(_fmatrix matWorld)
 {
-	if (m_pBounding == nullptr)
+	/*if (m_pBounding == nullptr)
+		return;*/
+	if (m_vecBounding.empty())
 		return;
 
-	m_pBounding->Update(matWorld);
+	//m_pBounding->Update(matWorld);
+	for (auto& iter : m_vecBounding)
+		iter->Update(matWorld);
 }
 
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()
 {
-	if (m_pBounding == nullptr)
+	/*if (m_pBounding == nullptr)
+		return E_FAIL;*/
+	if (m_vecBounding.empty())
 		return E_FAIL;
 
 	m_pBatch->Begin();
@@ -101,8 +111,9 @@ HRESULT CCollider::Render()
 
 	m_pEffect->Apply(m_pContext);
 
-	if (FAILED(m_pBounding->Render(m_pBatch, m_bCollision == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f))))
-		return E_FAIL;
+	for(auto& iter : m_vecBounding)
+		if (FAILED(iter->Render(m_pBatch, m_bCollision == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f))))
+			return E_FAIL;
 	
 	m_pBatch->End();
 
@@ -111,10 +122,44 @@ HRESULT CCollider::Render()
 
 _bool CCollider::Collision(CCollider* pTargetCollider)
 {
-	if (m_pBounding == nullptr || m_pOwner == nullptr)
+	/*if (m_pBounding == nullptr || m_pOwner == nullptr)
+		return false;*/
+	if (m_vecBounding.empty() || m_pOwner == nullptr)
 		return false;
 
-	return  m_pBounding->Collision(pTargetCollider);
+	for (auto& iter : m_vecBounding)
+	{
+		if (iter->Collision(pTargetCollider))
+			return true;
+	}
+
+	return  false;
+}
+
+HRESULT CCollider::Add_Bounding(void* pArg)
+{
+	CBounding::BOUNDING_DESC* pBounding_Desc = (CBounding::BOUNDING_DESC*)pArg;
+
+	CBounding* pBounding = nullptr;
+
+	switch (pBounding_Desc->eType)
+	{
+	case CBounding::TYPE_AABB:
+		pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
+	case CBounding::TYPE_OBB:
+		pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
+	case CBounding::TYPE_SPHERE:
+		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
+	}
+	if (pBounding == nullptr)
+		return E_FAIL;
+
+	m_vecBounding.push_back(pBounding);
+
+	return S_OK;
 }
 
 void CCollider::OnCollisionEnter(CCollider* pOtherCollider)
@@ -132,6 +177,8 @@ void CCollider::OnCollisionStay(CCollider* pOtherCollider)
 	if (m_pOwner == nullptr || pOtherCollider == nullptr)
 		return;
 
+	m_bCollision = true;
+
 	m_pOwner->OnCollisionStay(pOtherCollider, m_iColID);
 }
 
@@ -141,6 +188,7 @@ void CCollider::OnCollisionExit(CCollider* pOtherCollider)
 		return;
 
 	m_bCollision = false;
+
 	m_pOwner->OnCollisionExit(pOtherCollider,m_iColID);
 }
 
@@ -185,6 +233,9 @@ void CCollider::Free()
 
 #endif
 
-	Safe_Release(m_pBounding);
+	//Safe_Release(m_pBounding);
+	for (auto& iter : m_vecBounding)
+		Safe_Release(iter);
+	m_vecBounding.clear();
 
 }

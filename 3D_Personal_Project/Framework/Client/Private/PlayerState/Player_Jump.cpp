@@ -105,23 +105,24 @@ void CPlayer_Jump::Fall()
 
 void CPlayer_Jump::Move(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
+	
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 	{
 		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
 	}
-	else if (m_pGameInstance->Key_Pressing(DIK_DOWN))
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
 	{
 		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta,true);
 	}
 	
-	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
+	/*if (m_pGameInstance->Key_Pressing(DIK_LEFT))
 	{
 		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta, true);
 	}
 	else if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
 	{
 		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
-	}
+	}*/
 }
 
 CPlayer_Jump* CPlayer_Jump::Create(CGameObject* pGameObject)

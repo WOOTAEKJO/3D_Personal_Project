@@ -20,7 +20,7 @@ class CCharacter abstract : public CGameObject
 public:
 	typedef struct tagPhysicsDesc
 	{
-		_float	fForwardSpeed = 7.f;
+		_float	fForwardSpeed = 10.f;
 
 		_float	fJumpPower = 10.f;
 		_float	fJumpGravity = -9.8f;

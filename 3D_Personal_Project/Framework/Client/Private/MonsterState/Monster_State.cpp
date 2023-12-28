@@ -47,27 +47,6 @@ void CMonster_State::State_Exit()
 {
 }
 
-void CMonster_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta, _bool bTurn)
-{
-	_vector vDir = m_pOnwerTransform->Get_State(eType);
-	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
-		* (bTurn == false ? 1.f : -1.f);
-	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
-}
-
-void CMonster_State::Is_Attack_Time(_float fTimeDelta, _float fTime)
-{
-	if(m_bAttack)
-		m_fTime += fTimeDelta;
-
-	if (m_fTime > fTime && m_bAttack)
-	{
-		m_pOwner->Get_WeaponCollider()->Set_UseCol(true);
-		m_bAttack = false;
-		m_fTime = 0.f;
-	}
-}
-
 CMonster::STATE CMonster_State::Dead()
 {
 	if (m_pOwner->Open_Status_Desc()->iCurHP <= 0)
@@ -77,8 +56,4 @@ CMonster::STATE CMonster_State::Dead()
 void CMonster_State::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pOwnerModel);
-	Safe_Release(m_pOnwerTransform);
-	Safe_Release(m_pOnwerNavigation);
 }

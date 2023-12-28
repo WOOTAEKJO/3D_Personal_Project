@@ -42,10 +42,7 @@ HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 	m_pSocketBone = (((PLAYERSPEAR_DESC*)pArg)->pBones)[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
-	for (_uint i = 0; i < (_uint)COL_END; i++)
-	{
-		m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_PLAYER_BULLET, m_pColliderCom[i]);
-	}
+	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
 
 	return S_OK;
 }
@@ -53,9 +50,7 @@ HRESULT CPlayer_Weapon_Spear::Initialize(void* pArg)
 void CPlayer_Weapon_Spear::Priority_Tick(_float fTimeDelta)
 {
 
-	for (_uint i = 0; i < (_uint)COL_END; i++) {
-		m_pColliderCom[i]->Update(XMLoadFloat4x4(&m_matWorldMat));
-	}
+	m_pColliderCom->Update(XMLoadFloat4x4(&m_matWorldMat));
 }
 
 void CPlayer_Weapon_Spear::Tick(_float fTimeDelta)
@@ -88,9 +83,7 @@ HRESULT CPlayer_Weapon_Spear::Render()
 	}
 
 #ifdef _DEBUG
-	for (_uint i = 0; i < (_uint)COL_END; i++) {
-		m_pColliderCom[i]->Render();
-	}
+	m_pColliderCom->Render();
 #endif
 
 
@@ -115,10 +108,10 @@ void CPlayer_Weapon_Spear::Load_FromJson(const json& In_Json)
 
 void CPlayer_Weapon_Spear::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	for (_uint i = 0; i < (_uint)COL_END; i++)
+	/*for (_uint i = 0; i < (_uint)COL_END; i++)
 	{
 		m_pColliderCom[i]->Set_UseCol(false);
-	}
+	}*/
 }
 
 void CPlayer_Weapon_Spear::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -153,14 +146,18 @@ HRESULT CPlayer_Weapon_Spear::Ready_Component()
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
-	for(_uint i = 0; i < (_uint)COL_END; i++) {
-		CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
-		Sphere_Desc.pOnwer = this;
-		Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-		Sphere_Desc.fRadius = 20.f;
-		Sphere_Desc.vCenter = _float3(0.f, 190.f - (40.f * i), 0.f);
-		if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom[i], &Sphere_Desc,i))) return E_FAIL;
+	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.fRadius = 20.f;
+	Sphere_Desc.vCenter = _float3(0.f, 190.f, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
+	for (_uint i = 1; i < 4; i++)
+	{
+		Sphere_Desc.vCenter = _float3(0.f, 190.f - (40.f*i), 0.f);
+		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
+	
 
 	return S_OK;
 }
@@ -199,9 +196,6 @@ void CPlayer_Weapon_Spear::Free()
 	Safe_Release(m_pSocketBone);
 	Safe_Release(m_pParentsTransform);
 
-	for (_uint i = 0; i < 4; i++)
-	{
-		Safe_Release(m_pColliderCom[i]);
-	}
+	Safe_Release(m_pColliderCom);
 
 }
