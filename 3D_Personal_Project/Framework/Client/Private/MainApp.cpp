@@ -76,6 +76,7 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CAICom>(COM_AI_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CRigidBody>(COM_RIGIDBODY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CCollider>(COM_COLLIDER_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CController>(COM_CONTROLLER_TAG))) return E_FAIL;
 
 	return S_OK;
 }

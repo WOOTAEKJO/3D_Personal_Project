@@ -29,13 +29,14 @@ _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
 _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 {
 
+	Key_Input(fTimeDelta);
+
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
 		return CPlayer::STATE::IDLE;
 	}
 
-	//m_pOnwerTransform->Go_Straight(fTimeDelta, m_pOnwerNavigation);
-	Translate(CTransform::STATE::STATE_LOOK, 7.f, fTimeDelta);
+	Translate(CTransform::STATE::STATE_LOOK, 10.f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -52,10 +53,6 @@ _uint CPlayer_Roll::State_Late_Tick(_float fTimeDelta)
 void CPlayer_Roll::State_Exit()
 {
 	
-}
-
-void CPlayer_Roll::Key_Input()
-{
 }
 
 CPlayer_Roll* CPlayer_Roll::Create(CGameObject* pGameObject)

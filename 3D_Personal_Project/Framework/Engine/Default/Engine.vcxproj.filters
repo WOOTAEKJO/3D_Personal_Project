@@ -232,6 +232,9 @@
     <Filter Include="01.Utility\03. Component\06. Collider\01. Collider_Manager\00. Collider_Layer">
       <UniqueIdentifier>{824e0fa6-d913-42f3-988e-0f953489f293}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\95. Controller">
+      <UniqueIdentifier>{b7024e6f-a68c-45a5-ab07-4cb90b49b96e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -456,6 +459,9 @@
     <ClInclude Include="..\Public\Collider_Layer.h">
       <Filter>01.Utility\03. Component\06. Collider\01. Collider_Manager\00. Collider_Layer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Controller.h">
+      <Filter>01.Utility\03. Component\95. Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -658,6 +664,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Layer.cpp">
       <Filter>01.Utility\03. Component\06. Collider\01. Collider_Manager\00. Collider_Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Controller.cpp">
+      <Filter>01.Utility\03. Component\95. Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

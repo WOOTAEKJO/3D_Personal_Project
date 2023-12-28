@@ -1,12 +1,12 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State.h"
+#include "Character_State.h"
 
 #include "Monster.h"
 
 BEGIN(Client)
 
-class CMonster_State abstract : public CState
+class CMonster_State abstract : public CCharacter_State
 {
 public:
 	
@@ -24,17 +24,8 @@ public:
 
 protected:
 	CMonster*		m_pOwner = { nullptr };
-	CModel*			m_pOwnerModel = { nullptr };
-	CTransform*		m_pOnwerTransform = { nullptr };
-	CNavigation*	m_pOnwerNavigation = { nullptr };
 
 protected:
-	_float			m_fTime = { 0.f };
-	_bool			m_bAttack = { true };
-
-protected:
-	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
-	void	Is_Attack_Time(_float fTimeDelta,_float fTime);
 	CMonster::STATE	Dead();
 
 public:

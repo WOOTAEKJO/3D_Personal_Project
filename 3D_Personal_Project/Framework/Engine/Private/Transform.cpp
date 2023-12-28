@@ -211,6 +211,45 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
 	}
 }
 
+void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
+{
+	_vector vLook = XMVector3Normalize(vDir);
+	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
+
+	_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
+		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);
+
+	LookAt(vAt);
+}
+
+_bool CTransform::Turn_Target(_fvector vTargetPos, _float fTimeDelta)
+{
+	_vector Dir = XMVector3Normalize(vTargetPos -
+		Get_State(CTransform::STATE::STATE_POS));
+
+	_float fAngle = XMVectorGetX(XMVector3Dot(Dir, XMVector3Normalize(Get_State(CTransform::STATE::STATE_RIGHT))));
+
+	Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fAngle );
+
+	if (XMVector3NearEqual(Dir,
+		Get_State(CTransform::STATE::STATE_LOOK),
+		XMVectorSet(0.1f, 100.f, 0.1f, 0.f)))
+		return true;
+
+	return false;
+}
+
+_bool CTransform::Turn_Dir(_fvector vDir, _float fTimeDelta)
+{
+	_vector vLook = (vDir);
+	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
+
+	_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0],
+		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2], 1.f);
+
+	return Turn_Target(vAt, fTimeDelta);
+}
+
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)
 {
 	if (FAILED(pShader->Bind_Matrix(pMatrixName, &m_matWorldMatrix)))

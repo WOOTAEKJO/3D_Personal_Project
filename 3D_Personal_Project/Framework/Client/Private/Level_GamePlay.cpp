@@ -2,6 +2,7 @@
 #include "..\Public\Level_GamePlay.h"
 
 #include "DynamicCamera.h"
+#include "TargetCamera.h"
 
 #include "GameInstance.h"
 
@@ -30,8 +31,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Monster(TEXT("Monster"))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER_BULLET, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
 	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
 
 	return S_OK; 
@@ -92,20 +93,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 {
-	
-	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
+	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_DCAMERA_TAG)))
+		return E_FAIL;*/
 
-	DynamicCameraDesc.fMouseSensitivity = 0.1f;
-	DynamicCameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
-	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
-	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);
-	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
-	DynamicCameraDesc.fNear = 0.1f;
-	DynamicCameraDesc.fFar = 1000.f;
-	DynamicCameraDesc.fSpeedPerSec = 30.f;
-	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
-
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_DCAMERA_TAG, &DynamicCameraDesc)))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_TARGETCAMERA_TAG)))
 		return E_FAIL;
 
 	return S_OK;

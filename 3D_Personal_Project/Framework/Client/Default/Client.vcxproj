@@ -197,6 +197,7 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Character_State.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Demo.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Spooketon.h" />
     <ClInclude Include="..\Public\SubObject_Demo.h" />
+    <ClInclude Include="..\Public\TargetCamera.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
     <ClInclude Include="..\Public\Terrain_Window.h" />
@@ -264,6 +266,7 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Character_State.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
@@ -304,6 +307,7 @@
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Spooketon.cpp" />
     <ClCompile Include="..\Private\SubObject_Demo.cpp" />
+    <ClCompile Include="..\Private\TargetCamera.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain_Window.cpp" />

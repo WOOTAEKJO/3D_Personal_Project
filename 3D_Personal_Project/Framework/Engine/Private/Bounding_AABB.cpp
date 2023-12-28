@@ -48,20 +48,25 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fve
 
 _bool CBounding_AABB::Collision(CCollider* pTargetCollider)
 {
-	CBounding* pBounding = pTargetCollider->Get_Bounding();
+	//CBounding* pBounding = pTargetCollider->Get_Bounding();
+	vector<CBounding*> vecBounding = pTargetCollider->Get_BoundingVec();
 
-	switch (pBounding->Get_ColisionType())
-	{
-	case TYPE::TYPE_AABB:
-		return m_pAABB->Intersects(*dynamic_cast<CBounding_AABB*>(pBounding)->Get_BoundingAABB());
-		break;
-	case TYPE::TYPE_OBB:
-		return m_pAABB->Intersects(*dynamic_cast<CBounding_OBB*>(pBounding)->Get_BoundingOBB());
-		break;
-	case TYPE::TYPE_SPHERE:
-		return m_pAABB->Intersects(*dynamic_cast<CBounding_Sphere*>(pBounding)->Get_BoundingSphere());
-		break;
+	for (auto& iter : vecBounding) {
+		switch (iter->Get_ColisionType())
+		{
+		case TYPE::TYPE_AABB:
+			return m_pAABB->Intersects(*dynamic_cast<CBounding_AABB*>(iter)->Get_BoundingAABB());
+			break;
+		case TYPE::TYPE_OBB:
+			return m_pAABB->Intersects(*dynamic_cast<CBounding_OBB*>(iter)->Get_BoundingOBB());
+			break;
+		case TYPE::TYPE_SPHERE:
+			return m_pAABB->Intersects(*dynamic_cast<CBounding_Sphere*>(iter)->Get_BoundingSphere());
+			break;
+		}
 	}
+
+	return false;
 }
 
 CBounding_AABB* CBounding_AABB::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, BOUNDING_DESC* Bounding_Desc)

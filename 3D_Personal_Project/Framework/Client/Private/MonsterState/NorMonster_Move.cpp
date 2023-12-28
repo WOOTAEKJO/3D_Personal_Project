@@ -24,8 +24,6 @@ void CNorMonster_Move::State_Enter()
 _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
 {
 
-	m_pOwner->Turn(fTimeDelta);
-
 	return m_iStateID;
 }
 
@@ -45,7 +43,8 @@ _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 	if (m_pOwner->Open_Status_Desc()->bHited)
 		return CMonster::STATE::HITED;
 
-	Translate(CTransform::STATE::STATE_LOOK, 2.f, fTimeDelta);
+	if(m_pOwner->Turn(fTimeDelta))
+		Translate(CTransform::STATE::STATE_LOOK, 2.f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

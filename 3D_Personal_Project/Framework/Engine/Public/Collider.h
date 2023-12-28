@@ -26,13 +26,19 @@ public:
 	_bool	Collision(class CCollider* pTargetCollider);
 
 public:
-	CBounding* Get_Bounding() { return m_pBounding; }
+	HRESULT	Add_Bounding(void* pArg);
+
+public:
+	//CBounding* Get_Bounding() { return m_pBounding; }
+	CBounding* Get_Bounding(_uint iIndex) { return m_vecBounding[iIndex]; }
+	vector<CBounding*> Get_BoundingVec() { return m_vecBounding; }
 	_bool		Get_UseCol() { return m_bUseCol; }
 	_bool		Get_Collision() { return m_bCollision; }
 	_uint		Get_ColLayer_Type() { return m_eColLayer_Type; }
 	_uint		Get_Collider_ID() { return m_iColID; }
 
 	void		Set_ColLayer_Type(_uint iType) { m_eColLayer_Type = iType; }
+	void		Set_Collider_ID(_uint iID) { m_iColID = iID; }
 	void		Set_UseCol(_bool bCheck) { m_bUseCol = bCheck; }
 	void		Set_Collision(_bool bCheck) { m_bCollision = bCheck; }
 public:
@@ -41,7 +47,7 @@ public:
 	void	OnCollisionExit(CCollider* pOtherCollider);
 
 private:
-	CBounding*				m_pBounding = { nullptr };
+	//CBounding*				m_pBounding = { nullptr };
 	//CGameObject*				m_pOnwer = { nullptr };
 
 #ifdef _DEBUG
@@ -52,6 +58,9 @@ private:
 	ID3D11InputLayout*						m_pInputLayout = { nullptr };
 
 #endif
+
+private:
+	vector<CBounding*>		m_vecBounding;
 
 private:
 	_bool					m_bUseCol = { false };

@@ -210,6 +210,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClInclude Include="..\Public\Component_Manager.h" />
     <ClInclude Include="..\Public\Composite.h" />
     <ClInclude Include="..\Public\CompositeBuilder.h" />
+    <ClInclude Include="..\Public\Controller.h" />
     <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Decorator.h" />
     <ClInclude Include="..\Public\DecoratorBuilder.h" />
@@ -285,6 +286,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClCompile Include="..\Private\Component.cpp" />
     <ClCompile Include="..\Private\Component_Manager.cpp" />
     <ClCompile Include="..\Private\Composite.cpp" />
+    <ClCompile Include="..\Private\Controller.cpp" />
     <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\Decorator.cpp" />
     <ClCompile Include="..\Private\Engine_Struct.cpp" />

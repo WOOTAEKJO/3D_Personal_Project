@@ -141,7 +141,8 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 	if (FAILED(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResource(m_pShaderCom, "g_BrushTexture")))
 		return E_FAIL;
 	
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos", &m_pGameInstance->Get_Camera_Pos(), sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
+		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_bWireFrame", &m_bWireFrame, sizeof(bool))))
 		return E_FAIL;

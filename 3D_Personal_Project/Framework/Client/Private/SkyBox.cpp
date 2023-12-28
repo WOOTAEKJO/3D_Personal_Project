@@ -42,7 +42,8 @@ void CSkyBox::Tick(_float fTimeDelta)
 void CSkyBox::Late_Tick(_float fTimeDelta)
 {
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMLoadFloat4(&m_pGameInstance->Get_Camera_Pos()));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+		m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_POS));
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this)))
 		return;

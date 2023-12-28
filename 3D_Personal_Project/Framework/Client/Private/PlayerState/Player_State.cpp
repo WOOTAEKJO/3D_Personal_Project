@@ -22,6 +22,8 @@ HRESULT CPlayer_State::Initialize(CGameObject* pGameObject)
 	Safe_AddRef(m_pOnwerNavigation);
 	m_pOnwerRigidBody = m_pOwner->Get_Component<CRigidBody>();
 	Safe_AddRef(m_pOnwerRigidBody);
+	m_pOnwerController = m_pOwner->Get_Component<CController>();
+	Safe_AddRef(m_pOnwerController);
 
 	return S_OK;
 }
@@ -37,6 +39,7 @@ _uint CPlayer_State::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_State::State_Tick(_float fTimeDelta)
 {
+
 	return m_iStateID;
 }
 
@@ -50,27 +53,59 @@ void CPlayer_State::State_Exit()
 {
 }
 
-void CPlayer_State::Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta, _bool bTurn)
-{
-	_vector vDir = m_pOnwerTransform->Get_State(eType);
-	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
-		* (bTurn == false ? 1.f : -1.f);
-	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
-}
-
 void CPlayer_State::Trans_Attack(_bool bCheck)
 {
-	for (_uint i = 0; i < (_uint)CPlayer_Weapon_Spear::WEAPON_COL::COL_END; i++) {
-		m_pOwner->Get_WeaponCollider(i)->Set_UseCol(bCheck);
+	m_pOwner->Get_WeaponCollider()->Set_UseCol(bCheck);
+}
+
+_bool CPlayer_State::Key_Input(_float fTimeDelta)
+{
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT)) {
+
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK), fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
+		}
 	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f, fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f);
+		}
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT), fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT));
+
+		}
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+	{
+		if (m_pOnwerTransform->Turn_Dir(
+			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f, fTimeDelta *
+			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		{
+			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f);
+
+		}
+	}
+	else
+		return false;
+
+	return true;
 }
 
 void CPlayer_State::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pOwnerModel);
-	Safe_Release(m_pOnwerTransform);
-	Safe_Release(m_pOnwerNavigation);
-	Safe_Release(m_pOnwerRigidBody);
 }

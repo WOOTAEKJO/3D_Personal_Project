@@ -51,9 +51,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Controller()))
+		return E_FAIL;
+
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
 
-	if (FAILED(m_pGameInstance->Add_Collision(COLLIDET_LAYER::COL_PLAYER, m_pColliderCom)));
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
 	return S_OK;
 }
@@ -128,13 +131,13 @@ CModel* CPlayer::Get_BodyModel()
 	return pBody->Get_Component<CModel>();
 }
 
-CCollider* CPlayer::Get_WeaponCollider(_uint iIndex)
+CCollider* CPlayer::Get_WeaponCollider()
 {
 	CGameObject* pWeapon = Find_Parts(TEXT("Parts_Spear"));
 	if (pWeapon == nullptr)
 		return nullptr;
 
-	return pWeapon->Get_Component<CCollider>(iIndex);
+	return pWeapon->Get_Component<CCollider>();
 }
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -180,6 +183,8 @@ HRESULT CPlayer::Ready_Component()
 	Sphere_Desc.fRadius = 0.9f;
 	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom,&Sphere_Desc))) return E_FAIL;
+
+	if (FAILED(Add_Component<CController>(COM_CONTROLLER_TAG, &m_pControllerCom))) return E_FAIL;
 	
 	return S_OK;
 }
@@ -211,6 +216,22 @@ HRESULT CPlayer::Ready_Parts()
 	PlayerSpear_Desc.pParentsTransform = m_pTransformCom;
 	PlayerSpear_Desc.pBones = Get_BodyModel()->Get_Bones();
 	if (FAILED(Add_Parts(GO_PLAYER_SPEAR_TAG, TEXT("Parts_Spear"), &PlayerSpear_Desc))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_Controller()
+{
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_FRONT,DIK_W))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_BACK, DIK_S))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_RIGHT, DIK_D))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_LEFT, DIK_A))) return E_FAIL;
+
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_JUMP, DIK_SPACE))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_ROLL, DIK_LSHIFT))) return E_FAIL;
+
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_LB_ATTACK, DIM_LB))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_RB_ATTACK, DIM_RB))) return E_FAIL;
 
 	return S_OK;
 }
@@ -263,4 +284,5 @@ void CPlayer::Free()
 		Safe_Release(iter.second);
 	m_mapParts.clear();
 
+	Safe_Release(m_pControllerCom);
 }

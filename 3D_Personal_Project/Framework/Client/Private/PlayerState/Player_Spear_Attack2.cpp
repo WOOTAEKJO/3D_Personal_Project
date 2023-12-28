@@ -32,9 +32,11 @@ _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 {
 	if (m_pOwnerModel->Is_Animation_Finished()) {
 
+		Trans_Attack(false);
+
 		m_fTime += fTimeDelta;
 
-		if (m_pGameInstance->Key_Down(DIK_Q))
+		if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		{
 			m_fTime = 0.f;
 			return CPlayer::STATE::ATTACK3;
@@ -46,11 +48,8 @@ _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 			return CPlayer::STATE::IDLE;
 		}
 	}
-	else {
-		/*if (m_pGameInstance->Key_Pressing(DIK_UP)) {
-			Translate(CTransform::STATE::STATE_LOOK, 1.f, fTimeDelta);
-		}*/
-	}
+	
+	m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 	return m_iStateID;
@@ -65,7 +64,7 @@ _uint CPlayer_Spear_Attack2::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack2::State_Exit()
 {
-	Trans_Attack(false);
+	
 }
 
 

@@ -30,10 +30,12 @@ _uint CPlayer_Spear_Attack3::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Spear_Attack3::State_Tick(_float fTimeDelta)
 {
-	m_pOwnerModel->Play_Animation(fTimeDelta, false);
+	m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
 
 	if (m_pOwnerModel->Is_Animation_Finished())
 		return CPlayer::STATE::IDLE;
+
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }

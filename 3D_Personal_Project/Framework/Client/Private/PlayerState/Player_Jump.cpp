@@ -105,23 +105,13 @@ void CPlayer_Jump::Fall()
 
 void CPlayer_Jump::Move(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Pressing(DIK_UP))
-	{
-		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_DOWN))
-	{
-		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta,true);
-	}
 	
-	if (m_pGameInstance->Key_Pressing(DIK_LEFT))
-	{
-		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta, true);
-	}
-	else if (m_pGameInstance->Key_Pressing(DIK_RIGHT))
-	{
-		Translate(CTransform::STATE::STATE_RIGHT, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
-	}
+	Key_Input(fTimeDelta);
+	
+	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed,
+		fTimeDelta);
+
+	//m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
 }
 
 CPlayer_Jump* CPlayer_Jump::Create(CGameObject* pGameObject)

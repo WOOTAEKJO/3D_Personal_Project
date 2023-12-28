@@ -1,12 +1,12 @@
 #pragma once
 #include "Client_Defines.h"
-#include "State.h"
+#include "Character_State.h"
 
 #include "Player.h"
 
 BEGIN(Client)
 
-class CPlayer_State abstract : public CState
+class CPlayer_State abstract : public CCharacter_State
 {
 public:
 	
@@ -24,17 +24,10 @@ public:
 
 protected:
 	CPlayer*		m_pOwner = { nullptr };
-	CModel*			m_pOwnerModel = { nullptr };
-	CTransform*		m_pOnwerTransform = { nullptr };
-	CNavigation*	m_pOnwerNavigation = { nullptr };
-	CRigidBody*		m_pOnwerRigidBody = { nullptr };
-
+	
 protected:
-	_float			m_fTime = { 0.f };
-
-protected:
-	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
 	void	Trans_Attack(_bool bCheck);
+	_bool	Key_Input(_float fTimeDelta);
 
 public:
 	virtual	void			Free() override;

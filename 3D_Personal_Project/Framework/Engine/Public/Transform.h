@@ -70,6 +70,9 @@ public: /* 카메라에 사용*/
 
 public:
 	void	Translate(_fvector vTranslation,CNavigation* pNavigation);
+	void	LookAt_Dir(_fvector vDir, _float fTimeDelta = 1.f);
+	_bool	Turn_Target(_fvector vTargetPos, _float fTimeDelta);
+	_bool	Turn_Dir(_fvector vDir, _float fTimeDelta);
 
 public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);

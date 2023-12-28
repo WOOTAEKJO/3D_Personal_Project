@@ -19,6 +19,8 @@ public:
 	
 	void	Free_Mouse(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
 
+	void	Mouse_Move(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
+
 	_float4	Get_WorldMouse_Float4() {
 		return m_vWorldMouse;
 	}
@@ -46,7 +48,6 @@ private:
 
 private:
 	void	Mouse_Fix();
-	void	Mouse_Move(_float fTimeDelta, _float fMouseSensitivity, CTransform* pTransCom);
 	void	Mouse_Key();
 
 public:
