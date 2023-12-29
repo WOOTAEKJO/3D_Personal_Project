@@ -40,6 +40,8 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 
 	static ImGuizmo::MODE mCurrentGizmoMode(eMode);
 
+	CTransform* pDemoTransform = pDemo->Get_Component<CTransform>();
+
 	_float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
 	_float arrView[] = { matView._11,matView._12,matView._13,matView._14,
 					matView._21,matView._22,matView._23,matView._24,
@@ -52,7 +54,7 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 					matProj._31,matProj._32,matProj._33,matProj._34,
 					matProj._41,matProj._42,matProj._43,matProj._44 };
 
-	_float4x4 matWorld = pDemo->Get_WorldMatrix();
+	_float4x4 matWorld = pDemoTransform->Get_WorldMatrix_Float4x4();
 	_float arrWorld[] = { matWorld._11,matWorld._12,matWorld._13,matWorld._14,
 					 matWorld._21,matWorld._22,matWorld._23,matWorld._24,
 					 matWorld._31,matWorld._32,matWorld._33,matWorld._34,
@@ -96,7 +98,8 @@ void CImGui_Window::ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo)
 				arrWorld[8],arrWorld[9],arrWorld[10],arrWorld[11],
 				arrWorld[12],arrWorld[13],arrWorld[14],arrWorld[15] };
 
-	pDemo->Set_WorldMatrix(matW);
+	//pDemo->Set_WorldMatrix(matW);
+	pDemoTransform->Set_WorldMatrix(matW);
 	
 	ImGuizmo::SetDrawlist();
 }

@@ -36,6 +36,7 @@ public:
 public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
 	_float	Get_Cell_Height(_float3 vPos);
+	_int	Get_CurrentIndex() { return m_iCurrentCellIndex; }
 
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);

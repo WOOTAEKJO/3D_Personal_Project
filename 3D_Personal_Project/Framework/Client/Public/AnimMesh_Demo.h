@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CModel;
 class CAnimation;
+class CNavigation;
 
 END
 
@@ -60,8 +61,9 @@ public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-	CShader*	m_pShaderCom = { nullptr };
-	CModel*		m_pModelCom = { nullptr };
+	CShader*		m_pShaderCom = { nullptr };
+	CModel*			m_pModelCom = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
 
 private:
 	_uint		m_iAnimKey = { 0 };

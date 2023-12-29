@@ -40,6 +40,9 @@ HRESULT CObject_Manager::Add_Clone(_uint iLevelIndex, const wstring& strLayerTag
 	if (pClone == nullptr)
 		return E_FAIL;
 
+	pClone->Set_ProtoTag(strProtoTypeTag);
+	pClone->Set_LayerName(strLayerTag);
+
 	if (iLevelIndex >= m_iNumLevel)
 		return E_FAIL;
 

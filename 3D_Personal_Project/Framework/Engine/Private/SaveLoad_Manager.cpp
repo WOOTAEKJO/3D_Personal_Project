@@ -2,6 +2,7 @@
 #include "Json/Json_Utility.h"
 #include "GameInstance.h"
 #include "GameObject.h"
+#include "Level.h"
 
 CSaveLoad_Manager::CSaveLoad_Manager()
 	:m_pGameInstance(CGameInstance::GetInstance())
@@ -80,6 +81,18 @@ HRESULT CSaveLoad_Manager::Load_Data_Json(const wstring& strTag, CGameObject* pO
 	pObject -> Load_FromJson(jLoad);
 
 	return S_OK;
+}
+
+HRESULT CSaveLoad_Manager::Save_Data_Level(const _char* strFilePath, _uint iLevelIndex)
+{
+	
+
+	return S_OK;
+}
+
+HRESULT CSaveLoad_Manager::Load_Data_Level(const _char* strFilePath, _uint iLevelIndex)
+{
+	return E_NOTIMPL;
 }
 
 CSaveLoad_Manager* CSaveLoad_Manager::Create()

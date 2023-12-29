@@ -84,22 +84,6 @@ HRESULT CGameObject::Render()
 	return S_OK;
 }
 
-void CGameObject::Set_WorldMatrix(_float4x4 matWorld)
-{
-	if (m_pTransformCom == nullptr)
-		return;
-
-	m_pTransformCom->Set_WorldMatrix(matWorld);
-}
-
-_float4x4 CGameObject::Get_WorldMatrix()
-{
-	if (m_pTransformCom == nullptr)
-		return _float4x4();
-
-	return m_pTransformCom->Get_WorldMatrix_Float4x4();
-}
-
 void CGameObject::Write_Json(json& Out_Json)
 {
 	for (auto& iter : m_mapComponent)

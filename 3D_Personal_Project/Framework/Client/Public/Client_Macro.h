@@ -145,7 +145,7 @@
 
 #define TEX_TERRAIN_BRUSH_TAG	TEXT("Prototype_Component_Texture_Terrain_Brush")
 
-#define TEX_SKYBOX_TAG	TEXT("Prototype_Component_Texture_SkyBox")
+#define TEX_SKYBOX_TAG			TEXT("Prototype_Component_Texture_SkyBox")
 
 #pragma endregion
 
@@ -171,7 +171,7 @@
 
 #pragma region 캐릭터
 
-#define GO_PLAYER_TAG		TEXT("Prototype_GameObject_PLAYER")
+//#define GO_PLAYER_TAG			TEXT("Prototype_GameObject_PLAYER")
 #define GO_PLAYER_BODY_TAG		TEXT("Prototype_GameObject_PLAYER_Body")
 #define GO_PLAYER_SPEAR_TAG		TEXT("Prototype_GameObject_PLAYER_Spear")
 
@@ -179,7 +179,7 @@
 
 #pragma region 몬스터
 
-#define GO_SPOOKETON_TAG		TEXT("Prototype_GameObject_SPOOKETON")
+//#define GO_SPOOKETON_TAG		TEXT("Prototype_GameObject_SPOOKETON")
 
 
 #pragma endregion

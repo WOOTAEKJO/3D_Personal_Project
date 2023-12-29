@@ -293,30 +293,30 @@ HRESULT CImGuiMgr::Load_Data(const _char* strFilePath)
 
 void CImGuiMgr::Grid_Draw()
 {
-    _float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
-    _float arrView[] = { matView._11,matView._12,matView._13,matView._14,
-                    matView._21,matView._22,matView._23,matView._24,
-                    matView._31,matView._32,matView._33,matView._34,
-                    matView._41,matView._42,matView._43,matView._44 };
+    //_float4x4 matView = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW);
+    //_float arrView[] = { matView._11,matView._12,matView._13,matView._14,
+    //                matView._21,matView._22,matView._23,matView._24,
+    //                matView._31,matView._32,matView._33,matView._34,
+    //                matView._41,matView._42,matView._43,matView._44 };
 
-    _float4x4 matProj = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ);
-    _float arrProj[] = { matProj._11,matProj._12,matProj._13,matProj._14,
-                    matProj._21,matProj._22,matProj._23,matProj._24,
-                    matProj._31,matProj._32,matProj._33,matProj._34,
-                    matProj._41,matProj._42,matProj._43,matProj._44 };
+    //_float4x4 matProj = m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ);
+    //_float arrProj[] = { matProj._11,matProj._12,matProj._13,matProj._14,
+    //                matProj._21,matProj._22,matProj._23,matProj._24,
+    //                matProj._31,matProj._32,matProj._33,matProj._34,
+    //                matProj._41,matProj._42,matProj._43,matProj._44 };
 
-    /*_float arrIdentity[] = { 1.f,0.f,0.f,0.f,
-                    0.f,1.f,0.f,0.f,
-                   0.f,0.f,1.f,0.f,
-                    0.f,0.f,0.f,1.f };*/
+    ///*_float arrIdentity[] = { 1.f,0.f,0.f,0.f,
+    //                0.f,1.f,0.f,0.f,
+    //               0.f,0.f,1.f,0.f,
+    //                0.f,0.f,0.f,1.f };*/
 
-    _float4x4 matWorld = m_pTerrain->Get_WorldMatrix();
-    _float arrWorld[] = { matWorld._11,matWorld._12,matWorld._13,matWorld._14,
-                     matWorld._21,matWorld._22,matWorld._23,matWorld._24,
-                     matWorld._31,matWorld._32,matWorld._33,matWorld._34,
-                     matWorld._41,matWorld._42,matWorld._43,matWorld._44 };
+    //_float4x4 matWorld = m_pTerrain->Get_WorldMatrix();
+    //_float arrWorld[] = { matWorld._11,matWorld._12,matWorld._13,matWorld._14,
+    //                 matWorld._21,matWorld._22,matWorld._23,matWorld._24,
+    //                 matWorld._31,matWorld._32,matWorld._33,matWorld._34,
+    //                 matWorld._41,matWorld._42,matWorld._43,matWorld._44 };
 
-    ImGuizmo::DrawGrid(arrView, arrProj, arrWorld, 100.f);
+    //ImGuizmo::DrawGrid(arrView, arrProj, arrWorld, 100.f);
 }
 
 void CImGuiMgr::File_Render()

@@ -18,19 +18,19 @@ CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * p
 
 HRESULT CLevel_GamePlay::Initialize()
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
+	if (FAILED(Ready_Layer_BackGround(g_strLayerName[LAYER_BACKGROUND])))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Plateform(TEXT("Plateform"))))
+	if (FAILED(Ready_Layer_Plateform(g_strLayerName[LAYER_PLATEFORM])))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Layer_Player(TEXT("Player"))))
+	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Camera"))))
+	if (FAILED(Ready_Layer_Camera(g_strLayerName[LAYER_CAMERA])))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Monster(TEXT("Monster"))))
+	if (FAILED(Ready_Layer_Monster(g_strLayerName[LAYER_MONSTER])))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
@@ -64,7 +64,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_PLAYER_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -130,7 +130,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 		Monster_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 		Monster_Desc.fSpeedPerSec = 5.f;
 		Monster_Desc.vPos = _float4(50.f + (5.f * i), 0.f, 20.f + (5.f * i), 1.f);
-		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG, &Monster_Desc, nullptr)))
+		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_SPOOKETON_TAG, &Monster_Desc, nullptr)))
 			return E_FAIL;
 	}
 

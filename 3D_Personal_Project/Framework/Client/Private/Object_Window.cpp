@@ -9,9 +9,7 @@
 #include "GameInstance.h"
 
 #include "ObjectMesh_Demo.h"
-
-
-
+#include "AnimMesh_Demo.h"
 
 CObject_Window::CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CImGui_Window(pDevice, pContext)
@@ -40,6 +38,10 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		{
 			m_vecModelTag.push_back(iter.first);
 		}
+		else if (!wcscmp(wstr.c_str(), L"AnimModel"))
+		{
+			m_vecAnimModelTag.push_back(iter.first);
+		}
 
 	}
 	return S_OK;
@@ -60,8 +62,15 @@ HRESULT CObject_Window::Render()
 	{
 		if (ImGui::BeginTabItem("ObjectMesh"))
 		{
+			m_eCurrentType = TYPE::TYPE_NONANIM;
 			ObjectMesh();
+			ImGui::EndTabItem();
+		}
 
+		if (ImGui::BeginTabItem("AnimObjectMesh"))
+		{
+			m_eCurrentType = TYPE::TYPE_ANIM;
+			AnimObjectMesh();
 			ImGui::EndTabItem();
 		}
 
@@ -83,8 +92,10 @@ void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 {
 	if (m_pTerrain == nullptr)
 		return;
-
-	Create_Model(m_strPickModelTag, vPickPoint);
+	if (m_eCurrentType == TYPE::TYPE_NONANIM)
+		Create_Model(m_strPickModelTag, vPickPoint);
+	else if (m_eCurrentType == TYPE::TYPE_ANIM)
+		Create_AnimModel(m_strPickAnimModelTag, vPickPoint);
 }
 
 void CObject_Window::Demo_Picked()
@@ -94,12 +105,25 @@ void CObject_Window::Demo_Picked()
 
  	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
-		for (size_t i = 0; i < m_vecDemo.size(); i++)
-		{
-			if (m_vecDemo[i]->Get_Picked())
+		if (m_eCurrentType == TYPE::TYPE_NONANIM) {
+			for (size_t i = 0; i < m_vecDemo.size(); i++)
 			{
-				m_iCurrentDemoIndex = (_uint)i;
-				return;
+				if (m_vecDemo[i]->Get_Picked())
+				{
+					m_iCurrentDemoIndex = (_uint)i;
+					return;
+				}
+			}
+		}
+		else if (m_eCurrentType == TYPE::TYPE_ANIM)
+		{
+			for (size_t i = 0; i < m_vecAnimDemo.size(); i++)
+			{
+				if (m_vecAnimDemo[i]->Get_Picked())
+				{
+					m_iCurrentAnimDemoIndex = (_uint)i;
+					return;
+				}
 			}
 		}
 	}
@@ -107,12 +131,74 @@ void CObject_Window::Demo_Picked()
 
 HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 {
-	json jSave;
+	/*json jSave;
 
 	Write_Json(jSave);
 
 	if (FAILED(CJson_Utility::Save_Json(strFilePath, jSave)))
+		return E_FAIL;*/
+
+	ofstream fout;
+
+	fout.open(strFilePath, std::ofstream::binary);
+
+	if (fout.is_open())
+	{
+		_uint iObjNum = m_vecDemo.size() + m_vecAnimDemo.size();
+		fout.write(reinterpret_cast<const char*>(&iObjNum), sizeof(_uint));
+
+		for (auto& iter : m_vecDemo)
+		{
+			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
+			size_t istrSize = strLayer.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strLayer.c_str(), istrSize);
+
+			string strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
+			istrSize = strProTag.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strProTag.c_str(), istrSize);
+
+			string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+			istrSize = strModelTag.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strModelTag.c_str(), istrSize);
+
+			_int iNaviInd = -1;
+			fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+
+			fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
+				, sizeof(_float4x4));
+		}
+
+		for (auto& iter : m_vecAnimDemo)
+		{
+			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
+			size_t istrSize = strLayer.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strLayer.c_str(), istrSize);
+
+			string strProTag = CUtility_String::WString_To_string(iter->Get_ProtoTag());
+			istrSize = strProTag.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strProTag.c_str(), istrSize);
+
+			string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+			istrSize = strModelTag.size();
+			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+			fout.write(strModelTag.c_str(), istrSize);
+
+			_int iNaviInd = iter->Get_Component<CNavigation>()->Get_CurrentIndex();
+			fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+
+			fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
+				, sizeof(_float4x4));
+		}
+	}
+	else
 		return E_FAIL;
+
+	fout.close();
 
 	return S_OK;
 }
@@ -131,11 +217,22 @@ HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 
 void CObject_Window::Write_Json(json& Out_Json)
 {
-	_uint iSize = m_vecDemo.size();
+	if (m_eCurrentType == TYPE::TYPE_NONANIM) {
+		_uint iSize = m_vecDemo.size();
 
-	for (_uint i = 0; i < iSize; i++)
+		for (_uint i = 0; i < iSize; i++)
+		{
+			m_vecDemo[i]->Write_Json(Out_Json["Demo"][i]);
+		}
+	}
+	else if (m_eCurrentType == TYPE::TYPE_ANIM)
 	{
-		m_vecDemo[i]->Write_Json(Out_Json["Demo"][i]);
+		_uint iSize = m_vecAnimDemo.size();
+
+		for (_uint i = 0; i < iSize; i++)
+		{
+			m_vecAnimDemo[i]->Write_Json(Out_Json["AnimDemo"][i]);
+		}
 	}
 }
 
@@ -191,6 +288,16 @@ void CObject_Window::ObjectMesh()
 	}
 	ImGui::EndListBox();
 
+	ImGui::BeginListBox("Layer", vSize);
+	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)
+	{
+		string str = CUtility_String::WString_To_string(g_strLayerName[i]);
+		if (ImGui::Selectable(str.c_str(), i == m_iCurrentLayerName)) {
+			m_iCurrentLayerName = i;
+		}
+	}
+	ImGui::EndListBox();
+
 	if (ImGui::Button("Delete Object")) {
 		if (!m_vecDemo.empty() && m_vecDemo[m_iCurrentDemoIndex] != nullptr)
 		{
@@ -230,8 +337,89 @@ void CObject_Window::ObjectMesh()
 		}
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecDemo[m_iCurrentDemoIndex]);
 	}
+}
 
-	
+void CObject_Window::AnimObjectMesh()
+{
+	ImGui::Text("Object_List");
+	ImVec2 vSize = ImVec2(250, 100);
+	ImGui::BeginListBox("Model", vSize);
+	for (auto& iter : m_vecAnimModelTag) {
+
+		size_t pos = iter.rfind(L"_");
+		wstring wstr = iter.substr(pos + 1);
+		string str;
+		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable(str.c_str(), iter == m_strPickAnimModelTag))
+			m_strPickAnimModelTag = iter;
+	}
+	ImGui::EndListBox();
+
+	ImGui::BeginListBox("Demo", vSize);
+	_uint iSize = m_vecAnimDemo.size();
+	for (_uint i = 0; i < iSize; i++)
+	{
+		string str = to_string(i);
+		string str2;
+		size_t pos = m_vecAnimDemo[i]->Get_ModelTag().rfind(L"_");
+		wstring wstr = m_vecAnimDemo[i]->Get_ModelTag().substr(pos + 1);
+		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable((str + "." + str2).c_str(), i == m_iCurrentAnimDemoIndex)) {
+			m_iCurrentAnimDemoIndex = i;
+			m_strCurrentAnimDemoTag = (str + "." + str2);
+		}
+	}
+	ImGui::EndListBox();
+
+	ImGui::BeginListBox("Layer", vSize);
+	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)
+	{
+		string str = CUtility_String::WString_To_string(g_strLayerName[i]);
+		if (ImGui::Selectable(str.c_str(), i == m_iCurrentLayerName)) {
+			m_iCurrentLayerName = i;
+		}
+	}
+	ImGui::EndListBox();
+
+	if (ImGui::Button("Delete AnimObject")) {
+		if (!m_vecAnimDemo.empty() && m_vecAnimDemo[m_iCurrentAnimDemoIndex] != nullptr)
+		{
+			m_vecAnimDemo[m_iCurrentAnimDemoIndex]->Set_Dead();
+			m_vecAnimDemo.erase(m_vecAnimDemo.begin() + m_iCurrentAnimDemoIndex);
+
+			if (m_iCurrentAnimDemoIndex != 0)
+				--m_iCurrentAnimDemoIndex;
+		}
+	}
+
+	ImGui::Separator();
+	string strMessage = "Selected : " + m_strCurrentAnimDemoTag;
+	ImGui::Text(strMessage.c_str());
+
+	if (!m_vecAnimDemo.empty() && m_vecAnimDemo[m_iCurrentAnimDemoIndex] != nullptr) {
+
+		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+
+		switch (m_iTransformRadioButton)
+		{
+		case 0:
+			m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case 1:
+			m_eOperationType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case 2:
+			m_eOperationType = ImGuizmo::OPERATION::SCALE;
+			break;
+		default:
+			break;
+		}
+		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecAnimDemo[m_iCurrentAnimDemoIndex]);
+	}
 }
 
 void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
@@ -242,11 +430,29 @@ void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
 	ObjectDemoValue.strModelTag = strModelTag;
 	ObjectDemoValue.vPos = vPickPos;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, TEXT("Tool"), G0_OBJECTMESH_DEMO_TAG,
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[m_iCurrentLayerName], G0_OBJECTMESH_DEMO_TAG,
 		&ObjectDemoValue,reinterpret_cast<CGameObject**>(&pObject_Demo))))
 		return;
 
 	m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+}
+
+void CObject_Window::Create_AnimModel(const wstring& strModelTag, _float4 vPickPos)
+{
+	CGameObject* pObject_Demo = nullptr;
+	CAnimMesh_Demo::ANIMDEMOVALUE AnimDemoValue;
+
+	AnimDemoValue.strModelTag = strModelTag;
+	AnimDemoValue.vPos = vPickPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[m_iCurrentLayerName], G0_ANIMMESH_DEMO_TAG,
+		&AnimDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+		return;
+
+	pObject_Demo->Get_Component<CNavigation>()->Find_CurrentCell(
+		pObject_Demo->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
+
+	m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
 }
 
 void CObject_Window::NotGuizmo()

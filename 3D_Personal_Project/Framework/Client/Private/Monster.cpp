@@ -25,7 +25,8 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(CCharacter::Initialize(&pArg)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY, TEXT("Player")).front());
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,
+		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;
 

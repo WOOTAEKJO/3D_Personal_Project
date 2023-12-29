@@ -192,4 +192,14 @@ namespace Engine
 		vector<CHANNEL>		vecChannel;
 
 	}ANIMATION;
+
+	typedef struct tagLevelObjectDesc
+	{
+		string		strLayer;
+		string		strTagName;
+		string		strModelTag;
+		_int		iNaviIndex;
+		_float4x4	matWorld;
+		
+	}LEVELOBJECT_DESC;
 }
