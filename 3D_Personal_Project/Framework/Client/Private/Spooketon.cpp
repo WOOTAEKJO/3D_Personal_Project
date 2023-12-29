@@ -29,12 +29,9 @@ HRESULT CSpooketon::Initialize(void* pArg)
 {
 	m_strModelTag = ANIMMODEL_SPOOKETON_TAG;
 
-	CGameObject::GAMEOBJECT_DESC GameObject_Desc = {};
+	MONSTER_DESC* MonsterDesc = (MONSTER_DESC*)pArg;
 
-	GameObject_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	GameObject_Desc.fSpeedPerSec = 5.f;
-
-	if (FAILED(CMonster::Initialize(&GameObject_Desc)))
+	if (FAILED(CMonster::Initialize(&MonsterDesc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))
@@ -43,8 +40,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(30.f, 0.f, 10.f, 1.f));
-	m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,XMLoadFloat4(&MonsterDesc->vPos));
+	m_pNavigationCom->Find_CurrentCell(XMLoadFloat4(&MonsterDesc->vPos));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
 		return E_FAIL;
@@ -58,8 +55,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;
 
-	m_Status_Desc.iMaxHP = 5;
-	m_Status_Desc.iCurHP = 5;
+	m_Status_Desc.iMaxHP = 10;
+	m_Status_Desc.iCurHP = 10;
 
 	return S_OK;
 }

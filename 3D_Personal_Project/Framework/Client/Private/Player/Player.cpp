@@ -54,7 +54,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Controller()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(1.f, 0.f, 1.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(45.f, 0.f, 45.f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
