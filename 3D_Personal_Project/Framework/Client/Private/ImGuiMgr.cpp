@@ -333,7 +333,7 @@ void CImGuiMgr::File_Render()
         break;
     case Client::CImGuiMgr::MODE_OBJECT:
         //Path = DATA_OBJECT_PATH;
-        Filter = ".json";
+        Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_ANIMATION:
        // Path = DATA_ANIMATION_PATH;

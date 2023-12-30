@@ -3,6 +3,7 @@
 
 #include "GameInstance.h"
 #include "Level_Loading.h"
+#include "DataMgr.h"
 
 CMainApp::CMainApp()	
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -27,6 +28,9 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
+		return E_FAIL;
+
+	if (FAILED(CDataMgr::GetInstance()->Initialize()))
 		return E_FAIL;
 
 	return S_OK;
@@ -95,6 +99,7 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	CDataMgr::GetInstance()->DestroyInstance();
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 

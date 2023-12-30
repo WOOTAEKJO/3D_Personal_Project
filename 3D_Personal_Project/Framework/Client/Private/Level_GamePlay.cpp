@@ -5,6 +5,7 @@
 #include "TargetCamera.h"
 
 #include "GameInstance.h"
+#include "DataMgr.h"
 
 #include "ObjectMesh_Demo.h"
 #include "AnimMesh_Demo.h"
@@ -25,6 +26,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
+		return E_FAIL;
+
+	if (FAILED(CDataMgr::GetInstance()->Level_Object_Load("../Bin/Data/Object/Stage1.bin")))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(g_strLayerName[LAYER_CAMERA])))
@@ -73,7 +77,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
 
-	json jLoad;
+	/*json jLoad;
 
 	if (FAILED(CJson_Utility::Load_Json(JSON_STAGE1_PATH, jLoad)))
 		return E_FAIL;
@@ -88,7 +92,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 
 		pObject_Demo->Load_FromJson(iter);
 
-	}
+	}*/
 
 	return S_OK;
 }
@@ -123,7 +127,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG, &Monster_Desc, nullptr)))
 		return E_FAIL;*/
 
-	for (_uint i = 0; i < 3; i++)
+	/*for (_uint i = 0; i < 3; i++)
 	{
 		CMonster::MONSTER_DESC Monster_Desc = {};
 
@@ -132,7 +136,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 		Monster_Desc.vPos = _float4(50.f + (5.f * i), 0.f, 20.f + (5.f * i), 1.f);
 		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_SPOOKETON_TAG, &Monster_Desc, nullptr)))
 			return E_FAIL;
-	}
+	}*/
 
 
 	return S_OK;

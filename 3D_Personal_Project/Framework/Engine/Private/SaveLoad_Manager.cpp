@@ -90,9 +90,11 @@ HRESULT CSaveLoad_Manager::Save_Data_Level(const _char* strFilePath, _uint iLeve
 	return S_OK;
 }
 
-HRESULT CSaveLoad_Manager::Load_Data_Level(const _char* strFilePath, _uint iLevelIndex)
+HRESULT CSaveLoad_Manager::Load_Data_Level(const _char* strFilePath)
 {
-	return E_NOTIMPL;
+	
+
+	return S_OK;
 }
 
 CSaveLoad_Manager* CSaveLoad_Manager::Create()

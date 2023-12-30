@@ -32,14 +32,13 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
-	m_strModelTag = ANIMMODEL_JACK_TAG;
+	CHARACTER_DESC Character_Desc = {};
 
-	CGameObject::GAMEOBJECT_DESC GameObject_Desc = {};
+	Character_Desc.fRotationPerSec = XMConvertToRadians(90.f);
+	Character_Desc.fSpeedPerSec = 5.f;
+	Character_Desc.strModelTag = ANIMMODEL_JACK_TAG;
 
-	GameObject_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	GameObject_Desc.fSpeedPerSec = 5.f;
-
-	if (FAILED(CCharacter::Initialize(&GameObject_Desc)))
+	if (FAILED(CCharacter::Initialize(&Character_Desc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))

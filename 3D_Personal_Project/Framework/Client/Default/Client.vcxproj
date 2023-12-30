@@ -200,6 +200,7 @@
     <ClInclude Include="..\Public\Character_State.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Client_Macro.h" />
+    <ClInclude Include="..\Public\DataMgr.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -267,6 +268,7 @@
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Character_State.cpp" />
+    <ClCompile Include="..\Private\DataMgr.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />

@@ -58,8 +58,8 @@ private: /* For.RadioButton_Transform*/
 private:
 	void	ObjectMesh();
 	void	AnimObjectMesh();
-	void	Create_Model(const wstring& strModelTag, _float4 vPickPos);
-	void	Create_AnimModel(const wstring& strModelTag, _float4 vPickPos);
+	void	Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_AnimModel(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	NotGuizmo();
 
 public:

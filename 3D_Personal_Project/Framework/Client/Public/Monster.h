@@ -12,13 +12,6 @@ BEGIN(Client)
 class CMonster abstract : public CCharacter
 {
 public:
-	typedef	struct tagMonsterDesc : public CGameObject::GAMEOBJECT_DESC
-	{
-		_float4 vPos;
-
-	}MONSTER_DESC;
-
-public:
 	enum STATE {IDLE, MOVE, ATTACK, DELAY,HITED, DEAD, STATE_END};
 
 protected:

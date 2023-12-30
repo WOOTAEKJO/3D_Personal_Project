@@ -258,6 +258,12 @@ void CTerrain_Window::Navigation()
 	ImGui::SameLine();
 	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 2);
 
+	if (!m_vecCell.empty())
+	{
+		string strNaviInd = "NaviIndex : " + to_string(m_iCurrentCellIndex);
+		ImGui::Text(strNaviInd.c_str());
+	}
+
 	if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
 
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);

@@ -27,11 +27,11 @@ HRESULT CSpooketon::Initialize_Prototype()
 
 HRESULT CSpooketon::Initialize(void* pArg)
 {
-	m_strModelTag = ANIMMODEL_SPOOKETON_TAG;
+	//m_strModelTag = ANIMMODEL_SPOOKETON_TAG;
 
-	MONSTER_DESC* MonsterDesc = (MONSTER_DESC*)pArg;
+	//MONSTER_DESC* MonsterDesc = (MONSTER_DESC*)pArg;
 
-	if (FAILED(CMonster::Initialize(&MonsterDesc)))
+	if (FAILED(CMonster::Initialize(pArg)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))
@@ -40,8 +40,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,XMLoadFloat4(&MonsterDesc->vPos));
-	m_pNavigationCom->Find_CurrentCell(XMLoadFloat4(&MonsterDesc->vPos));
+	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,XMLoadFloat4(&MonsterDesc->vPos));
+	m_pNavigationCom->Find_CurrentCell(XMLoadFloat4(&MonsterDesc->vPos));*/
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
 		return E_FAIL;

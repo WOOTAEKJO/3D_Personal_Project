@@ -70,6 +70,8 @@ private:
 	_bool		m_bPlay = {true};
 	_bool		m_bLoop = { true };
 
+
+
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;

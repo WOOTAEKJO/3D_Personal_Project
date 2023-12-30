@@ -39,9 +39,15 @@ public:
 public:
 	wstring	Get_ModelTag() { return m_strModelTag; }
 
+	void	Set_NaviCellIndex(_int iIndex) { m_iNaviCellIndex = iIndex; }
+	_int	Get_NaviCellIndex() { return m_iNaviCellIndex; }
+
 protected:
 	wstring		m_strModelTag;
 	_float4		m_vObjectPos = {};
+
+protected:
+	_int		m_iNaviCellIndex = { -1 };
 
 protected:
 	virtual HRESULT	Bind_ShaderResources() = 0;

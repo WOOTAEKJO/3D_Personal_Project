@@ -22,7 +22,7 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	
-	if (FAILED(CCharacter::Initialize(&pArg)))
+	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
 
 	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,

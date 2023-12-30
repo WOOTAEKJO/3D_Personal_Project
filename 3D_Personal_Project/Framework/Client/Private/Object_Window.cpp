@@ -8,8 +8,10 @@
 
 #include "GameInstance.h"
 
+#include "Terrain_Demo.h"
 #include "ObjectMesh_Demo.h"
 #include "AnimMesh_Demo.h"
+#include "Demo.h"
 
 CObject_Window::CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CImGui_Window(pDevice, pContext)
@@ -93,9 +95,9 @@ void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 	if (m_pTerrain == nullptr)
 		return;
 	if (m_eCurrentType == TYPE::TYPE_NONANIM)
-		Create_Model(m_strPickModelTag, vPickPoint);
+		Create_Model(g_strLayerName[m_iCurrentLayerName],m_strPickModelTag, vPickPoint);
 	else if (m_eCurrentType == TYPE::TYPE_ANIM)
-		Create_AnimModel(m_strPickAnimModelTag, vPickPoint);
+		Create_AnimModel(g_strLayerName[m_iCurrentLayerName], m_strPickAnimModelTag, vPickPoint);
 }
 
 void CObject_Window::Demo_Picked()
@@ -139,6 +141,7 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 		return E_FAIL;*/
 
 	ofstream fout;
+	_bool bAnim = false;
 
 	fout.open(strFilePath, std::ofstream::binary);
 
@@ -149,6 +152,8 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 
 		for (auto& iter : m_vecDemo)
 		{
+			fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
+
 			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
 			size_t istrSize = strLayer.size();
 			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
@@ -173,12 +178,15 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 
 		for (auto& iter : m_vecAnimDemo)
 		{
+			bAnim = true;
+			fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
+
 			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
 			size_t istrSize = strLayer.size();
 			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 			fout.write(strLayer.c_str(), istrSize);
 
-			string strProTag = CUtility_String::WString_To_string(iter->Get_ProtoTag());
+			string strProTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
 			istrSize = strProTag.size();
 			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 			fout.write(strProTag.c_str(), istrSize);
@@ -188,7 +196,7 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 			fout.write(strModelTag.c_str(), istrSize);
 
-			_int iNaviInd = iter->Get_Component<CNavigation>()->Get_CurrentIndex();
+			_int iNaviInd = iter->Get_NaviCellIndex();
 			fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
 
 			fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
@@ -205,12 +213,86 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 
 HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 {
-	json jLoad;
+	/*json jLoad;
 
 	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
 		return E_FAIL;
 
-	Load_FromJson(jLoad);
+	Load_FromJson(jLoad);*/
+
+	ifstream fIn;
+	
+
+	fIn.open(strFilePath, std::ios::binary);
+
+	if (fIn.is_open())
+	{
+		_uint iSize;
+		fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+		for(_uint i = 0; i < iSize; i++) {
+
+			_bool bAnim;
+			fIn.read(reinterpret_cast<char*>(&bAnim), sizeof(_bool));
+			
+			size_t LayerNameSize = {};
+			fIn.read(reinterpret_cast<char*>(&LayerNameSize), sizeof(size_t));
+			string strLayerName;
+			strLayerName.resize(LayerNameSize);
+			fIn.read(&strLayerName[0], LayerNameSize);
+
+			size_t ProTagNameSize = {};
+			fIn.read(reinterpret_cast<char*>(&ProTagNameSize), sizeof(size_t));
+			string strProTagName;
+			strProTagName.resize(ProTagNameSize);
+			fIn.read(&strProTagName[0], ProTagNameSize);
+
+			size_t ModelNameSize = {};
+			fIn.read(reinterpret_cast<char*>(&ModelNameSize), sizeof(size_t));
+			string strModelName;
+			strModelName.resize(ModelNameSize);
+			fIn.read(&strModelName[0], ModelNameSize);
+
+			_int iNaviIndex;
+			fIn.read(reinterpret_cast<char*>(&iNaviIndex), sizeof(_int));
+
+			_float4x4 matWorld;
+			fIn.read(reinterpret_cast<char*>(&matWorld), sizeof(_float4x4));
+
+			CGameObject* pObject_Demo = nullptr;
+			CDemo::Demo_Desc ObjectDemoValue;
+
+			ObjectDemoValue.strModelTag = CUtility_String::string_To_Wstring(strModelName);
+			ObjectDemoValue.vPos = _float4(0.f,0.f,0.f,1.f);
+
+			if (bAnim) {
+				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
+					, CUtility_String::string_To_Wstring(strLayerName), G0_ANIMMESH_DEMO_TAG,
+					&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+					return E_FAIL;
+
+				dynamic_cast<CAnimMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
+
+				m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
+			}
+			else {
+				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
+					, CUtility_String::string_To_Wstring(strLayerName), G0_OBJECTMESH_DEMO_TAG,
+					&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+					return E_FAIL;
+
+				dynamic_cast<CObjectMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
+
+				m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+			}
+
+			pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
+		}
+	}
+	else
+		return E_FAIL;
+
+	fIn.close();
 
 	return S_OK;
 }
@@ -392,11 +474,13 @@ void CObject_Window::AnimObjectMesh()
 		}
 	}
 
-	ImGui::Separator();
-	string strMessage = "Selected : " + m_strCurrentAnimDemoTag;
-	ImGui::Text(strMessage.c_str());
-
 	if (!m_vecAnimDemo.empty() && m_vecAnimDemo[m_iCurrentAnimDemoIndex] != nullptr) {
+
+		ImGui::Separator();
+		string strMessage = "Selected : " + m_strCurrentAnimDemoTag;
+		ImGui::Text(strMessage.c_str());
+		string strNaviInd = "NaviIndex : " + to_string(m_vecAnimDemo[m_iCurrentAnimDemoIndex]->Get_NaviCellIndex());
+		ImGui::Text(strNaviInd.c_str());
 
 		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
 		ImGui::SameLine();
@@ -422,7 +506,7 @@ void CObject_Window::AnimObjectMesh()
 	}
 }
 
-void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
+void CObject_Window::Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos)
 {
 	CGameObject* pObject_Demo = nullptr;
 	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
@@ -430,28 +514,31 @@ void CObject_Window::Create_Model(const wstring& strModelTag, _float4 vPickPos)
 	ObjectDemoValue.strModelTag = strModelTag;
 	ObjectDemoValue.vPos = vPickPos;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[m_iCurrentLayerName], G0_OBJECTMESH_DEMO_TAG,
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
 		&ObjectDemoValue,reinterpret_cast<CGameObject**>(&pObject_Demo))))
 		return;
 
 	m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
 }
 
-void CObject_Window::Create_AnimModel(const wstring& strModelTag, _float4 vPickPos)
+void CObject_Window::Create_AnimModel(const wstring& strLayerTag,const wstring& strModelTag, _float4 vPickPos)
 {
+	if (m_pTerrain == nullptr)
+		return;
+
 	CGameObject* pObject_Demo = nullptr;
 	CAnimMesh_Demo::ANIMDEMOVALUE AnimDemoValue;
 
 	AnimDemoValue.strModelTag = strModelTag;
 	AnimDemoValue.vPos = vPickPos;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[m_iCurrentLayerName], G0_ANIMMESH_DEMO_TAG,
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, strLayerTag, G0_ANIMMESH_DEMO_TAG,
 		&AnimDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
 		return;
 
-	pObject_Demo->Get_Component<CNavigation>()->Find_CurrentCell(
-		pObject_Demo->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
-
+		dynamic_cast<CAnimMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(m_pTerrain->Get_Component<CNavigation>()
+		->Find_PositionCell(XMLoadFloat4(&vPickPos)));
+	
 	m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
 }
 

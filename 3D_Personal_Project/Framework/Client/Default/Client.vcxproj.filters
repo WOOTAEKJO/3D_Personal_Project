@@ -166,9 +166,6 @@
     <Filter Include="95. State\01. Tree_State\01. Boss_Monster">
       <UniqueIdentifier>{d3c3fa03-6cbe-4a22-9457-75821d7b8d6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\05. Character\04.Sky">
-      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02. Camera\01. TargetCamera">
       <UniqueIdentifier>{a429d128-fd7c-44b5-adf7-3635dc2f210e}</UniqueIdentifier>
     </Filter>
@@ -255,6 +252,12 @@
     </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\04. Roll">
       <UniqueIdentifier>{8efdc2a5-28ca-404f-993a-ae3ef4c2c6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\01. DataMgr">
+      <UniqueIdentifier>{2155bafc-5f4f-4fce-955a-a1b573964050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Sky">
+      <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -391,7 +394,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
-      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
+      <Filter>02.GameObjects\04.Sky</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Character.h">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -473,6 +476,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Character_State.h">
       <Filter>95. State\00. StatMachine_State\00. Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DataMgr.h">
+      <Filter>96. Manager\01. DataMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -582,7 +588,7 @@
       <Filter>02.GameObjects\03. Plateform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
-      <Filter>02.GameObjects\05. Character\04.Sky</Filter>
+      <Filter>02.GameObjects\04.Sky</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Character.cpp">
       <Filter>02.GameObjects\05. Character</Filter>
@@ -664,6 +670,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Character_State.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DataMgr.cpp">
+      <Filter>96. Manager\01. DataMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

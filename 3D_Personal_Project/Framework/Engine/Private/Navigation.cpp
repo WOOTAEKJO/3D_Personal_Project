@@ -150,6 +150,19 @@ void CNavigation::Find_CurrentCell(_fvector vPosition)
 	}
 }
 
+_int CNavigation::Find_PositionCell(_fvector vPosition)
+{
+	_int iNeighborIndex = -1;
+	_int iCurrentCellIndex = -1;
+
+	for (auto& iter : m_vecCell)
+	{
+		if (iter->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
+			iCurrentCellIndex = iter->Get_Index();
+	}
+
+	return iCurrentCellIndex;
+}
 
 HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex)
 {

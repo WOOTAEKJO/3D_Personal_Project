@@ -18,6 +18,12 @@ BEGIN(Client)
 class CCharacter abstract : public CGameObject
 {
 public:
+	typedef struct tagCharacterDesc : public CGameObject::GAMEOBJECT_DESC
+	{
+		wstring strModelTag = TEXT("");
+
+	}CHARACTER_DESC;
+
 	typedef struct tagPhysicsDesc
 	{
 		_float	fForwardSpeed = 10.f;
@@ -63,6 +69,10 @@ public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
 	STATUS_DESC*	Open_Status_Desc() { return &m_Status_Desc; }
 
+public:
+	void		Set_ModelTag(const wstring& strModelTag) { m_strModelTag = strModelTag; }
+	wstring		Get_ModelTag() { return m_strModelTag; }
+
 protected:
 	CShader*		m_pShaderCom = { nullptr };
 	CModel*			m_pModelCom = { nullptr };
@@ -72,7 +82,7 @@ protected:
 	CStateMachine*	m_pStateMachineCom = { nullptr };
 
 protected:
-	wstring		m_strModelTag;
+	wstring			m_strModelTag;
 	
 	PHYSICS_DESC	m_Physics_Desc;
 	STATUS_DESC		m_Status_Desc;

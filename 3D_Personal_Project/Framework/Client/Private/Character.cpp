@@ -20,8 +20,15 @@ HRESULT CCharacter::Initialize_Prototype()
 
 HRESULT CCharacter::Initialize(void* pArg)
 {
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	if (pArg != nullptr)
+	{
+		CHARACTER_DESC* Character_Desc = ((CHARACTER_DESC*)pArg);
+		m_strModelTag = Character_Desc->strModelTag;
+	}
 
 	return S_OK;
 }

@@ -22,7 +22,7 @@ public:
 
 public:
 	HRESULT	Save_Data_Level(const _char* strFilePath, _uint iLevelIndex);
-	HRESULT	Load_Data_Level(const _char* strFilePath, _uint iLevelIndex);
+	HRESULT	Load_Data_Level(const _char* strFilePath);
 
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
