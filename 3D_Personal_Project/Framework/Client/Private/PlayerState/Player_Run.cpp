@@ -28,10 +28,6 @@ _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 {
-	
-	if(!Key_Input(fTimeDelta))
-		return CPlayer::STATE::IDLE;
-
 	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
 		return CPlayer::STATE::ATTACK2;
 
@@ -43,14 +39,15 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
-	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed,
-		fTimeDelta);
-
 	return m_iStateID;
 }
 
 _uint CPlayer_Run::State_Late_Tick(_float fTimeDelta)
 {
+	if (!Key_Input(fTimeDelta))
+		return CPlayer::STATE::IDLE;
+
+	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
 
 	return m_iStateID;
 }

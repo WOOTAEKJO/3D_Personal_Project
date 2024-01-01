@@ -62,40 +62,84 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 {
 	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT)) {
 
-		if (m_pOnwerTransform->Turn_Dir(
-			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK), fTimeDelta *
-			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		_vector vLook = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK);
+
+		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 		{
-			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook,XMVectorSet(0.f,1.f,0.f,0.f),
+				XMConvertToRadians(45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(-45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else {
+			m_pOnwerTransform->Turn_Dir(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
 	{
-		if (m_pOnwerTransform->Turn_Dir(
-			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f, fTimeDelta *
-			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
+		_vector vLook = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f;
+
+		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 		{
-			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK) * -1.f);
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(-45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
+		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else {
+			m_pOnwerTransform->Turn_Dir(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 	{
-		if (m_pOnwerTransform->Turn_Dir(
-			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT), fTimeDelta *
-			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
-		{
-			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT));
+		_vector vRight = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT);
 
+		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
+		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(-45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else {
+			m_pOnwerTransform->Turn_Dir(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
 	{
-		if (m_pOnwerTransform->Turn_Dir(
-			m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f, fTimeDelta *
-			m_pOwner->Open_Physics_Desc()->fTurnSpeed))
-		{
-			m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f);
+		_vector vRight = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_RIGHT) * -1.f;
 
+		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+		{
+			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+				XMConvertToRadians(-45.f)),
+				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+		}
+		else {
+			m_pOnwerTransform->Turn_Dir(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 	}
 	else

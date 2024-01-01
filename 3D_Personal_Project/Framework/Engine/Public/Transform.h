@@ -74,6 +74,8 @@ public:
 	_bool	Turn_Target(_fvector vTargetPos, _float fTimeDelta);
 	_bool	Turn_Dir(_fvector vDir, _float fTimeDelta);
 
+	_vector	Get_Dir_Angle(_fvector vDir,_fvector vAxis, _float fAngle);
+
 public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);
 
