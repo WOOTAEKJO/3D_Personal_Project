@@ -67,6 +67,7 @@ public:
 
 public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
+	void			Reset_Physics_Desc();
 	STATUS_DESC*	Open_Status_Desc() { return &m_Status_Desc; }
 
 public:

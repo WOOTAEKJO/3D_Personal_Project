@@ -173,6 +173,9 @@
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Model_Spear")
 #define	MODEL_SPEAR_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Spear/Spear.fbx"
 
+#define	MODEL_SHOVEL_TAG			TEXT("Prototype_Component_Model_Shovel")
+#define	MODEL_SHOVEL_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Shovel/Shovel.fbx"
+
 #pragma endregion
 
 #pragma endregion

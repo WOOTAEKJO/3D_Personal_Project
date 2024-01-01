@@ -17,17 +17,20 @@ HRESULT CPlayer_IDLE::Initialize(CGameObject* pGameObject)
 
 void CPlayer_IDLE::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(83);
+	m_pOwner->Animation_By_Type(CPlayer::STATE::IDLE);
 }
 
 _uint CPlayer_IDLE::State_Priority_Tick(_float fTimeDelta)
 {
-
 	return m_iStateID;
 }
 
 _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 {
+
+	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
+		return m_pOwner->Get_NextAttackID();
+
 	if(m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		return CPlayer::STATE::RUN;
 	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
@@ -36,9 +39,6 @@ _uint CPlayer_IDLE::State_Tick(_float fTimeDelta)
 		return CPlayer::STATE::RUN;
 	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
 		return CPlayer::STATE::RUN;
-
-	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
-		return CPlayer::STATE::ATTACK2;
 
 	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_JUMP))
 		return CPlayer::STATE::JUMP;

@@ -17,7 +17,8 @@ HRESULT CPlayer_Jump::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Jump::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(84);
+	//m_pOwnerModel->Set_AnimationIndex(84);
+	m_pOwner->Animation_By_Type(CPlayer::STATE::JUMP);
 
 	m_pOwner->Open_Physics_Desc()->bGround = false;
 	m_pOwner->Open_Physics_Desc()->bJump = true;
@@ -50,23 +51,37 @@ _uint CPlayer_Jump::State_Late_Tick(_float fTimeDelta)
 	if (m_pOwner->Open_Physics_Desc()->bFall && !m_pOwner->Open_Physics_Desc()->bLanding
 		&& m_pOnwerRigidBody->Is_Land())
 	{
-		Land();
-		return CPlayer::STATE::IDLE;
+		if (m_pOwner->Open_Physics_Desc()->bDoubleJump) {
+			Land();
+			return CPlayer::STATE::LAND;
+		}
+		else {
+			Land();
+			return CPlayer::STATE::IDLE;
+		}
 	}
 
 	if (!m_pOwner->Open_Physics_Desc()->bFall)
 	{
-
 		Fall();
 	}
 
 	if (!m_pOwner->Open_Physics_Desc()->bDoubleJump)
 	{
-		if (m_pGameInstance->Key_Down(DIK_SPACE))
+		if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_JUMP))
 		{
+			m_pOwner->Animation_By_Type(CPlayer::STATE::DOUBLEJUMP);
 			m_pOwner->Open_Physics_Desc()->bFall = false;
 			m_pOwner->Open_Physics_Desc()->bDoubleJump = true;
 			Jump();
+		}
+	}
+
+	if (m_pOwner->Open_Physics_Desc()->bDoubleJump)
+	{
+		if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
+		{
+			return CPlayer::STATE::AIR_ATTACK;
 		}
 	}
 
@@ -98,6 +113,10 @@ void CPlayer_Jump::Land()
 void CPlayer_Jump::Fall()
 {
 	if (m_pOnwerRigidBody->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY)) {
+
+		if(m_pOwner->Open_Physics_Desc()->bDoubleJump)
+			m_pOwner->Animation_By_Type(CPlayer::STATE::FALL);
+
 		m_pOwner->Open_Physics_Desc()->bFall = true;
 		m_pOnwerRigidBody->Set_GravityPower(m_pOwner->Open_Physics_Desc()->fFallGravity);
 	}
@@ -106,12 +125,11 @@ void CPlayer_Jump::Fall()
 void CPlayer_Jump::Move(_float fTimeDelta)
 {
 	
-	Key_Input(fTimeDelta);
-	
-	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed,
-		fTimeDelta);
-
-	//m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
+	if (Key_Input(fTimeDelta))
+	{
+		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed,
+			fTimeDelta);
+	}
 }
 
 CPlayer_Jump* CPlayer_Jump::Create(CGameObject* pGameObject)

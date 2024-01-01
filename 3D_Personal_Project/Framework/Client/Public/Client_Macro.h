@@ -114,6 +114,7 @@
 #pragma region æ∆¿Ã≈€
 
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
+#define	MODEL_SHOVEL_TAG		TEXT("Prototype_Component_Sub_Shovel")
 
 #pragma endregion
 
@@ -174,6 +175,7 @@
 //#define GO_PLAYER_TAG			TEXT("Prototype_GameObject_PLAYER")
 #define GO_PLAYER_BODY_TAG		TEXT("Prototype_GameObject_PLAYER_Body")
 #define GO_PLAYER_SPEAR_TAG		TEXT("Prototype_GameObject_PLAYER_Spear")
+#define GO_PLAYER_SHOVEL_TAG	TEXT("Prototype_GameObject_PLAYER_Shovel")
 
 #pragma endregion
 

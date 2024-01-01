@@ -104,6 +104,13 @@ HRESULT CPlayer_Body::Load_Data(const _char* strFilePath)
 	return S_OK;
 }
 
+void CPlayer_Body::Set_AnimationIndex(_uint iAnimIndex)
+{
+	if (m_pModelCom == nullptr)
+		return;
+	m_pModelCom->Set_AnimationIndex(iAnimIndex);
+}
+
 HRESULT CPlayer_Body::Bind_ShaderResources()
 {
 

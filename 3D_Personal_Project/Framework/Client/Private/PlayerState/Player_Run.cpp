@@ -17,19 +17,18 @@ HRESULT CPlayer_Run::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Run::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(86);
+	m_pOwner->Animation_By_Type(CPlayer::STATE::RUN);
+
 }
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
 {
-
+	
 	return m_iStateID;
 }
 
 _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 {
-	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
-		return CPlayer::STATE::ATTACK2;
 
 	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_ROLL))
 		return CPlayer::STATE::ROLL;
@@ -48,6 +47,9 @@ _uint CPlayer_Run::State_Late_Tick(_float fTimeDelta)
 		return CPlayer::STATE::IDLE;
 
 	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
+
+	if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
+		return m_pOwner->Get_NextAttackID();
 
 	return m_iStateID;
 }

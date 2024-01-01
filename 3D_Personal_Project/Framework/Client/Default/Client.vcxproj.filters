@@ -259,6 +259,12 @@
     <Filter Include="02.GameObjects\04.Sky">
       <UniqueIdentifier>{fe461d29-f370-48b5-b135-236f99359c68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\00. Parts\01. Weapon\01. Shovel">
+      <UniqueIdentifier>{aed93978-2538-4690-9286-0736a9274ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\05. Land">
+      <UniqueIdentifier>{043f3495-ea69-4e8f-ad16-5bbc8472fba2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -480,6 +486,12 @@
     <ClInclude Include="..\Public\DataMgr.h">
       <Filter>96. Manager\01. DataMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Parts\01. Weapon\01. Shovel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Land.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\05. Land</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -673,6 +685,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\DataMgr.cpp">
       <Filter>96. Manager\01. DataMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Parts\01. Weapon\01. Shovel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Land.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\05. Land</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 
 #include "Player_Body.h"
 #include "Player_Weapon_Spear.h"
+#include "Player_Weapon_Shovel.h"
 
 #include "Player_IDLE.h"
 #include "Player_Run.h"
@@ -14,6 +15,7 @@
 #include "Player_Spear_Attack3.h"
 #include "Player_Jump.h"
 #include "Player_Roll.h"
+#include "Player_Land.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -47,6 +49,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Parts()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Animation()))
+		return E_FAIL;
+
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
@@ -67,8 +72,6 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
 	}
-
-	
 
 	CCharacter::Priority_Tick(fTimeDelta);
 }
@@ -94,6 +97,8 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	NextAttackID();
 
 	CCharacter::Late_Tick(fTimeDelta);
 }
@@ -132,11 +137,24 @@ CModel* CPlayer::Get_BodyModel()
 
 CCollider* CPlayer::Get_WeaponCollider()
 {
-	CGameObject* pWeapon = Find_Parts(TEXT("Parts_Spear"));
+	CGameObject* pWeapon = Find_Parts(TEXT("Parts_Weapon"));
 	if (pWeapon == nullptr)
 		return nullptr;
 
 	return pWeapon->Get_Component<CCollider>();
+}
+
+void CPlayer::Animation_By_Type(STATE eType)
+{
+	_int iAnimIndex = Find_AnimIndex(m_eCurrentWeaponType, eType);
+	if (iAnimIndex == -1)
+		return;
+
+	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>(Find_Parts(TEXT("Parts_Body")));
+	if (pBody == nullptr)
+		return;
+
+	pBody->Set_AnimationIndex(iAnimIndex);
 }
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -197,6 +215,7 @@ HRESULT CPlayer::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK3, CPlayer_Spear_Attack3::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::AIR_ATTACK, CPlayer_Spear_AirAttack::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::JUMP, CPlayer_Jump::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::LAND, CPlayer_Land::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ROLL, CPlayer_Roll::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
@@ -211,10 +230,15 @@ HRESULT CPlayer::Ready_Parts()
 	PlayerBody_Desc.pParentsTransform = m_pTransformCom;
 	if (FAILED(Add_Parts(GO_PLAYER_BODY_TAG, TEXT("Parts_Body"),&PlayerBody_Desc))) return E_FAIL;
 
-	CPlayer_Weapon_Spear::PLAYERSPEAR_DESC PlayerSpear_Desc = {};
+	/*CPlayer_Weapon_Spear::PLAYERSPEAR_DESC PlayerSpear_Desc = {};
 	PlayerSpear_Desc.pParentsTransform = m_pTransformCom;
 	PlayerSpear_Desc.pBones = Get_BodyModel()->Get_Bones();
-	if (FAILED(Add_Parts(GO_PLAYER_SPEAR_TAG, TEXT("Parts_Spear"), &PlayerSpear_Desc))) return E_FAIL;
+	if (FAILED(Add_Parts(GO_PLAYER_SPEAR_TAG, TEXT("Parts_Weapon"), &PlayerSpear_Desc))) return E_FAIL;*/
+
+	CPlayer_Weapon_Shovel::PLAYERSHOVEL_DESC PlayerShovel_Desc = {};
+	PlayerShovel_Desc.pParentsTransform = m_pTransformCom;
+	PlayerShovel_Desc.pBones = Get_BodyModel()->Get_Bones();
+	if (FAILED(Add_Parts(GO_PLAYER_SHOVEL_TAG, TEXT("Parts_Weapon"), &PlayerShovel_Desc))) return E_FAIL;
 
 	return S_OK;
 }
@@ -227,10 +251,39 @@ HRESULT CPlayer::Ready_Controller()
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_LEFT, DIK_A))) return E_FAIL;
 
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_JUMP, DIK_SPACE))) return E_FAIL;
-	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_ROLL, DIK_LSHIFT))) return E_FAIL;
+	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_ROLL, DIK_E))) return E_FAIL;
 
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_LB_ATTACK, DIM_LB))) return E_FAIL;
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_RB_ATTACK, DIM_RB))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_Animation()
+{
+	WEAPON_TYPE Weapon_Type = WEAPON_TYPE::TYPE_SPEAR;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::IDLE, 83))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::RUN, 86))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK1, 79))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK2, 80))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK3, 81))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::JUMP, 84))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ROLL, 114))) return E_FAIL;
+
+	Weapon_Type = WEAPON_TYPE::TYPE_SHOVEL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::IDLE, 74))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::RUN, 55))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK1, 118))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK2, 119))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ATTACK3, 120))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::AIR_ATTACK, 19))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::JUMP, 107))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::DOUBLEJUMP, 102))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::FALL, 104))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::LAND, 108))) return E_FAIL;
+	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ROLL, 114))) return E_FAIL;
+
+	m_eCurrentWeaponType = WEAPON_TYPE::TYPE_SHOVEL;
 
 	return S_OK;
 }
@@ -249,6 +302,56 @@ HRESULT CPlayer::Add_Parts(const wstring& strPrototypeTag, const wstring& strPar
 	m_mapParts.emplace(strPartsTag, pParts);
 
 	return S_OK;
+}
+
+HRESULT CPlayer::Add_WeaponType_By_Animation(WEAPON_TYPE eWeaponType, STATE eStateType, _uint iAnimIndex)
+{
+	if (eWeaponType >= WEAPON_TYPE::TYPE_END || eStateType >= STATE::STATE_END)
+		return E_FAIL;
+
+	auto& WeaponType = m_mapTypeAnimation.find(eWeaponType);
+	if (WeaponType == m_mapTypeAnimation.end())
+	{
+		ANIMINDEX mapAnimIndex;
+		mapAnimIndex.emplace(eStateType, iAnimIndex);
+		m_mapTypeAnimation.emplace(eWeaponType, mapAnimIndex);
+	}
+	else {
+		WeaponType->second.emplace(eStateType, iAnimIndex);
+	}
+
+	return S_OK;
+}
+
+_int CPlayer::Find_AnimIndex(WEAPON_TYPE eWeaponType, STATE eStateType)
+{
+	auto& WeaponType = m_mapTypeAnimation.find(eWeaponType);
+	if (WeaponType == m_mapTypeAnimation.end())
+		return -1;
+
+	auto& StateType = WeaponType->second.find(eStateType);
+	if (StateType == WeaponType->second.end())
+		return -1;
+
+	return StateType->second;
+}
+
+void CPlayer::NextAttackID()
+{
+	switch (m_pStateMachineCom->Get_PrevID())
+	{
+	case (_uint)CPlayer::STATE::ATTACK1:
+		m_iAttackID = (_uint)CPlayer::STATE::ATTACK2;
+		break;
+	case (_uint)CPlayer::STATE::ATTACK2:
+		m_iAttackID = (_uint)CPlayer::STATE::ATTACK3;
+		break;
+	case (_uint)CPlayer::STATE::ATTACK3:
+		m_iAttackID = (_uint)CPlayer::STATE::ATTACK1;
+		break;
+	default:
+		break;
+	}
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

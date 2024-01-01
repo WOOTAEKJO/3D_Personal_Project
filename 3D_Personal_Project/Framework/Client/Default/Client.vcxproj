@@ -227,6 +227,7 @@
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Land.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Roll.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Spear_AirAttack.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Jump.h" />
@@ -237,6 +238,7 @@
     <ClInclude Include="..\Public\PlayerState\Player_State.h" />
     <ClInclude Include="..\Public\Player\Player.h" />
     <ClInclude Include="..\Public\Player\Player_Body.h" />
+    <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Spooketon.h" />
@@ -295,6 +297,7 @@
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Land.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Spear_AirAttack.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Jump.cpp" />
@@ -305,6 +308,7 @@
     <ClCompile Include="..\Private\PlayerState\Player_State.cpp" />
     <ClCompile Include="..\Private\Player\Player.cpp" />
     <ClCompile Include="..\Private\Player\Player_Body.cpp" />
+    <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Spooketon.cpp" />

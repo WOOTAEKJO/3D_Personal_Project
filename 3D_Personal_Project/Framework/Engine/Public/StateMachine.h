@@ -28,10 +28,12 @@ public:
 
 public:
 	_uint	Get_StateID();
+	_uint	Get_PrevID() { return m_iPrevStateID; }
 
 private:
 	class CState*			m_pCurrentState = { nullptr };	// 현재 상태
 	_uint					m_iCurrentStateID = { 0 };		// 현재 상태 아이디
+	_uint					m_iPrevStateID = { 0 };			// 이전 상태 아이디
 
 private:
 	map<const _uint, class CState*>			m_mapState;		// 상태들을 저장

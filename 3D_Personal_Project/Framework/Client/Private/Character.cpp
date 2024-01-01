@@ -73,6 +73,15 @@ HRESULT CCharacter::Render()
 	return S_OK;
 }
 
+void CCharacter::Reset_Physics_Desc()
+{
+	m_Physics_Desc.bGround = true;
+	m_Physics_Desc.bJump = false;
+	m_Physics_Desc.bDoubleJump = false;
+	m_Physics_Desc.bFall = false;
+	m_Physics_Desc.bLanding = false;
+}
+
 HRESULT CCharacter::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))

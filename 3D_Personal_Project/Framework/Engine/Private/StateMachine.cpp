@@ -87,6 +87,7 @@ HRESULT CStateMachine::Set_State(const _uint& iStateID)
 		return E_FAIL;
 
 	m_pCurrentState = pState;
+	m_iPrevStateID = m_iCurrentStateID;
 	m_iCurrentStateID = iStateID;
 	m_pCurrentState->State_Enter();
 
