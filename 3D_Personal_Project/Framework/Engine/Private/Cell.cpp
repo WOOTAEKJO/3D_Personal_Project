@@ -24,10 +24,13 @@ HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE 
 	m_eNaviType = eType;
 
 	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
+	XMStoreFloat3(&m_vLine[LINE_AB], Line);
 	XMStoreFloat3(&m_vLineNormal[LINE_AB], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
 	Line = XMLoadFloat3(&m_pPoints[POINT_C]) - XMLoadFloat3(&m_pPoints[POINT_B]);
+	XMStoreFloat3(&m_vLine[LINE_BC], Line);
 	XMStoreFloat3(&m_vLineNormal[LINE_BC], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
 	Line = XMLoadFloat3(&m_pPoints[POINT_A]) - XMLoadFloat3(&m_pPoints[POINT_C]);
+	XMStoreFloat3(&m_vLine[LINE_CA], Line);
 	XMStoreFloat3(&m_vLineNormal[LINE_CA], XMVectorSet(XMVectorGetZ(Line) * -1.f, 0.f, XMVectorGetX(Line), 0.f));
 
 #ifdef _DEBUG
@@ -98,9 +101,9 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 	return false;
 }
 
-_bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex)
+_bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine)
 {
-	for (_uint i = 0; i < LINE_END; i++)
+	for (_uint i = 0; i < (_uint)LINE_END; i++)
 	{
 		_vector vStartPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pPoints[i]), matWorld);
 		_vector vNormal = XMVector3TransformNormal(XMLoadFloat3(&m_vLineNormal[i]), matWorld);
@@ -111,6 +114,7 @@ _bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex)
 			XMVector3Normalize(vNormal))))
 		{
 			*iNeighborIndex = m_iNeighborIndex[i];
+			XMStoreFloat3(vLine, XMVector3Normalize(XMLoadFloat3(&m_vLine[i])));
 			return false;
 		}
 			

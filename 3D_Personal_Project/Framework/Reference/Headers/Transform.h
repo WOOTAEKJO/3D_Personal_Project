@@ -69,7 +69,7 @@ public: /* 카메라에 사용*/
 	void	LookAt_OnLand(_fvector	fTargetPos);
 
 public:
-	void	Translate(_fvector vTranslation,CNavigation* pNavigation);
+	void	Translate(_fvector vTranslation,CNavigation* pNavigation, _float fTimeDelta = 1.f);
 	void	LookAt_Dir(_fvector vDir, _float fTimeDelta = 1.f);
 	_bool	Turn_Target(_fvector vTargetPos, _float fTimeDelta);
 	_bool	Turn_Dir(_fvector vDir, _float fTimeDelta);
