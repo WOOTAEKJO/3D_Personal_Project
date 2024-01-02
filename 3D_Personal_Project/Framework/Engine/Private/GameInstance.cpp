@@ -8,6 +8,7 @@
 #include "Mouse_Manager.h"
 #include "SaveLoad_Manager.h"
 #include "Collider_Manager.h"
+#include "Font_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -81,6 +82,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 콜라이더 매니저 사용 준비*/
 	m_pCollider_Manager = CCollider_Manager::Create();
 	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
+	/* 폰트 매니저 사용 준비*/
+	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -553,6 +559,22 @@ HRESULT CGameInstance::Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLay
 	return m_pCollider_Manager->Add_Pair_Collision(iSourColLayer, iDestColLayer);
 }
 
+HRESULT CGameInstance::Add_Font(_uint iFontTag, const wstring& strFontFilePath)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Add_Font(iFontTag, strFontFilePath);
+}
+
+HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vPosition, _fvector vColor, _float fScale, _float2 vOrigin, _float fRotation)
+{
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	return m_pFont_Manager->Render(iFontTag, strText, vPosition, vColor, fScale, vOrigin, fRotation);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
@@ -567,6 +589,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pSaveLoad_Manager);
 	Safe_Release(m_pComponent_Manager);
 	Safe_Release(m_pLevel_Manager);
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pTimer_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pInput_Device);
