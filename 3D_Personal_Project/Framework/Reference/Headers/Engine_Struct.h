@@ -142,6 +142,18 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
 	}VTXANIMMESH;
 
+	typedef struct tagInstancing
+	{
+		_float4 vRight, vUp, vLook, vPos;
+
+	}VTXINSTANCING;
+
+	typedef struct ENGINE_DLL tagParticle_Rect
+	{
+		static const unsigned int	iElementsNum = 6;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}PARTICLE_RECT;
+
 	typedef struct tagMeshDesc
 	{
 		string				szName;

@@ -26,16 +26,6 @@ float		g_fBrushRange;
 
 bool		g_bWireFrame;
 
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = wrap;
-	AddressV = wrap;
-	//D3D11_SAMPLER_DESC
-	// Âü°í
-};
-
-
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -107,10 +97,10 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSourDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord * 100.f);
-	vector vDestDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexCoord * 100.f);
+	vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
-	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexCoord);
+	vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
 	vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse;
 
@@ -141,16 +131,16 @@ PS_OUT PS_DTERRAIN(PS_IN In)
 		vUV.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
 		vUV.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
 
-		vBrush = g_BrushTexture.Sample(DefaultSampler, vUV);
+		vBrush = g_BrushTexture.Sample(LinearSampler, vUV);
 
 	}
 
 	if (!g_bWireFrame) {
 
-		vector vSourDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord * 100.f);
-		vector vDestDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexCoord * 100.f);
+		vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+		vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
-		vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexCoord);
+		vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
 		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;
 
@@ -175,7 +165,7 @@ PS_OUT PS_MODEL(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord);
+	vector vDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord);
 
 	if (vDiffuse.a < 0.3f)
 		discard;

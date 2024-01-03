@@ -3,13 +3,6 @@
 matrix		g_matWorld, g_matView, g_matProj;
 texture2D	g_Texture[2];
 
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	//D3D11_SAMPLER_DESC
-	// Âü°í
-};
-
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -58,8 +51,8 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSColor = g_Texture[0].Sample(DefaultSampler, In.vTexCoord);
-	vector vDColor = g_Texture[1].Sample(DefaultSampler, In.vTexCoord);
+	vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
+	vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
 
 	Out.vColor = vSColor + vDColor;
 	

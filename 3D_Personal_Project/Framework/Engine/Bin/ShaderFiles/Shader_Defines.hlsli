@@ -1,4 +1,13 @@
 
+sampler LinearSampler = sampler_state
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = wrap;
+    AddressV = wrap;
+	//D3D11_SAMPLER_DESC
+	// Âü°í
+};
+
 RasterizerState RS_Default
 {
     FillMode = Solid;

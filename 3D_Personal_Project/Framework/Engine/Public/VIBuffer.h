@@ -20,7 +20,7 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;	// 사본 초기화
 	HRESULT	Render();									// context로 그리기 작업
 public:
-	HRESULT	Bind_Buffer();									// context로 바인드 작업
+	virtual HRESULT	Bind_Buffer();									// context로 바인드 작업
 	HRESULT	Create_Buffer(_Inout_ ID3D11Buffer** pBuffer);	// device로 버퍼 생성 작업
 
 public:

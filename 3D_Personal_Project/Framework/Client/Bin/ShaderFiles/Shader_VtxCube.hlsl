@@ -3,13 +3,6 @@
 matrix		g_matWorld, g_matView, g_matProj;
 textureCUBE	g_Texture;
 
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	//D3D11_SAMPLER_DESC
-	// Âü°í
-};
-
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -53,7 +46,7 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-    Out.vColor = g_Texture.Sample(DefaultSampler, In.vTexCoord);
+    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexCoord);
 	
 	return Out;
 }

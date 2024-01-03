@@ -730,5 +730,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticleRect.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
