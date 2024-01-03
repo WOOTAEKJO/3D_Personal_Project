@@ -315,13 +315,22 @@ void CAnimation_Window::SubObject()
 			}
 		}
 		ImGui::EndListBox();
-
-		if (ImGui::Button("Apply"))
+		
+		if (!m_vecSubObjectDemo.empty())
 		{
-			m_vecSubObjectDemo[m_iCurrentDemoIndex]->
-				Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
-			//m_vecSubObjectDemo[m_iCurrentDemoIndex]->Set_SocketBoneIndex(m_iCurrentAnimModelBoneIndex);
+			if (ImGui::Button("Apply"))
+			{
+				m_vecSubObjectDemo[m_iCurrentDemoIndex]->
+					Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
+				//m_vecSubObjectDemo[m_iCurrentDemoIndex]->Set_SocketBoneIndex(m_iCurrentAnimModelBoneIndex);
+			}
 		}
+		
+		ImGui::Checkbox("NonBlend", &m_bNonBlend);
+		if (m_bNonBlend)
+			m_pCurrentAnimModel->Set_NonBlendIndx(m_iCurrentAnimModelBoneIndex);			
+		else
+			m_pCurrentAnimModel->Set_NonBlendIndx(-1);
 	}
 
 

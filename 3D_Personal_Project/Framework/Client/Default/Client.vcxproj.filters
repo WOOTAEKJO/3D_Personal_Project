@@ -265,6 +265,24 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\05. Land">
       <UniqueIdentifier>{043f3495-ea69-4e8f-ad16-5bbc8472fba2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\02. NPC">
+      <UniqueIdentifier>{2c0f291f-7310-4cd5-82e5-c83877946ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC">
+      <UniqueIdentifier>{2f1cfed1-a2f5-49fd-ba6d-875630fd4150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\01. Follow">
+      <UniqueIdentifier>{71f0ed0c-eb8d-4be7-9493-d19e86a67c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\00. IDLE">
+      <UniqueIdentifier>{a9b06dc1-cb50-4fb6-b24c-bc54aaa4131e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack">
+      <UniqueIdentifier>{81f007cc-e267-4f5e-b12b-968e014ab85d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\02. NPC\00. Crow">
+      <UniqueIdentifier>{9c05ec11-f6a2-4f70-8a36-92540757ae3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -492,6 +510,24 @@
     <ClInclude Include="..\Public\PlayerState\Player_Land.h">
       <Filter>95. State\00. StatMachine_State\00. Character\00. Player\05. Land</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NPC.h">
+      <Filter>02.GameObjects\05. Character\02. NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_State.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\00. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_Follow.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\01. Follow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player\Crow.h">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_Attack.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -691,6 +727,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Land.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\00. Player\05. Land</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPC.cpp">
+      <Filter>02.GameObjects\05. Character\02. NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_State.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\00. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_Follow.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\01. Follow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player\Crow.cpp">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

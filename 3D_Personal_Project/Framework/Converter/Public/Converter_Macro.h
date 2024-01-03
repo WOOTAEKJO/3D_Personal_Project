@@ -68,6 +68,9 @@
 #define	ANIMMODEL_SPOOKETON_TAG				TEXT("Prototype_Component_AnimModel_Spooketon")
 #define	ANIMMODEL_SPOOKETON_PATH			"../Bin/Resources/Models/AnimModel/Spooketon/Spooketon.fbx"
 
+#define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
+#define	ANIMMODEL_CROW_PATH			"../Bin/Resources/Models/AnimModel/Crow/Crow.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

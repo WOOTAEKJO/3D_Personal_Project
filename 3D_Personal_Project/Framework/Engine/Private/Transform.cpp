@@ -248,10 +248,12 @@ void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
-		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);
+	/*_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
+		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);*/
+	if (m_bGround)
+		vLook.m128_f32[1] = 0.f;
 
-	LookAt(vAt);
+	LookAt(vPos + vLook);
 }
 
 _bool CTransform::Turn_Dir(_fvector vDir, _float fTimeDelta)
@@ -259,7 +261,8 @@ _bool CTransform::Turn_Dir(_fvector vDir, _float fTimeDelta)
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	vLook.m128_f32[1] = 0.f;
+	if(m_bGround)
+		vLook.m128_f32[1] = 0.f;
 
 	return Turn_Target(vPos + vLook, fTimeDelta);
 }

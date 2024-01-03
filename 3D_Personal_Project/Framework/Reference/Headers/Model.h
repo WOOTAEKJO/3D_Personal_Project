@@ -45,7 +45,7 @@ public:
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, TEXTURETYPE eType);
-	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex);
+	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex, _int iNonBindInd = -1);
 
 	_bool	Is_Animation_Finished();
 

@@ -74,6 +74,9 @@ public:
 	void		Set_ModelTag(const wstring& strModelTag) { m_strModelTag = strModelTag; }
 	wstring		Get_ModelTag() { return m_strModelTag; }
 
+public:
+	void		Set_TypeAnimIndex(_uint iAnimTag);
+
 protected:
 	CShader*		m_pShaderCom = { nullptr };
 	CModel*			m_pModelCom = { nullptr };
@@ -89,8 +92,17 @@ protected:
 	STATUS_DESC		m_Status_Desc;
 
 protected:
+	map<_uint, _uint>	m_mapTypeAnimIndex;
+	_int				m_eCurrentTypeAnimIndex = { -1 };
+
+protected:
 	virtual HRESULT Bind_ShaderResources();
 	virtual HRESULT Ready_Component();
+	virtual HRESULT	Ready_Animation();
+
+protected:
+	void	Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex);
+	_int	Find_TypeAnimIndex(_uint iAnimTag);
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

@@ -55,6 +55,8 @@
 
 #define	ANIMMODEL_SPOOKETON_TAG			TEXT("Prototype_Component_AnimModel_Spooketon")
 
+#define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

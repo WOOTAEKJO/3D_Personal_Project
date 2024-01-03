@@ -66,7 +66,7 @@ HRESULT CAnimMesh_Demo::Render()
 
 	for (size_t i = 0; i < iNumMeshs; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i, m_iNonBlendIndex)))
 			return E_FAIL;
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);

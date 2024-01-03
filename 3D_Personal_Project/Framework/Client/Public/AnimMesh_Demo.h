@@ -53,6 +53,8 @@ public:
 
 	_float* Get_ExtraSpeed();
 
+	void	Set_NonBlendIndx(_int iIndx) { m_iNonBlendIndex = iIndx; }
+
 public:
 	_bool	Get_Picked();
 
@@ -70,7 +72,8 @@ private:
 	_bool		m_bPlay = {true};
 	_bool		m_bLoop = { true };
 
-
+private:
+	_int		m_iNonBlendIndex = { -1 };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;
