@@ -181,6 +181,9 @@
 
 #pragma endregion
 
+#define	MODEL_WILDWEST_TAG			TEXT("Prototype_Component_Model_WildWest")
+#define	MODEL_WILDWEST_PATH		"../Bin/Resources/Models/NonAnimModel/WildWest/WildWest.fbx"
+
 #pragma endregion
 
 #pragma region 기타 컴포넌트
