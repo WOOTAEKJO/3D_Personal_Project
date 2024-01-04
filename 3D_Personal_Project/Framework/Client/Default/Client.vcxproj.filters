@@ -283,6 +283,15 @@
     <Filter Include="02.GameObjects\05. Character\02. NPC\00. Crow">
       <UniqueIdentifier>{9c05ec11-f6a2-4f70-8a36-92540757ae3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06. Particle">
+      <UniqueIdentifier>{0a574403-3a13-4576-9d8f-341db9079438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\00. Rect">
+      <UniqueIdentifier>{a2de197f-11c3-47d6-80b9-80701a452302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\01. Point">
+      <UniqueIdentifier>{350ef919-b34a-49dd-a5b2-a0bf9e6c44da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

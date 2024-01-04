@@ -12,12 +12,14 @@ struct VS_IN
     float4	vUp		  : TEXCOORD2;
     float4	vLook	  : TEXCOORD3;
     float4	vPos	  : TEXCOORD4;
+    float4 vColor	  : COLOR0;
 };
 
 struct VS_OUT
 {
 	float4	vPosition : SV_POSITION;
 	float2	vTexCoord : TEXCOORD0;
+    float4	vColor : COLOR0;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -34,6 +36,7 @@ VS_OUT VS_MAIN(VS_IN In)
 
     Out.vPosition = mul(vPosition, matWVP);
 	Out.vTexCoord = In.vTexCoord;
+    Out.vColor = In.vColor;
 
 	return Out;
 }
@@ -47,6 +50,7 @@ struct PS_IN
 {
 	float4	vPosition : SV_POSITION;
 	float2	vTexCoord : TEXCOORD0;
+    float4	vColor : COLOR0;
 };
 
 struct PS_OUT
@@ -59,9 +63,14 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-    Out.vColor = g_Texture.Sample(LinearSampler, In.vTexCoord);
+    Out.vColor = g_Texture.Sample(PointSampler, In.vTexCoord);
 	
-	return Out;
+    if (In.vColor.a <0.8f)
+        discard;
+	
+    Out.vColor.a = In.vColor.a;
+	
+     return Out;
 }
 
 technique11 DefaultTechnique
@@ -71,7 +80,7 @@ technique11 DefaultTechnique
 	{
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		PixelShader = compile ps_5_0 PS_MAIN();

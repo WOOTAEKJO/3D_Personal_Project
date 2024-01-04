@@ -85,6 +85,15 @@ namespace Engine
 		// 정점 구조체의 멤버변수는 2개이므로 배열의 갯수도 2이다.
 	}VTXPOSTEX;
 
+	typedef struct ENGINE_DLL tagVertex_Point
+	{
+		XMFLOAT3	fPosition;
+		XMFLOAT2	fPSize;
+
+		static const unsigned int	iElementsNum = 2;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}VTXPOINT;
+
 	typedef struct ENGINE_DLL tagVertex_Cube
 	{
 		XMFLOAT3	vPosition;
@@ -145,14 +154,21 @@ namespace Engine
 	typedef struct tagInstancing
 	{
 		_float4 vRight, vUp, vLook, vPos;
+		_float4 vColor;
 
 	}VTXINSTANCING;
 
 	typedef struct ENGINE_DLL tagParticle_Rect
 	{
-		static const unsigned int	iElementsNum = 6;
+		static const unsigned int	iElementsNum = 7;
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
 	}PARTICLE_RECT;
+
+	typedef struct ENGINE_DLL tagParticle_Point
+	{
+		static const unsigned int	iElementsNum = 7;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}PARTICLE_POINT;
 
 	typedef struct tagMeshDesc
 	{

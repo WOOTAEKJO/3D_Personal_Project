@@ -492,6 +492,9 @@
     <ClInclude Include="..\Public\VIBuffer_Particle_Rect.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\00. Particle_Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Particle_Point.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\01. Particle_Point</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -709,6 +712,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Particle_Rect.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\00. Particle_Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Particle_Point.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\01. Particle_Point</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

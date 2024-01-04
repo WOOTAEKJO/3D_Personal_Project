@@ -23,6 +23,7 @@ namespace Engine
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
+#include <random>
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
