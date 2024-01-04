@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CModel;
 class CAnimation;
+class CNavigation;
 
 END
 
@@ -52,6 +53,8 @@ public:
 
 	_float* Get_ExtraSpeed();
 
+	void	Set_NonBlendIndx(_int iIndx) { m_iNonBlendIndex = iIndx; }
+
 public:
 	_bool	Get_Picked();
 
@@ -60,13 +63,17 @@ public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-	CShader*	m_pShaderCom = { nullptr };
-	CModel*		m_pModelCom = { nullptr };
+	CShader*		m_pShaderCom = { nullptr };
+	CModel*			m_pModelCom = { nullptr };
+	CNavigation*	m_pNavigationCom = { nullptr };
 
 private:
 	_uint		m_iAnimKey = { 0 };
 	_bool		m_bPlay = {true};
 	_bool		m_bLoop = { true };
+
+private:
+	_int		m_iNonBlendIndex = { -1 };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

@@ -18,15 +18,6 @@ vector		g_CamWorldPos;
 texture2D	g_DiffuseTexture[2];
 texture2D	g_MaskTexture;
 
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = wrap;
-	AddressV = wrap;
-	//D3D11_SAMPLER_DESC
-	// Âü°í
-};
-
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -82,10 +73,10 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSourDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord*100.f);
-	vector vDestDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexCoord * 100.f);
+	vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord*100.f);
+	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
-	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexCoord);
+	vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
 	vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse;
 

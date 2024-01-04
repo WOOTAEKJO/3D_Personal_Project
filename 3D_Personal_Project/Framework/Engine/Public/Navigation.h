@@ -26,8 +26,9 @@ public:
 
 public:
 	void	Update(_float4x4 matWorld);
-	_bool	IsMove(_fvector vPosition);
+	_bool	IsMove(_fvector vPosition, _Out_ _float3* vLine);
 	void	Find_CurrentCell(_fvector vPosition);
+	_int	Find_PositionCell(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex);
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
@@ -36,6 +37,8 @@ public:
 public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
 	_float	Get_Cell_Height(_float3 vPos);
+	void	Set_CurrentIndex(_int iCurrentInd) { m_iCurrentCellIndex = iCurrentInd; }
+	_int	Get_CurrentIndex() { return m_iCurrentCellIndex; }
 
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);

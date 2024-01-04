@@ -165,7 +165,7 @@ HRESULT CShader::Bind_RawValue(const _char* pValueName, const void* pData, _uint
 		return E_FAIL;
 
 	pVariable->SetRawValue(pData, 0, iSize);
-
+	
 	return S_OK;
 }
 

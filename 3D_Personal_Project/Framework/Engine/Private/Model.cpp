@@ -170,9 +170,9 @@ HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint
 	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }
 
-HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshIndex)
+HRESULT CModel::Bind_Blend(CShader* pShader, const _char* pName, _uint iMeshIndex, _int iNonBindInd)
 {
-	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones);
+	return m_vecMesh[iMeshIndex]->Bind_Blend(pShader, pName,m_vecBones, iNonBindInd);
 }
 
 _bool CModel::Is_Animation_Finished()

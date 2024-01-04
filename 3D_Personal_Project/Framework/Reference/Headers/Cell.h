@@ -18,7 +18,7 @@ public:
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
-	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex);
+	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine);
 	_float	Get_Height(_float3 vPos);
 
 public:
@@ -55,6 +55,7 @@ private:
 	_uint		m_iIndex = { 0 };
 	_int		m_iNeighborIndex[LINE_END] = {-1,-1,-1};
 	_float3		m_vLineNormal[LINE_END] = {};
+	_float3		m_vLine[LINE_END] = {};
 
 private:
 	CNavigation::NAVITYPE	m_eNaviType = { CNavigation::NAVITYPE::TYPE_END };

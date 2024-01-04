@@ -68,6 +68,9 @@
 #define	ANIMMODEL_SPOOKETON_TAG				TEXT("Prototype_Component_AnimModel_Spooketon")
 #define	ANIMMODEL_SPOOKETON_PATH			"../Bin/Resources/Models/AnimModel/Spooketon/Spooketon.fbx"
 
+#define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
+#define	ANIMMODEL_CROW_PATH			"../Bin/Resources/Models/AnimModel/Crow/Crow.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨
@@ -172,6 +175,9 @@
 
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Model_Spear")
 #define	MODEL_SPEAR_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Spear/Spear.fbx"
+
+#define	MODEL_SHOVEL_TAG			TEXT("Prototype_Component_Model_Shovel")
+#define	MODEL_SHOVEL_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Shovel/Shovel.fbx"
 
 #pragma endregion
 

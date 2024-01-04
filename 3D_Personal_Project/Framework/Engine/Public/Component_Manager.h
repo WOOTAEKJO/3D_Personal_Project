@@ -5,6 +5,7 @@
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_DTerrain.h"
+#include "VIBuffer_Particle_Rect.h"
 #include "Model.h"
 #include "Shader.h"
 #include "StateMachine.h"

@@ -158,30 +158,31 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 HRESULT CTerrain_Demo::Ready_Component()
 {
 	
-	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, SHADER_MESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_TAG, &m_pTextureCom[TYPE_DIFFUSE]))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_MASK_TAG, &m_pTextureCom[TYPE_MASK],nullptr,1))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_BRUSH_TAG, &m_pTextureCom[TYPE_BRUSH], nullptr,2))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_DEMO_TAG, &m_pNavigationCom))) return E_FAIL;
 
-	/* For.Com_Texture*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_TAG,
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]))))
-		return E_FAIL;
+	///* For.Com_Texture*/ 
+	//if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_TAG,
+	//	TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]))))
+	//	return E_FAIL;
 
-	/* For.Com_Mask*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_MASK_TAG,
-		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
-		return E_FAIL;
+	///* For.Com_Mask*/ 
+	//if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_MASK_TAG,
+	//	TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
+	//	return E_FAIL;
 
-	/* For.Com_Brush*/ 
-	if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_BRUSH_TAG,
-		TEXT("Com_Brush"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]))))
-		return E_FAIL;
+	///* For.Com_Brush*/ 
+	//if (FAILED(Add_Component(LEVEL_TOOL, TEX_TERRAIN_BRUSH_TAG,
+	//	TEXT("Com_Brush"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_BRUSH]))))
+	//	return E_FAIL;
 
-	/* For.Com_Navigation*/
-	if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_DEMO_TAG,
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
-		return E_FAIL;
+	///* For.Com_Navigation*/
+	//if (FAILED(Add_Component(LEVEL_TOOL, COM_NAVIGATION_DEMO_TAG,
+	//	TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
+	//	return E_FAIL;
 
 	return S_OK;
 }

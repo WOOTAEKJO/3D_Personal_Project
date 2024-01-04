@@ -41,7 +41,7 @@ void CCharacter_State::Translate(CTransform::STATE eType,_float fSpeed, _float f
 	_vector vDir = m_pOnwerTransform->Get_State(eType);
 	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
 		* (bTurn == false ? 1.f : -1.f);
-	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation);
+	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation, fTimeDelta);
 }
 
 void CCharacter_State::Is_Attack_Time(CCollider* pOwnerCol ,_float fTimeDelta, _float fTime)

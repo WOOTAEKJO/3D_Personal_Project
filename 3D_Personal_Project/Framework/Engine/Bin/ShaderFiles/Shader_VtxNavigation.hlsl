@@ -3,13 +3,6 @@
 matrix		g_matWorld, g_matView, g_matProj;
 vector g_vColor = vector(1.f,1.f,1.f,1.f);
 
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	//D3D11_SAMPLER_DESC
-	// Âü°í
-};
-
 struct VS_IN
 {
 	float3	vPosition : POSITION;

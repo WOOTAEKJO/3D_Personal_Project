@@ -17,7 +17,8 @@ HRESULT CPlayer_Roll::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Roll::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(114);
+	//m_pOwnerModel->Set_AnimationIndex(114);
+	m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
 }
 
 _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
@@ -28,12 +29,11 @@ _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 {
-
 	Key_Input(fTimeDelta);
 
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
-		return CPlayer::STATE::IDLE;
+		return CPlayer::STATE::IDLE;	
 	}
 
 	Translate(CTransform::STATE::STATE_LOOK, 10.f, fTimeDelta);

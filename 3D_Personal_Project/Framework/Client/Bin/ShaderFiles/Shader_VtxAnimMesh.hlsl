@@ -25,16 +25,9 @@ vector		g_vBrushPos;
 float		g_fBrushRange;
 
 bool		g_bWireFrame;
-
-sampler		DefaultSampler = sampler_state
-{
-	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = wrap;
-	AddressV = wrap;
-	//D3D11_SAMPLER_DESC
-	// 참고
-};
-
+	
+int2		g_iDiscardIndx; // 특정 뼈의 메쉬를 투명하게 하기 위함
+// 일단 사용하고 수정하자 너무 비효율적이다. 특정 한 메쉬만 생각해서 만들어서
 
 struct VS_IN
 {
@@ -54,6 +47,8 @@ struct VS_OUT
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;
+	
+    uint4 vBlendIndices : BLENDINDEX;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -79,7 +74,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vNormal = mul(vNormal, g_matWorld);
 	Out.vWorldPos = mul(float4(In.vPosition, 1.f),g_matWorld);
 	Out.vTexCoord = In.vTexCoord;
-
+    Out.vBlendIndices = In.vBlendIndices;
 	return Out;
 }
 /* 통과된 정점을 대기 .*/
@@ -95,6 +90,8 @@ struct PS_IN
 	float4	vNormal	: NORMAL;
 	float2	vTexCoord : TEXCOORD0;
 	float4	vWorldPos : TEXCOORD1;
+	
+    uint4 vBlendIndices : BLENDINDEX;
 };
 
 struct PS_OUT
@@ -107,10 +104,10 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSourDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord * 100.f);
-	vector vDestDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexCoord * 100.f);
+	vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
-	vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexCoord);
+	vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
 	vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse;
 
@@ -141,16 +138,16 @@ PS_OUT PS_DTERRAIN(PS_IN In)
 		vUV.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
 		vUV.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
 
-		vBrush = g_BrushTexture.Sample(DefaultSampler, vUV);
+		vBrush = g_BrushTexture.Sample(LinearSampler, vUV);
 
 	}
 
 	if (!g_bWireFrame) {
 
-		vector vSourDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord * 100.f);
-		vector vDestDiffuse = g_DiffuseTexture[1].Sample(DefaultSampler, In.vTexCoord * 100.f);
+		vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+		vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
-		vector vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexCoord);
+		vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
 		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;
 
@@ -175,11 +172,11 @@ PS_OUT PS_MODEL(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, In.vTexCoord);
+	vector vDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord);
 
 	if (vDiffuse.a < 0.3f)
 		discard;
-
+	
 	float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // 명암
 
 	vector vLook = In.vWorldPos - g_CamWorldPos;
@@ -187,10 +184,49 @@ PS_OUT PS_MODEL(PS_IN In)
 
 	float fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f); // 빛 반사
 
-	Out.vColor = g_LightDiffuse * vDiffuse * min((fContrast + (g_LightAmbient * g_MtrlAmbient)), 1.f)
+    Out.vColor = g_LightDiffuse * vDiffuse * min((fContrast + (g_LightAmbient * g_MtrlAmbient)), 1.f)
 		+ (g_LightSpecular * g_MtrlSpecular) * fSpecular;
 
 	return Out;
+}
+
+PS_OUT PS_INVISIBLE_MODEL(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord);
+
+    if (vDiffuse.a < 0.3f)
+        discard;
+    
+  //  if (g_iDiscardIndx.x == In.vBlendIndices.x || g_iDiscardIndx.x == In.vBlendIndices.y 
+		//|| g_iDiscardIndx.x == In.vBlendIndices.z || g_iDiscardIndx.x == In.vBlendIndices.w ||
+		//g_iDiscardIndx.y == In.vBlendIndices.x || g_iDiscardIndx.y == In.vBlendIndices.y 
+		//|| g_iDiscardIndx.y == In.vBlendIndices.z || g_iDiscardIndx.y == In.vBlendIndices.w)
+  //      discard;
+	
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 4; ++j)
+        {
+            if (g_iDiscardIndx[i] == In.vBlendIndices[j])
+            {
+                discard;
+            }
+        }
+    } // 일단 사용하고 수정하자 너무 비효율적이다. 특정 한 메쉬만 생각해서 만들어서
+        
+    float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // 명암
+
+    vector vLook = In.vWorldPos - g_CamWorldPos;
+    vector vReflect = reflect(normalize(g_LightDir), normalize(In.vNormal)); // 반사벡터
+
+    float fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f); // 빛 반사
+
+    Out.vColor = g_LightDiffuse * vDiffuse * min((fContrast + (g_LightAmbient * g_MtrlAmbient)), 1.f)
+		+ (g_LightSpecular * g_MtrlSpecular) * fSpecular;
+
+    return Out;
 }
 
 technique11 DefaultTechnique
@@ -226,4 +262,13 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
 
+    pass NonCull_InvisibleModel
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_INVISIBLE_MODEL();
+    }
 }

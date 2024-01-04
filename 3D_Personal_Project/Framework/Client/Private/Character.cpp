@@ -20,8 +20,15 @@ HRESULT CCharacter::Initialize_Prototype()
 
 HRESULT CCharacter::Initialize(void* pArg)
 {
+
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
+
+	if (pArg != nullptr)
+	{
+		CHARACTER_DESC* Character_Desc = ((CHARACTER_DESC*)pArg);
+		m_strModelTag = Character_Desc->strModelTag;
+	}
 
 	return S_OK;
 }
@@ -66,6 +73,28 @@ HRESULT CCharacter::Render()
 	return S_OK;
 }
 
+void CCharacter::Reset_Physics_Desc()
+{
+	m_Physics_Desc.bGround = true;
+	m_Physics_Desc.bJump = false;
+	m_Physics_Desc.bDoubleJump = false;
+	m_Physics_Desc.bFall = false;
+	m_Physics_Desc.bLanding = false;
+}
+
+void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	_int iAnimIndex = Find_TypeAnimIndex(iAnimTag);
+	if (iAnimIndex == -1)
+		return;
+
+	m_eCurrentTypeAnimIndex = iAnimIndex;
+	m_pModelCom->Set_AnimationIndex(iAnimIndex);
+}
+
 HRESULT CCharacter::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
@@ -107,6 +136,29 @@ HRESULT CCharacter::Ready_Component()
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
 
 	return S_OK;
+}
+
+HRESULT CCharacter::Ready_Animation()
+{
+	return S_OK;
+}
+
+void CCharacter::Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex)
+{
+	_int iAnimIndx = Find_TypeAnimIndex(iAnimTag);
+	if (iAnimIndx != -1)
+		return;
+
+	m_mapTypeAnimIndex.emplace(iAnimTag, iAnimIndex);
+}
+
+_int CCharacter::Find_TypeAnimIndex(_uint iAnimTag)
+{
+	auto& iter = m_mapTypeAnimIndex.find(iAnimTag);
+	if (iter == m_mapTypeAnimIndex.end())
+		return -1;
+
+	return iter->second;
 }
 
 void CCharacter::Free()

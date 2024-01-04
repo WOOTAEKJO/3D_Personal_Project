@@ -18,7 +18,8 @@ HRESULT CPlayer_Spear_Attack2::Initialize(CGameObject* pGameObject)
 void CPlayer_Spear_Attack2::State_Enter()
 {
 	Trans_Attack(true);
-	m_pOwnerModel->Set_AnimationIndex(79);
+	//m_pOwnerModel->Set_AnimationIndex(79);
+	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK2);
 }
 
 _uint CPlayer_Spear_Attack2::State_Priority_Tick(_float fTimeDelta)
@@ -30,7 +31,7 @@ _uint CPlayer_Spear_Attack2::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 {
-	if (m_pOwnerModel->Is_Animation_Finished()) {
+	/*if (m_pOwnerModel->Is_Animation_Finished()) {
 
 		Trans_Attack(false);
 
@@ -47,9 +48,21 @@ _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 			m_fTime = 0.f;
 			return CPlayer::STATE::IDLE;
 		}
-	}
+	}*/
 	
-	m_pOnwerTransform->LookAt_Dir(m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK));
+	m_fTime += fTimeDelta;
+
+	if (m_fTime > m_fAttackDelay)
+	{
+		if (!m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
+			return CPlayer::STATE::IDLE;
+		else {
+			return m_pOwner->Get_NextAttackID();
+		}
+	}
+
+	if (m_pOwnerModel->Is_Animation_Finished())
+		return CPlayer::STATE::IDLE;
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 	return m_iStateID;
@@ -64,7 +77,7 @@ _uint CPlayer_Spear_Attack2::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack2::State_Exit()
 {
-	
+	m_fTime = 0.f;
 }
 
 

@@ -38,6 +38,9 @@ public:
 
 	HRESULT	Load_Data(const _char* strFilePath);
 
+public:
+	void Set_AnimationIndex(_uint iAnimIndex);
+
 private:
 	CModel*		m_pModelCom = { nullptr };
 	CShader*	m_pShaderCom = { nullptr };

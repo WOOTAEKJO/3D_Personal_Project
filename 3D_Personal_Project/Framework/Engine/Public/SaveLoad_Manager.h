@@ -20,6 +20,10 @@ public:
 	HRESULT	Save_Data_Json(const _char* strFilePath, CGameObject* pObject);
 	HRESULT	Load_Data_Json(const wstring& strTag, CGameObject* pObject);
 
+public:
+	HRESULT	Save_Data_Level(const _char* strFilePath, _uint iLevelIndex);
+	HRESULT	Load_Data_Level(const _char* strFilePath);
+
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };
 

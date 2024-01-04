@@ -109,11 +109,11 @@ void CNavigation::Update(_float4x4 matWorld)
 	m_matWorld = matWorld;
 }
 
-_bool CNavigation::IsMove(_fvector vPosition)
+_bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 {
 	_int iNeighborIndex = -1;
 
-	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition,XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
+	if (m_vecCell[m_iCurrentCellIndex]->IsIn(vPosition,XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 		return true;
 	else 
 	{
@@ -125,7 +125,7 @@ _bool CNavigation::IsMove(_fvector vPosition)
 				if (iNeighborIndex == -1)
 					return false;
 
-				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
+				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
@@ -142,14 +142,29 @@ _bool CNavigation::IsMove(_fvector vPosition)
 void CNavigation::Find_CurrentCell(_fvector vPosition)
 {
 	_int iNeighborIndex = -1;
+	_float3 vLine = {};
 
 	for (auto& iter : m_vecCell)
 	{
-		if (iter->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex))
+		if (iter->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex,&vLine))
 			m_iCurrentCellIndex = iter->Get_Index();
 	}
 }
 
+_int CNavigation::Find_PositionCell(_fvector vPosition)
+{
+	_int iNeighborIndex = -1;
+	_int iCurrentCellIndex = -1;
+	_float3 vLine = {};
+
+	for (auto& iter : m_vecCell)
+	{
+		if (iter->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex,&vLine))
+			iCurrentCellIndex = iter->Get_Index();
+	}
+
+	return iCurrentCellIndex;
+}
 
 HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex)
 {

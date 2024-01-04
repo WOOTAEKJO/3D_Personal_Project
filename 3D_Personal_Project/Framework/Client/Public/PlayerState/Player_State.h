@@ -24,7 +24,10 @@ public:
 
 protected:
 	CPlayer*		m_pOwner = { nullptr };
-	
+
+protected:
+	_float			m_fAttackDelay = { 0.6f };
+
 protected:
 	void	Trans_Attack(_bool bCheck);
 	_bool	Key_Input(_float fTimeDelta);

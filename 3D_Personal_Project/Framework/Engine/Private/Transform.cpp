@@ -34,13 +34,13 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 
 	vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	if (pNavigation != nullptr)
+	/*if (pNavigation != nullptr)
 	{
 		if (!pNavigation->IsMove(vPos))
 		{
 			return;
 		}
-	}
+	}*/
 
 	Set_State(STATE::STATE_POS, vPos);
 }
@@ -72,19 +72,22 @@ void CTransform::Go_BackWard(_float fTimeDelta, CNavigation* pNavigation)
 
 	vPos -= XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	if (pNavigation != nullptr)
+	/*if (pNavigation != nullptr)
 	{
 		if (!pNavigation->IsMove(vPos))
 		{
 			return;
 		}
-	}
+	}*/
 
 	Set_State(STATE::STATE_POS, vPos);
 }
 
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
+	if (XMVector3NearEqual(XMVectorZero(), vAxis, XMVectorSet(0.f, 0.f, 0.f, 0.f)))
+		return;
+
 	_matrix	matRotation = XMMatrixRotationAxis(vAxis, /*m_fRotationPerSec* */  fTimeDelta);
 
 	Set_State(STATE::STATE_RIGHT,XMVector3TransformNormal(Get_State(STATE::STATE_RIGHT), matRotation));
@@ -179,18 +182,46 @@ void CTransform::LookAt_OnLand(_fvector fTargetPos)
 	Set_State(STATE::STATE_LOOK, vLook);
 }
 
-void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
+void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _float fTimeDelta)
 {
-	_vector vWorldPos = Get_State(STATE::STATE_POS);
-	vWorldPos += vTranslation;
-		
-	if (pNavigation != nullptr)
+	if (pNavigation == nullptr)
+		return;
+
+	_vector vPosition = Get_State(STATE::STATE_POS);
+	_vector vWorldPos = vPosition + vTranslation;
+	_vector vSlidePos;
+
+	_float3 vLine = {};
+	_bool	bWall = false;
+
+	if (!pNavigation->IsMove(vWorldPos, &vLine))
 	{
-		if (!pNavigation->IsMove(vWorldPos))
+		bWall = true;
+
+		_vector vLineDir = XMLoadFloat3(&vLine);
+		_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
+		_float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vLineDir)));
+
+		fTimeDelta *= fabsf(fDot);
+
+		if (fDot > 0.f)
 		{
-			return;
+			vSlidePos = XMVector3Normalize(vLineDir) * fTimeDelta * 5.f;
 		}
+		else{
+			vSlidePos = -XMVector3Normalize(vLineDir) * fTimeDelta * 5.f;
+		}
+
+		vPosition += vSlidePos;
+
+		if (!pNavigation->IsMove(vPosition, &vLine))
+			return;
+	
+		vWorldPos = vPosition;
 	}
+	
+	_vector vTemp;
+	vTemp = bWall ? vSlidePos : vTranslation;
 
 	if (m_bGround) {
 
@@ -200,15 +231,16 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation)
 
 		_float fHeight = pNavigation->Get_Cell_Height(fvPos);
 
-		vWorldPos = XMVectorSet(vTranslation.m128_f32[0], 0.f, vTranslation.m128_f32[2], vTranslation.m128_f32[3]);
+		vTemp.m128_f32[1] = 0.f;
 
 		memcpy(&m_matWorldMatrix.m[3][1], &fHeight, sizeof(_float));
-		
-		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vWorldPos));
+
+		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
 	else {
-		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
+		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
+	
 }
 
 void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
@@ -216,10 +248,29 @@ void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
-		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);
+	/*_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
+		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);*/
+	if (m_bGround)
+		vLook.m128_f32[1] = 0.f;
 
-	LookAt(vAt);
+	LookAt(vPos + vLook);
+}
+
+_bool CTransform::Turn_Dir(_fvector vDir, _float fTimeDelta)
+{
+	_vector vLook = XMVector3Normalize(vDir);
+	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
+
+	if(m_bGround)
+		vLook.m128_f32[1] = 0.f;
+
+	return Turn_Target(vPos + vLook, fTimeDelta);
+}
+
+_vector CTransform::Get_Dir_Angle(_fvector vDir, _fvector vAxis, _float fAngle)
+{
+	_matrix	matRot = XMMatrixRotationAxis(vAxis, fAngle);
+	return XMVector3TransformNormal(vDir, matRot);
 }
 
 _bool CTransform::Turn_Target(_fvector vTargetPos, _float fTimeDelta)
@@ -227,27 +278,23 @@ _bool CTransform::Turn_Target(_fvector vTargetPos, _float fTimeDelta)
 	_vector Dir = XMVector3Normalize(vTargetPos -
 		Get_State(CTransform::STATE::STATE_POS));
 
-	_float fAngle = XMVectorGetX(XMVector3Dot(Dir, XMVector3Normalize(Get_State(CTransform::STATE::STATE_RIGHT))));
+	_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
 
-	Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fAngle );
+	_float fAngle = acos(XMVectorGetX(XMVector3Dot(Dir, XMVector3Normalize(vLook))));
+	
+	_vector vCross = XMVector3Cross(Dir, vLook);
+
+	if (XMVectorGetY((vCross)) > 0.f)
+		fAngle *= -1.f;
 
 	if (XMVector3NearEqual(Dir,
-		Get_State(CTransform::STATE::STATE_LOOK),
-		XMVectorSet(0.1f, 100.f, 0.1f, 0.f)))
+		vLook,
+		XMVectorSet(0.1f, 1000.f, 0.1f, 0.f)))
 		return true;
+	
+	Turn(Get_State(CTransform::STATE::STATE_UP), fTimeDelta * fAngle);
 
 	return false;
-}
-
-_bool CTransform::Turn_Dir(_fvector vDir, _float fTimeDelta)
-{
-	_vector vLook = (vDir);
-	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
-
-	_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0],
-		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2], 1.f);
-
-	return Turn_Target(vAt, fTimeDelta);
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)

@@ -24,16 +24,25 @@ public:
 	_float4x4	Get_Transform_Float4x4_Inverse(TRANSFORMSTATE eState);
 	_matrix		Get_Transform_Matrix_Inverse(TRANSFORMSTATE eState);
 
-	_float4		Get_CameraState(CAMERASTATE eState) { return m_vCameraInfo[eState]; }
-	_vector		Get_CameraState_Mat(CAMERASTATE eState) {
+	//_float4		Get_CameraState(CAMERASTATE eState) { return m_vCameraInfo[eState]; }
+	/*_vector		Get_CameraState_Mat(CAMERASTATE eState) {
 		return XMLoadFloat4(&m_vCameraInfo[eState]);
+	}*/
+	_float4		Get_CameraState(CAMERASTATE eState) {
+		return _float4(m_matCamera.m[eState][0], m_matCamera.m[eState][1],
+			m_matCamera.m[eState][2], m_matCamera.m[eState][3]);
+	}
+	_vector		Get_CameraState_Mat(CAMERASTATE eState) {
+		return XMVectorSet(m_matCamera.m[eState][0], m_matCamera.m[eState][1],
+			m_matCamera.m[eState][2], m_matCamera.m[eState][3]);
 	}
 		
 private:
 	_float4x4	m_matTransform[TRANSFORMSTATE::STATE_END];
 	_float4x4	m_matTransformInverse[TRANSFORMSTATE::STATE_END];
 
-	_float4		m_vCameraInfo[CAM_END];
+	//_float4		m_vCameraInfo[CAM_END];
+	_float4x4	m_matCamera;
 
 public:
 	static	CPipeLine* Create();

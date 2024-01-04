@@ -49,8 +49,11 @@ public:
 	}
 
 public:
-	void	Set_WorldMatrix(_float4x4 matWorld);
-	_float4x4 Get_WorldMatrix();
+	void	Set_ProtoTag(const wstring& strProtoTag) { m_strProtoTag = strProtoTag; }
+	wstring	Get_ProtoTag() { return m_strProtoTag; }
+
+	void	Set_LayerName(const wstring& strLayerName) { m_strLayerName = strLayerName; }
+	wstring Get_LayerName() { return m_strLayerName; }
 
 public:
 	void	Set_Dead() { m_bDead = true; }
@@ -87,6 +90,10 @@ protected:
 protected:
 	_bool						m_isCloned = { false };
 	// 클론인지 아닌지를 판단
+
+protected:
+	wstring						m_strProtoTag;
+	wstring						m_strLayerName;
 
 protected:
 	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,

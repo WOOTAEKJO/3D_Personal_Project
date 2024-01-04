@@ -36,8 +36,8 @@ private:
 	CStateMachine*	m_pTargetStateMachine = { nullptr };
 
 private:
-	_uint			m_iRadiusX = { 9 };
-	_uint			m_iRadiusY = { 5 };
+	_float			m_iRadiusX = { 7 };
+	_float			m_iRadiusY = { 3 };
 
 private:
 	void	Mouse_Input(_float fTimeDelta);

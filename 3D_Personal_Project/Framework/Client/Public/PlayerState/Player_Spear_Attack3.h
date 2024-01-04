@@ -17,7 +17,7 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 private:
-
+	void	Shovel_Rush_Attack(_float fTimeDelta);
 public:
 	static	CPlayer_Spear_Attack3* Create(CGameObject * pGameObject);
 	virtual	void			Free();

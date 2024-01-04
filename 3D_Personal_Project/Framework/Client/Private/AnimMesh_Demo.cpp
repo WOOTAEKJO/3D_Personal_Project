@@ -66,7 +66,7 @@ HRESULT CAnimMesh_Demo::Render()
 
 	for (size_t i = 0; i < iNumMeshs; i++)
 	{
-		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i, m_iNonBlendIndex)))
 			return E_FAIL;
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
@@ -75,6 +75,8 @@ HRESULT CAnimMesh_Demo::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	m_pNavigationCom->Render();
 
 	return S_OK;
 }
@@ -198,6 +200,13 @@ void CAnimMesh_Demo::Write_Json(json& Out_Json)
 		return;
 	
 	m_pModelCom->Write_Json(Out_Json);
+
+	string strTag;
+
+	strTag.assign(m_strModelTag.begin(), m_strModelTag.end());
+
+	Out_Json.emplace("ModelTag", strTag);
+	CGameObject::Write_Json(Out_Json);
 }
 
 void CAnimMesh_Demo::Load_FromJson(const json& In_Json)
@@ -228,9 +237,9 @@ HRESULT CAnimMesh_Demo::Bind_ShaderResources()
 
 HRESULT CAnimMesh_Demo::Ready_Component()
 {
-
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_DEMO_TAG, &m_pNavigationCom))) return E_FAIL;
 
 	return S_OK;
 }
@@ -267,4 +276,5 @@ void CAnimMesh_Demo::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pNavigationCom);
 }

@@ -55,7 +55,7 @@ private:
 	_int	m_iTransformRadioButton = { 0 };
 
 private:
-
+	_bool	m_bNonBlend = { false };
 
 private:
 	void	Animation();

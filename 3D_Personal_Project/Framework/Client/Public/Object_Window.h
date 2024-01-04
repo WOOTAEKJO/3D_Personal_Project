@@ -4,10 +4,13 @@
 BEGIN(Client)
 
 class CObjectMesh_Demo;
+class CAnimMesh_Demo;
 
 class CObject_Window final : public CImGui_Window
 {
 public:
+	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
+
 	typedef struct tagObject_Window_Desc
 	{
 	}OBJECTWINDOWDESC;
@@ -36,14 +39,27 @@ private:
 	vector<CObjectMesh_Demo*>		m_vecDemo;
 	_uint							m_iCurrentDemoIndex = { 0 };
 	string							m_strCurrentDemoTag;
+
+private:
+	vector<wstring>					m_vecAnimModelTag;
+	wstring							m_strPickAnimModelTag;
+
+	vector<CAnimMesh_Demo*>			m_vecAnimDemo;
+	_uint							m_iCurrentAnimDemoIndex = { 0 };
+	string							m_strCurrentAnimDemoTag;
 	
 private: /* For.RadioButton_Transform*/
 	_int	m_iTransformRadioButton = {0};
 	
+	TYPE	m_eCurrentType = { TYPE_END };
+
+	_uint	m_iCurrentLayerName = { LAYER::LAYER_END };
 
 private:
 	void	ObjectMesh();
-	void	Create_Model(const wstring& strModelTag, _float4 vPickPos);
+	void	AnimObjectMesh();
+	void	Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_AnimModel(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	NotGuizmo();
 
 public:

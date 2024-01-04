@@ -21,16 +21,20 @@ HRESULT CPlateform::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	/*if (pArg != nullptr)
+	if (pArg != nullptr)
 	{
-		OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
+		/*OBDEMOVALUE* ObjectDemoValue = (OBDEMOVALUE*)pArg;
 
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
 		m_strModelTag = ObjectDemoValue->strModelTag;
 
 		if (FAILED(Ready_Component()))
+			return E_FAIL;*/
+		m_strModelTag = ((PLATEFORM_DESC*)pArg)->strModelTag;
+
+		if (FAILED(Ready_Component()))
 			return E_FAIL;
-	}*/
+	}
 	
 	return S_OK;
 }

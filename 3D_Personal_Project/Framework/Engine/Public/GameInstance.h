@@ -189,6 +189,11 @@ public: /* For. Collider_Manager*/
 	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
 	HRESULT	Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer);
 
+public: /* For. Font_Manager*/
+	HRESULT	Add_Font(_uint iFontTag, const wstring& strFontFilePath);
+	HRESULT	Render(_uint iFontTag, const wstring& strText, _float2 vPosition, 
+		_fvector vColor = XMVectorSet(1.f,1.f,1.f,1.f),
+		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -204,6 +209,7 @@ private:
 	class CSaveLoad_Manager*		m_pSaveLoad_Manager = { nullptr };
 	class CFile_Manager*			m_pFile_Manager = { nullptr };
 	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
+	class CFont_Manager*			m_pFont_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

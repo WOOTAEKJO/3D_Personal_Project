@@ -61,19 +61,12 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	Mouse_Fix();
-	
+	//Mouse_Fix();
+	Mouse_Input(fTimeDelta);
 }
 
 void CTargetCamera::Tick(_float fTimeDelta)
-{ 
-	/*if (m_pTargetStateMachine->Get_StateID() == (_uint)CPlayer::STATE::IDLE)
-		Mouse_Input(fTimeDelta);
-	else
-		Target_Follow(fTimeDelta);*/
-	
-	Mouse_Input(fTimeDelta);
-
+{ 	
 	__super::Tick(fTimeDelta);
 }
 
@@ -135,8 +128,6 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * 0.5f,
 			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * 5.f,
 			vPos.m128_f32[2] + vDir.m128_f32[2] * 0.5f, 1.f);
-		/*vDir = (vEye - vPos);
-		vPos += vDir * fTimeDelta * 5.f;*/
 	}
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, bCheck ? vPos : vEye);

@@ -96,13 +96,22 @@ _bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	return false;
 }
 
-HRESULT CMesh::Bind_Blend(CShader* pShader, const _char* strName, CModel::BONES& pBones)
+HRESULT CMesh::Bind_Blend(CShader* pShader, const _char* strName, CModel::BONES& pBones, _int iNonBindInd)
 {
 
 	_float4x4		BoneMatrices[256];
 
 	for (size_t i = 0; i < m_iNumBones; i++)
 	{
+		/*if (i == iNonBindInd)
+		{
+			_float fScale = 0.00001f;
+			_matrix matNon = XMMatrixScaling(fScale, fScale, fScale);
+			XMStoreFloat4x4(&BoneMatrices[i], matNon);
+
+			continue;
+		}*/
+
 		XMStoreFloat4x4(&BoneMatrices[i], XMLoadFloat4x4(&m_vecOffsetMatrix[i]) * pBones[m_vecBoneIndices[i]]->Get_CombinedTransformationMatrix());
 	}
 
