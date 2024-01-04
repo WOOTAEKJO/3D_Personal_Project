@@ -67,7 +67,7 @@ void CMonster::TargetLook()
 
 _bool CMonster::Turn(_float fTimeDelta)
 {
-	return m_pTransformCom->Turn_Target(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 4.f);
+	return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 4.f);
 }
 
 _bool CMonster::Is_Target_Range(_float fRange)

@@ -66,18 +66,18 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 
 		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook,XMVectorSet(0.f,1.f,0.f,0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vLook,XMVectorSet(0.f,1.f,0.f,0.f),
 				XMConvertToRadians(45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(-45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else {
-			m_pOnwerTransform->Turn_Dir(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+			m_pOnwerTransform->Turn_Dir_Yaxis(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
@@ -86,18 +86,18 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 
 		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(-45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vLook, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else {
-			m_pOnwerTransform->Turn_Dir(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+			m_pOnwerTransform->Turn_Dir_Yaxis(vLook, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 
 	}
@@ -107,18 +107,18 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 
 		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(-45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else {
-			m_pOnwerTransform->Turn_Dir(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+			m_pOnwerTransform->Turn_Dir_Yaxis(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 
 	}
@@ -128,18 +128,18 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 
 		if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
 		{
-			m_pOnwerTransform->Turn_Dir(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
+			m_pOnwerTransform->Turn_Dir_Yaxis(m_pOnwerTransform->Get_Dir_Angle(vRight, XMVectorSet(0.f, 1.f, 0.f, 0.f),
 				XMConvertToRadians(-45.f)),
 				fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 		else {
-			m_pOnwerTransform->Turn_Dir(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
+			m_pOnwerTransform->Turn_Dir_Yaxis(vRight, fTimeDelta * m_pOwner->Open_Physics_Desc()->fTurnSpeed);
 		}
 	}
 	else

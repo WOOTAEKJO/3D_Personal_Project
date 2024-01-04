@@ -53,7 +53,7 @@ HRESULT CCrow::Initialize(void* pArg)
 
 void CCrow::Priority_Tick(_float fTimeDelta)
 {
-	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
+	//m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 
 	Player_Head_Pos();
 	Attack_Cool(3.f,fTimeDelta);
@@ -156,13 +156,34 @@ void CCrow::Find_Range_Monster()
 
 	for (auto& iter : listMonster)
 	{
-		_vector vMonsterPos = iter->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+		CTransform* pMonsterTransform = iter->Get_Component<CTransform>();
 
-		_float fDist = XMVectorGetX(XMVector3Length((vMonsterPos - m_pTransformCom->Get_State(CTransform::STATE::STATE_POS))));
+		_vector vMonsterPos = pMonsterTransform->Get_State(CTransform::STATE::STATE_POS);
+		_vector vPlayerPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
+
+		/*_vector vDir = (vMonsterPos - m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+		_vector vLook = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_LOOK);*/
+
+		//_vector vDir = (vMonsterPos - m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_POS)); 
+
+		_vector vDir = (vMonsterPos - vPlayerPos);
+		_vector vLook = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK);
+
+		_float fAngle = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vDir)));
+
+		_float fStandard = XMConvertToRadians(60.f);
+
+		if (fabsf(fAngle) > fStandard)
+			continue;
+
+		_float fDist = XMVectorGetX(XMVector3Length(vDir));
 
 		if (fMinDist > fDist)
 		{
 			fMinDist = fDist;
+
+			vMonsterPos.m128_f32[1] = pMonsterTransform->Get_Scaled().y;
+
 			XMStoreFloat4(&m_vTargetPos, vMonsterPos);
 		}
 	}

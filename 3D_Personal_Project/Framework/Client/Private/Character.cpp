@@ -91,7 +91,7 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 	if (iAnimIndex == -1)
 		return;
 
-	m_eCurrentTypeAnimIndex = iAnimIndex;
+	m_eCurrentTypeAnimIndex = iAnimTag;
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
 }
 

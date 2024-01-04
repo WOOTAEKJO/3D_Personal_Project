@@ -71,8 +71,8 @@ public: /* 카메라에 사용*/
 public:
 	void	Translate(_fvector vTranslation,CNavigation* pNavigation, _float fTimeDelta = 1.f);
 	void	LookAt_Dir(_fvector vDir, _float fTimeDelta = 1.f);
-	_bool	Turn_Target(_fvector vTargetPos, _float fTimeDelta);
-	_bool	Turn_Dir(_fvector vDir, _float fTimeDelta);
+	_bool	Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta);
+	_bool	Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta);
 
 	_vector	Get_Dir_Angle(_fvector vDir,_fvector vAxis, _float fAngle);
 
