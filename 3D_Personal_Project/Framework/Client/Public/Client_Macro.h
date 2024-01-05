@@ -113,6 +113,8 @@
 #define	MODEL_WOODSTOMP_TAG			TEXT("Prototype_Component_Model_WoodStomp")
 #pragma endregion
 
+#define	MODEL_LAND_TAG			TEXT("Prototype_Component_Model_Land")
+
 #pragma region æ∆¿Ã≈€
 
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")

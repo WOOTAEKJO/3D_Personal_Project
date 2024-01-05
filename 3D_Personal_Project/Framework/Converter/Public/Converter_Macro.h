@@ -181,8 +181,8 @@
 
 #pragma endregion
 
-#define	MODEL_WILDWEST_TAG			TEXT("Prototype_Component_Model_WildWest")
-#define	MODEL_WILDWEST_PATH		"../Bin/Resources/Models/NonAnimModel/WildWest/WildWest.fbx"
+#define	MODEL_LAND_TAG			TEXT("Prototype_Component_Model_Land")
+#define	MODEL_LAND_PATH		"../Bin/Resources/Models/NonAnimModel/Land/Land.fbx"
 
 #pragma endregion
 
