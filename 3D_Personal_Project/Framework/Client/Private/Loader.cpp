@@ -326,6 +326,13 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 #pragma endregion
 
+#pragma region Deco
+
+	//if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BARREL_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_CAULDRON_TAG, matPivot))) return E_FAIL;
+
+#pragma endregion
+
 #pragma region ¾ÆÀÌÅÛ
 
 	matPivot = XMMatrixIdentity();
@@ -333,8 +340,6 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SHOVEL_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
-
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_LAND_TAG, matPivot))) return E_FAIL;
 
 	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f);
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, matPivot))) return E_FAIL;

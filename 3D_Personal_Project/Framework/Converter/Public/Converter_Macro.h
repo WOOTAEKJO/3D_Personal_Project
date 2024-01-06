@@ -171,6 +171,173 @@
 #define	MODEL_WOODSTOMP_PATH		"../Bin/Resources/Models/NonAnimModel/Forest/WoodStomp/WoodStomp.fbx"
 #pragma endregion
 
+#pragma region 바위
+
+#define	MODEL_CAVETUNNELFORWORAD2_TAG			TEXT("Prototype_Component_Model_caveTunnelForward2")
+#define	MODEL_CAVETUNNELFORWORAD2_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/caveTunnelForward2.fbx"
+
+#define	MODEL_MINECAVE_TAG						TEXT("Prototype_Component_Model_mineCave")
+#define	MODEL_MINECAVE_PATH						"../Bin/Resources/Models/NonAnimModel/Rock/mineCave.fbx"
+
+#define	MODEL_ROCKCLUSTER2_TAG						TEXT("Prototype_Component_Model_rockCluster2")
+#define	MODEL_ROCKCLUSTER2_PATH						"../Bin/Resources/Models/NonAnimModel/Rock/rockCluster2.fbx"
+
+#define	MODEL_ROCKBIGFORMATION3_TAG				TEXT("Prototype_Component_Model_rockBigFormation3")
+#define	MODEL_ROCKBIGFORMATION3_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockBigFormation3.fbx"
+
+#define	MODEL_ROCKBIGFORMATION6_TAG				TEXT("Prototype_Component_Model_rockBigFormation6")
+#define	MODEL_ROCKBIGFORMATION6_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockBigFormation6.fbx"
+
+#define	MODEL_ROCKBIGFORMATION8_TAG				TEXT("Prototype_Component_Model_rockBigFormation8")
+#define	MODEL_ROCKBIGFORMATION8_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockBigFormation8.fbx"
+
+#define	MODEL_ROCKPACK1_TAG				TEXT("Prototype_Component_Model_rockPack1")
+#define	MODEL_ROCKPACK1_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack1.fbx"
+
+#define	MODEL_ROCKPACK2_TAG				TEXT("Prototype_Component_Model_rockPack2")
+#define	MODEL_ROCKPACK2_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack2.fbx"
+
+#define	MODEL_ROCKPACK2COL_TAG				TEXT("Prototype_Component_Model_rockPack2Col")
+#define	MODEL_ROCKPACK2COL_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack2Col.fbx"
+
+#define	MODEL_ROCKPACK3_TAG				TEXT("Prototype_Component_Model_rockPack3")
+#define	MODEL_ROCKPACK3_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack3.fbx"
+
+#define	MODEL_ROCKPACK4_TAG				TEXT("Prototype_Component_Model_rockPack4")
+#define	MODEL_ROCKPACK4_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack4.fbx"
+
+#define	MODEL_ROCKPACK5_TAG				TEXT("Prototype_Component_Model_rockPack5")
+#define	MODEL_ROCKPACK5_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack5.fbx"
+
+#define	MODEL_ROCKPACK52_TAG				TEXT("Prototype_Component_Model_rockPack52")
+#define	MODEL_ROCKPACK52_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack52.fbx"
+
+#define	MODEL_ROCKPACK6_TAG				TEXT("Prototype_Component_Model_rockPack6")
+#define	MODEL_ROCKPACK6_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack6.fbx"
+
+#define	MODEL_ROCKPACK7_TAG				TEXT("Prototype_Component_Model_rockPack7")
+#define	MODEL_ROCKPACK7_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack7.fbx"
+
+
+
+#pragma endregion
+
+#pragma region 데코
+
+#define	MODEL_BARREL_TAG			TEXT("Prototype_Component_Model_barrel")
+#define	MODEL_BARREL_PATH			"../Bin/Resources/Models/NonAnimModel/Deco/barrel.fbx"
+
+#define	MODEL_CAULDRON_TAG			TEXT("Prototype_Component_Model_Cauldron")
+#define	MODEL_CAULDRON_PATH			"../Bin/Resources/Models/NonAnimModel/Deco/Cauldron.fbx"
+
+#define	MODEL_EDGEROPE_TAG			TEXT("Prototype_Component_Model_EdgeRope")
+#define	MODEL_EDGEROPE_PATH			"../Bin/Resources/Models/NonAnimModel/Deco/EdgeRope.fbx"
+
+#define	MODEL_FENCEL_TAG			TEXT("Prototype_Component_Model_Fencel")
+#define	MODEL_FENCEL_PATH			"../Bin/Resources/Models/NonAnimModel/Deco/Fencel.fbx"
+
+#define	MODEL_FLOORLAMP_TAG			TEXT("Prototype_Component_Model_FloorLamp")
+#define	MODEL_FLOORLAMP_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/FloorLamp.fbx"
+
+#define	MODEL_GRASSMESHBIG_TAG			TEXT("Prototype_Component_Model_GrassMeshBig")
+#define	MODEL_GRASSMESHBIG_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/GrassMeshBig.fbx"
+
+#define	MODEL_GROUNDLANTERN_TAG			TEXT("Prototype_Component_Model_GroundLantern")
+#define	MODEL_GROUNDLANTERN_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/GroundLantern.fbx"
+
+#define	MODEL_HATHEAP_TAG			TEXT("Prototype_Component_Model_HayHeap")
+#define	MODEL_HATHEAP_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/HayHeap.fbx"
+
+#define	MODEL_LANTERN_TAG			TEXT("Prototype_Component_Model_Lantern")
+#define	MODEL_LANTERN_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/Lantern.fbx"
+
+#define	MODEL_PENDINGROPE_TAG			TEXT("Prototype_Component_Model_PendingRope")
+#define	MODEL_PENDINGROPE_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/PendingRope.fbx"
+
+#define	MODEL_PURPLESCHROOMS_TAG			TEXT("Prototype_Component_Model_PurpleSchrooms")
+#define	MODEL_PURPLESCHROOMS_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/PurpleSchrooms.fbx"
+
+#define	MODEL_SCOURGEALTAR_TAG			TEXT("Prototype_Component_Model_ScourgeAltar")
+#define	MODEL_SCOURGEALTAR_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/ScourgeAltar.fbx"
+
+#define	MODEL_WOODFUCKER_TAG			TEXT("Prototype_Component_Model_WoodFucker")
+#define	MODEL_WOODFUCKER_PATH		"../Bin/Resources/Models/NonAnimModel/Deco/WoodFucker.fbx"
+
+#pragma endregion
+
+#pragma region 나무
+
+#define	MODEL_BROKENLATEFORMEWAY_TAG			TEXT("Prototype_Component_Model_brokenPlateformeWay")
+#define	MODEL_BROKENLATEFORMEWAY_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/brokenPlateformeWay.fbx"
+
+#define	MODEL_CATEBOXPILE_TAG			TEXT("Prototype_Component_Model_cateBoxPile")
+#define	MODEL_CATEBOXPILE_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/cateBoxPile.fbx"
+
+#define	MODEL_CRATEBOX_TAG			TEXT("Prototype_Component_Model_crateBox")
+#define	MODEL_CRATEBOX_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/crateBox.fbx"
+
+#define	MODEL_FENCE4_TAG			TEXT("Prototype_Component_Model_fence4")
+#define	MODEL_FENCE4_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fence4.fbx"
+
+#define	MODEL_FENCECLOSE_TAG			TEXT("Prototype_Component_Model_fenceClose")
+#define	MODEL_FENCECLOSE_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fenceClose.fbx"
+
+#define	MODEL_FENCESTACK_TAG			TEXT("Prototype_Component_Model_fenceStack")
+#define	MODEL_FENCESTACK_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fenceStack.fbx"
+
+#define	MODEL_FENCESTACKSMALL_TAG			TEXT("Prototype_Component_Model_fenceStackSmall")
+#define	MODEL_FENCESTACKSMALL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fenceStackSmall.fbx"
+
+#define	MODEL_FENCESTACKSMALLCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallCol")
+#define	MODEL_FENCESTACKSMALLCOL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fenceStackSmallCol.fbx"
+
+#define	MODEL_FENCESTACKSMALLHIGHCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallHighCol")
+#define	MODEL_FENCESTACKSMALLHIGHCOL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/fenceStackSmallHighCol.fbx"
+
+#define	MODEL_MINEPLATFORM_TAG			TEXT("Prototype_Component_Model_minePlatform")
+#define	MODEL_MINEPLATFORM_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/minePlatform.fbx"
+
+#define	MODEL_MINEPLATFORMFULL_TAG			TEXT("Prototype_Component_Model_minePlatformFull")
+#define	MODEL_MINEPLATFORMFULL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/minePlatformFull.fbx"
+
+#define	MODEL_MINETOWER_TAG			TEXT("Prototype_Component_Model_mineTower")
+#define	MODEL_MINETOWER_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/mineTower.fbx"
+
+#define	MODEL_MINETOWERFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFull")
+#define	MODEL_MINETOWERFULL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/mineTowerFull.fbx"
+
+#define	MODEL_MINETOWERFULLFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFullFull")
+#define	MODEL_MINETOWERFULLFULL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/mineTowerFullFull.fbx"
+
+#define	MODEL_SMROUNDFENCE_TAG			TEXT("Prototype_Component_Model_SMRoundFence")
+#define	MODEL_SMROUNDFENCE_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/SMRoundFence.fbx"
+
+#define	MODEL_WEATHERCLOCK_TAG			TEXT("Prototype_Component_Model_weatherClock")
+#define	MODEL_WEATHERCLOCK_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/weatherClock.fbx"
+
+#define	MODEL_WEATHERCLOCKHIGH_TAG			TEXT("Prototype_Component_Model_weatherClockHigh")
+#define	MODEL_WEATHERCLOCKHIGH_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/weatherClockHigh.fbx"
+
+#define	MODEL_WOODPLATEFORME1_TAG			TEXT("Prototype_Component_Model_woodPlateforme1")
+#define	MODEL_WOODPLATEFORME1_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/woodPlateforme1.fbx"
+
+#define	MODEL_WOODPLATEFORME2_TAG			TEXT("Prototype_Component_Model_woodPlateforme2")
+#define	MODEL_WOODPLATEFORME2_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/woodPlateforme2.fbx"
+
+#define	MODEL_WOODPLATEFORME05X05X2_TAG			TEXT("Prototype_Component_Model_woodPlateforme05x05x2")
+#define	MODEL_WOODPLATEFORME05X05X2_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/woodPlateforme05x05x2.fbx"
+
+#define	MODEL_WOODPLATFORM1SMALL_TAG			TEXT("Prototype_Component_Model_woodPlatform1Small")
+#define	MODEL_WOODPLATFORM1SMALL_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/woodPlatform1Small.fbx"
+
+#define	MODEL_WOODROPEHOLDER_TAG			TEXT("Prototype_Component_Model_woodRopeHolder")
+#define	MODEL_WOODROPEHOLDER_PATH			"../Bin/Resources/Models/NonAnimModel/Wood/woodRopeHolder.fbx"
+
+#define	MODEL_WOODWALL2_TAG					TEXT("Prototype_Component_Model_woodWall2")
+#define	MODEL_WOODWALL2_PATH				"../Bin/Resources/Models/NonAnimModel/Wood/woodWall2.fbx"
+
+#pragma endregion
+
 #pragma region 아이템
 
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Model_Spear")

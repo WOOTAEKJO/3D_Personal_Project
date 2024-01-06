@@ -197,6 +197,24 @@ HRESULT CConverter_Model::Ready_Meshes()
 		}
 		else if (m_eType == TYPE::TYPE_NONANIM)
 		{
+			/*Mesh.vecVerticesAnim.reserve(pMesh->mNumVertices);
+
+			for (_uint j = 0; j < pMesh->mNumVertices; j++)
+			{
+				Mesh.vecVerticesAnim.push_back(VTXANIMMESH());
+			}
+
+			_uint iSize = Mesh.vecVerticesAnim.size();
+
+			for (_uint j = 0; j < iSize; j++)
+			{
+				memcpy(&Mesh.vecVerticesAnim[j].vPosition, &pMesh->mVertices[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vTangent, &pMesh->mTangents[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vNormal, &pMesh->mNormals[j], sizeof(_float3));
+				memcpy(&Mesh.vecVerticesAnim[j].vTexCoord, &pMesh->mTextureCoords[0][j], sizeof(_float3));
+
+			}*/
+
 			Mesh.vecVerticesNonAim.reserve(pMesh->mNumVertices);
 
 			for (_uint j = 0; j < pMesh->mNumVertices; j++)
@@ -208,11 +226,21 @@ HRESULT CConverter_Model::Ready_Meshes()
 
 			for (_uint j = 0; j < iSize; j++)
 			{
-				memcpy(&Mesh.vecVerticesNonAim[j].vPosition, &pMesh->mVertices[j], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesNonAim[j].vTangent, &pMesh->mTangents[j], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesNonAim[j].vNormal, &pMesh->mNormals[j], sizeof(_float3));
-				memcpy(&Mesh.vecVerticesNonAim[j].vTexCoord, &pMesh->mTextureCoords[0][j], sizeof(_float3));
-
+				//memcpy(&Mesh.vecVerticesNonAim[j].vPosition, &pMesh->mVertices[j], sizeof(_float3));
+				Mesh.vecVerticesNonAim[j].vPosition.x = pMesh->mVertices[j].x;
+				Mesh.vecVerticesNonAim[j].vPosition.y = pMesh->mVertices[j].y;
+				Mesh.vecVerticesNonAim[j].vPosition.z = pMesh->mVertices[j].z;
+				//memcpy(&Mesh.vecVerticesNonAim[j].vTangent, &pMesh->mTangents[j], sizeof(_float3));
+				Mesh.vecVerticesNonAim[j].vTangent.x = pMesh->mTangents[j].x;
+				Mesh.vecVerticesNonAim[j].vTangent.y = pMesh->mTangents[j].y;
+				Mesh.vecVerticesNonAim[j].vTangent.z = pMesh->mTangents[j].z;
+				//memcpy(&Mesh.vecVerticesNonAim[j].vNormal, &pMesh->mNormals[j], sizeof(_float3));
+				Mesh.vecVerticesNonAim[j].vNormal.x = pMesh->mNormals[j].x;
+				Mesh.vecVerticesNonAim[j].vNormal.y = pMesh->mNormals[j].y;
+				Mesh.vecVerticesNonAim[j].vNormal.z = pMesh->mNormals[j].z;
+				//memcpy(&Mesh.vecVerticesNonAim[j].vTexCoord, &pMesh->mTextureCoords[0][j], sizeof(_float3));
+				Mesh.vecVerticesNonAim[j].vTexCoord.x = pMesh->mTextureCoords[0][j].x;
+				Mesh.vecVerticesNonAim[j].vTexCoord.y = pMesh->mTextureCoords[0][j].y;
 			}
 		}
 
@@ -231,7 +259,6 @@ HRESULT CConverter_Model::Ready_Meshes()
 
 		m_vecMesh.push_back(Mesh);
 	}
-
 
 	return S_OK;
 }

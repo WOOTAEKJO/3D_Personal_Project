@@ -112,9 +112,6 @@
     <Filter Include="97. ImGui\ImGuiFileDialog">
       <UniqueIdentifier>{5ddcb7e7-5639-4bd2-b3c5-fe5a992e26d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03. Plateform">
-      <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05. Character">
       <UniqueIdentifier>{9213d9ae-3b36-4700-bead-33fd73624f7a}</UniqueIdentifier>
     </Filter>
@@ -292,6 +289,9 @@
     <Filter Include="02.GameObjects\06. Particle\01. Point">
       <UniqueIdentifier>{350ef919-b34a-49dd-a5b2-a0bf9e6c44da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03. Platform">
+      <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -424,7 +424,7 @@
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Plateform.h">
-      <Filter>02.GameObjects\03. Plateform</Filter>
+      <Filter>02.GameObjects\03. Platform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObjects\04.Sky</Filter>
@@ -642,7 +642,7 @@
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Plateform.cpp">
-      <Filter>02.GameObjects\03. Plateform</Filter>
+      <Filter>02.GameObjects\03. Platform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObjects\04.Sky</Filter>

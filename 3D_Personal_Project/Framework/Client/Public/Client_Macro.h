@@ -113,7 +113,119 @@
 #define	MODEL_WOODSTOMP_TAG			TEXT("Prototype_Component_Model_WoodStomp")
 #pragma endregion
 
-#define	MODEL_LAND_TAG			TEXT("Prototype_Component_Model_Land")
+#pragma region 데코
+
+#define	MODEL_BARREL_TAG			TEXT("Prototype_Component_Model_barrel")
+
+#define	MODEL_CAULDRON_TAG			TEXT("Prototype_Component_Model_Cauldron")
+
+#define	MODEL_EDGEROPE_TAG			TEXT("Prototype_Component_Model_EdgeRope")
+
+#define	MODEL_FENCEL_TAG			TEXT("Prototype_Component_Model_Fencel")
+
+#define	MODEL_FLOORLAMP_TAG			TEXT("Prototype_Component_Model_FloorLamp")
+
+#define	MODEL_GRASSMESHBIG_TAG			TEXT("Prototype_Component_Model_GrassMeshBig")
+
+#define	MODEL_GROUNDLANTERN_TAG			TEXT("Prototype_Component_Model_GroundLantern")
+
+#define	MODEL_HATHEAP_TAG			TEXT("Prototype_Component_Model_HayHeap")
+
+#define	MODEL_LANTERN_TAG			TEXT("Prototype_Component_Model_Lantern")
+
+#define	MODEL_PENDINGROPE_TAG			TEXT("Prototype_Component_Model_PendingRope")
+
+#define	MODEL_PURPLESCHROOMS_TAG			TEXT("Prototype_Component_Model_PurpleSchrooms")
+
+#define	MODEL_SCOURGEALTAR_TAG			TEXT("Prototype_Component_Model_ScourgeAltar")
+
+#define	MODEL_WOODFUCKER_TAG			TEXT("Prototype_Component_Model_WoodFucker")
+
+#pragma endregion
+
+#pragma region 바위
+
+#define	MODEL_CAVETUNNELFORWORAD2_TAG			TEXT("Prototype_Component_Model_caveTunnelForward2")
+
+#define	MODEL_MINECAVE_TAG						TEXT("Prototype_Component_Model_mineCave")
+
+#define	MODEL_ROCKCLUSTER2_TAG						TEXT("Prototype_Component_Model_rockCluster2")
+
+#define	MODEL_ROCKBIGFORMATION3_TAG				TEXT("Prototype_Component_Model_rockBigFormation3")
+
+#define	MODEL_ROCKBIGFORMATION6_TAG				TEXT("Prototype_Component_Model_rockBigFormation6")
+
+#define	MODEL_ROCKBIGFORMATION8_TAG				TEXT("Prototype_Component_Model_rockBigFormation8")
+
+#define	MODEL_ROCKPACK1_TAG				TEXT("Prototype_Component_Model_rockPack1")
+
+#define	MODEL_ROCKPACK2_TAG				TEXT("Prototype_Component_Model_rockPack2")
+
+#define	MODEL_ROCKPACK2COL_TAG				TEXT("Prototype_Component_Model_rockPack2Col")
+
+#define	MODEL_ROCKPACK3_TAG				TEXT("Prototype_Component_Model_rockPack3")
+
+#define	MODEL_ROCKPACK4_TAG				TEXT("Prototype_Component_Model_rockPack4")
+
+#define	MODEL_ROCKPACK5_TAG				TEXT("Prototype_Component_Model_rockPack5")
+
+#define	MODEL_ROCKPACK52_TAG				TEXT("Prototype_Component_Model_rockPack52")
+
+#define	MODEL_ROCKPACK6_TAG				TEXT("Prototype_Component_Model_rockPack6")
+
+#define	MODEL_ROCKPACK7_TAG				TEXT("Prototype_Component_Model_rockPack7")
+
+#pragma endregion
+
+#pragma region 나무
+
+#define	MODEL_BROKENLATEFORMEWAY_TAG			TEXT("Prototype_Component_Model_brokenPlateformeWay")
+
+#define	MODEL_CATEBOXPILE_TAG			TEXT("Prototype_Component_Model_cateBoxPile")
+
+#define	MODEL_CRATEBOX_TAG			TEXT("Prototype_Component_Model_crateBox")
+
+#define	MODEL_FENCE4_TAG			TEXT("Prototype_Component_Model_fence4")
+
+#define	MODEL_FENCECLOSE_TAG			TEXT("Prototype_Component_Model_fenceClose")
+
+#define	MODEL_FENCESTACK_TAG			TEXT("Prototype_Component_Model_fenceStack")
+
+#define	MODEL_FENCESTACKSMALL_TAG			TEXT("Prototype_Component_Model_fenceStackSmall")
+
+#define	MODEL_FENCESTACKSMALLCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallCol")
+
+#define	MODEL_FENCESTACKSMALLHIGHCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallHighCol")
+
+#define	MODEL_MINEPLATFORM_TAG			TEXT("Prototype_Component_Model_minePlatform")
+
+#define	MODEL_MINEPLATFORMFULL_TAG			TEXT("Prototype_Component_Model_minePlatformFull")
+
+#define	MODEL_MINETOWER_TAG			TEXT("Prototype_Component_Model_mineTower")
+
+#define	MODEL_MINETOWERFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFull")
+
+#define	MODEL_MINETOWERFULLFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFullFull")
+
+#define	MODEL_SMROUNDFENCE_TAG			TEXT("Prototype_Component_Model_SMRoundFence")
+
+#define	MODEL_WEATHERCLOCK_TAG			TEXT("Prototype_Component_Model_weatherClock")
+
+#define	MODEL_WEATHERCLOCKHIGH_TAG			TEXT("Prototype_Component_Model_weatherClockHigh")
+
+#define	MODEL_WOODPLATEFORME1_TAG			TEXT("Prototype_Component_Model_woodPlateforme1")
+
+#define	MODEL_WOODPLATEFORME2_TAG			TEXT("Prototype_Component_Model_woodPlateforme2")
+
+#define	MODEL_WOODPLATEFORME05X05X2_TAG			TEXT("Prototype_Component_Model_woodPlateforme05x05x2")
+
+#define	MODEL_WOODPLATFORM1SMALL_TAG			TEXT("Prototype_Component_Model_woodPlatform1Small")
+
+#define	MODEL_WOODROPEHOLDER_TAG			TEXT("Prototype_Component_Model_woodRopeHolder")
+
+#define	MODEL_WOODWALL2_TAG					TEXT("Prototype_Component_Model_woodWall2")
+
+#pragma endregion
 
 #pragma region 아이템
 

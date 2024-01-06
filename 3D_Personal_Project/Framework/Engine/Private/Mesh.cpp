@@ -193,8 +193,6 @@ HRESULT CMesh::Anim_Vertex(MESH MeshData, CModel::BONES& pBones)
 	}
 
 	return S_OK;
-
-	return S_OK;
 }
 
 HRESULT CMesh::NonAnim_Vertex(MESH MeshData, _fmatrix matPivot)
