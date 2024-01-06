@@ -49,6 +49,7 @@ private: /* For. Terrain*/ // 여기서 조정해주는 값
 	_int	m_iHeight_Control[2] = {};
 	_float	m_fSharpness = { 0.f };
 	_bool	m_bWireFrame = false;
+	_bool	m_bAdd = false;
 
 private: // 외부에서 받아 와야 하는 값
 	_float4 m_vPickPos = {};

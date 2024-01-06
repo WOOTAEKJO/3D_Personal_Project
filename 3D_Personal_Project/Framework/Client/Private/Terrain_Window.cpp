@@ -222,6 +222,11 @@ void CTerrain_Window::HeightMap()
 	ImGui::SliderInt("Height", &m_iHeight_Control[1], 0, 30);
 	ImGui::SliderFloat("Sharpness", &m_fSharpness, 0.f, 1.f);
 
+	if (ImGui::Checkbox("ADD", &m_bAdd))
+	{
+		m_pTerrain->Set_Add(m_bAdd);
+	}
+
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
 
 	ImGui::Text(to_string(m_vPickPos.x).c_str());

@@ -145,10 +145,6 @@
 
 #pragma region πŸ¿ß
 
-#define	MODEL_CAVETUNNELFORWORAD2_TAG			TEXT("Prototype_Component_Model_caveTunnelForward2")
-
-#define	MODEL_MINECAVE_TAG						TEXT("Prototype_Component_Model_mineCave")
-
 #define	MODEL_ROCKCLUSTER2_TAG						TEXT("Prototype_Component_Model_rockCluster2")
 
 #define	MODEL_ROCKBIGFORMATION3_TAG				TEXT("Prototype_Component_Model_rockBigFormation3")
@@ -182,43 +178,30 @@
 #define	MODEL_BROKENLATEFORMEWAY_TAG			TEXT("Prototype_Component_Model_brokenPlateformeWay")
 
 #define	MODEL_CATEBOXPILE_TAG			TEXT("Prototype_Component_Model_cateBoxPile")
-
 #define	MODEL_CRATEBOX_TAG			TEXT("Prototype_Component_Model_crateBox")
 
 #define	MODEL_FENCE4_TAG			TEXT("Prototype_Component_Model_fence4")
-
 #define	MODEL_FENCECLOSE_TAG			TEXT("Prototype_Component_Model_fenceClose")
-
 #define	MODEL_FENCESTACK_TAG			TEXT("Prototype_Component_Model_fenceStack")
-
 #define	MODEL_FENCESTACKSMALL_TAG			TEXT("Prototype_Component_Model_fenceStackSmall")
-
 #define	MODEL_FENCESTACKSMALLCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallCol")
-
 #define	MODEL_FENCESTACKSMALLHIGHCOL_TAG			TEXT("Prototype_Component_Model_fenceStackSmallHighCol")
 
 #define	MODEL_MINEPLATFORM_TAG			TEXT("Prototype_Component_Model_minePlatform")
-
 #define	MODEL_MINEPLATFORMFULL_TAG			TEXT("Prototype_Component_Model_minePlatformFull")
 
 #define	MODEL_MINETOWER_TAG			TEXT("Prototype_Component_Model_mineTower")
-
 #define	MODEL_MINETOWERFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFull")
-
 #define	MODEL_MINETOWERFULLFULL_TAG			TEXT("Prototype_Component_Model_mineTowerFullFull")
 
 #define	MODEL_SMROUNDFENCE_TAG			TEXT("Prototype_Component_Model_SMRoundFence")
 
 #define	MODEL_WEATHERCLOCK_TAG			TEXT("Prototype_Component_Model_weatherClock")
-
 #define	MODEL_WEATHERCLOCKHIGH_TAG			TEXT("Prototype_Component_Model_weatherClockHigh")
 
 #define	MODEL_WOODPLATEFORME1_TAG			TEXT("Prototype_Component_Model_woodPlateforme1")
-
 #define	MODEL_WOODPLATEFORME2_TAG			TEXT("Prototype_Component_Model_woodPlateforme2")
-
 #define	MODEL_WOODPLATEFORME05X05X2_TAG			TEXT("Prototype_Component_Model_woodPlateforme05x05x2")
-
 #define	MODEL_WOODPLATFORM1SMALL_TAG			TEXT("Prototype_Component_Model_woodPlatform1Small")
 
 #define	MODEL_WOODROPEHOLDER_TAG			TEXT("Prototype_Component_Model_woodRopeHolder")
@@ -263,6 +246,8 @@
 #define TEX_TERRAIN_BRUSH_TAG	TEXT("Prototype_Component_Texture_Terrain_Brush")
 
 #define TEX_SKYBOX_TAG			TEXT("Prototype_Component_Texture_SkyBox")
+
+#define TEX_LANDSCAPE_TAG		TEXT("Prototype_Component_Texture_groundBrick")
 
 #pragma endregion
 

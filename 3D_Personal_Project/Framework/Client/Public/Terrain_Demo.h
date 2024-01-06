@@ -56,6 +56,7 @@ public:
 	_bool	Picked_Cell(_uint* iCellIndex);
 
 	vector<CCell*>	Get_Navigation_Cells();
+	void	Set_Add(_bool bCheck);
 
 private:
 	CVIBuffer_DTerrain*		m_pVIBufferCom = { nullptr };

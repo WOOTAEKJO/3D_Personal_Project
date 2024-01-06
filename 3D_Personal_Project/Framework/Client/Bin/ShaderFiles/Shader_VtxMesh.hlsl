@@ -15,7 +15,8 @@ vector		g_MtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 vector		g_CamWorldPos;
 
-texture2D	g_DiffuseTexture[2];
+//texture2D	g_DiffuseTexture[2];
+texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
 texture2D	g_BrushTexture;
 
@@ -82,12 +83,13 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
-	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
+	/*vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);*/
+	vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 1000.f);
 
-	vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+	//vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
-	vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse;
+	//vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse;
 
 	float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // 명암
 
@@ -122,12 +124,14 @@ PS_OUT PS_DTERRAIN(PS_IN In)
 
 	if (!g_bWireFrame) {
 
-		vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
+		/*vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
 		vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
 
 		vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
-		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;
+		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;*/
+
+		vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 1000.f) + vBrush;
 
 		float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // 명암
 
@@ -150,7 +154,7 @@ PS_OUT PS_MODEL(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord);
+	vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
 
 	if (vDiffuse.a < 0.1f)
 		discard;

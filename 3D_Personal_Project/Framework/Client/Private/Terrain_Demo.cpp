@@ -134,10 +134,10 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
-		return E_FAIL;
+	/*if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
+		return E_FAIL;*/
 	if (FAILED(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResource(m_pShaderCom, "g_BrushTexture")))
 		return E_FAIL;
 	
@@ -159,8 +159,8 @@ HRESULT CTerrain_Demo::Ready_Component()
 {
 	
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
-	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_TAG, &m_pTextureCom[TYPE_DIFFUSE]))) return E_FAIL;
-	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_MASK_TAG, &m_pTextureCom[TYPE_MASK],nullptr,1))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_LANDSCAPE_TAG, &m_pTextureCom[TYPE_DIFFUSE]))) return E_FAIL;
+	//if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_MASK_TAG, &m_pTextureCom[TYPE_MASK],nullptr,1))) return E_FAIL;
 	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_BRUSH_TAG, &m_pTextureCom[TYPE_BRUSH], nullptr,2))) return E_FAIL;
 	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_DEMO_TAG, &m_pNavigationCom))) return E_FAIL;
 
@@ -321,6 +321,14 @@ vector<CCell*> CTerrain_Demo::Get_Navigation_Cells()
 	return m_pNavigationCom->Get_Navigation_Cells();
 }
 
+void CTerrain_Demo::Set_Add(_bool bCheck)
+{
+	if (m_pVIBufferCom == nullptr)
+		return;
+
+	m_pVIBufferCom->Set_Add(bCheck);
+}
+
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTerrain_Demo* pInstance = new CTerrain_Demo(pDevice, pContext);
@@ -351,7 +359,7 @@ void CTerrain_Demo::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < TEXTURE::TYPE_END; i++)
+	for (_uint i = 0; i < (_uint)TEXTURE::TYPE_END; i++)
 	{
 		Safe_Release(m_pTextureCom[i]);
 	}

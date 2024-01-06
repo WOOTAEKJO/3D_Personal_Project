@@ -49,6 +49,14 @@ private:
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
 	_bool					m_isFinished = { false }; // 다음 레벨을 위한 자원을 모두 로드했는지를 판단
 
+private:
+	HRESULT					Monster();
+	HRESULT					Item();
+	HRESULT					Forest();
+	HRESULT					Rock();
+	HRESULT					Deco();
+	HRESULT					Wood();
+
 public:
 	static CLoader * Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL eNextLevelID);
 	virtual void Free() override;

@@ -32,6 +32,9 @@ public:
 public:
 	HRESULT	Init_Terrain(DTERRAINDESC* pDTerrainDesc);
 
+public:
+	void	Set_Add(_bool bCheck) { m_bAdd = bCheck; }
+
 private:
 	vector<VTXMESH>	m_vecVertexInfo;
 	vector<_uint3>	m_vecIndexInfo;
@@ -40,6 +43,9 @@ private:
 	_uint	m_iNumVerticesX = { 0 };
 	_uint	m_iNumVerticesZ = { 0 };
 	_uint   m_iNumFaces = { 0 };
+
+private:
+	_bool	m_bAdd = { false };
 
 public:
 	static	CVIBuffer_DTerrain* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

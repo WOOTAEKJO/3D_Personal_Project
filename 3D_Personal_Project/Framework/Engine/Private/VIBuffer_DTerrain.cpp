@@ -63,7 +63,11 @@ void CVIBuffer_DTerrain::Update_Buffer(_fvector fMousePos, _float fRadious, _flo
 			//_float fH = fHeight * (1.f - pow((fLength / fRadious), 2.f));
 			_float fH = fHeight * pow(1.f - (fLength / fRadious), 2.f* fSharpness*3.f);
 
-			((VTXMESH*)(SubResource.pData))[iIndex].vPosition.y = fH;
+			if(m_bAdd)
+				((VTXMESH*)(SubResource.pData))[iIndex].vPosition.y += fH;
+			else
+				((VTXMESH*)(SubResource.pData))[iIndex].vPosition.y = fH;
+
 			m_vecVertexInfo[iIndex].vPosition = ((VTXMESH*)(SubResource.pData))[iIndex].vPosition;
 		}
 	}

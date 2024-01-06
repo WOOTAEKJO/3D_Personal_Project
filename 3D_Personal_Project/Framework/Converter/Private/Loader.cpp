@@ -252,58 +252,58 @@ HRESULT CLoader::Loading_For_Converter_Level()
 //if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINECAVE_TAG,
 //	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINECAVE_PATH))))
 //	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKCLUSTER2_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKCLUSTER2_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION3_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION3_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION6_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION6_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION8_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION8_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK1_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK1_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK2_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK2_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK2COL_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK2COL_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK3_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK3_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK4_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK4_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK5_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK5_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK52_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK52_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK6_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK6_PATH))))
-//	return E_FAIL;
-//
-//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK7_TAG,
-//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK7_PATH))))
-//	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKCLUSTER2_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKCLUSTER2_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION3_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION3_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION6_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION6_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKBIGFORMATION8_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKBIGFORMATION8_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK1_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK1_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK2_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK2_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK2COL_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK2COL_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK3_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK3_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK4_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK4_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK5_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK5_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK52_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK52_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK6_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK6_PATH))))
+	return E_FAIL;
+
+if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ROCKPACK7_TAG,
+	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK7_PATH))))
+	return E_FAIL;
 
 #pragma endregion
 
@@ -365,97 +365,97 @@ HRESULT CLoader::Loading_For_Converter_Level()
 
 #pragma region WOOD
 
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_BROKENLATEFORMEWAY_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_BROKENLATEFORMEWAY_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_CATEBOXPILE_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_CATEBOXPILE_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_CRATEBOX_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_CRATEBOX_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCE4_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCE4_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCECLOSE_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCECLOSE_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACK_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACK_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALLCOL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALLCOL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALLHIGHCOL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALLHIGHCOL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINEPLATFORM_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINEPLATFORM_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINEPLATFORMFULL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINEPLATFORMFULL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWER_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWER_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWERFULL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWERFULL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWERFULLFULL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWERFULLFULL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMROUNDFENCE_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMROUNDFENCE_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WEATHERCLOCK_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WEATHERCLOCK_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WEATHERCLOCKHIGH_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WEATHERCLOCKHIGH_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME1_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME1_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME2_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME2_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME05X05X2_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME05X05X2_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATFORM1SMALL_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATFORM1SMALL_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODROPEHOLDER_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODROPEHOLDER_PATH))))
-	return E_FAIL;
-
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODWALL2_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODWALL2_PATH))))
-	return E_FAIL;
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_BROKENLATEFORMEWAY_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_BROKENLATEFORMEWAY_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_CATEBOXPILE_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_CATEBOXPILE_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_CRATEBOX_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_CRATEBOX_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCE4_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCE4_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCECLOSE_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCECLOSE_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACK_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACK_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALLCOL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALLCOL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FENCESTACKSMALLHIGHCOL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FENCESTACKSMALLHIGHCOL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINEPLATFORM_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINEPLATFORM_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINEPLATFORMFULL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINEPLATFORMFULL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWER_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWER_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWERFULL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWERFULL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_MINETOWERFULLFULL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_MINETOWERFULLFULL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMROUNDFENCE_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMROUNDFENCE_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WEATHERCLOCK_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WEATHERCLOCK_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WEATHERCLOCKHIGH_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WEATHERCLOCKHIGH_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME1_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME1_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME2_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME2_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATEFORME05X05X2_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATEFORME05X05X2_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODPLATFORM1SMALL_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODPLATFORM1SMALL_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODROPEHOLDER_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODROPEHOLDER_PATH))))
+//	return E_FAIL;
+//
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WOODWALL2_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WOODWALL2_PATH))))
+//	return E_FAIL;
 
 #pragma endregion
 
