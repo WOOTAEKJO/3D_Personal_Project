@@ -254,12 +254,12 @@ HRESULT CTerrain_Demo::Load_Terrain(const _char* strPath)
 	return S_OK;
 }
 
-HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex)
+HRESULT CTerrain_Demo::Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType)
 {
 	if (m_pNavigationCom == nullptr)
 		return E_FAIL;
 
-    return m_pNavigationCom->Add_Cell(pPoints, iCellIndex);
+    return m_pNavigationCom->Add_Cell(pPoints, iCellIndex, iCellType);
 }
 
 HRESULT CTerrain_Demo::Save_Navigation(const _char* strPath)

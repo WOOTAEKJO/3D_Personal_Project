@@ -273,6 +273,10 @@ void CTerrain_Window::Navigation()
 		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[1]) + " ").c_str());
 		ImGui::SameLine();
 		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[2]) + " ").c_str());
+
+		ImGui::RadioButton("Normal", &m_iCellType, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Jump", &m_iCellType, 1);	
 	}
 
 	ImGui::Checkbox("Trans", &m_bNeviPosTrans);
@@ -324,7 +328,7 @@ void CTerrain_Window::Navigation_Update()
 		NaviCellDesc.iSphereIndex[1] = m_vNaviPos[m_iCalculate[1]].iSphereIndex;
 		NaviCellDesc.iSphereIndex[2] = m_vNaviPos[m_iCalculate[2]].iSphereIndex;
 
-        m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex);
+        m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex,m_iCellType);
 		m_vecCell.push_back(NaviCellDesc);
 		Reset_NaviPickPos();
 		 
@@ -505,6 +509,8 @@ void CTerrain_Window::All_Delete_Cell()
 	for (auto& iter : m_vecSphere)
 		Safe_Delete(iter);
 	m_vecSphere.clear();
+
+	m_iCurrentCellIndex = 0;
 }
 
 void CTerrain_Window::Create_HeightMap()
@@ -563,9 +569,6 @@ void CTerrain_Window::Selected_Delete_Cell()
 	{
 		if (!SphereIndex[i].bCheck)
 		{
-			Safe_Delete(m_vecSphere[SphereIndex[i].iSphereIndex]);
-			m_vecSphere.erase(m_vecSphere.begin() + SphereIndex[i].iSphereIndex);
-
 			for (auto& iter : m_vecCell)
 			{
 				for (_uint j = 0; j < 3; j++)
@@ -576,8 +579,15 @@ void CTerrain_Window::Selected_Delete_Cell()
 					}
 				}
 			}
+
+			Safe_Delete(m_vecSphere[SphereIndex[i].iSphereIndex]);
+			m_vecSphere.erase(m_vecSphere.begin() + SphereIndex[i].iSphereIndex);
+
+			
 		}
 	}
+
+	m_iCurrentCellIndex -= 1;
 }
 
 CTerrain_Window* CTerrain_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

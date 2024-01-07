@@ -75,6 +75,7 @@ private:
 
 private:
 	_bool									m_bNeviPosTrans = { false };
+	_int									m_iCellType = { 0 };
 
 private:
 	void	HeightMap();

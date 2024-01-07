@@ -46,7 +46,7 @@ public:
 	HRESULT	Load_Terrain(const _char* strPath);
 
 public:
-	HRESULT	Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex);
+	HRESULT	Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType = 0);
 	HRESULT	Save_Navigation(const _char* strPath);
 	HRESULT	Load_Navigation(const _char* strPath);
 	void	Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions);

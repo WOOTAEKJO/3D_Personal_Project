@@ -29,7 +29,7 @@ public:
 	_bool	IsMove(_fvector vPosition, _Out_ _float3* vLine);
 	void	Find_CurrentCell(_fvector vPosition);
 	_int	Find_PositionCell(_fvector vPosition);
-	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex);
+	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex, _uint iCellType);
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Delete_Cell(_uint iCellIndex);

@@ -9,17 +9,20 @@ class ENGINE_DLL CCell final : public CBase
 public:
 	enum POINTS {POINT_A,POINT_B,POINT_C,POINT_END};
 	enum LINES {LINE_AB,LINE_BC,LINE_CA,LINE_END};
+	enum CELLTYPE {TYPE_NORMAL,TYPE_JUMP,TYPE_END};
+
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CCell() = default;
 
 public:
-	HRESULT	Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType);
+	HRESULT	Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType, CELLTYPE eCellType);
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
 	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine);
 	_float	Get_Height(_float3 vPos);
+	_bool	Is_Height(_float3 vPos);
 
 public:
 	_uint	Get_Index() { return m_iIndex; }
@@ -32,6 +35,8 @@ public:
 	{
 		m_iNeighborIndex[eType] = iIndex;
 	}
+
+	CELLTYPE	Get_CellType() { return m_eCell_Type; }
 
 #ifdef _DEBUG
 	HRESULT	Render();
@@ -58,10 +63,14 @@ private:
 	_float3		m_vLine[LINE_END] = {};
 
 private:
+	CELLTYPE	m_eCell_Type = { CELLTYPE::TYPE_NORMAL };
+
+private:
 	CNavigation::NAVITYPE	m_eNaviType = { CNavigation::NAVITYPE::TYPE_END };
 
 public:
-	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,FLOAT3X3 pPoints,_uint iIndex, CNavigation::NAVITYPE eType);
+	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,FLOAT3X3 pPoints,_uint iIndex,
+		CNavigation::NAVITYPE eType, CELLTYPE eCellType = CELLTYPE::TYPE_NORMAL);
 	virtual	void	Free() override;
 };
 

@@ -125,6 +125,17 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 				if (iNeighborIndex == -1)
 					return false;
 
+				if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+				{
+					_float3 vPos;
+					XMStoreFloat3(&vPos, vPosition);
+
+					if (m_vecCell[iNeighborIndex]->Is_Height(vPos))
+					{
+						return false;
+					}
+				}
+
 				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
@@ -166,14 +177,14 @@ _int CNavigation::Find_PositionCell(_fvector vPosition)
 	return iCurrentCellIndex;
 }
 
-HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex)
+HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType)
 {
 	FLOAT3X3 float33 = {};
 	float33.vVertex0 = pPoints[0];
 	float33.vVertex1 = pPoints[1];
 	float33.vVertex2 = pPoints[2];
 
-    CCell* pCell = CCell::Create(m_pDevice, m_pContext, float33,m_vecCell.size(), m_eNaviType);
+    CCell* pCell = CCell::Create(m_pDevice, m_pContext, float33,m_vecCell.size(), m_eNaviType, (CCell::CELLTYPE)iCellType);
 	if (pCell == nullptr)
 		return E_FAIL;
 
@@ -249,9 +260,9 @@ HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
 	CMeshData::MESHDATADESC MeshDataDesc = {};
 
 	MeshDataDesc.eModel_Type = CMeshData::MODEL_TYPE::NAVIGATION;
-	
 	for (auto& iter : m_vecCell)
 	{
+
 		FLOAT3X3	Float33 = {};
 
 		Float33.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);

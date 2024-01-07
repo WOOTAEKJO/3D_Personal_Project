@@ -15,13 +15,15 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 #endif
 }
 
-HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
+HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType, CELLTYPE eCellType)
 {
 	memcpy(&m_pPoints, &pPoints, sizeof(_float3)*3);
 
 	m_iIndex = iIndex;
 
 	m_eNaviType = eType;
+
+	m_eCell_Type = eCellType;
 
 	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
 	XMStoreFloat3(&m_vLine[LINE_AB], Line);
@@ -103,6 +105,7 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 
 _bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine)
 {
+	
 	for (_uint i = 0; i < (_uint)LINE_END; i++)
 	{
 		_vector vStartPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pPoints[i]), matWorld);
@@ -136,6 +139,16 @@ _float CCell::Get_Height(_float3 vPos)
 	return fHeight;
 }
 
+_bool CCell::Is_Height(_float3 vPos)
+{
+	_float fHeight = Get_Height(vPos);
+
+	if (vPos.y > fHeight)
+		return true;
+
+	return false;
+}
+
 void CCell::Update_Buffer(FLOAT3X3 vPositions)
 {
 	if (m_pDBufferCom == nullptr)
@@ -148,11 +161,12 @@ void CCell::Update_Buffer(FLOAT3X3 vPositions)
 	m_pDBufferCom->Update_Buffer(vPositions);
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints, _uint iIndex,
+	CNavigation::NAVITYPE eType, CELLTYPE eCellType)
 {
 	CCell* pInstance = new CCell(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pPoints, iIndex, eType))) {
+    if (FAILED(pInstance->Initialize(pPoints, iIndex, eType, eCellType))) {
 		MSG_BOX("Failed to Created : CCell");
 		Safe_Release(pInstance);
 	}

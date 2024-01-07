@@ -221,6 +221,13 @@ namespace Engine
 
 	}ANIMATION;
 
+	typedef struct tagCellDesc
+	{
+		FLOAT3X3	vPoints;
+		_uint		iCellType;
+
+	}CELLDESC;
+
 	typedef struct tagLevelObjectDesc
 	{
 		string		strLayer;
