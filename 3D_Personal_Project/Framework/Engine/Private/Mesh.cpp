@@ -75,9 +75,9 @@ HRESULT CMesh::Initialize(void* pArg)
 	return S_OK;
 }
 
-_bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
+_bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld, _float* fDist)
 {
-	_float	fDist = 0.f;
+	//_float	fDist = 0.f;
 
 	for (_uint i = 0; i < (m_iIndexNum/3); i++)
 	{
@@ -89,7 +89,7 @@ _bool CMesh::Compute_MousePos(_float3* pOut, _matrix matWorld)
 		vVec2 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iY]);
 		vVec3 = XMLoadFloat3(&m_vecVertexInfo[iIndices.iZ]);
 
-		if (m_pGameInstance->Intersect(pOut, &fDist, vVec1, vVec2, vVec3, matWorld)) {
+		if (m_pGameInstance->Intersect(pOut, fDist, vVec1, vVec2, vVec3, matWorld)) {
 			return true;
 		}
 	}

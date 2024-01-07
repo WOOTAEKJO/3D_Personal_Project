@@ -48,8 +48,8 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
     if(FAILED(Ready_Demo()))
         return E_FAIL;
 
-   Set_Terrain_Edit();
    Set_Object_Edit();
+   Set_Terrain_Edit();
    Set_Camera_Edit();
    Set_Animation_Edit();
 
@@ -196,6 +196,15 @@ void CImGuiMgr::Window_Set_Variable(IMGUIMODE eType, WINDOWSTATE eWindowTag, voi
     pWindow->Set_Variable(pArg);
 }
 
+vector<CObjectMesh_Demo*>* CImGuiMgr::Get_ObjectDemo()
+{
+    CImGui_Window* pWindow = Find_Window(IMGUIMODE::MODE_OBJECT, WINDOWSTATE::WS_MAIN);
+    if (pWindow == nullptr)
+        return nullptr;
+
+    return dynamic_cast<CObject_Window*>(pWindow)->Get_ObjectDemo();
+}
+
 void CImGuiMgr::Set_Terrain_Edit()
 {
     CImGui_Window::IMGUIWINDESC ImguiMrgWinDesc;
@@ -321,29 +330,30 @@ void CImGuiMgr::Grid_Draw()
 
 void CImGuiMgr::File_Render()
 {
-    const char* Path = CUtility_String::WString_To_string(FILE_PATH).c_str();
+    string  strPath = CUtility_String::WString_To_string(FILE_PATH) + "/Data/";
     const char* Filter = nullptr;
+
     switch (M_eCurentMode)
     {
     case Client::CImGuiMgr::MODE_STATIC:
         return;
     case Client::CImGuiMgr::MODE_TERRAIN:
-       // Path = DATA_PATH;
+        strPath = strPath + "Terrain/";
         Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_OBJECT:
-        //Path = DATA_OBJECT_PATH;
+        strPath = strPath + "Object/";
         Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_ANIMATION:
-       // Path = DATA_ANIMATION_PATH;
+        strPath = strPath + "Animation/";
         Filter = ".json";
         break;
     case Client::CImGuiMgr::MODE_CAMERA:
         break;
     }
 
-    ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", Filter, Path);
+    ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", Filter, strPath.c_str());
 
     // display
     if (ImGuiFileDialog::Instance()->Display("FileDialog"))
@@ -388,7 +398,7 @@ CImGui_Window* CImGuiMgr::Find_Window(IMGUIMODE eType, WINDOWSTATE eWindowTag)
 void CImGuiMgr::Free()
 {
    
-    for (_uint i = 0; i < MODE_END; i++) {
+    for (_uint i = 0; i < (_uint)MODE_END; i++) {
         for (auto& iter : m_mapWindow[i])
             Safe_Release(iter.second);
         m_mapWindow[i].clear();

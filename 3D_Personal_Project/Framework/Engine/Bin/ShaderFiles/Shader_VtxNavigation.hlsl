@@ -1,7 +1,7 @@
 #include	"Shader_Defines.hlsli"
 
 matrix		g_matWorld, g_matView, g_matProj;
-vector g_vColor = vector(1.f,1.f,1.f,1.f);
+vector		g_vColor = vector(1.f,1.f,1.f,1.f);
 
 struct VS_IN
 {

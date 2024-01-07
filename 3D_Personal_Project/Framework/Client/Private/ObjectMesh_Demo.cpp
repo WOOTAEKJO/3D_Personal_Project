@@ -121,7 +121,7 @@ void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
 }
 
-_bool CObjectMesh_Demo::Get_Picked()
+_bool CObjectMesh_Demo::Get_Picked(_float4* vOutPos)
 {
 	if (m_pModelCom == nullptr || 
 		m_pTransformCom==nullptr)
@@ -132,8 +132,14 @@ _bool CObjectMesh_Demo::Get_Picked()
 	//m_pGameInstance->Update_Mouse();
 
 	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
+	{
+		XMStoreFloat4(vOutPos, XMVector3TransformCoord(XMLoadFloat3(&vPickPos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+
+		//*vOutPos = _float4(vPickPos.x, vPickPos.y, vPickPos.z, 1.f);
+
 		return true;
-	
+	}
+
 	return false;
 }
 

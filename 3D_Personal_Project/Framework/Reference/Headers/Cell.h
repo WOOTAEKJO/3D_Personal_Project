@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 
+class CShader;
+
 class ENGINE_DLL CCell final : public CBase
 {
 public:
@@ -16,7 +18,7 @@ private:
 	virtual	~CCell() = default;
 
 public:
-	HRESULT	Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType, CELLTYPE eCellType);
+	HRESULT	Initialize(CELL Cell, _uint iIndex, CNavigation::NAVITYPE eType);
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
@@ -39,7 +41,7 @@ public:
 	CELLTYPE	Get_CellType() { return m_eCell_Type; }
 
 #ifdef _DEBUG
-	HRESULT	Render();
+	HRESULT	Render(CShader* pShader, _float4 vColor);
 
 public:
 	void	Update_Buffer(FLOAT3X3 vPositions);
@@ -69,8 +71,8 @@ private:
 	CNavigation::NAVITYPE	m_eNaviType = { CNavigation::NAVITYPE::TYPE_END };
 
 public:
-	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,FLOAT3X3 pPoints,_uint iIndex,
-		CNavigation::NAVITYPE eType, CELLTYPE eCellType = CELLTYPE::TYPE_NORMAL);
+	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CELL Cell,_uint iIndex,
+		CNavigation::NAVITYPE eType);
 	virtual	void	Free() override;
 };
 

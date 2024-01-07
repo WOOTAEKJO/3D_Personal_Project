@@ -32,6 +32,9 @@ public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
 
+public:
+	vector<CObjectMesh_Demo*>* Get_ObjectDemo() { return &m_vecDemo; }
+
 private:
 	vector<wstring>					m_vecModelTag;
 	wstring							m_strPickModelTag;

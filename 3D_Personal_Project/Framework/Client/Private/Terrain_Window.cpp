@@ -40,6 +40,8 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 	m_vecSphere.clear();
 
+	m_vecDemo = CImGuiMgr::GetInstance()->Get_ObjectDemo();
+
 	return S_OK;
 }
 
@@ -96,15 +98,17 @@ void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 	if (m_pTerrain == nullptr)
 		return;
 
-   	m_vPickPos = vPickPoint;
-
 	if (m_eCurrentMode == MODE_HEIGHT) {
+
+		m_vPickPos = vPickPoint;
 		m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
 	}
 	else if (m_eCurrentMode == MODE_NAVIGATION)
 	{
-		if (Set_NaviPickPos()) {
-			
+		if (m_iNaviWorkType == 0)
+		{
+			m_vPickPos = vPickPoint;
+			Set_NaviPickPos();
 		}
 	}
 }
@@ -112,18 +116,35 @@ void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 void CTerrain_Window::Demo_Picked()
 {
 	if (m_eCurrentMode == MODE_NAVIGATION) {
-		if (m_vecSphere.empty())
-			return;
 
-		if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+		if (m_iNaviWorkType == 1)
+		{
+			if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
+				_uint iSize = m_vecDemo->size();
 
-			Picked_Navigation();
+				for (size_t i = 0; i < iSize; i++)
+				{
+					if ((*m_vecDemo)[i]->Get_Picked(&m_vPickPos))
+					{
+						Set_NaviPickPos();
 
-			
+					}
+				}
+			}
+		}
+		else {
+			if (m_vecSphere.empty())
+				return;
+
+			if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+
+				Picked_Navigation();
+			}
+
+			Fix_Navigation();
 		}
 
-		Fix_Navigation();
 	}
 }
 
@@ -262,6 +283,11 @@ void CTerrain_Window::Navigation()
 	ImGui::RadioButton("Sphere", &m_iCurrentNaviModeRadioButton, 1);
 	ImGui::SameLine();
 	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 2);
+
+	ImGui::RadioButton("Terrain", &m_iNaviWorkType, 0);
+	ImGui::SameLine();
+	ImGui::RadioButton("Mesh", &m_iNaviWorkType, 1);
+
 
 	if (!m_vecCell.empty())
 	{
@@ -545,6 +571,20 @@ void CTerrain_Window::Selected_Delete_Cell()
 	SphereIndex[1].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[1];
 	SphereIndex[2].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[2];
 
+	for (_uint i = 0; i < 3; ++i)
+	{
+		for (_uint j = i + 1; j < 3; ++j)
+		{
+			if (SphereIndex[i].iSphereIndex < SphereIndex[j].iSphereIndex)
+			{
+				_uint iTmp;
+				iTmp = SphereIndex[j].iSphereIndex;
+				SphereIndex[j].iSphereIndex = SphereIndex[i].iSphereIndex;
+				SphereIndex[i].iSphereIndex = iTmp;
+			}
+		}
+	}
+
 	m_vecCell.erase(m_vecCell.begin() + m_iCurrentCellIndex);
 
 	for (auto& iter : m_vecCell)
@@ -580,14 +620,18 @@ void CTerrain_Window::Selected_Delete_Cell()
 				}
 			}
 
-			Safe_Delete(m_vecSphere[SphereIndex[i].iSphereIndex]);
-			m_vecSphere.erase(m_vecSphere.begin() + SphereIndex[i].iSphereIndex);
+			_uint iIndx = SphereIndex[i].iSphereIndex;
+			if ((iIndx >= m_vecSphere.size()))
+			{
+				iIndx -= 1;
+			}
 
-			
+			Safe_Delete(m_vecSphere[iIndx]);
+			m_vecSphere.erase(m_vecSphere.begin() + iIndx);
 		}
 	}
-
-	m_iCurrentCellIndex -= 1;
+	if(m_iCurrentCellIndex != 0)
+		m_iCurrentCellIndex -= 1;
 }
 
 CTerrain_Window* CTerrain_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

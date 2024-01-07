@@ -32,7 +32,7 @@ public:
 
 		_uint2				iVerticesXY;
 
-		vector<FLOAT3X3>	vecNaviPoints;
+		vector<CELL>		vecNaviPoints;
 
 		MODEL_TYPE			eModel_Type = TYPE_END;
 	}MESHDATADESC;
@@ -78,7 +78,7 @@ private:
 	MODEL_TYPE			m_eModel_Type = { TYPE_END };
 
 private:
-	vector<FLOAT3X3>	m_vecNaviPoints;
+	vector<CELL>	m_vecNaviPoints;
 
 private:
 	HRESULT	Set_Data(MESHDATADESC MeshDataDesc);

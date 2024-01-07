@@ -61,7 +61,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	//Mouse_Fix();
+	Mouse_Fix();
 	Mouse_Input(fTimeDelta);
 }
 
@@ -126,7 +126,7 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	{
 		vDir = (vEye - vPos);
 		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * m_iRadiusX,
-			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * m_iRadiusY,
+			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * 3.f,
 			vPos.m128_f32[2] + vDir.m128_f32[2] * m_iRadiusX, 1.f);
 	}
 

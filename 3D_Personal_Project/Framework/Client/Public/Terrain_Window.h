@@ -76,6 +76,10 @@ private:
 private:
 	_bool									m_bNeviPosTrans = { false };
 	_int									m_iCellType = { 0 };
+	_int									m_iNaviWorkType = { 0 };
+
+private:
+	vector<CObjectMesh_Demo*>*				m_vecDemo;
 
 private:
 	void	HeightMap();

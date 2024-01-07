@@ -148,13 +148,38 @@ _bool CModel::Compute_MousePos(_float3* pOut, _matrix matWorld)
 	if (m_vecMesh.empty())
 		return false;
 
+	_float fDist = 0.f;
+
 	for (auto& iter : m_vecMesh)
 	{
-		if (iter->Compute_MousePos(pOut, matWorld))
+		if (iter->Compute_MousePos(pOut, matWorld, &fDist))
 			return true;
 	}
 
 	return false;
+}
+
+void CModel::Compute_MousePos_Dist(_float3* pOut, _matrix matWorld)
+{
+	if (m_vecMesh.empty())
+		return;
+
+	_float fMaxDist = 10000.f;
+	_float fDist = 0.f;
+	_float3 vPos = {};
+
+	for (auto& iter : m_vecMesh)
+	{
+		if (iter->Compute_MousePos(&vPos, matWorld,&fDist))
+		{
+			if (fDist > fMaxDist)
+			{
+				fMaxDist = fDist;
+				*pOut = vPos;
+			}
+		}
+			
+	}
 }
 
 HRESULT CModel::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType)

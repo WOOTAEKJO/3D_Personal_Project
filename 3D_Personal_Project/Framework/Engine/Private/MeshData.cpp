@@ -170,7 +170,7 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 
 			_uint iSize = m_vecNaviPoints.size();
 			fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
-			fout.write(reinterpret_cast<const char*>(m_vecNaviPoints.data()), iSize * sizeof(FLOAT3X3));
+			fout.write(reinterpret_cast<const char*>(m_vecNaviPoints.data()), iSize * sizeof(CELL));
 
 			break;
 		}
@@ -396,7 +396,7 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 			_uint iSize = {};
 			fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 			m_vecNaviPoints.resize(iSize);
-			fIn.read(reinterpret_cast<char*>(m_vecNaviPoints.data()), iSize * sizeof(FLOAT3X3));
+			fIn.read(reinterpret_cast<char*>(m_vecNaviPoints.data()), iSize * sizeof(CELL));
 
 			break;
 		}

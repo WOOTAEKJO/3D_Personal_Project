@@ -69,12 +69,13 @@ HRESULT CNavigation::Render()
 
 	_float4 vColor = {};
 
-	if (m_iCurrentCellIndex == -1)
+	/*if (m_iCurrentCellIndex == -1)
 		vColor = { 0.f,1.f,0.f,1.f };
 	else {
+
 		vColor = { 1.f,0.f,0.f,1.f };
 		m_matWorld.m[3][1] += 0.1f;
-	}
+	}*/
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorld)))
 		return E_FAIL;
@@ -82,21 +83,31 @@ HRESULT CNavigation::Render()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &matProj)))
 		return E_FAIL;
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
-		return E_FAIL;
+	/*if (FAILED(m_pShaderCom->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;*/
 
-	m_pShaderCom->Begin(0);
+	//m_pShaderCom->Begin(0);
 
 	if (m_iCurrentCellIndex != -1)
 	{
-		m_vecCell[m_iCurrentCellIndex]->Render();
+		vColor = { 1.f,0.f,0.f,1.f };
+		m_matWorld.m[3][1] += 0.1f;
+		m_vecCell[m_iCurrentCellIndex]->Render(m_pShaderCom, vColor);
 
 	}
 	else {
 		for (auto& iter : m_vecCell)
 		{
 			if (iter != nullptr)
-				iter->Render();
+			{
+				if(iter->Get_CellType() == CCell::CELLTYPE::TYPE_NORMAL)
+					vColor = { 0.f,1.f,0.f,1.f };
+				else if(iter->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+					vColor = { 0.f,0.f,1.f,1.f };
+
+				iter->Render(m_pShaderCom, vColor);
+			}
+				
 		}
 	}
 #endif
@@ -130,7 +141,7 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 					_float3 vPos;
 					XMStoreFloat3(&vPos, vPosition);
 
-					if (m_vecCell[iNeighborIndex]->Is_Height(vPos))
+					if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
 					{
 						return false;
 					}
@@ -179,12 +190,19 @@ _int CNavigation::Find_PositionCell(_fvector vPosition)
 
 HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType)
 {
-	FLOAT3X3 float33 = {};
+	/*FLOAT3X3 float33 = {};
 	float33.vVertex0 = pPoints[0];
 	float33.vVertex1 = pPoints[1];
-	float33.vVertex2 = pPoints[2];
+	float33.vVertex2 = pPoints[2];*/
 
-    CCell* pCell = CCell::Create(m_pDevice, m_pContext, float33,m_vecCell.size(), m_eNaviType, (CCell::CELLTYPE)iCellType);
+	CELL Cell = {};
+	Cell.vPoints.vVertex0 = pPoints[0];
+	Cell.vPoints.vVertex1 = pPoints[1];
+	Cell.vPoints.vVertex2 = pPoints[2];
+
+	Cell.iCellType = iCellType;
+
+    CCell* pCell = CCell::Create(m_pDevice, m_pContext, Cell,m_vecCell.size(), m_eNaviType);
 	if (pCell == nullptr)
 		return E_FAIL;
 
@@ -263,13 +281,19 @@ HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
 	for (auto& iter : m_vecCell)
 	{
 
-		FLOAT3X3	Float33 = {};
+		/*FLOAT3X3	Float33 = {};
 
 		Float33.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
 		Float33.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
-		Float33.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
+		Float33.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);*/
+		CELL		Cell = {};
+		Cell.vPoints.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
+		Cell.vPoints.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
+		Cell.vPoints.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
 
-		MeshDataDesc.vecNaviPoints.push_back(Float33);
+		Cell.iCellType = (_uint)iter->Get_CellType();
+
+		MeshDataDesc.vecNaviPoints.push_back(Cell);
 	}
 
 	if (FAILED(m_pGameInstance->Save_Data_Mesh(strFilePath, MeshDataDesc)))

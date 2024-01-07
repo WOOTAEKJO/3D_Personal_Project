@@ -59,7 +59,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Controller()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
+	//m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
 	// 왜 그런지는 모르겠으나, 크기 값을 바꿔 주면 월드행렬 값이 갑자기 nan 값으로 바뀌어 플레이어 자체가 사라짐
 	// 시팔 왜 이런거야
 

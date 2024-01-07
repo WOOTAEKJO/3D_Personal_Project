@@ -15,7 +15,7 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 
 public:
-	_bool	Compute_MousePos(_float3* pOut, _matrix matWorld);
+	_bool	Compute_MousePos(_float3* pOut, _matrix matWorld,_float* fDist);
 	_uint	Get_MaterialIndex() const { return m_iMaterialIndex; }
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* strName, CModel::BONES& pBones, _int iNonBindInd);
 

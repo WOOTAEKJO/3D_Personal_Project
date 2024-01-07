@@ -46,6 +46,7 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		}
 
 	}
+
 	return S_OK;
 }
 
@@ -105,12 +106,14 @@ void CObject_Window::Demo_Picked()
 	if (m_vecDemo.empty())
 		return;
 
+	_float4 vOutPos;
+
  	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
 		if (m_eCurrentType == TYPE::TYPE_NONANIM) {
 			for (size_t i = 0; i < m_vecDemo.size(); i++)
 			{
-				if (m_vecDemo[i]->Get_Picked())
+				if (m_vecDemo[i]->Get_Picked(&vOutPos))
 				{
 					m_iCurrentDemoIndex = (_uint)i;
 					return;

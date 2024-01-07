@@ -38,7 +38,7 @@ public:
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
 public:
-	_bool	Get_Picked();
+	_bool	Get_Picked(_float4* vOutPos);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;

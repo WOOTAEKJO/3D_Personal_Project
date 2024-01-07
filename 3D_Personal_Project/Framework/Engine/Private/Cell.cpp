@@ -15,15 +15,15 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 #endif
 }
 
-HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType, CELLTYPE eCellType)
+HRESULT CCell::Initialize(CELL Cell, _uint iIndex, CNavigation::NAVITYPE eType)
 {
-	memcpy(&m_pPoints, &pPoints, sizeof(_float3)*3);
+	memcpy(&m_pPoints, &Cell.vPoints, sizeof(_float3)*3);
 
 	m_iIndex = iIndex;
 
 	m_eNaviType = eType;
 
-	m_eCell_Type = eCellType;
+	m_eCell_Type = (CELLTYPE)Cell.iCellType;
 
 	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
 	XMStoreFloat3(&m_vLine[LINE_AB], Line);
@@ -55,8 +55,12 @@ HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE 
 	return S_OK;
 }
 
-HRESULT CCell::Render()
+HRESULT CCell::Render(CShader* pShader, _float4 vColor)
 {
+	if (FAILED(pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	pShader->Begin(0);
 
 	if(m_eNaviType== CNavigation::NAVITYPE::TYPE_LOAD)
 	{
@@ -161,12 +165,12 @@ void CCell::Update_Buffer(FLOAT3X3 vPositions)
 	m_pDBufferCom->Update_Buffer(vPositions);
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints, _uint iIndex,
-	CNavigation::NAVITYPE eType, CELLTYPE eCellType)
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CELL Cell, _uint iIndex,
+	CNavigation::NAVITYPE eType)
 {
 	CCell* pInstance = new CCell(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pPoints, iIndex, eType, eCellType))) {
+    if (FAILED(pInstance->Initialize(Cell, iIndex, eType))) {
 		MSG_BOX("Failed to Created : CCell");
 		Safe_Release(pInstance);
 	}
