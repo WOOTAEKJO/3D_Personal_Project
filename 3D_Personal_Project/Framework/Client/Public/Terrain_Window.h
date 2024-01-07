@@ -69,9 +69,12 @@ private: /* For. Navigation*/
 	_uint									m_iCurrentSphereIndex = { 0 };
 	_uint									m_iCurrentCellIndex = { 0 };
 
-	_int									m_iCalculate[3];
+	_int									m_iCalculate[3] = {-1,-1,-1};
 private:
 	_int									m_iCurrentNaviModeRadioButton = { 0 };
+
+private:
+	_bool									m_bNeviPosTrans = { false };
 
 private:
 	void	HeightMap();

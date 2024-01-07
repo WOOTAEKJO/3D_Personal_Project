@@ -43,10 +43,10 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
 
+	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
+
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
 		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
-
-	m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
 
 	m_pTransformCom->Set_Ground(false);
 

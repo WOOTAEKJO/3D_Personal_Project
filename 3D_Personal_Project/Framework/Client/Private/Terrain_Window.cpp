@@ -267,11 +267,20 @@ void CTerrain_Window::Navigation()
 	{
 		string strNaviInd = "NaviIndex : " + to_string(m_iCurrentCellIndex);
 		ImGui::Text(strNaviInd.c_str());
+
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[0])+ " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[1]) + " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[2]) + " ").c_str());
 	}
 
-	if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
+	ImGui::Checkbox("Trans", &m_bNeviPosTrans);
+	if(m_bNeviPosTrans){
+		if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
 
-		__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
+			__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
+		}
 	}
 
 	if (ImGui::Button("All_Delete"))
@@ -295,6 +304,16 @@ void CTerrain_Window::Navigation_Update()
 	{
 	
 		Calculate_Cell();
+
+		for (_uint i = 0; i < 3; i++)
+		{
+			if (m_iCalculate[i] == -1)
+			{
+				Reset_NaviPickPos();
+				MSG_BOX("Cell Create Failed");
+				return;
+			}
+		}
 
 		_float3 vPoints[3] = { m_vNaviPos[m_iCalculate[0]].vPosition,
 			m_vNaviPos[m_iCalculate[1]].vPosition,m_vNaviPos[m_iCalculate[2]].vPosition };
@@ -349,6 +368,7 @@ void CTerrain_Window::Reset_NaviPickPos()
 		m_vNaviPos[i].bCheck = false;
 		m_vNaviPos[i].vPosition = _float3(0.f,0.f,0.f);
 		m_vNaviPos[i].iSphereIndex = 0;
+		m_iCalculate[i] = -1;
 	}
 }
 
@@ -383,39 +403,21 @@ void CTerrain_Window::Calculate_Cell()
 
 	for (_uint i = 0; i < 3; i++) {
 		
-		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[c].vPosition.z - m_vNaviPos[a].vPosition.z)
+		_float iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[c].vPosition.z - m_vNaviPos[a].vPosition.z)
 			- (m_vNaviPos[c].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[a].vPosition.z);
 
-		if (0 > iResult)
+		if (0.f > iResult)
 		{
 			m_iCalculate[0] = a;
 			m_iCalculate[1] = b;
 			m_iCalculate[2] = c;
 
 			return;
-		}
-
-		a -= 1;
-		if (a < 0)
-			a = 2;
-		b -= 1;
-		if (b < 0)
-			b = 2;
-		c -= 1;
-		if (c < 0)
-			c = 2;
-	}
-
-	for (_uint i = 0; i < 3; i++) {
-
-		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[a].vPosition.z - m_vNaviPos[c].vPosition.z)
-			- (m_vNaviPos[a].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[c].vPosition.z);
-
-		if (0 > iResult)
+		}else if(0.f < iResult)
 		{
-			m_iCalculate[0] = c;
-			m_iCalculate[1] = b;
-			m_iCalculate[2] = a;
+			m_iCalculate[0] = a;
+			m_iCalculate[1] = c;
+			m_iCalculate[2] = b;
 
 			return;
 		}
@@ -431,7 +433,6 @@ void CTerrain_Window::Calculate_Cell()
 			c = 2;
 	}
 
-	
 }
 
 void CTerrain_Window::Fix_Navigation()

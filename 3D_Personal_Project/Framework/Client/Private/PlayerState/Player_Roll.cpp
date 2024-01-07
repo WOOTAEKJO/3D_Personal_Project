@@ -36,7 +36,7 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 		return CPlayer::STATE::IDLE;	
 	}
 
-	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 2.f, fTimeDelta);
+	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 1.5f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
