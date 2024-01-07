@@ -46,6 +46,8 @@ HRESULT CCrow::Initialize(void* pArg)
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
 		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 
+	m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Ground(false);
 
 	return S_OK;

@@ -30,15 +30,15 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(CDataMgr::GetInstance()->Level_Object_Load("../Bin/Data/Object/Stage1.bin")))
 		return E_FAIL;
-
+		
 	if (FAILED(Ready_Layer_Camera(g_strLayerName[LAYER_CAMERA])))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Monster(g_strLayerName[LAYER_MONSTER])))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
 	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
 
 	return S_OK; 

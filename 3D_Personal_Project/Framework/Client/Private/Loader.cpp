@@ -162,9 +162,9 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(Monster())) return E_FAIL;
 
 	if (FAILED(Forest())) return E_FAIL;
-	//if (FAILED(Rock())) return E_FAIL;
-	//if (FAILED(Deco())) return E_FAIL;
-	//if (FAILED(Wood())) return E_FAIL;
+	if (FAILED(Rock())) return E_FAIL;
+	if (FAILED(Deco())) return E_FAIL;
+	if (FAILED(Wood())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
 
@@ -222,10 +222,10 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	if (FAILED(Monster())) return E_FAIL;
 
-	//if (FAILED(Forest())) return E_FAIL;
+	if (FAILED(Forest())) return E_FAIL;
 	if (FAILED(Rock())) return E_FAIL;
-	//if (FAILED(Deco())) return E_FAIL;
-	//if (FAILED(Wood())) return E_FAIL;
+	if (FAILED(Deco())) return E_FAIL;
+	if (FAILED(Wood())) return E_FAIL;
 	
 	if (FAILED(Item())) return E_FAIL;
 
@@ -286,7 +286,7 @@ HRESULT CLoader::Forest()
 #pragma region FOREST
 	_matrix	matPivot;
 
-	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	matPivot = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PINETREE_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED1_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SM_REED2_TAG, matPivot))) return E_FAIL;
@@ -371,7 +371,7 @@ HRESULT CLoader::Deco()
 #pragma region Deco
 	_matrix	matPivot;
 
-	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BARREL_TAG, matPivot))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_CAULDRON_TAG, matPivot))) return E_FAIL;
@@ -408,7 +408,7 @@ HRESULT CLoader::Wood()
 #pragma region Wood
 	_matrix	matPivot;
 
-	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BROKENLATEFORMEWAY_TAG, matPivot))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_CATEBOXPILE_TAG, matPivot))) return E_FAIL;

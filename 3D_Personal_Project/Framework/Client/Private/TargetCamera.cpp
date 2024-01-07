@@ -125,9 +125,9 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	if(bCheck)
 	{
 		vDir = (vEye - vPos);
-		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * 0.5f,
-			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * 5.f,
-			vPos.m128_f32[2] + vDir.m128_f32[2] * 0.5f, 1.f);
+		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * m_iRadiusX,
+			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * m_iRadiusY,
+			vPos.m128_f32[2] + vDir.m128_f32[2] * m_iRadiusX, 1.f);
 	}
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, bCheck ? vPos : vEye);

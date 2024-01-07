@@ -206,10 +206,10 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 
 		if (fDot > 0.f)
 		{
-			vSlidePos = XMVector3Normalize(vLineDir) * fTimeDelta * 5.f;
+			vSlidePos = XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
 		}
 		else{
-			vSlidePos = -XMVector3Normalize(vLineDir) * fTimeDelta * 5.f;
+			vSlidePos = -XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
 		}
 
 		vPosition += vSlidePos;

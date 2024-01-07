@@ -22,7 +22,7 @@ void CNPC_Follow::State_Enter()
 
 _uint CNPC_Follow::State_Priority_Tick(_float fTimeDelta)
 {
-	_float fSpeed = m_pOwner->Distance_Proportional(1.f, 21.f, 6.f);
+	_float fSpeed = m_pOwner->Distance_Proportional(0.1f, 7.f, 2.f);
 	m_pOwner->Target_Follow(fTimeDelta * fSpeed);
 	return m_iStateID;
 }
@@ -32,7 +32,7 @@ _uint CNPC_Follow::State_Tick(_float fTimeDelta)
 	if (dynamic_cast<CCrow*>(m_pOwner)->Attack_Input())
 		return CNPC::STATE::ATTACK;
 
-	if (m_pOwner->Is_Target_Range(0.1f))
+	if (m_pOwner->Is_Target_Range(0.02f))
 	{
 		return CNPC::STATE::IDLE;
 	}

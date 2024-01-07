@@ -190,7 +190,7 @@ HRESULT CTerrain_Window::Load_Data(const _char* strFilePath)
 
 				if (bCheck)
 				{
-					BoundingSphere* pSphere = new BoundingSphere(vecCells[i]->Get_Point((CCell::POINTS)j), 0.5f);
+					BoundingSphere* pSphere = new BoundingSphere(vecCells[i]->Get_Point((CCell::POINTS)j), 0.1f);
 					NaviCellDesc.iSphereIndex[j] = m_vecSphere.size();
 					m_vecSphere.push_back(pSphere);
 				}
@@ -332,7 +332,7 @@ _bool CTerrain_Window::Set_NaviPickPos()
 			}
 
 			m_vNaviPos[i].vPosition = _float3(m_vPickPos.x, m_vPickPos.y + 0.001f, m_vPickPos.z);
-     		BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.5f);
+     		BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.1f);
 			m_vNaviPos[i].iSphereIndex = m_vecSphere.size();
 			m_vecSphere.push_back(pSphere);
 			return false;

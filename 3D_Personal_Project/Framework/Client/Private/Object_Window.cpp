@@ -276,6 +276,8 @@ HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 				m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
 			}
 			else {
+				strLayerName = CUtility_String::WString_To_string(g_strLayerName[LAYER::LAYER_PLATEFORM]);
+
 				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
 					, CUtility_String::string_To_Wstring(strLayerName), G0_OBJECTMESH_DEMO_TAG,
 					&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
