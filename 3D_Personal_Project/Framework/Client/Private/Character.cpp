@@ -73,15 +73,6 @@ HRESULT CCharacter::Render()
 	return S_OK;
 }
 
-void CCharacter::Reset_Physics_Desc()
-{
-	m_Physics_Desc.bGround = true;
-	m_Physics_Desc.bJump = false;
-	m_Physics_Desc.bDoubleJump = false;
-	m_Physics_Desc.bFall = false;
-	m_Physics_Desc.bLanding = false;
-}
-
 void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 {
 	if (m_pModelCom == nullptr)

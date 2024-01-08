@@ -34,11 +34,8 @@ public:
 
 		_float	fTurnSpeed = 25.f * 0.2f;
 
-		_bool	bGround = true;
 		_bool	bJump = false;
 		_bool	bDoubleJump = false;
-		_bool	bFall = false;
-		_bool	bLanding = false;
 
 	}PHYSICS_DESC;
 
@@ -67,7 +64,6 @@ public:
 
 public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
-	void			Reset_Physics_Desc();
 	STATUS_DESC*	Open_Status_Desc() { return &m_Status_Desc; }
 
 public:

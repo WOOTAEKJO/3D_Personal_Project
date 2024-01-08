@@ -147,22 +147,8 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 						return false;
 				}
 
-				// 현재 점프 셀일 때
-				if (m_vecCell[m_iCurrentCellIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
-				{
-					_float3 vPos;
-					XMStoreFloat3(&vPos, vPosition);
-
-					/*if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
-					{
-						
-					}*/
-					m_bNaviFall = true;
-				}
-
 				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 				{
-					m_iPrevCellIndex = m_iCurrentCellIndex;
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
 				}

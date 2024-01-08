@@ -39,8 +39,6 @@ public:
 	_float	Get_Cell_Height(_float3 vPos);
 	void	Set_CurrentIndex(_int iCurrentInd) { m_iCurrentCellIndex = iCurrentInd; }
 	_int	Get_CurrentIndex() { return m_iCurrentCellIndex; }
-	void	Set_NaviFall(_bool bFall) { m_bNaviFall = bFall; }
-	_bool	Get_NaviFall() { return m_bNaviFall; }
 
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);
@@ -59,15 +57,11 @@ private:
 
 private:
 	_int					m_iCurrentCellIndex = { -1 };
-	_int					m_iPrevCellIndex = { -1 };
 
 private:
 	static _float4x4		m_matWorld;
 
 	NAVITYPE				m_eNaviType = { NAVITYPE::TYPE_END };
-
-private:
-	_bool					m_bNaviFall = { false };
 
 private:
 	HRESULT	Init_Neighbor();

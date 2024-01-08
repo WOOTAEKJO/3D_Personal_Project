@@ -55,6 +55,7 @@ public:
 
 public:
 	void	Set_Ground(_bool bGround) { m_bGround = bGround; }
+	_bool	Is_Ground() { return m_bGround; }
 
 public: /* 카메라에 사용*/
 	void	Go_Straight(_float fTimeDelta, CNavigation* pNavigation = nullptr);

@@ -38,8 +38,7 @@ void CRigidBody::Priority_Tick(_float fTimeDelta)
 
 void CRigidBody::Tick(_float fTimeDelta)
 {
-	
-	if(m_bGravity)
+	if (!m_pOwnerTransform->Is_Ground())
 		Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fGravity * fTimeDelta, TYPE_VELOCITY);
 
 	XMStoreFloat3(&m_vPower[TYPE_VELOCITY], XMLoadFloat3(&m_vPower[TYPE_VELOCITY]) +
@@ -57,45 +56,20 @@ void CRigidBody::Late_Tick(_float fTimeDelta)
 
 void CRigidBody::Jump(_float fJumpPower, _float fGravityPower)
 {
-	m_bGravity = true;
 	m_fGravity = fGravityPower;
 	Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), fJumpPower,TYPE_VELOCITY);
 }
 
 _bool CRigidBody::Is_Land()
 {
-	_float3 vOnwerPos = {};
-
-	XMStoreFloat3(&vOnwerPos, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_float fHeight = m_pOwnerNavigation->Get_Cell_Height(vOnwerPos);
-
-	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] <= fHeight)
+	
+	if (m_pOwnerTransform->Is_Ground())
+	{
+		Reset_Force(TYPE_VELOCITY);
 		return true;
+	}
 
 	return false;
-}
-
-void CRigidBody::Land()
-{
-	m_bGravity = false;
-
-	Reset_Force(TYPE_VELOCITY);
-
-	_float3 vOnwerPos = {};
-
-	XMStoreFloat3(&vOnwerPos, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_float fHeight = m_pOwnerNavigation->Get_Cell_Height(vOnwerPos);
-
-	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] <= 
-		fHeight) {
-
-		_float4 vPos;
-		memcpy(&vPos, &m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3], sizeof(_float4));
-
-		m_pOwnerTransform->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(vPos.x, fHeight, vPos.z, vPos.w));
-	}
 }
 
 _bool CRigidBody::Is_Power_Zero(TYPE eType)

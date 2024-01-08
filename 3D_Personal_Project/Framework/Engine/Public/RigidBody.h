@@ -32,13 +32,9 @@ public:
 public:
 	void	Set_GravityPower(_float fPower) { m_fGravity = fPower; }
 
-	void	Set_GravityCheck(_bool bCheck) { m_bGravity = bCheck; }
-	_bool	Is_GravityCheck() { return m_bGravity; }
-
 public:
 	void	Jump(_float fJumpPower,_float fGravityPower);
 	_bool	Is_Land();
-	void	Land();
 
 public:
 	void	Force(_fvector vDir, _float fPower,TYPE eType);
@@ -46,7 +42,6 @@ public:
 	_bool	Is_Power_Zero(TYPE eType);
 
 public:
-	//CGameObject*	m_pOwner = { nullptr };
 	CTransform*		m_pOwnerTransform = { nullptr };
 	CNavigation*	m_pOwnerNavigation = { nullptr };
 
@@ -54,7 +49,6 @@ private:
 	_float			m_fGravity = { -9.8f };
 
 private:
-	_bool			m_bGravity = { false };
 	_float3			m_vResist = {};
 	_float3			m_vPower[TYPE_END] = {};
 

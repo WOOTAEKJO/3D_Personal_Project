@@ -223,7 +223,6 @@ void CTransform::LookAt_OnLand(_fvector fTargetPos)
 
 void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _float fTimeDelta)
 {
-
 	if (pNavigation == nullptr)
 		return;
 
@@ -263,13 +262,17 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 	_vector vTemp;
 	vTemp = bWall ? vSlidePos : vTranslation;
 
-	if (m_bGround) {
+	_float3 fvPos = {};
 
-		_float3 fvPos = {};
+	XMStoreFloat3(&fvPos, vWorldPos);
 
-		XMStoreFloat3(&fvPos, vWorldPos);
+	_float fHeight = pNavigation->Get_Cell_Height(fvPos);
 
-		_float fHeight = pNavigation->Get_Cell_Height(fvPos);
+	_float fY = vWorldPos.m128_f32[1];
+
+	if (fHeight >= fY)
+	{
+		m_bGround = true;
 
 		vTemp.m128_f32[1] = 0.f;
 
@@ -278,9 +281,11 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
 	else {
+
+		m_bGround = false;
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
-	
+
 	if (isnan(m_matWorldMatrix.m[0][0]))
 	{
 		int a = 0;
@@ -292,10 +297,7 @@ void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	/*_vector vAt = XMVectorSet(vPos.m128_f32[0] + vLook.m128_f32[0] * fTimeDelta,
-		vPos.m128_f32[1], vPos.m128_f32[2] + vLook.m128_f32[2] * fTimeDelta, 1.f);*/
-	if (m_bGround)
-		vLook.m128_f32[1] = 0.f;
+	vLook.m128_f32[1] = 0.f;
 
 	LookAt(vPos + vLook);
 
@@ -306,7 +308,6 @@ _bool CTransform::Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta)
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	//if(m_bGround)
 	vLook.m128_f32[1] = 0.f;
 
 	return Turn_Target_Yaxis(vPos + vLook, fTimeDelta);

@@ -159,10 +159,7 @@ void CPlayer_State::Move(_float fTimeDelta)
 
 _bool CPlayer_State::Falling()
 {
-	if (m_pOnwerNavigation == nullptr)
-		return false;
-
-	return m_pOnwerNavigation->Get_NaviFall();
+	return !m_pOnwerTransform->Is_Ground() && m_pOnwerRigidBody->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY);
 }
 
 void CPlayer_State::Free()
