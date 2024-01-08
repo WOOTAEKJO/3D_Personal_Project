@@ -77,6 +77,7 @@ private:
 	_bool									m_bNeviPosTrans = { false };
 	_int									m_iCellType = { 0 };
 	_int									m_iNaviWorkType = { 0 };
+	_float									m_fJumpCellHeight = { 0.1f };
 
 private:
 	vector<CObjectMesh_Demo*>*				m_vecDemo;

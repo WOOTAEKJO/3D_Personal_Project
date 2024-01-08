@@ -22,6 +22,7 @@ public:
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
+	_bool	Compare_Points_XZ(_float3 SourPoint, _float3 DestPoint);
 	_bool	IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine);
 	_float	Get_Height(_float3 vPos);
 	_bool	Is_Height(_float3 vPos);

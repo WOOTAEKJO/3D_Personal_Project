@@ -65,6 +65,7 @@ private:
 
 private:
 	HRESULT	Init_Neighbor();
+	HRESULT	Init_Neighbor_XZ();
 
 public:
 	static CNavigation* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, NAVITYPE eType, const _char* strNavigationPath);

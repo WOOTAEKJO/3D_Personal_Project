@@ -231,6 +231,7 @@
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Plateform.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Fall.h" />
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Land.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Roll.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Land.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp" />

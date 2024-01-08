@@ -139,12 +139,12 @@ void CCrow::Attack_Cool(_float fCool,_float fTimeDelta)
 
 _bool CCrow::Attack_Input()
 {
-	if (m_bAttack && m_pGameInstance->Mouse_Down(DIM_RB))
+	/*if (m_bAttack && m_pGameInstance->Mouse_Down(DIM_RB))
 	{
 		m_bAttack = false;
 
 		return true;
-	}
+	}*/
 
 	return false;
 }

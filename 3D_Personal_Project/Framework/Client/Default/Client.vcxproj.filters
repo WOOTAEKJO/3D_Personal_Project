@@ -292,6 +292,9 @@
     <Filter Include="02.GameObjects\03. Platform">
       <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\06. Fall">
+      <UniqueIdentifier>{8a25b8a5-cb57-45b2-9b05-1d68e7eb4037}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Fall.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -754,6 +760,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

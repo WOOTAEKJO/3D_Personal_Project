@@ -136,14 +136,26 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 				if (iNeighborIndex == -1)
 					return false;
 
+				// 노멀 셀에서 점프 셀로 갈 때 처리
 				if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+				{
+					_float3 vPos;
+					XMStoreFloat3(&vPos, vPosition);
+
+					// 플레이어의 높이 값이 셀의 높이 값보다 작으면 실패
+					if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
+						return false;
+				}
+
+				// 현재 점프 셀일 때
+				if (m_vecCell[m_iCurrentCellIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
 				{
 					_float3 vPos;
 					XMStoreFloat3(&vPos, vPosition);
 
 					if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
 					{
-						return false;
+						m_bNaviFall = true;
 					}
 				}
 
@@ -210,7 +222,9 @@ HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellTy
 
 	m_vecCell.push_back(pCell);
 
-	if (FAILED(Init_Neighbor()))
+	/*if (FAILED(Init_Neighbor()))
+		return E_FAIL;*/
+	if (FAILED(Init_Neighbor_XZ()))
 		return E_FAIL;
 
 	return S_OK;
@@ -240,8 +254,10 @@ void CNavigation::Delete_Cell(_uint iCellIndex)
 		}
 	}
 
-	if (FAILED(Init_Neighbor()))
-		return;
+	/*if (FAILED(Init_Neighbor()))
+		return;*/
+	if (FAILED(Init_Neighbor_XZ()))
+		return ;
 }
 
 _bool CNavigation::Compute_MousePos(_uint* iCellIndex)
@@ -329,6 +345,33 @@ HRESULT CNavigation::Init_Neighbor()
 	return S_OK;
 }
 
+HRESULT CNavigation::Init_Neighbor_XZ()
+{
+	for (auto& SourCell : m_vecCell)
+	{
+		for (auto& DestCell : m_vecCell)
+		{
+			if (SourCell == DestCell)
+				continue;
+
+			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_A), SourCell->Get_Point(CCell::POINTS::POINT_B)))
+			{
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, DestCell->Get_Index());
+			}
+			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_B), SourCell->Get_Point(CCell::POINTS::POINT_C)))
+			{
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, DestCell->Get_Index());
+			}
+			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_C), SourCell->Get_Point(CCell::POINTS::POINT_A)))
+			{
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, DestCell->Get_Index());
+			}
+		}
+	}
+
+	return S_OK;
+}
+
 HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 {
 	
@@ -354,7 +397,9 @@ HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 
 	Safe_Release(pMeshData);
 
-	if (FAILED(Init_Neighbor()))
+	/*if (FAILED(Init_Neighbor()))
+		return E_FAIL;*/
+	if (FAILED(Init_Neighbor_XZ()))
 		return E_FAIL;
 
 	return S_OK;

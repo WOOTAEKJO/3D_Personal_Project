@@ -87,7 +87,7 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
 			return true;
 	}
-
+	
 	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&SourPoint)))
 	{
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
@@ -101,6 +101,47 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_A]), XMLoadFloat3(&DestPoint)))
 			return true;
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&DestPoint)))
+			return true;
+	}
+
+	return false;
+}
+
+_bool CCell::Compare_Points_XZ(_float3 SourPoint, _float3 DestPoint)
+{
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+	}
+
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+	}
+
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
 			return true;
 	}
 
@@ -147,7 +188,7 @@ _bool CCell::Is_Height(_float3 vPos)
 {
 	_float fHeight = Get_Height(vPos);
 
-	if (vPos.y > fHeight)
+	if (vPos.y >= fHeight)
 		return true;
 
 	return false;

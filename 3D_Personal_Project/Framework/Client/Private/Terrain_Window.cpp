@@ -302,7 +302,12 @@ void CTerrain_Window::Navigation()
 
 		ImGui::RadioButton("Normal", &m_iCellType, 0);
 		ImGui::SameLine();
-		ImGui::RadioButton("Jump", &m_iCellType, 1);	
+		ImGui::RadioButton("Jump", &m_iCellType, 1);
+
+		if (m_iCellType == 1)
+		{
+			Arrow_Button("Interval", 0.1f, &m_fJumpCellHeight);
+		}
 	}
 
 	ImGui::Checkbox("Trans", &m_bNeviPosTrans);
@@ -374,9 +379,22 @@ _bool CTerrain_Window::Set_NaviPickPos()
 				_float fDist = 0.f;
 				if (m_pGameInstance->Intersect_Sphere(m_vecSphere[j], &fDist))
 				{
-					m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
-					m_vNaviPos[i].iSphereIndex = j;
-					return false;
+					if (m_iCellType == 0) // 셀이 Normal 타입일 때
+					{
+						m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
+						m_vNaviPos[i].iSphereIndex = j;
+						return false;
+					}
+					else if (m_iCellType == 1) // 셀이 Jump 타입일 때
+					{
+						m_vNaviPos[i].vPosition = _float3(m_vecSphere[j]->Center.x,
+							m_vecSphere[j]->Center.y + 0.001f + m_fJumpCellHeight ,
+							m_vecSphere[j]->Center.z);
+						BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.1f);
+						m_vNaviPos[i].iSphereIndex = m_vecSphere.size();
+						m_vecSphere.push_back(pSphere);
+						return false;
+					}
 				}
 			}
 
