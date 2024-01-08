@@ -17,6 +17,7 @@
 #include "Player_Jump.h"
 #include "Player_Roll.h"
 #include "Player_Land.h"
+#include "Player_Fall.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -230,6 +231,7 @@ HRESULT CPlayer::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::JUMP, CPlayer_Jump::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::LAND, CPlayer_Land::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ROLL, CPlayer_Roll::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::FALL, CPlayer_Fall::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;

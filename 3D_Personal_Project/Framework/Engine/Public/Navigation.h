@@ -59,6 +59,7 @@ private:
 
 private:
 	_int					m_iCurrentCellIndex = { -1 };
+	_int					m_iPrevCellIndex = { -1 };
 
 private:
 	static _float4x4		m_matWorld;

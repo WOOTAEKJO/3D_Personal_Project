@@ -32,6 +32,9 @@ public:
 public:
 	void	Set_GravityPower(_float fPower) { m_fGravity = fPower; }
 
+	void	Set_GravityCheck(_bool bCheck) { m_bGravity = bCheck; }
+	_bool	Is_GravityCheck() { return m_bGravity; }
+
 public:
 	void	Jump(_float fJumpPower,_float fGravityPower);
 	_bool	Is_Land();

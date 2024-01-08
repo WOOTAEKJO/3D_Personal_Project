@@ -153,14 +153,16 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 					_float3 vPos;
 					XMStoreFloat3(&vPos, vPosition);
 
-					if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
+					/*if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
 					{
-						m_bNaviFall = true;
-					}
+						
+					}*/
+					m_bNaviFall = true;
 				}
 
 				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 				{
+					m_iPrevCellIndex = m_iCurrentCellIndex;
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
 				}
@@ -287,6 +289,7 @@ _float CNavigation::Get_Cell_Height(_float3 vPos)
 
 	return m_vecCell[m_iCurrentCellIndex]->Get_Height(vPos);
 }
+
 
 HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
 {

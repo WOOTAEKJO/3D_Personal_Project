@@ -17,7 +17,9 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 
-
+private:
+	void	Land();
+	void	Jump();
 
 public:
 	static	CPlayer_Fall* Create(CGameObject * pGameObject);

@@ -21,8 +21,8 @@ private:
 private:
 	void	Jump();
 	void	Land();
-	void	Fall();
-	void	Move(_float fTimeDelta);
+	_bool	Is_Fall();
+	
 
 public:
 	static	CPlayer_Jump* Create(CGameObject * pGameObject);

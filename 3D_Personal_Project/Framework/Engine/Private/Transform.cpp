@@ -25,6 +25,11 @@ void CTransform::Set_Scaling(_float fX, _float fY, _float fZ)
 	Set_State(STATE::STATE_RIGHT, XMVector3Normalize(Get_State(STATE::STATE_RIGHT)) * fX);
 	Set_State(STATE::STATE_UP, XMVector3Normalize(Get_State(STATE::STATE_UP)) * fY);
 	Set_State(STATE::STATE_LOOK, XMVector3Normalize(Get_State(STATE::STATE_LOOK)) * fZ);
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}	
 }
 
 void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
@@ -95,10 +100,16 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 	Set_State(STATE::STATE_LOOK,XMVector3TransformNormal(Get_State(STATE::STATE_LOOK), matRotation));
 
 	// 회전하는데 크기는 영향을 미치지 않음
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
+
 	_float3 fScale = Get_Scaled();
 
 	_vector	vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * fScale.x;
@@ -112,10 +123,16 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, matRotation));
 	Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, matRotation));
 	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotation));
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::Rotation_Total(_float fX, _float fY, _float fZ)
 {
+
 	_float3 fScale = Get_Scaled();
 
 	_vector	vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * fScale.x;
@@ -133,10 +150,16 @@ void CTransform::Rotation_Total(_float fX, _float fY, _float fZ)
 	Set_State(STATE::STATE_RIGHT, XMVector3TransformNormal(vRight, matRotT));
 	Set_State(STATE::STATE_UP, XMVector3TransformNormal(vUp, matRotT));
 	Set_State(STATE::STATE_LOOK, XMVector3TransformNormal(vLook, matRotT));
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::Towards_Target(_fvector fTargetPos, _float fTimeDelta, _float fSpare)
 {
+
 	_vector vPos = Get_State(STATE::STATE_POS);
 	_vector vDir = fTargetPos - vPos;
 
@@ -146,6 +169,11 @@ void CTransform::Towards_Target(_fvector fTargetPos, _float fTimeDelta, _float f
 		vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
 
 	Set_State(STATE::STATE_POS, vPos);
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::LookAt(_fvector fTargetPos)
@@ -161,10 +189,16 @@ void CTransform::LookAt(_fvector fTargetPos)
 	Set_State(STATE::STATE_RIGHT, vRight);
 	Set_State(STATE::STATE_UP, vUp);
 	Set_State(STATE::STATE_LOOK, vLook);
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::LookAt_OnLand(_fvector fTargetPos)
 {
+
 	_float3 fScale = Get_Scaled();
 
 	_vector	vPos = Get_State(STATE::STATE_POS);
@@ -180,10 +214,16 @@ void CTransform::LookAt_OnLand(_fvector fTargetPos)
 	Set_State(STATE::STATE_RIGHT, vRight);
 	Set_State(STATE::STATE_UP, vUp);
 	Set_State(STATE::STATE_LOOK, vLook);
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _float fTimeDelta)
 {
+
 	if (pNavigation == nullptr)
 		return;
 
@@ -241,6 +281,10 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
 	
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 }
 
 void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
@@ -254,6 +298,7 @@ void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
 		vLook.m128_f32[1] = 0.f;
 
 	LookAt(vPos + vLook);
+
 }
 
 _bool CTransform::Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta)
@@ -282,6 +327,9 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 
 	_float fAngle = acos(XMVectorGetX(XMVector3Dot(Dir, XMVector3Normalize(vLook))));
 	
+	if (isnan(fAngle))
+		return false;
+
 	_vector vCross = XMVector3Cross(Dir, vLook);
 
 	if (XMVectorGetY((vCross)) > 0.f)
@@ -293,6 +341,11 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 		return true;
 	
 	Turn(Get_State(CTransform::STATE::STATE_UP), fTimeDelta * fAngle);
+
+	if (isnan(m_matWorldMatrix.m[0][0]))
+	{
+		int a = 0;
+	}
 
 	return false;
 }

@@ -148,6 +148,23 @@ _bool CPlayer_State::Key_Input(_float fTimeDelta)
 	return true;
 }
 
+void CPlayer_State::Move(_float fTimeDelta)
+{
+	if (Key_Input(fTimeDelta))
+	{
+		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed,
+			fTimeDelta);
+	}
+}
+
+_bool CPlayer_State::Falling()
+{
+	if (m_pOnwerNavigation == nullptr)
+		return false;
+
+	return m_pOnwerNavigation->Get_NaviFall();
+}
+
 void CPlayer_State::Free()
 {
 	__super::Free();

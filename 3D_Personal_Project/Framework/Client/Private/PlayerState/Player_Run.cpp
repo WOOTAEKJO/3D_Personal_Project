@@ -23,7 +23,9 @@ void CPlayer_Run::State_Enter()
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
 {
-	
+	if (Falling())
+		return CPlayer::STATE::FALL;
+
 	return m_iStateID;
 }
 
