@@ -308,6 +308,14 @@ void CTerrain_Demo::Selected_Delete_Cell(_uint iCellIndex)
 	m_pNavigationCom->Delete_Cell(iCellIndex);
 }
 
+void CTerrain_Demo::Set_Cell_Type(_uint iCellType, _uint iIndex)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Set_Cell_Type(iCellType, iIndex);
+}
+
 _bool CTerrain_Demo::Picked_Cell(_uint* iCellIndex)
 {
 	if (m_pNavigationCom == nullptr)

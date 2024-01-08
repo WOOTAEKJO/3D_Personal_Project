@@ -39,7 +39,10 @@ public:
 		m_iNeighborIndex[eType] = iIndex;
 	}
 
+	_int	Get_NeighborIndex(LINES eType) { return m_iNeighborIndex[eType]; }
+
 	CELLTYPE	Get_CellType() { return m_eCell_Type; }
+	void		Set_CellType(CELLTYPE eType) { m_eCell_Type = eType; }
 
 #ifdef _DEBUG
 	HRESULT	Render(CShader* pShader, _float4 vColor);

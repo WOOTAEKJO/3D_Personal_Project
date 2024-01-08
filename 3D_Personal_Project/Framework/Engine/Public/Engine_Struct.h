@@ -226,6 +226,8 @@ namespace Engine
 		FLOAT3X3	vPoints;
 		_uint		iCellType;
 
+		//_uint3		iNeighborIndexs;
+
 	}CELL;
 
 	typedef struct tagLevelObjectDesc

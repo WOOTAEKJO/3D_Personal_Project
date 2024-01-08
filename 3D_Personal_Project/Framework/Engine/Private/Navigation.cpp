@@ -394,6 +394,17 @@ HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 	return S_OK;
 }
 
+void CNavigation::Set_Cell_Type(_uint iCellType, _uint iIndex)
+{
+	if (iIndex >= m_vecCell.size() || m_vecCell[iIndex] == nullptr)
+		return;
+
+	if (iCellType >= (_uint)CCell::CELLTYPE::TYPE_END)
+		return;
+
+	m_vecCell[iIndex]->Set_CellType((CCell::CELLTYPE)iCellType);
+}
+
 vector<CCell*> CNavigation::Get_Navigation_Cells()
 {
 	return m_vecCell;

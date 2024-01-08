@@ -45,6 +45,9 @@ public:
 	HRESULT	File_Load(const _char* strNavigationPath);
 
 public:
+	void	Set_Cell_Type(_uint iCellType, _uint iIndex);
+
+public:
 	vector<class CCell*> Get_Navigation_Cells();
 
 #ifdef _DEBUG

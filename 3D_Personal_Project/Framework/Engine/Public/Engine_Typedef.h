@@ -39,6 +39,11 @@ namespace Engine
 	typedef		XMFLOAT3					_float3;
 	typedef		XMFLOAT2					_float2;
 
+	/* 저장용 데이터 타입. */
+	typedef		XMINT2						_int2;
+	typedef		XMINT3						_int3;
+	typedef		XMINT4						_int4;
+
 	/* 연산용 데이터 타입. */
 	typedef		XMVECTOR					_vector;
 	typedef		FXMVECTOR					_fvector;

@@ -52,6 +52,7 @@ public:
 	void	Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Selected_Delete_Cell(_uint iCellIndex);
+	void	Set_Cell_Type(_uint iCellType, _uint iIndex);
 
 	_bool	Picked_Cell(_uint* iCellIndex);
 

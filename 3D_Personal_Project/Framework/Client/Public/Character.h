@@ -26,7 +26,8 @@ public:
 
 	typedef struct tagPhysicsDesc
 	{
-		_float	fForwardSpeed = 5.5f;
+		_float	fForwardSpeed = 1.5f;
+		//_float	fForwardSpeed = 5.5f;
 
 		_float	fJumpPower = 2.f;
 		_float	fJumpGravity = -9.8f * 0.2f;

@@ -61,12 +61,14 @@ HRESULT CPlayer::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
-	// 왜 그런지는 모르겠으나, 크기 값을 바꿔 주면 월드행렬 값이 갑자기 nan 값으로 바뀌어 플레이어 자체가 사라짐
-	// 시팔 왜 이런거야
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(3.f, 7.f, 3.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(44.f, 9.f, 33.f, 1.f));
+	//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(2.f, 7.f, 3.f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
+
+	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	m_pNavigationCom->Set_CurrentIndex(445);
 
 	return S_OK;
 }

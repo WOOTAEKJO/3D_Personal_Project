@@ -335,12 +335,18 @@ void CTerrain_Window::Navigation()
 		}
 	}
 
-	if (ImGui::Button("All_Delete"))
+	/*if (ImGui::Button("All_Delete"))
 	{
 		All_Delete_Cell();
-	}
+	}*/
 
 	if (m_iCurrentNaviModeRadioButton == 2) {
+		
+		if (ImGui::Button("Change Cell Type"))
+		{
+			m_pTerrain->Set_Cell_Type(m_iCellType, m_iCurrentCellIndex);
+		}
+
 		if (ImGui::Button("Selected_Delete"))
 		{
 			Selected_Delete_Cell();
