@@ -123,14 +123,22 @@ void CTerrain_Window::Demo_Picked()
 				if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
 					_uint iSize = m_vecDemo->size();
-
+					_float fMinDist = 1000.f;
+					_float fDist = 0.f;
+					_float4 vPos = {};
 					for (size_t i = 0; i < iSize; i++)
 					{
-  						if ((*m_vecDemo)[i]->Get_Picked_Dist(&m_vPickPos))
+  						if ((*m_vecDemo)[i]->Get_Picked_Dist(&vPos, &fDist))
 						{
-							Set_NaviPickPos();
+							if (fMinDist > fDist)
+							{
+								fMinDist = fDist;
+								m_vPickPos = vPos;
+							}
 						}
 					}
+
+					Set_NaviPickPos();
 				}
 			}
 		}
@@ -147,6 +155,14 @@ void CTerrain_Window::Demo_Picked()
 		}
 
 	}
+}
+
+string CTerrain_Window::Get_Path()
+{
+	if (m_eCurrentMode == TERRAINMODE::MODE_HEIGHT)
+		return "../Bin/Data/Terrain/";
+	else if(m_eCurrentMode == TERRAINMODE::MODE_NAVIGATION)
+		return "../Bin/Data/Terrain/Navigation/";
 }
 
 HRESULT CTerrain_Window::Save_Data(const _char* strFilePath)

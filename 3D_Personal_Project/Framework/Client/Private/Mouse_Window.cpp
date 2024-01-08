@@ -46,6 +46,11 @@ void CMouse_Window::Demo_Picked()
 {
 }
 
+string CMouse_Window::Get_Path()
+{
+	return string();
+}
+
 CMouse_Window* CMouse_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)
 {
 	CMouse_Window* pInstance = new CMouse_Window(pDevice, pContext);

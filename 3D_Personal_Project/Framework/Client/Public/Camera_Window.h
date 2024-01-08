@@ -16,6 +16,7 @@ public:
 	virtual	void	Set_Variable(void* pArg);
 	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
 	virtual	void	Demo_Picked() override;
+	virtual	string	Get_Path() override;
 	virtual	HRESULT	Save_Data(const _char* strFilePath) override;
 	virtual	HRESULT	Load_Data(const _char* strFilePath) override;
 

@@ -111,12 +111,20 @@ void CObject_Window::Demo_Picked()
  	if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
 		if (m_eCurrentType == TYPE::TYPE_NONANIM) {
-			for (size_t i = 0; i < m_vecDemo.size(); i++)
+
+			_uint iSize = m_vecDemo.size();
+			_float fMinDist = 1000.f;
+			_float fDist = 0.f;
+
+			for (size_t i = 0; i < iSize; i++)
 			{
-				if (m_vecDemo[i]->Get_Picked(&vOutPos))
+				if (m_vecDemo[i]->Get_Picked_Dist(&vOutPos, &fDist))
 				{
-					m_iCurrentDemoIndex = (_uint)i;
-					return;
+					if (fMinDist > fDist)
+					{
+						fMinDist = fDist;
+						m_iCurrentDemoIndex = (_uint)i;
+					}
 				}
 			}
 		}
@@ -132,6 +140,11 @@ void CObject_Window::Demo_Picked()
 			}
 		}
 	}
+}
+
+string CObject_Window::Get_Path()
+{
+	return "../Bin/Data/Object/";
 }
 
 HRESULT CObject_Window::Save_Data(const _char* strFilePath)
@@ -385,17 +398,6 @@ void CObject_Window::ObjectMesh()
 	}
 	ImGui::EndListBox();
 
-	if (ImGui::Button("Delete Object")) {
-		if (!m_vecDemo.empty() && m_vecDemo[m_iCurrentDemoIndex] != nullptr)
-		{
-			m_vecDemo[m_iCurrentDemoIndex]->Set_Dead();
-			m_vecDemo.erase(m_vecDemo.begin() + m_iCurrentDemoIndex);
-
-			if (m_iCurrentDemoIndex != 0)
-				--m_iCurrentDemoIndex;
-		}
-	}
-
 	ImGui::Separator();
 	string strMessage = "Selected : " + m_strCurrentDemoTag;
 	ImGui::Text(strMessage.c_str());
@@ -423,6 +425,17 @@ void CObject_Window::ObjectMesh()
 			break;
 		}
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecDemo[m_iCurrentDemoIndex]);
+	}
+
+	if (ImGui::Button("Delete Object")) {
+		if (!m_vecDemo.empty() && m_vecDemo[m_iCurrentDemoIndex] != nullptr)
+		{
+			m_vecDemo[m_iCurrentDemoIndex]->Set_Dead();
+			m_vecDemo.erase(m_vecDemo.begin() + m_iCurrentDemoIndex);
+
+			if (m_iCurrentDemoIndex != 0)
+				--m_iCurrentDemoIndex;
+		}
 	}
 }
 

@@ -48,6 +48,11 @@ void CCamera_Window::Demo_Picked()
 {
 }
 
+string CCamera_Window::Get_Path()
+{
+	return string();
+}
+
 HRESULT CCamera_Window::Save_Data(const _char* strFilePath)
 {
 	

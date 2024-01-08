@@ -330,23 +330,22 @@ void CImGuiMgr::Grid_Draw()
 
 void CImGuiMgr::File_Render()
 {
-    string  strPath = CUtility_String::WString_To_string(FILE_PATH) + "/Data/";
+   
     const char* Filter = nullptr;
 
+    CImGui_Window* pWindow = Find_Window(M_eCurentMode, WINDOWSTATE::WS_MAIN);
+    string  strPath = pWindow->Get_Path();
     switch (M_eCurentMode)
     {
     case Client::CImGuiMgr::MODE_STATIC:
         return;
     case Client::CImGuiMgr::MODE_TERRAIN:
-        strPath = strPath + "Terrain/";
         Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_OBJECT:
-        strPath = strPath + "Object/";
         Filter = ".bin";
         break;
     case Client::CImGuiMgr::MODE_ANIMATION:
-        strPath = strPath + "Animation/";
         Filter = ".json";
         break;
     case Client::CImGuiMgr::MODE_CAMERA:
