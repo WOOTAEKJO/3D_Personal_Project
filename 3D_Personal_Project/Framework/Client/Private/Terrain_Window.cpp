@@ -119,16 +119,17 @@ void CTerrain_Window::Demo_Picked()
 
 		if (m_iNaviWorkType == 1)
 		{
-			if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+			if (m_pGameInstance->Key_Pressing(DIK_SPACE)) {
+				if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
-				_uint iSize = m_vecDemo->size();
+					_uint iSize = m_vecDemo->size();
 
-				for (size_t i = 0; i < iSize; i++)
-				{
-					if ((*m_vecDemo)[i]->Get_Picked(&m_vPickPos))
+					for (size_t i = 0; i < iSize; i++)
 					{
-						Set_NaviPickPos();
-
+  						if ((*m_vecDemo)[i]->Get_Picked_Dist(&m_vPickPos))
+						{
+							Set_NaviPickPos();
+						}
 					}
 				}
 			}

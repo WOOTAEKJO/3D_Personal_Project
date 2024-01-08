@@ -30,11 +30,13 @@ _uint CPlayer_Fall::State_Priority_Tick(_float fTimeDelta)
 	if (m_pOnwerRigidBody->Is_Land())
 	{
 		if (m_pOwner->Open_Physics_Desc()->bDoubleJump) {
-			Land();
+			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
+			m_pOwner->Open_Physics_Desc()->bJump = false;
 			return CPlayer::STATE::LAND;
 		}
 		else {
-			Land();
+			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
+			m_pOwner->Open_Physics_Desc()->bJump = false;
 			return CPlayer::STATE::IDLE;
 		}
 	}
@@ -76,17 +78,6 @@ _uint CPlayer_Fall::State_Late_Tick(_float fTimeDelta)
 void CPlayer_Fall::State_Exit()
 {
 
-}
-
-void CPlayer_Fall::Land()
-{
-	m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
-	m_pOwner->Open_Physics_Desc()->bJump = false;
-}
-
-void CPlayer_Fall::Jump()
-{
-	m_pOnwerRigidBody->Jump(m_pOwner->Open_Physics_Desc()->fJumpPower, m_pOwner->Open_Physics_Desc()->fJumpGravity);
 }
 
 CPlayer_Fall* CPlayer_Fall::Create(CGameObject* pGameObject)

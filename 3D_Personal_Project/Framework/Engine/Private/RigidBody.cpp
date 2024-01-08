@@ -54,12 +54,6 @@ void CRigidBody::Late_Tick(_float fTimeDelta)
 	Near_Zero_Force(TYPE_VELOCITY);
 }
 
-void CRigidBody::Jump(_float fJumpPower, _float fGravityPower)
-{
-	m_fGravity = fGravityPower;
-	Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), fJumpPower,TYPE_VELOCITY);
-}
-
 _bool CRigidBody::Is_Land()
 {
 	

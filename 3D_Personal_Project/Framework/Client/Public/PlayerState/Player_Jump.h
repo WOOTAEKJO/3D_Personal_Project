@@ -20,9 +20,6 @@ private:
 	
 private:
 	void	Jump();
-	void	Land();
-	_bool	Is_Fall();
-	
 
 public:
 	static	CPlayer_Jump* Create(CGameObject * pGameObject);

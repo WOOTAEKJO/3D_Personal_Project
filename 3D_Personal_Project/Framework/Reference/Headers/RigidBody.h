@@ -33,7 +33,6 @@ public:
 	void	Set_GravityPower(_float fPower) { m_fGravity = fPower; }
 
 public:
-	void	Jump(_float fJumpPower,_float fGravityPower);
 	_bool	Is_Land();
 
 public:

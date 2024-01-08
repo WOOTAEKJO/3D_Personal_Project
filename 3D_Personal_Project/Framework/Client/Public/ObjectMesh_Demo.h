@@ -39,6 +39,7 @@ public:
 
 public:
 	_bool	Get_Picked(_float4* vOutPos);
+	_bool	Get_Picked_Dist(_float4* vOutPos);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;

@@ -70,24 +70,14 @@ _uint CPlayer_Jump::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Jump::State_Exit()
 {
-	/*m_pOwner->Open_Physics_Desc()->bGround = true;
-	m_pOwner->Open_Physics_Desc()->bLanding = false;*/
+
 }
 
 void CPlayer_Jump::Jump()
 {
-	m_pOnwerRigidBody->Jump(m_pOwner->Open_Physics_Desc()->fJumpPower, m_pOwner->Open_Physics_Desc()->fJumpGravity);
-}
-
-void CPlayer_Jump::Land()
-{
-	m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
-	m_pOwner->Open_Physics_Desc()->bJump = false;
-}
-
-_bool CPlayer_Jump::Is_Fall()
-{
-	return m_pOnwerRigidBody->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY);
+	m_pOnwerRigidBody->Set_GravityPower(m_pOwner->Open_Physics_Desc()->fJumpGravity);
+	m_pOnwerRigidBody->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_pOwner->Open_Physics_Desc()->fJumpPower,
+		CRigidBody::TYPE::TYPE_VELOCITY);
 }
 
 CPlayer_Jump* CPlayer_Jump::Create(CGameObject* pGameObject)

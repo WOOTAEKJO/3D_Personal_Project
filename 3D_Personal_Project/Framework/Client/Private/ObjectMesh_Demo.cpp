@@ -143,6 +143,26 @@ _bool CObjectMesh_Demo::Get_Picked(_float4* vOutPos)
 	return false;
 }
 
+_bool CObjectMesh_Demo::Get_Picked_Dist(_float4* vOutPos)
+{
+	if (m_pModelCom == nullptr ||
+		m_pTransformCom == nullptr)
+		return false;
+
+	_float3 vPickPos;
+
+	if (m_pModelCom->Compute_MousePos_Dist(&vPickPos,m_pTransformCom->Get_WorldMatrix_Matrix()))
+	{
+		XMStoreFloat4(vOutPos, XMVector3TransformCoord(XMLoadFloat3(&vPickPos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+
+		//*vOutPos = _float4(vPickPos.x, vPickPos.y, vPickPos.z, 1.f);
+
+		return true;
+	}
+
+	return false;
+}
+
 void CObjectMesh_Demo::Write_Json(json& Out_Json)
 {
 	string strTag;
