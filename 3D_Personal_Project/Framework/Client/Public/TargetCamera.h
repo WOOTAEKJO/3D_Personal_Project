@@ -31,13 +31,24 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 
 private:
-	CGameObject*	m_pTarget = { nullptr };
-	CTransform*		m_pTargetTransform = { nullptr };
-	CStateMachine*	m_pTargetStateMachine = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
+	CTransform* m_pTargetTransform = { nullptr };
+	CStateMachine* m_pTargetStateMachine = { nullptr };
+
+private:
+	CNavigation* m_pNavigationCom = { nullptr };
 
 private:
 	_float			m_iRadiusX = { 1.5 };
 	_float			m_iRadiusY = { 0.7 };
+
+private:
+	wstring			m_strCurrentNaviTag;
+
+
+
+private:
+	HRESULT	Ready_Component();
 
 private:
 	void	Mouse_Input(_float fTimeDelta);

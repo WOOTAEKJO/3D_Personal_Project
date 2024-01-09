@@ -40,6 +40,9 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	if (m_pTargetStateMachine == nullptr)
 		return E_FAIL;
 
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
 	_float4 vPos,vDir;
 	XMStoreFloat4(&vPos, m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS));
 	XMStoreFloat4(&vDir, XMVector4Normalize(m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK)));
@@ -55,6 +58,10 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 	if (FAILED(__super::Initialize(&CameraDesc)))
 		return E_FAIL;
+
+	m_fSpringConstant = 700.f;
+	m_fDampConstant = 2.f * sqrt(m_fSpringConstant);
+	m_vVeclocity = _float3(0.f, 0.f, 0.f);
 
 	return S_OK;
 }
@@ -75,6 +82,15 @@ void CTargetCamera::Late_Tick(_float fTimeDelta)
 
 }
 
+HRESULT CTargetCamera::Ready_Component()
+{
+	CNavigation::NAVIGATION_DESC NavigationDesc = {};
+	NavigationDesc.iCurrentIndex = m_pTarget->Get_Component<CNavigation>()->Get_CurrentIndex();
+	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+
+	return S_OK;
+}
+
 void CTargetCamera::Mouse_Input(_float fTimeDelta)
 {
 	_bool bCheck = true;
@@ -90,6 +106,7 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	_matrix matRotX = XMMatrixIdentity();
 
 	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
+	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
 	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vDir = XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
 
@@ -100,10 +117,8 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 			_float fRadian = MouseMove * fTimeDelta * 0.5f;
 			_float fDegree = XMConvertToDegrees(fRadian);
 
-			if (fDegree<90.f && fDegree > -90.f) {
-
-			}
 			matRotX = XMMatrixRotationX(fRadian);
+		
 		}
 	}
 
@@ -115,22 +130,18 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 
 	}
 
-	vDir = (XMVector3TransformNormal(vDir, matRotX * matRotY)) * m_iRadiusX;
+	vDir = (XMVector3TransformNormal(vDir, matRotX * matRotY)) * (bCheck == true ? 1.5f : 1.f);
 
-	vEye = XMVectorSet(vTargetPos.m128_f32[0] - (vDir.m128_f32[0]),
-		bCheck == true ? vTargetPos.m128_f32[1] + (_float)m_iRadiusY : vTargetPos.m128_f32[1] - vDir.m128_f32[1],
-		vTargetPos.m128_f32[2] - (vDir.m128_f32[2]),
-		1.f);
+	vEye = vTargetPos - vDir;
 
-	if(bCheck)
-	{
-		vDir = (vEye - vPos);
-		vPos = XMVectorSet(vPos.m128_f32[0] + vDir.m128_f32[0] * m_iRadiusX,
-			vPos.m128_f32[1] + vDir.m128_f32[1] * fTimeDelta * 3.f,
-			vPos.m128_f32[2] + vDir.m128_f32[2] * m_iRadiusX, 1.f);
-	}
+	if (bCheck)
+		vEye.m128_f32[1] = vTargetPos.m128_f32[1] + m_iRadiusY;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, bCheck ? vPos : vEye);
+	
+
+	_vector vTargetLook = m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK);
+
+	Camera_Sliding(Camera_Spring(vEye, fTimeDelta), m_pNavigationCom, fTimeDelta);
 	m_pTransformCom->LookAt(vTargetPos);
 }
 
@@ -196,6 +207,7 @@ void CTargetCamera::Free()
 {
 	//Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTarget);
+	Safe_Release(m_pNavigationCom);
 
 	__super::Free();
 

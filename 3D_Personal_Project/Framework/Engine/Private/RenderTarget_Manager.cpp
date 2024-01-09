@@ -84,6 +84,18 @@ void CRenderTarget_Manager::Free()
 {
 	__super::Free();
 
+	for (auto& List : m_mapMRT)
+	{
+		for (auto& RT : List.second)
+			Safe_Release(RT);
+		List.second.clear();
+	}
+	m_mapMRT.clear();
+
+	for (auto& iter : m_mapRenderTarget)
+		Safe_Release(iter.second);
+	m_mapRenderTarget.clear();
+
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 }

@@ -76,7 +76,7 @@ public:
 	_bool	Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta);
 
 	_vector	Get_Dir_Angle(_fvector vDir,_fvector vAxis, _float fAngle);
-
+	_vector	Sliding(_float3 vLine,_float fTimeDelta);
 public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pMatrixName);
 

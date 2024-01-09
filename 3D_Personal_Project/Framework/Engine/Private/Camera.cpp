@@ -54,6 +54,61 @@ void CCamera::Late_Tick(_float fTimeDelta)
 {
 }
 
+void CCamera::Camera_Sliding(_fvector vPosition, CNavigation* pNavigation, _float fTimeDelta)
+{
+	if (pNavigation == nullptr || m_pTransformCom == nullptr)
+		return;
+
+	_float3 vLine = {};
+	_vector vSlidePos;
+	_vector vResultPos = vPosition;
+
+	m_bWallCheck = false;
+
+	if (!pNavigation->IsMove(vPosition, &vLine))
+	{
+		m_bWallCheck = true;
+
+		vSlidePos = m_pTransformCom->Sliding(vLine, fTimeDelta * 2.f);
+
+		vSlidePos.m128_f32[1] = 0.f;
+
+		vResultPos += vSlidePos;
+
+		if (!pNavigation->IsMove(vResultPos, &vLine))
+			return;
+	}
+
+	/*_float3 vPos;
+	XMStoreFloat3(&vPos, vResultPos);
+
+	_float fHeigh = pNavigation->Get_Cell_Height(vPos);
+
+	if (fHeigh + 0.2f >= vPos.y)
+	{
+		m_bWallCheck = true;
+		vResultPos.m128_f32[1] = fHeigh + 0.3f;
+	}*/
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vResultPos);
+
+}
+
+_vector CCamera::Camera_Spring(_fvector vEye, _float fTimeDelta)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	_vector vDisplacement = vPos - vEye;
+
+	_vector vSpringAccel = (-m_fSpringConstant * vDisplacement) - (m_fDampConstant * XMLoadFloat3(&m_vVeclocity));
+
+	XMStoreFloat3(&m_vVeclocity, XMLoadFloat3(&m_vVeclocity) + vSpringAccel * fTimeDelta);
+
+	XMStoreFloat3(&m_vActualPosition, vPos + XMLoadFloat3(&m_vVeclocity) * fTimeDelta);
+
+	return XMVectorSetW(XMLoadFloat3(&m_vActualPosition),1.f);
+}
+
 void CCamera::Free()
 {
 	__super::Free();

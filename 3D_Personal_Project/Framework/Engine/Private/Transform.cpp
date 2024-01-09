@@ -39,13 +39,15 @@ void CTransform::Go_Straight(_float fTimeDelta, CNavigation* pNavigation)
 
 	vPos += XMVector3Normalize(vLook) * m_fSpeedPerSec * fTimeDelta;
 
-	/*if (pNavigation != nullptr)
+	_float3 vLine = {};
+
+	if (pNavigation != nullptr)
 	{
-		if (!pNavigation->IsMove(vPos))
+		if (!pNavigation->IsMove(vPos, &vLine))
 		{
 			return;
 		}
-	}*/
+	}
 
 	Set_State(STATE::STATE_POS, vPos);
 }
@@ -237,19 +239,9 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 	{
 		bWall = true;
 
-		_vector vLineDir = XMLoadFloat3(&vLine);
-		_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
-		_float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vLineDir)));
+		vSlidePos = Sliding(vLine, fTimeDelta);
 
-		fTimeDelta *= fabsf(fDot);
-
-		if (fDot > 0.f)
-		{
-			vSlidePos = XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
-		}
-		else{
-			vSlidePos = -XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
-		}
+		vSlidePos.m128_f32[1] = 0.f;
 
 		vPosition += vSlidePos;
 
@@ -349,6 +341,26 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 	}
 
 	return false;
+}
+
+_vector CTransform::Sliding(_float3 vLine, _float fTimeDelta)
+{
+	_vector vSlidePos;
+	_vector vLineDir = XMLoadFloat3(&vLine);
+	_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
+	_float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vLineDir)));
+
+	fTimeDelta *= fabsf(fDot);
+
+	if (fDot > 0.f)
+	{
+		vSlidePos = XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
+	}
+	else {
+		vSlidePos = -XMVector3Normalize(vLineDir) * fTimeDelta * 2.f;
+	}
+
+	return vSlidePos;
 }
 
 HRESULT CTransform::Bind_ShaderResources(CShader* pShader, const _char* pMatrixName)

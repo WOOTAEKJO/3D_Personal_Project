@@ -45,6 +45,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	/* 렌더 타겟 매니저 사용 준비*/
+	m_pRenderTarget_Manager = CRenderTarget_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
 	/* 렌더러 사용 준비*/
 	m_pRenderer = CRenderer::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pRenderer)
@@ -88,10 +93,6 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 폰트 매니저 사용 준비*/
 	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pFont_Manager)
-		return E_FAIL;
-
-	m_pRenderTarget_Manager = CRenderTarget_Manager::Create(*ppDevice, *ppContext);
-	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
