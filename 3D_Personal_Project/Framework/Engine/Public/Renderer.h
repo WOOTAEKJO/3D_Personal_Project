@@ -3,6 +3,8 @@
 
 BEGIN(Engine)
 
+class CGameInstance;
+
 class CRenderer final : public CBase
 {
 public:
@@ -19,6 +21,10 @@ public:
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
+
+private:
+	CGameInstance*		m_pGameInstance = { nullptr };
+
 private:
 	list<class CGameObject*>	m_listRenderObject[RENDERGROUP::RENDER_END];
 

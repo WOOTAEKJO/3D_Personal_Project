@@ -9,6 +9,7 @@
 #include "SaveLoad_Manager.h"
 #include "Collider_Manager.h"
 #include "Font_Manager.h"
+#include "RenderTarget_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -87,6 +88,10 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 폰트 매니저 사용 준비*/
 	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	m_pRenderTarget_Manager = CRenderTarget_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -575,6 +580,22 @@ HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vP
 	return m_pFont_Manager->Render(iFontTag, strText, vPosition, vColor, fScale, vOrigin, fRotation);
 }
 
+HRESULT CGameInstance::Add_RenderTarget(RENDERTARGET_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Add_RenderTarget(eType, iSizeX, iSizeY, Pixel_Format, vColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RENDERTARGET_TYPE eType)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Add_MRT(strMRTTag, eType);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
@@ -591,6 +612,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pTimer_Manager);
+	Safe_Release(m_pRenderTarget_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);

@@ -1,15 +1,42 @@
 #include "..\Public\Renderer.h"
 #include "GameObject.h"
+#include "GameInstance.h"
 
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:m_pDevice(pDevice),m_pContext(pContext)
+	:m_pDevice(pDevice),m_pContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CRenderer::Initialize()
 {
+	D3D11_VIEWPORT		Viewport;
+	_uint				iNumViewport = { 1 };
+
+	m_pContext->RSGetViewports(&iNumViewport, &Viewport);
+
+	//Diffuse
+	if (FAILED(m_pGameInstance->Add_RenderTarget(RENDERTARGET_TYPE::RT_DIFFUSE, Viewport.Width, Viewport.Height,
+		DXGI_FORMAT_R8G8B8A8_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+	//Normal
+	if (FAILED(m_pGameInstance->Add_RenderTarget(RENDERTARGET_TYPE::RT_NORMAL, Viewport.Width, Viewport.Height,
+		DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+	//Shader
+	if (FAILED(m_pGameInstance->Add_RenderTarget(RENDERTARGET_TYPE::RT_SHADER, Viewport.Width, Viewport.Height,
+		DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObject"), RENDERTARGET_TYPE::RT_DIFFUSE)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_GameObject"), RENDERTARGET_TYPE::RT_NORMAL)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_MRT(TEXT("MRT_LightAcc"), RENDERTARGET_TYPE::RT_SHADER)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -137,4 +164,5 @@ void CRenderer::Free()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
+	Safe_Release(m_pGameInstance);
 }

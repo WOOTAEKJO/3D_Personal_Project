@@ -195,6 +195,10 @@ public: /* For. Font_Manager*/
 		_fvector vColor = XMVectorSet(1.f,1.f,1.f,1.f),
 		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
 
+public: /* For. CRednerTarget_Manager*/
+	HRESULT	Add_RenderTarget(RENDERTARGET_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
+	HRESULT	Add_MRT(const wstring& strMRTTag, RENDERTARGET_TYPE eType);
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
@@ -210,6 +214,7 @@ private:
 	class CFile_Manager*			m_pFile_Manager = { nullptr };
 	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	class CFont_Manager*			m_pFont_Manager = { nullptr };
+	class CRenderTarget_Manager*	m_pRenderTarget_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 
