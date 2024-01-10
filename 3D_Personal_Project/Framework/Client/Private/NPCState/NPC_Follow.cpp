@@ -45,7 +45,7 @@ _uint CNPC_Follow::State_Late_Tick(_float fTimeDelta)
 {
 
 	if(m_pOwner->Turn(fTimeDelta))
-		m_pOwner->Target_Follow_Look();
+		m_pOwner->Target_Follow_Look(false);
 
 	return m_iStateID;
 }

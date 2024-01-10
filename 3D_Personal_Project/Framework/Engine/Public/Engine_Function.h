@@ -56,6 +56,31 @@ dwRefCnt = pInstance->AddRef();
 		return dwRefCnt;
 	}
 
+	template<typename T>
+	void Swap(T& lhs, T& rhs)
+	{
+		T temp = lhs;
+		lhs = rhs;
+		rhs = temp;
+	}
+
+	template<typename T>
+	T Random(initializer_list<T> _il)
+	{
+		assert(0 < _il.size());
+
+		auto it = _il.begin();
+		std::advance(it, rand() % _il.size());
+
+		return *it;
+	}
+
+	template<typename T>
+	typename std::enable_if<std::is_arithmetic<T>::value, T>::type
+		Clamp(T low, T high, T value)
+	{
+		return min(max(value, low), high);
+	}
 }
 
 #endif // Engine_Function_h__

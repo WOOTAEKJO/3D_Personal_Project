@@ -239,7 +239,9 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 	{
 		bWall = true;
 
-		vSlidePos = Sliding(vLine, fTimeDelta);
+		_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
+
+		vSlidePos = Sliding(vLook,vLine, fTimeDelta);
 
 		vSlidePos.m128_f32[1] = 0.f;
 
@@ -273,7 +275,6 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
 	else {
-
 		m_bGround = false;
 		XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTemp));
 	}
@@ -284,23 +285,25 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 	}
 }
 
-void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta)
+void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta, _bool bGround)
 {
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
 
-	vLook.m128_f32[1] = 0.f;
+	if(bGround)
+		vLook.m128_f32[1] = 0.f;
 
 	LookAt(vPos + vLook);
 
 }
 
-_bool CTransform::Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta)
+_bool CTransform::Turn_Dir_Yaxis(_fvector vDir, _float fTimeDelta, _bool bGround)
 {
 	_vector vLook = XMVector3Normalize(vDir);
 	_vector vPos = Get_State(CTransform::STATE::STATE_POS);
-
-	vLook.m128_f32[1] = 0.f;
+	
+	if(bGround)
+		vLook.m128_f32[1] = 0.f;
 
 	return Turn_Target_Yaxis(vPos + vLook, fTimeDelta);
 }
@@ -343,12 +346,12 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 	return false;
 }
 
-_vector CTransform::Sliding(_float3 vLine, _float fTimeDelta)
+_vector CTransform::Sliding(_fvector vDir,_float3 vLine, _float fTimeDelta)
 {
 	_vector vSlidePos;
 	_vector vLineDir = XMLoadFloat3(&vLine);
-	_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
-	_float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vLineDir)));
+	//_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
+	_float fDot = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir), XMVector3Normalize(vLineDir)));
 
 	fTimeDelta *= fabsf(fDot);
 

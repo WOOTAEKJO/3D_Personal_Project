@@ -69,14 +69,14 @@ void CNPC::PlayerLook()
 	m_pTransformCom->LookAt_Dir(vDir);
 }
 
-void CNPC::Target_Follow_Look()
+void CNPC::Target_Follow_Look(_bool bGround)
 {
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = XMLoadFloat4(&m_vTargetPos);
 
 	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
 
-	m_pTransformCom->LookAt_Dir(vDir);
+	m_pTransformCom->LookAt_Dir(vDir, bGround);
 }
 
 _bool CNPC::Turn(_float fTimeDelta)

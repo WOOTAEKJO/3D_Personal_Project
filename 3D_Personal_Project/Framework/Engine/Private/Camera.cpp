@@ -1,6 +1,6 @@
 #include "..\Public\Camera.h"
 #include "GameInstance.h"
-
+#include "Cell.h"
 CCamera::CCamera(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -65,48 +65,50 @@ void CCamera::Camera_Sliding(_fvector vPosition, CNavigation* pNavigation, _floa
 
 	m_bWallCheck = false;
 
-	if (!pNavigation->IsMove(vPosition, &vLine))
+	if (pNavigation->Get_Navigation_Cells()[pNavigation->Get_CurrentIndex()]->Get_CellType() != CCell::CELLTYPE::TYPE_JUMP)
 	{
-		m_bWallCheck = true;
+		if (!pNavigation->IsMove(vPosition, &vLine))
+		{
+			m_bWallCheck = true;
 
-		vSlidePos = m_pTransformCom->Sliding(vLine, fTimeDelta * 2.f);
+			_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
-		vSlidePos.m128_f32[1] = 0.f;
+			_vector vDir = vPosition - vPos;
 
-		vResultPos += vSlidePos;
+			//vLine = _float3(-vLine.x, vLine.y, -vLine.z);
 
-		if (!pNavigation->IsMove(vResultPos, &vLine))
-			return;
+			vSlidePos = m_pTransformCom->Sliding(vDir,vLine, fTimeDelta);
+
+			vSlidePos.m128_f32[1] = 0.f;
+
+			vResultPos = vPos + vSlidePos;
+
+			if (!pNavigation->IsMove(vResultPos, &vLine))
+				return;
+			else
+				int a = 0;
+		}
 	}
-
-	/*_float3 vPos;
-	XMStoreFloat3(&vPos, vResultPos);
-
-	_float fHeigh = pNavigation->Get_Cell_Height(vPos);
-
-	if (fHeigh + 0.2f >= vPos.y)
-	{
-		m_bWallCheck = true;
-		vResultPos.m128_f32[1] = fHeigh + 0.3f;
-	}*/
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vResultPos);
 
 }
 
-_vector CCamera::Camera_Spring(_fvector vEye, _float fTimeDelta)
+_vector CCamera::Camera_Spring(_fvector vTargetPos, _fvector vPos, _float fTimeDelta, _float fRatio)
 {
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vResultPos;
 
-	_vector vDisplacement = vPos - vEye;
+	_vector vDisplacement = vPos - vTargetPos;
 
 	_vector vSpringAccel = (-m_fSpringConstant * vDisplacement) - (m_fDampConstant * XMLoadFloat3(&m_vVeclocity));
 
 	XMStoreFloat3(&m_vVeclocity, XMLoadFloat3(&m_vVeclocity) + vSpringAccel * fTimeDelta);
 
-	XMStoreFloat3(&m_vActualPosition, vPos + XMLoadFloat3(&m_vVeclocity) * fTimeDelta);
+	vResultPos = vPos + XMLoadFloat3(&m_vVeclocity) * fTimeDelta;
 
-	return XMVectorSetW(XMLoadFloat3(&m_vActualPosition),1.f);
+	//vResultPos = XMVectorLerp(vPos, vResultPos, fRatio);
+
+	return vResultPos;
 }
 
 void CCamera::Free()

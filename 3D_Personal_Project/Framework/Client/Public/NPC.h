@@ -25,7 +25,7 @@ public:
 public:
 
 	void	PlayerLook();
-	void	Target_Follow_Look();
+	void	Target_Follow_Look(_bool bGround = true);
 	_bool	Turn(_float fTimeDelta);
 	_bool	Is_Target_Range(_float fRange);
 	void	Target_Follow(_float fTimeDelta);
