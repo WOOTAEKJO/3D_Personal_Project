@@ -18,7 +18,7 @@ private:
 	virtual	~CCell() = default;
 
 public:
-	HRESULT	Initialize(CELL Cell, _uint iIndex, CNavigation::NAVITYPE eType);
+	HRESULT	Initialize(CELL2 Cell, _uint iIndex, CNavigation::NAVITYPE eType);
 
 public:
 	_bool	Compare_Points(_float3 SourPoint, _float3 DestPoint);
@@ -27,6 +27,8 @@ public:
 	_float	Get_Height(_float3 vPos);
 	_bool	Is_Height(_float3 vPos);
 
+	//void	Add_Neighbor();
+	LINES	Get_Line(_float3 vPos1, _float3 vPos2);
 public:
 	_uint	Get_Index() { return m_iIndex; }
 	void	Set_Index(_uint iIndex) { m_iIndex = iIndex; }
@@ -75,7 +77,7 @@ private:
 	CNavigation::NAVITYPE	m_eNaviType = { CNavigation::NAVITYPE::TYPE_END };
 
 public:
-	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CELL Cell,_uint iIndex,
+	static	CCell* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,CELL2 Cell,_uint iIndex,
 		CNavigation::NAVITYPE eType);
 	virtual	void	Free() override;
 };

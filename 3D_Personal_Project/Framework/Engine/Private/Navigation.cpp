@@ -136,22 +136,82 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 				if (iNeighborIndex == -1)
 					return false;
 
-				// 노멀 셀에서 점프 셀로 갈 때 처리
-				if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+				
+				if (m_vecCell[m_iCurrentCellIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_NORMAL)
 				{
-					_float3 vPos;
-					XMStoreFloat3(&vPos, vPosition);
+					// 노멀 셀에서 점프 셀로 갈 때 처리
+					if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+					{
+						_float3 vPos;
+						XMStoreFloat3(&vPos, vPosition);
+
+						// 높이가 크면
+						if (m_vecCell[iNeighborIndex]->Is_Height(vPos))
+						{
+							if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
+							{
+								m_iCurrentCellIndex = iNeighborIndex;
+								return true;
+							}
+							else
+								return false;
+						}else //높이가 낮으면
+							return false;
+							
+					} // 노멀에서 노멀
+					else if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_NORMAL)
+					{
+						if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
+						{
+							m_iCurrentCellIndex = iNeighborIndex;
+							return true;
+						}
+					}
 
 					// 플레이어의 높이 값이 셀의 높이 값보다 작으면 실패
-					if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
-						return false;
+					/*if (!m_vecCell[iNeighborIndex]->Is_Height(vPos))
+						return false;*/
+				}
+				else
+				{	// 점프에서 노멀
+					if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_NORMAL)
+					{
+						m_iCurrentCellIndex = iNeighborIndex;
+						return true;
+					} // 점프에서 점프
+					else if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
+					{
+						_float3 vPos;
+						XMStoreFloat3(&vPos, vPosition);
+						// 높이가 크면
+						if (m_vecCell[iNeighborIndex]->Is_Height(vPos))
+						{
+							if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
+							{
+								m_iCurrentCellIndex = iNeighborIndex;
+								return true;
+							}
+							else
+								return false;
+						}
+						else // 높이가 낮으면
+							return false;
+					}
+						
+
+					/*if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
+					{
+						m_iCurrentCellIndex = iNeighborIndex;
+						return true;
+					}*/
 				}
 
-				if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
+				/*if (m_vecCell[iNeighborIndex]->IsIn(vPosition, XMLoadFloat4x4(&m_matWorld), &iNeighborIndex, vLine))
 				{
 					m_iCurrentCellIndex = iNeighborIndex;
 					return true;
-				}
+				}*/
+
 			}
 
 		}
@@ -190,17 +250,16 @@ _int CNavigation::Find_PositionCell(_fvector vPosition)
 
 HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType)
 {
-	/*FLOAT3X3 float33 = {};
-	float33.vVertex0 = pPoints[0];
-	float33.vVertex1 = pPoints[1];
-	float33.vVertex2 = pPoints[2];*/
-
-	CELL Cell = {};
+	CELL2 Cell = {};
 	Cell.vPoints.vVertex0 = pPoints[0];
 	Cell.vPoints.vVertex1 = pPoints[1];
 	Cell.vPoints.vVertex2 = pPoints[2];
 
 	Cell.iCellType = iCellType;
+	
+	Cell.iNeighborIndexs.x = -1;
+	Cell.iNeighborIndexs.y = -1;
+	Cell.iNeighborIndexs.z = -1;
 
     CCell* pCell = CCell::Create(m_pDevice, m_pContext, Cell,m_vecCell.size(), m_eNaviType);
 	if (pCell == nullptr)
@@ -210,8 +269,6 @@ HRESULT CNavigation::Add_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellTy
 
 	m_vecCell.push_back(pCell);
 
-	/*if (FAILED(Init_Neighbor()))
-		return E_FAIL;*/
 	if (FAILED(Init_Neighbor_XZ()))
 		return E_FAIL;
 
@@ -239,13 +296,49 @@ void CNavigation::Delete_Cell(_uint iCellIndex)
 		if (iter->Get_Index() > iCellIndex)
 		{
 			iter->Set_Index(iter->Get_Index() - 1);
+
+		}
+
+		for (_uint i = 0; i < 3; i++)
+		{
+			if (iter->Get_NeighborIndex((CCell::LINES)i) == iCellIndex)
+				iter->Set_NeighborIndex((CCell::LINES)i, -1);
+			else
+			{
+				_int iIdnx = iter->Get_NeighborIndex((CCell::LINES)i);
+				if(iIdnx != -1)
+					iter->Set_NeighborIndex((CCell::LINES)i, iIdnx - 1);
+			}
+				
 		}
 	}
 
-	/*if (FAILED(Init_Neighbor()))
-		return;*/
 	if (FAILED(Init_Neighbor_XZ()))
 		return ;
+}
+
+void CNavigation::Add_Neighbor(_uint iSourCellIndx, _float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints)
+{
+	CCell::LINES eSourLine, eDestLine;
+
+	eSourLine = m_vecCell[iSourCellIndx]->Get_Line(vSourPoints[0], vSourPoints[1]);
+	if (eSourLine == CCell::LINES::LINE_END)
+		return;
+
+	eDestLine = m_vecCell[iDestCellIndx]->Get_Line(vDestPoints[0], vDestPoints[1]);
+	if (eDestLine == CCell::LINES::LINE_END)
+		return;
+
+	_int iSourNeighborIndx(-1), iDestNeighborIndx(-1);
+
+	iSourNeighborIndx = m_vecCell[iSourCellIndx]->Get_NeighborIndex(eSourLine);
+	iDestNeighborIndx = m_vecCell[iDestCellIndx]->Get_NeighborIndex(eDestLine);
+
+	if (iSourNeighborIndx == -1 && iDestNeighborIndx == -1)
+	{
+		m_vecCell[iSourCellIndx]->Set_NeighborIndex(eSourLine, m_vecCell[iDestCellIndx]->Get_Index());
+		m_vecCell[iDestCellIndx]->Set_NeighborIndex(eDestLine, m_vecCell[iSourCellIndx]->Get_Index());
+	}
 }
 
 _bool CNavigation::Compute_MousePos(_uint* iCellIndex)
@@ -286,19 +379,26 @@ HRESULT CNavigation::Save_Navigation(const _char* strFilePath)
 	for (auto& iter : m_vecCell)
 	{
 
-		/*FLOAT3X3	Float33 = {};
-
-		Float33.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
-		Float33.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
-		Float33.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);*/
-		CELL		Cell = {};
+		/*CELL		Cell = {};
 		Cell.vPoints.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
 		Cell.vPoints.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
 		Cell.vPoints.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
 
 		Cell.iCellType = (_uint)iter->Get_CellType();
 
-		MeshDataDesc.vecNaviPoints.push_back(Cell);
+		MeshDataDesc.vecNaviPoints.push_back(Cell);*/
+		CELL2		Cell = {};
+		Cell.vPoints.vVertex0 = iter->Get_Point(CCell::POINTS::POINT_A);
+		Cell.vPoints.vVertex1 = iter->Get_Point(CCell::POINTS::POINT_B);
+		Cell.vPoints.vVertex2 = iter->Get_Point(CCell::POINTS::POINT_C);
+
+		Cell.iCellType = (_uint)iter->Get_CellType();
+
+		Cell.iNeighborIndexs.x = iter->Get_NeighborIndex(CCell::LINES::LINE_AB);
+		Cell.iNeighborIndexs.y = iter->Get_NeighborIndex(CCell::LINES::LINE_BC);
+		Cell.iNeighborIndexs.z = iter->Get_NeighborIndex(CCell::LINES::LINE_CA);
+
+		MeshDataDesc.vecNaviPoints2.push_back(Cell);
 	}
 
 	if (FAILED(m_pGameInstance->Save_Data_Mesh(strFilePath, MeshDataDesc)))
@@ -361,6 +461,32 @@ HRESULT CNavigation::Init_Neighbor_XZ()
 	return S_OK;
 }
 
+HRESULT CNavigation::Init_Neighbor_Cell(CCell* pCell)
+{
+
+
+ 	for (auto& DestCell : m_vecCell)
+	{
+		if (pCell == DestCell)
+			continue;
+
+		if (DestCell->Compare_Points_XZ(pCell->Get_Point(CCell::POINTS::POINT_A), pCell->Get_Point(CCell::POINTS::POINT_B)))
+		{
+			pCell->Set_NeighborIndex(CCell::LINES::LINE_AB, DestCell->Get_Index());
+		}
+		if (DestCell->Compare_Points_XZ(pCell->Get_Point(CCell::POINTS::POINT_B), pCell->Get_Point(CCell::POINTS::POINT_C)))
+		{
+			pCell->Set_NeighborIndex(CCell::LINES::LINE_BC, DestCell->Get_Index());
+		}
+		if (DestCell->Compare_Points_XZ(pCell->Get_Point(CCell::POINTS::POINT_C), pCell->Get_Point(CCell::POINTS::POINT_A)))
+		{
+			pCell->Set_NeighborIndex(CCell::LINES::LINE_CA, DestCell->Get_Index());
+		}
+	}
+
+	return S_OK;
+}
+
 HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 {
 	
@@ -374,10 +500,10 @@ HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 	if (FAILED(pMeshData->Data_Get(MeshDataDesc)))
 		return E_FAIL;
 
-	_uint iSize = MeshDataDesc.vecNaviPoints.size();
+	_uint iSize = MeshDataDesc.vecNaviPoints2.size();
 	for (_uint i = 0; i < iSize; i++)
 	{
-		CCell* pCell = CCell::Create(m_pDevice, m_pContext, MeshDataDesc.vecNaviPoints[i],m_vecCell.size(), m_eNaviType);
+		CCell* pCell = CCell::Create(m_pDevice, m_pContext, MeshDataDesc.vecNaviPoints2[i],m_vecCell.size(), m_eNaviType);
 		if (pCell == nullptr)
 			return E_FAIL;
 
@@ -388,8 +514,8 @@ HRESULT CNavigation::File_Load(const _char* strNavigationPath)
 
 	/*if (FAILED(Init_Neighbor()))
 		return E_FAIL;*/
-	if (FAILED(Init_Neighbor_XZ()))
-		return E_FAIL;
+	/*if (FAILED(Init_Neighbor_XZ()))
+		return E_FAIL;*/
 
 	return S_OK;
 }

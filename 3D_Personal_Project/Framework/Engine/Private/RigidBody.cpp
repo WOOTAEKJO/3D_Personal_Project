@@ -63,6 +63,21 @@ _bool CRigidBody::Is_Land()
 		return true;
 	}
 
+	/*_float3 vPos = {};
+	_vector vWorldPos = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS);
+
+	XMStoreFloat3(&vPos, vWorldPos);
+
+	_float fHeight = m_pOwnerNavigation->Get_Cell_Height(vPos);
+
+	_float fY = vWorldPos.m128_f32[1];
+
+	if (fY  <= fHeight)
+	{
+		Reset_Force(TYPE_VELOCITY);
+		return true;
+	}*/
+
 	return false;
 }
 

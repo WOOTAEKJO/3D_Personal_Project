@@ -316,6 +316,14 @@ void CTerrain_Demo::Set_Cell_Type(_uint iCellType, _uint iIndex)
 	m_pNavigationCom->Set_Cell_Type(iCellType, iIndex);
 }
 
+void CTerrain_Demo::Add_Neighbor(_uint iSourCellIndx, _float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints)
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Add_Neighbor(iSourCellIndx, vSourPoints, iDestCellIndx, vDestPoints);
+}
+
 _bool CTerrain_Demo::Picked_Cell(_uint* iCellIndex)
 {
 	if (m_pNavigationCom == nullptr)

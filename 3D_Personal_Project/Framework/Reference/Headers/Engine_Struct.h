@@ -230,6 +230,15 @@ namespace Engine
 
 	}CELL;
 
+	typedef struct tagCell2Desc
+	{
+		FLOAT3X3	vPoints;
+		_uint		iCellType;
+
+		_int3		iNeighborIndexs;
+
+	}CELL2;
+
 	typedef struct tagLevelObjectDesc
 	{
 		string		strLayer;

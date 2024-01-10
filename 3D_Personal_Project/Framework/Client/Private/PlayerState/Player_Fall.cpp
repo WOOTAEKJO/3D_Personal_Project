@@ -19,27 +19,14 @@ void CPlayer_Fall::State_Enter()
 {
 	if (m_pOwner->Open_Physics_Desc()->bDoubleJump)
 		m_pOwner->Animation_By_Type(CPlayer::STATE::FALL);
-	else
-		m_pOwner->Animation_By_Type(CPlayer::STATE::JUMP);
+	/*else
+		m_pOwner->Animation_By_Type(CPlayer::STATE::JUMP);*/
 
 	m_pOnwerRigidBody->Set_GravityPower(m_pOwner->Open_Physics_Desc()->fFallGravity);
 }
 
 _uint CPlayer_Fall::State_Priority_Tick(_float fTimeDelta)
 {
-	if (m_pOnwerRigidBody->Is_Land())
-	{
-		if (m_pOwner->Open_Physics_Desc()->bDoubleJump) {
-			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
-			m_pOwner->Open_Physics_Desc()->bJump = false;
-			return CPlayer::STATE::LAND;
-		}
-		else {
-			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
-			m_pOwner->Open_Physics_Desc()->bJump = false;
-			return CPlayer::STATE::IDLE;
-		}
-	}
 
 	return m_iStateID;
 }
@@ -55,6 +42,20 @@ _uint CPlayer_Fall::State_Tick(_float fTimeDelta)
 
 _uint CPlayer_Fall::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOnwerRigidBody->Is_Land())
+	{
+		if (m_pOwner->Open_Physics_Desc()->bDoubleJump) {
+			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
+			m_pOwner->Open_Physics_Desc()->bJump = false;
+			return CPlayer::STATE::LAND;
+		}
+		else {
+			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
+			m_pOwner->Open_Physics_Desc()->bJump = false;
+			return CPlayer::STATE::IDLE;
+		}
+	}
+
 	if (!m_pOwner->Open_Physics_Desc()->bDoubleJump)
 	{
 		if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_JUMP))

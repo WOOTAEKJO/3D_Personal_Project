@@ -168,9 +168,9 @@ HRESULT CMeshData::Save_Data(const char* strPath)
 			break;
 		case Engine::CMeshData::NAVIGATION:
 
-			_uint iSize = m_vecNaviPoints.size();
+			_uint iSize = m_vecNaviPoints2.size();
 			fout.write(reinterpret_cast<const char*>(&iSize), sizeof(_uint));
-			fout.write(reinterpret_cast<const char*>(m_vecNaviPoints.data()), iSize * sizeof(CELL));
+			fout.write(reinterpret_cast<const char*>(m_vecNaviPoints2.data()), iSize * sizeof(CELL2));
 
 			break;
 		}
@@ -395,8 +395,8 @@ HRESULT CMeshData::Load_Data(const char* strPath)
 
 			_uint iSize = {};
 			fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
-			m_vecNaviPoints.resize(iSize);
-			fIn.read(reinterpret_cast<char*>(m_vecNaviPoints.data()), iSize * sizeof(CELL));
+			m_vecNaviPoints2.resize(iSize);
+			fIn.read(reinterpret_cast<char*>(m_vecNaviPoints2.data()), iSize * sizeof(CELL2));
 
 			break;
 		}
@@ -444,7 +444,8 @@ HRESULT CMeshData::Data_Get(MESHDATADESC& MeshDataDesc)
 		MeshDataDesc.vecIndices = m_vecIndices;
 		break;
 	case Engine::CMeshData::NAVIGATION:
-		MeshDataDesc.vecNaviPoints = m_vecNaviPoints;
+		//MeshDataDesc.vecNaviPoints = m_vecNaviPoints;
+		MeshDataDesc.vecNaviPoints2 = m_vecNaviPoints2;
 		break;
 	}
 
@@ -487,7 +488,8 @@ HRESULT CMeshData::Set_Data(MESHDATADESC MeshDataDesc)
 		m_vecMeshVertices = MeshDataDesc.vecMeshVertices;
 		break;
 	case Engine::CMeshData::NAVIGATION:
-		m_vecNaviPoints = MeshDataDesc.vecNaviPoints;
+		//m_vecNaviPoints = MeshDataDesc.vecNaviPoints;
+		m_vecNaviPoints2 = MeshDataDesc.vecNaviPoints2;
 		break;
 	}
 

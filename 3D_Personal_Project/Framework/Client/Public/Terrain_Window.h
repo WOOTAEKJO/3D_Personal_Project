@@ -84,6 +84,10 @@ private:
 	vector<CObjectMesh_Demo*>*				m_vecDemo;
 
 private:
+	_int									m_iSelectedCellIdx[2] = { -1,-1 };
+	NAVIDEMO_DESC							m_eSelectedSphere[4] = {};
+
+private:
 	void	HeightMap();
 	void	Terrain_Update();
 	void	Create_HeightMap();	
@@ -103,6 +107,8 @@ private:
 
 	void	All_Delete_Cell();
 	void	Selected_Delete_Cell();
+
+	void	Add_Neighbor();
 
 public:
 	static	CTerrain_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);

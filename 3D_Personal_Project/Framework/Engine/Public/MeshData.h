@@ -33,6 +33,7 @@ public:
 		_uint2				iVerticesXY;
 
 		vector<CELL>		vecNaviPoints;
+		vector<CELL2>		vecNaviPoints2;
 
 		MODEL_TYPE			eModel_Type = TYPE_END;
 	}MESHDATADESC;
@@ -79,6 +80,7 @@ private:
 
 private:
 	vector<CELL>	m_vecNaviPoints;
+	vector<CELL2>	m_vecNaviPoints2;
 
 private:
 	HRESULT	Set_Data(MESHDATADESC MeshDataDesc);

@@ -54,6 +54,8 @@ public:
 	void	Selected_Delete_Cell(_uint iCellIndex);
 	void	Set_Cell_Type(_uint iCellType, _uint iIndex);
 
+	void	Add_Neighbor(_uint iSourCellIndx, _float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);
+
 	_bool	Picked_Cell(_uint* iCellIndex);
 
 	vector<CCell*>	Get_Navigation_Cells();

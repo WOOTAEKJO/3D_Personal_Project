@@ -33,6 +33,7 @@ public:
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Delete_Cell(_uint iCellIndex);
+	void	Add_Neighbor(_uint iSourCellIndx,_float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);
 
 public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
@@ -69,6 +70,7 @@ private:
 private:
 	HRESULT	Init_Neighbor();
 	HRESULT	Init_Neighbor_XZ();
+	HRESULT	Init_Neighbor_Cell(CCell* pCell);
 
 public:
 	static CNavigation* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, NAVITYPE eType, const _char* strNavigationPath);
