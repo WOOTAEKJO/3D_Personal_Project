@@ -172,6 +172,22 @@ HRESULT CGameInstance::Present()
 	return m_pGraphic_Device->Present();
 }
 
+ID3D11RenderTargetView* CGameInstance::Get_BackBuffer()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_BackBuffer();
+}
+
+ID3D11DepthStencilView* CGameInstance::Get_DSV()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_DSV();
+}
+
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
 {
 	if (nullptr == m_pInput_Device)
@@ -581,7 +597,7 @@ HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vP
 	return m_pFont_Manager->Render(iFontTag, strText, vPosition, vColor, fScale, vOrigin, fRotation);
 }
 
-HRESULT CGameInstance::Add_RenderTarget(RENDERTARGET_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor)
+HRESULT CGameInstance::Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor)
 {
 	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
@@ -589,12 +605,44 @@ HRESULT CGameInstance::Add_RenderTarget(RENDERTARGET_TYPE eType, _uint iSizeX, _
 	return m_pRenderTarget_Manager->Add_RenderTarget(eType, iSizeX, iSizeY, Pixel_Format, vColor);
 }
 
-HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RENDERTARGET_TYPE eType)
+HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RTV_TYPE eType)
 {
 	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
 	return m_pRenderTarget_Manager->Add_MRT(strMRTTag, eType);
+}
+
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Ready_Debug(eType, fX, fY, fSizeX, fSizeY);
+}
+
+HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
 
 void CGameInstance::Release_Manager()

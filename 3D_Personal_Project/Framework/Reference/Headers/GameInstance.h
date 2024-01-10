@@ -36,6 +36,8 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();	
 	HRESULT Present();
+	ID3D11RenderTargetView* Get_BackBuffer();
+	ID3D11DepthStencilView* Get_DSV();
 
 public: /* For.Input_Device*/
 	_byte   Get_DIKeyState(_ubyte byKeyID);
@@ -196,8 +198,16 @@ public: /* For. Font_Manager*/
 		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
 
 public: /* For. CRednerTarget_Manager*/
-	HRESULT	Add_RenderTarget(RENDERTARGET_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
-	HRESULT	Add_MRT(const wstring& strMRTTag, RENDERTARGET_TYPE eType);
+	HRESULT	Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
+	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
+	HRESULT	Begin_MRT(const wstring& strMRTTag);
+	HRESULT	End_MRT();
+
+#ifdef _DEBUG
+	HRESULT	Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT	Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer);
+
+#endif
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };

@@ -4,6 +4,8 @@
 BEGIN(Engine)
 
 class CGameInstance;
+class CShader;
+class CVIBuffer_Rect;
 
 class CRenderer final : public CBase
 {
@@ -29,11 +31,28 @@ private:
 	list<class CGameObject*>	m_listRenderObject[RENDERGROUP::RENDER_END];
 
 private:
+	CVIBuffer_Rect*				m_pBufferCom = {nullptr	};
+	CShader*					m_pShader = {nullptr};
+
+private:
+	_float4x4					m_matView, m_matProj;
+
+private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonLight();
 	HRESULT Render_NonBlend();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
+
+#ifdef _DEBUG
+	HRESULT	Render_Debug();
+	HRESULT	Ready_RTV_Debug();
+
+#endif
+
+private:
+	HRESULT	Ready_Component();
+
 public:
 	static  CRenderer*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	void		Free() override; 

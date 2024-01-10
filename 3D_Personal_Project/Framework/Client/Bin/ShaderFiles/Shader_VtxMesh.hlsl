@@ -76,6 +76,7 @@ struct PS_IN
 struct PS_OUT
 {
 	float4	vColor : SV_TARGET0;
+    float4 vNormal : SV_TARGET1;
 };
 
 /* «»ºøºŒ¿Ã¥ı : «»ºø¿« ªˆ!!!! ¿ª ∞·¡§«—¥Ÿ. */
@@ -101,6 +102,8 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vColor = g_LightDiffuse * vDiffuse * min((fContrast + (g_LightAmbient * g_MtrlAmbient)), 1.f)
 		+ (g_LightSpecular * g_MtrlSpecular) * fSpecular;
 
+    Out.vNormal = In.vNormal;
+	
 	return Out;
 }
 
@@ -182,6 +185,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
@@ -192,6 +198,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_DTERRAIN();
 	}
 
@@ -202,6 +211,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
 

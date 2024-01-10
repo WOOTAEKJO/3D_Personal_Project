@@ -101,6 +101,8 @@ HRESULT CCollider::Render()
 	if (m_vecBounding.empty())
 		return E_FAIL;
 
+	m_pContext->GSSetShader(nullptr, nullptr, 0);
+
 	m_pBatch->Begin();
 	
 	m_pEffect->SetWorld(XMMatrixIdentity());

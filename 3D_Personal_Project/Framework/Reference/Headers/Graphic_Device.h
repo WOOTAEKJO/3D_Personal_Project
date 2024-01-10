@@ -35,6 +35,10 @@ public:
 	/* 후면 버퍼를 전면버퍼로 교체한다.(백버퍼를 화면에 직접 보여준다.) */
 	HRESULT Present();
 
+public:
+	ID3D11RenderTargetView* Get_BackBuffer() { return m_pBackBufferRTV; }
+	ID3D11DepthStencilView* Get_DSV() { return m_pDepthStencilView; }
+
 private:		
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 
 

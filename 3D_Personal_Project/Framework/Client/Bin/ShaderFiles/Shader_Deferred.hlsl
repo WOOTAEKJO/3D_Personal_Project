@@ -1,7 +1,7 @@
 #include	"Shader_Defines.hlsli"
 
 matrix		g_matWorld, g_matView, g_matProj;
-texture2D	g_Texture[2];
+texture2D	g_DiffuseTexture;
 
 struct VS_IN
 {
@@ -29,11 +29,6 @@ VS_OUT VS_MAIN(VS_IN In)
 
 	return Out;
 }
-/* 통과된 정점을 대기 .*/
-
-/* 투영변환 : /w */ /* -> -1, 1 ~ 1, -1 */
-/* 뷰포트변환-> 0, 0 ~ WINSX, WINSY */
-/* 래스터라이즈 : 정점정보에 기반하여 픽셀의 정보를 만든다. */
 
 struct PS_IN
 {
@@ -46,22 +41,17 @@ struct PS_OUT
 	float4	vColor : SV_TARGET0;
 };
 
-/* 픽셀셰이더 : 픽셀의 색!!!! 을 결정한다. */
 PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
-	vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
-
-	Out.vColor = vSColor + vDColor;
+    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
 	
 	return Out;
 }
 
 technique11 DefaultTechnique
 {
-	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
 	pass Default
 	{
         SetRasterizerState(RS_Default);
