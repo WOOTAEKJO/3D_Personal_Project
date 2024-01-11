@@ -148,7 +148,7 @@ void CGameInstance::Clear(_uint iLevelIndex)
 
 	m_pComponent_Manager->Clear(iLevelIndex);
 	m_pObject_Manager->Clear(iLevelIndex);
-
+	//m_pCollider_Manager->Clear();
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
@@ -282,6 +282,22 @@ HRESULT CGameInstance::Open_Level(_uint iCurrentLevelIndex, CLevel * pNewLevel)
 		return E_FAIL;
 
 	return m_pLevel_Manager->Open_Level(iCurrentLevelIndex,pNewLevel);
+}
+
+void CGameInstance::Set_CurNavigationTag(const wstring& strNavigationTag)
+{
+	if (nullptr == m_pLevel_Manager)
+		return;
+
+	m_pLevel_Manager->Set_CurNavigationTag(strNavigationTag);
+}
+
+wstring CGameInstance::Get_CurNavigationTag()
+{
+	if (nullptr == m_pLevel_Manager)
+		return wstring();
+
+	return m_pLevel_Manager->Get_CurNavigationTag();
 }
 
 HRESULT CGameInstance::Add_ProtoType(const wstring& strProtoTypeTag, CGameObject* pGameObeject)
@@ -579,6 +595,14 @@ HRESULT CGameInstance::Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLay
 		return E_FAIL;
 
 	return m_pCollider_Manager->Add_Pair_Collision(iSourColLayer, iDestColLayer);
+}
+
+void CGameInstance::Collision_Clear()
+{
+	if (nullptr == m_pCollider_Manager)
+		return;
+
+	m_pCollider_Manager->Clear();
 }
 
 HRESULT CGameInstance::Add_Font(_uint iFontTag, const wstring& strFontFilePath)

@@ -24,7 +24,8 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	/*if (pArg == nullptr)
 		return E_FAIL;*/
 
-	m_pTarget = m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY, TEXT("Player")).front();
+	m_pTarget = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_PLAYER]).front();
 	if (m_pTarget == nullptr)
 		return E_FAIL;
 	Safe_AddRef(m_pTarget);
@@ -70,7 +71,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	//Mouse_Fix();
+	Mouse_Fix();
 	StateTrans(fTimeDelta);
 	Mouse_Input(fTimeDelta);
 }
@@ -89,7 +90,7 @@ HRESULT CTargetCamera::Ready_Component()
 {
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = m_pTarget->Get_Component<CNavigation>()->Get_CurrentIndex();
-	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	return S_OK;
 }

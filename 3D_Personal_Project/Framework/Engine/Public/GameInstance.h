@@ -58,6 +58,8 @@ public: /* For.Timer_Manager */
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iCurrentLevelIndex,class CLevel* pNewLevel);
+	void	Set_CurNavigationTag(const wstring & strNavigationTag);
+	wstring	Get_CurNavigationTag();
 
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
@@ -138,6 +140,8 @@ public: /* For.Component_Manager*/
 
 	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag)
 	{
+		Set_CurNavigationTag(strProtoTypeTag);
+
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_LOAD,
 				Load_Data_Path(strProtoTypeTag).c_str()));
@@ -197,6 +201,7 @@ public: /* For. File_Manager*/
 public: /* For. Collider_Manager*/
 	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
 	HRESULT	Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer);
+	void	Collision_Clear();
 
 public: /* For. Font_Manager*/
 	HRESULT	Add_Font(_uint iFontTag, const wstring& strFontFilePath);

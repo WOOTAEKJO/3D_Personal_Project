@@ -24,6 +24,8 @@ public:
 
 public:
 	HRESULT Open_Level(_uint iCurrentLevelIndex,class CLevel* pNewLevel);
+	void	Set_CurNavigationTag(const wstring& strNavigationTag) { m_strCurLevelNavigationTag = strNavigationTag; }
+	wstring	Get_CurNavigationTag() { return m_strCurLevelNavigationTag; }
 
 private:
 	class CLevel*				m_pCurrentLevel = { nullptr };
@@ -31,6 +33,7 @@ private:
 
 private:
 	_uint						m_iCurrentLevelIndex = { 0 };
+	wstring						m_strCurLevelNavigationTag;
 
 public:
 	static CLevel_Manager* Create();

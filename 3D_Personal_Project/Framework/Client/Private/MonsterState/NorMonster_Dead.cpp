@@ -29,7 +29,7 @@ _uint CNorMonster_Dead::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Dead::State_Tick(_float fTimeDelta)
 {
 
-	if (m_pOwner->Is_Target_Range(7.f))
+	if (m_pOwner->Is_Target_Range(7.f * 0.16f ))
 	{
 		return CMonster::STATE::MOVE;
 	}

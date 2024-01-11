@@ -206,6 +206,7 @@
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\ImGuiMgr.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
+    <ClInclude Include="..\Public\Level_Boss1.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
@@ -257,6 +258,7 @@
     <ClInclude Include="..\Public\TestAction.h" />
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
+    <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -283,6 +285,7 @@
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\ImGuiMgr.cpp" />
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
+    <ClCompile Include="..\Private\Level_Boss1.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />
@@ -334,6 +337,7 @@
     <ClCompile Include="..\Private\TestAction.cpp" />
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
+    <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

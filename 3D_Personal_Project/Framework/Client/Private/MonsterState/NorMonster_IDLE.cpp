@@ -28,7 +28,7 @@ _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_IDLE::State_Tick(_float fTimeDelta)
 {
 
-	if (m_pOwner->Is_Target_Range(7.f))
+	if (m_pOwner->Is_Target_Range(7.f * 0.3f))
 	{
 		return CMonster::STATE::MOVE;
 	}

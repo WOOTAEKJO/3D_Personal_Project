@@ -26,6 +26,7 @@ public:
 	HRESULT	Initialize();
 	void	Update();
 	void	Delete_Collider();
+	void	Clear();
 
 public:
 	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);

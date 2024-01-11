@@ -295,6 +295,12 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\06. Fall">
       <UniqueIdentifier>{8a25b8a5-cb57-45b2-9b05-1d68e7eb4037}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\02. Level_Boss1">
+      <UniqueIdentifier>{46373d3d-f409-415e-8c28-8db9a288c2e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97. Trigger">
+      <UniqueIdentifier>{1809758c-041d-4bf2-bdfc-49a990eb5301}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -543,6 +549,12 @@
     <ClInclude Include="..\Public\PlayerState\Player_Fall.h">
       <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Boss1.h">
+      <Filter>01.Levels\02. Level_Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger.h">
+      <Filter>02.GameObjects\97. Trigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -763,6 +775,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Boss1.cpp">
+      <Filter>01.Levels\02. Level_Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trigger.cpp">
+      <Filter>02.GameObjects\97. Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

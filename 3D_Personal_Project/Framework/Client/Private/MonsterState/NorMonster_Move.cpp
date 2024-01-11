@@ -30,21 +30,24 @@ _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 {
 	
-	if (!m_pOwner->Is_Target_Range(7.f))
+	if (!m_pOwner->Is_Target_Range(7.f * 0.3f))
 	{
 		return CMonster::STATE::IDLE;
-	}
-
-	if (m_pOwner->Is_Target_Range(2.f))
-	{
-		return CMonster::STATE::ATTACK;
 	}
 
 	if (m_pOwner->Open_Status_Desc()->bHited)
 		return CMonster::STATE::HITED;
 
-	if(m_pOwner->Turn(fTimeDelta))
-		Translate(CTransform::STATE::STATE_LOOK, 2.f, fTimeDelta);
+	if (m_pOwner->Turn(fTimeDelta))
+	{
+		if (m_pOwner->Is_Target_Range(2.f * 0.16f))
+		{
+			return CMonster::STATE::ATTACK;
+		}
+
+		Translate(CTransform::STATE::STATE_LOOK, 1.f, fTimeDelta);
+	}
+		
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

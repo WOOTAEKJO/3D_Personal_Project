@@ -18,6 +18,7 @@
 #define BUFFER_RECT_TAG				TEXT("Prototype_Component_VIBuffer_Rect")
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
+#define BUFFER_TERRAIN2_TAG			TEXT("Prototype_Component_VIBuffer_Terrain2")
 #define BUFFER_TERRAIN_HEIGHT_PATH	TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")
 
 #define BUFFER_DTERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_DTerrain")
@@ -233,6 +234,7 @@
 
 #define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
 #define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navi")
+#define	COM_NAVIGATION2_TAG			TEXT("Prototype_Component_Navi2")
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
 
@@ -265,6 +267,7 @@
 #define GO_GAMEOBJECTTEST_TAG	TEXT("Prototype_GameObject_GameObject_Test")
 
 #define G0_TERRAIN_TAG			TEXT("Prototype_GameObject_Terrain")
+#define G0_TERRAIN2_TAG			TEXT("Prototype_GameObject_Terrain2")
 
 #define G0_DCAMERA_TAG			TEXT("Prototype_GameObject_DynamicCamera")
 #define GO_TARGETCAMERA_TAG		TEXT("Prototype_GameObject_TargetCamera")
@@ -277,6 +280,8 @@
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
+
+#define GO_TRIGGER_TAG			TEXT("Prototype_GameObject_Trigger")
 
 #pragma region Ä³¸¯ÅÍ
 

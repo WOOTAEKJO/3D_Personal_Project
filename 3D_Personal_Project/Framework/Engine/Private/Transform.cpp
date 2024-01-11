@@ -319,9 +319,9 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 	_vector Dir = XMVector3Normalize(vTargetPos -
 		Get_State(CTransform::STATE::STATE_POS));
 
-	_vector vLook = Get_State(CTransform::STATE::STATE_LOOK);
+	_vector vLook = XMVector3Normalize(Get_State(CTransform::STATE::STATE_LOOK));
 
-	_float fAngle = acos(XMVectorGetX(XMVector3Dot(Dir, XMVector3Normalize(vLook))));
+	_float fAngle = acos(XMVectorGetX(XMVector3Dot(Dir, vLook)));
 	
 	if (isnan(fAngle))
 		return false;
@@ -335,6 +335,8 @@ _bool CTransform::Turn_Target_Yaxis(_fvector vTargetPos, _float fTimeDelta)
 		vLook,
 		XMVectorSet(0.1f, 1000.f, 0.1f, 0.f)))
 		return true;
+	/*if (XMVectorGetX(XMVector3Length(Dir)) - XMVectorGetX(XMVector3Length(vLook)) <= 0.1f)
+		return true;*/
 	
 	Turn(Get_State(CTransform::STATE::STATE_UP), fTimeDelta * fAngle);
 

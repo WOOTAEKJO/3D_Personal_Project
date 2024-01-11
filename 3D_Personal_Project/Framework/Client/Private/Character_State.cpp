@@ -42,7 +42,6 @@ void CCharacter_State::Translate(CTransform::STATE eType,_float fSpeed, _float f
 	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
 		* (bTurn == false ? 1.f : -1.f);
 
-
 	if (std::isnan(vPos.m128_f32[0]))
 		return;
 

@@ -27,7 +27,7 @@ HRESULT CNPC::Initialize(void* pArg)
 	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;

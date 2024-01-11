@@ -62,7 +62,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
+	if(m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(10.f, 2.f, 13.f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
@@ -195,7 +198,7 @@ HRESULT CPlayer::Ready_Component()
 {
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
-	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
 

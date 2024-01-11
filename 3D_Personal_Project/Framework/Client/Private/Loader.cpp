@@ -27,6 +27,8 @@
 
 #include "Spooketon.h"
 
+#include "Trigger.h"
+
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -98,6 +100,12 @@ HRESULT CLoader::Loading()
 		break;
 	case LEVEL_TOOL:
 		hr = Loading_For_Tool_Level();
+		break;
+	case LEVEL_BOSS1:
+		hr = Loading_For_Boss1_Level();
+		break;
+	case LEVEL_BOSS2:
+		hr = Loading_For_Boss2_Level();
 		break;
 	}
 
@@ -197,6 +205,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(ANIMMODEL_SPOOKETON_TAG))) return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTrigger>(GO_TRIGGER_TAG))) return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -258,6 +268,79 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	m_isFinished = true;
 
 	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_Boss1_Level()
+{
+	/* 게임플레이 레벨에 필요한 자원을 로드하자. */
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
+
+	/*if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_TAG, 2))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_MASK_TAG, 1))) return E_FAIL;*/
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LANDSCAPE_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SKYBOX_TAG, 3))) return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
+
+	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN2_TAG))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
+
+	_matrix	matPivot;
+	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	matPivot = XMMatrixScaling(0.0005f, 0.0005f, 0.0005f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, matPivot))) return E_FAIL;
+
+	matPivot = XMMatrixScaling(0.00005f, 0.00005f, 0.00005f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_CROW_TAG, matPivot))) return E_FAIL;
+
+	if (FAILED(Monster())) return E_FAIL;
+
+	if (FAILED(Forest())) return E_FAIL;
+	if (FAILED(Rock())) return E_FAIL;
+	if (FAILED(Deco())) return E_FAIL;
+	if (FAILED(Wood())) return E_FAIL;
+
+	if (FAILED(Item())) return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
+	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION2_TAG))) return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
+
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(SHADER_NOR_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain>(G0_TERRAIN2_TAG))) return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTargetCamera>(GO_TARGETCAMERA_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform>(GO_PLATEFORM_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkyBox>(GO_SKYBOX_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(ANIMMODEL_JACK_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Body>(GO_PLAYER_BODY_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Spear>(GO_PLAYER_SPEAR_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Shovel>(GO_PLAYER_SHOVEL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CCrow>(ANIMMODEL_CROW_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(ANIMMODEL_SPOOKETON_TAG))) return E_FAIL;*/
+
+	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_For_Boss2_Level()
+{
+	return E_NOTIMPL;
 }
 
 HRESULT CLoader::Monster()

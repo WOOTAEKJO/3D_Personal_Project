@@ -87,6 +87,9 @@ void CCollider_Manager::Check_Collision(CCollider* SourpCollider, CCollider* Des
 		iter = m_mapJudgeColl.find(ID.ID);
 	}
 
+	/*if (m_mapJudgeColl.empty())
+		return;*/
+
 	if (!SourpCollider->Get_UseCol() || !DestpCollider->Get_UseCol())
 	{
 		SourpCollider->OnCollisionExit(DestpCollider);
@@ -120,6 +123,9 @@ void CCollider_Manager::Check_Collision(CCollider* SourpCollider, CCollider* Des
 			else {
 				SourpCollider->OnCollisionEnter(DestpCollider);
 				DestpCollider->OnCollisionEnter(SourpCollider);
+				if (m_mapJudgeColl.empty())
+					return;
+
 				iter->second = true;
 			}
 		}
@@ -151,6 +157,17 @@ void CCollider_Manager::Delete_Collider()
 		iter.first->Delete_Collider();
 		iter.second->Delete_Collider();
 	}
+}
+
+void CCollider_Manager::Clear()
+{
+	for (auto& iter : m_mapColliderLayer)
+	{
+		Safe_Release(iter.second);
+	}
+	m_mapColliderLayer.clear();
+	m_vecActiveCollider.clear();
+	m_mapJudgeColl.clear();
 }
 
 CCollider_Manager* CCollider_Manager::Create()

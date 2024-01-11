@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Level_GamePlay.h"
 
+#include "Level_Loading.h"
+
 #include "DynamicCamera.h"
 #include "TargetCamera.h"
 
@@ -11,6 +13,8 @@
 #include "AnimMesh_Demo.h"
 
 #include "Monster.h"
+
+#include "Trigger.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -37,15 +41,25 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(Ready_Layer_Monster(g_strLayerName[LAYER_MONSTER])))
 		return E_FAIL;
 
-	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
-	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
-	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDET_LAYER::COL_PLAYER, COLLIDET_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(Ready_Trigger()))
+		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
+	
 	return S_OK; 
 }
 
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
+	if (m_bNextLevel)
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS1))))
+			return;
+	}
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -57,10 +71,10 @@ HRESULT CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_TERRAIN_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, G0_TERRAIN_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SKYBOX_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_SKYBOX_TAG)))
 		return E_FAIL;
 	
 	return S_OK;
@@ -68,10 +82,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_BackGround(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_JACK_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_CROW_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -102,10 +116,10 @@ HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 {
-	/*if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, G0_DCAMERA_TAG)))
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, G0_DCAMERA_TAG)))
 		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_TARGETCAMERA_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_TARGETCAMERA_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -141,6 +155,24 @@ HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 			return E_FAIL;
 	}*/
 
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Trigger()
+{
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Portal_Boss1"), [this]() {
+		this->Set_NextLevel();
+		})))
+		return E_FAIL;
+
+	CTrigger::TRIGGER_DESC TriggerDesc = {};
+	TriggerDesc.strEventName = TEXT("Portal_Boss1");
+	TriggerDesc.vPosition = _float4(46.f, 9.f, 34.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG,&TriggerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }

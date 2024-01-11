@@ -22,8 +22,8 @@ HRESULT CDynamicCamera::Initialize(void* pArg)
 	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
 
 	DynamicCameraDesc.fMouseSensitivity = 0.1f;
-	//DynamicCameraDesc.vEye = _float4(0.f, 5.f, -3.f, 1.f);
-	DynamicCameraDesc.vEye = _float4(44.f, 12.f, 33.f, 1.f);
+	DynamicCameraDesc.vEye = _float4(0.f, 5.f, -3.f, 1.f);
+	//DynamicCameraDesc.vEye = _float4(44.f, 12.f, 33.f, 1.f);
 	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
 	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);
 	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
