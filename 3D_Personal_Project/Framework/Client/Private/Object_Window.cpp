@@ -40,11 +40,25 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		{
 			m_vecModelTag.push_back(iter.first);
 		}
+		else if (!wcscmp(wstr.c_str(), L"ModelInstancing"))
+		{
+			m_eInstancingModel.vecModelTag.push_back(iter.first);
+		}
 		else if (!wcscmp(wstr.c_str(), L"AnimModel"))
 		{
 			m_vecAnimModelTag.push_back(iter.first);
 		}
+	}
 
+	for (auto& Demo : m_vecModelTag)
+	{
+		for (auto& Instance : m_eInstancingModel.vecModelTag)
+		{
+			if (!wcscmp(CUtility_String::Get_LastName(Instance).c_str(), CUtility_String::Get_LastName(Demo).c_str()))
+			{
+				m_eTMP.vecModelTag.push_back(Demo);
+			}
+		}
 	}
 
 	return S_OK;
@@ -77,6 +91,14 @@ HRESULT CObject_Window::Render()
 			ImGui::EndTabItem();
 		}
 
+
+		if (ImGui::BeginTabItem("Instancing"))
+		{
+			m_eCurrentType = TYPE::TYPE_INSTANCING;
+			InstancingMesh();
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 
@@ -96,9 +118,11 @@ void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 	if (m_pTerrain == nullptr)
 		return;
 	if (m_eCurrentType == TYPE::TYPE_NONANIM)
-		Create_Model(g_strLayerName[m_iCurrentLayerName],m_strPickModelTag, vPickPoint);
+		Create_Model(g_strLayerName[m_iCurrentLayerName], m_strPickModelTag, vPickPoint);
 	else if (m_eCurrentType == TYPE::TYPE_ANIM)
 		Create_AnimModel(g_strLayerName[m_iCurrentLayerName], m_strPickAnimModelTag, vPickPoint);
+	else if (m_eCurrentType == TYPE::TYPE_INSTANCING)
+		Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
 }
 
 void CObject_Window::Demo_Picked()
@@ -144,18 +168,18 @@ void CObject_Window::Demo_Picked()
 
 string CObject_Window::Get_Path()
 {
-	return "../Bin/Data/Object/";
+	if (m_eCurrentType == TYPE::TYPE_INSTANCING)
+	{
+		return "../Bin/Data/Object/";
+	}
+	else {
+		return "../Bin/Data/Object/";
+	}
+	
 }
 
 HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 {
-	/*json jSave;
-
-	Write_Json(jSave);
-
-	if (FAILED(CJson_Utility::Save_Json(strFilePath, jSave)))
-		return E_FAIL;*/
-
 	ofstream fout;
 	_bool bAnim = false;
 
@@ -229,16 +253,8 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 
 HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 {
-	/*json jLoad;
-
-	if (FAILED(CJson_Utility::Load_Json(strFilePath, jLoad)))
-		return E_FAIL;
-
-	Load_FromJson(jLoad);*/
-
 	ifstream fIn;
 	
-
 	fIn.open(strFilePath, std::ios::binary);
 
 	if (fIn.is_open())
@@ -404,26 +420,8 @@ void CObject_Window::ObjectMesh()
 
 	if (!m_vecDemo.empty()&& m_vecDemo[m_iCurrentDemoIndex] != nullptr) {
 
-		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
-		ImGui::SameLine();
-		ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
-		ImGui::SameLine();
-		ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+		TransformGuizmo();
 
-		switch (m_iTransformRadioButton)
-		{
-		case 0:
-			m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case 1:
-			m_eOperationType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case 2:
-			m_eOperationType = ImGuizmo::OPERATION::SCALE;
-			break;
-		default:
-			break;
-		}
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecDemo[m_iCurrentDemoIndex]);
 	}
 
@@ -500,27 +498,113 @@ void CObject_Window::AnimObjectMesh()
 		string strNaviInd = "NaviIndex : " + to_string(m_vecAnimDemo[m_iCurrentAnimDemoIndex]->Get_NaviCellIndex());
 		ImGui::Text(strNaviInd.c_str());
 
-		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
-		ImGui::SameLine();
-		ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
-		ImGui::SameLine();
-		ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+		TransformGuizmo();
 
-		switch (m_iTransformRadioButton)
-		{
-		case 0:
-			m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
-			break;
-		case 1:
-			m_eOperationType = ImGuizmo::OPERATION::ROTATE;
-			break;
-		case 2:
-			m_eOperationType = ImGuizmo::OPERATION::SCALE;
-			break;
-		default:
-			break;
-		}
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecAnimDemo[m_iCurrentAnimDemoIndex]);
+	}
+}
+
+void CObject_Window::InstancingMesh()
+{
+	ImGui::Text("TMP_ModelList");
+	ImVec2 vSize = ImVec2(250, 100);
+
+	ImGui::BeginListBox("Model", vSize);
+	for (auto& iter : m_eTMP.vecModelTag) {
+
+		size_t pos = iter.rfind(L"_");
+		wstring wstr = iter.substr(pos + 1);
+		string str;
+		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable(str.c_str(), iter == m_eTMP.strPickModelTag))
+			m_eTMP.strPickModelTag = iter;
+	}
+	ImGui::EndListBox();
+
+	ImVec2 vSize2 = ImVec2(250, 100);
+	ImGui::BeginListBox("TMP", vSize2);
+	_uint iSize = m_eTMP.vecDemo.size();
+	for (_uint i = 0; i < iSize; i++)
+	{
+		string str = to_string(i);
+		string str2;
+		size_t pos = m_eTMP.vecDemo[i]->Get_ModelTag().rfind(L"_");
+		wstring wstr = m_eTMP.vecDemo[i]->Get_ModelTag().substr(pos + 1);
+		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eTMP.iCurrentIndex)) {
+			m_eTMP.iCurrentIndex = i;
+			m_eTMP.strCurrentTag = (str + "." + str2);
+		}
+	}
+	ImGui::EndListBox();
+
+	//ImGui::Text("Instancing_ModelList");
+	//vSize = ImVec2(250, 100);
+	//ImGui::BeginListBox("Model", vSize);
+	//for (auto& iter : m_eInstancingModel.vecModelTag) {
+
+	//	size_t pos = iter.rfind(L"_");
+	//	wstring wstr = iter.substr(pos + 1);
+	//	string str;
+	//	str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+	//	if (ImGui::Selectable(str.c_str(), iter == m_eInstancingModel.strPickModelTag))
+	//		m_eInstancingModel.strPickModelTag = iter;
+	//}
+	//ImGui::EndListBox();
+
+	
+
+	ImVec2 vSize4 = ImVec2(250, 100);
+	ImGui::BeginListBox("Layer", vSize4);
+	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)
+	{
+		string str = CUtility_String::WString_To_string(g_strLayerName[i]);
+		if (ImGui::Selectable(str.c_str(), i == m_iCurrentLayerName)) {
+			m_iCurrentLayerName = i;
+		}
+	}
+	ImGui::EndListBox();
+
+	ImGui::Separator();
+	string strMessage = "TMP Selected : " + m_eTMP.strCurrentTag;
+	ImGui::Text(strMessage.c_str());
+
+	if (!m_eTMP.vecDemo.empty() && m_eTMP.vecDemo[m_eTMP.iCurrentIndex] != nullptr) {
+
+		TransformGuizmo();
+
+		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_eTMP.vecDemo[m_eTMP.iCurrentIndex]);
+	}
+
+	if (ImGui::Button("TMP Delete Object")) {
+		if (!m_eTMP.vecDemo.empty() && m_eTMP.vecDemo[m_eTMP.iCurrentIndex] != nullptr)
+		{
+			m_eTMP.vecDemo[m_eTMP.iCurrentIndex]->Set_Dead();
+			m_eTMP.vecDemo.erase(m_eTMP.vecDemo.begin() + m_eTMP.iCurrentIndex);
+
+			if (m_eTMP.iCurrentIndex != 0)
+				--m_eTMP.iCurrentIndex;
+		}
+	}
+
+	if (!m_eInstancingModel.vecDemo.empty())
+	{
+		ImVec2 vSize3 = ImVec2(250, 100);
+		ImGui::BeginListBox("Instancing", vSize3);
+		iSize = m_eInstancingModel.vecDemo.size();
+		for (_uint i = 0; i < iSize; i++)
+		{
+			string str = to_string(i);
+			string str2;
+			size_t pos = m_eInstancingModel.vecDemo[i]->Get_ModelTag().rfind(L"_");
+			wstring wstr = m_eInstancingModel.vecDemo[i]->Get_ModelTag().substr(pos + 1);
+			str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+			if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eInstancingModel.iCurrentIndex)) {
+				m_eInstancingModel.iCurrentIndex = i;
+				m_eInstancingModel.strCurrentTag = (str + "." + str2);
+			}
+		}
+		ImGui::EndListBox();
 	}
 }
 
@@ -558,6 +642,42 @@ void CObject_Window::Create_AnimModel(const wstring& strLayerTag,const wstring& 
 		->Find_PositionCell(XMLoadFloat4(&vPickPos)));
 	
 	m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
+}
+
+void CObject_Window::Create_TMP(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos)
+{
+  	CGameObject* pObject_Demo = nullptr;
+	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
+
+	ObjectDemoValue.strModelTag = strModelTag;
+	ObjectDemoValue.vPos = vPickPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
+		&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+		return;
+
+	m_eTMP.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+}
+
+void CObject_Window::Create_Instancing(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos)
+{
+	CGameObject* pObject_Demo = nullptr;
+	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
+
+	ObjectDemoValue.strModelTag = strModelTag;
+	ObjectDemoValue.vPos = _float4(0.f,0.f,0.f,1.f);
+
+	// 오브젝트들을 담아서 이제 만들어야 함
+	// 구조가 이상해서 수정해야 함
+	// 같은 오브젝트들을 다 찍고 그걸로 인스턴싱을 만들 생각이었음
+
+	//ObjectDemoValue.vecVertexMat = 
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
+		&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+		return;
+
+	m_eInstancingModel.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
 }
 
 void CObject_Window::NotGuizmo()
@@ -600,6 +720,31 @@ void CObject_Window::NotGuizmo()
 		}
 		
 	}
+}
+
+void CObject_Window::TransformGuizmo()
+{
+	ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
+	ImGui::SameLine();
+	ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
+	ImGui::SameLine();
+	ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+
+	switch (m_iTransformRadioButton)
+	{
+	case 0:
+		m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
+		break;
+	case 1:
+		m_eOperationType = ImGuizmo::OPERATION::ROTATE;
+		break;
+	case 2:
+		m_eOperationType = ImGuizmo::OPERATION::SCALE;
+		break;
+	default:
+		break;
+	}
+	
 }
 
 CObject_Window* CObject_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

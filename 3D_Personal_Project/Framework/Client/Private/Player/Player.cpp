@@ -62,13 +62,11 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(44.f, 9.f, 33.f, 1.f));
-	//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(2.f, 7.f, 3.f, 1.f));
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
 	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
-	m_pNavigationCom->Set_CurrentIndex(445);
 
 	return S_OK;
 }

@@ -17,6 +17,8 @@ public:
 		_float2		fScale;
 		_float2		fLifeTime;
 
+
+
 	}INSTANCING_DESC;
 
 protected:
@@ -48,7 +50,10 @@ protected:
 	_float			m_fTimeAcc = { 0.f };
 
 protected:
-	INSTANCING_TYPE	m_eType = { TYPE_END };
+	vector<_float4x4>		m_vecInstanceVertex;
+
+protected:
+	INSTANCING_TYPE	m_eInstanceType = { TYPE_END };
 
 private:
 	HRESULT		Init_Particle(VTXINSTANCING* pVerpostex);

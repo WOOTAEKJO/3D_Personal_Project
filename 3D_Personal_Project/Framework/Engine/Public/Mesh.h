@@ -16,8 +16,11 @@ public:
 
 public:
 	_bool	Compute_MousePos(_float3* pOut, _matrix matWorld,_float* fDist);
-	_uint	Get_MaterialIndex() const { return m_iMaterialIndex; }
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* strName, CModel::BONES& pBones, _int iNonBindInd);
+
+public:
+	_uint	Get_MaterialIndex() const { return m_iMaterialIndex; }
+	vector<_uint3>	Get_IndexInfo() { return m_vecIndexInfo; }
 
 private:
 	char	m_szName[MAX_PATH] = {};

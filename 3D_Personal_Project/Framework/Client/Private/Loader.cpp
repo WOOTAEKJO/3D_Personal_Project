@@ -226,7 +226,8 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	if (FAILED(Rock())) return E_FAIL;
 	if (FAILED(Deco())) return E_FAIL;
 	if (FAILED(Wood())) return E_FAIL;
-	
+	if (FAILED(Instancing())) return E_FAIL;
+
 	if (FAILED(Item())) return E_FAIL;
 
 	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f);
@@ -240,6 +241,7 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	if(FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXTBN>(SHADER_BTN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<INSTANCING_MESH>(SHADER_MESHINSTANCING_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
@@ -382,8 +384,6 @@ HRESULT CLoader::Deco()
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_FLOORLAMP_TAG, matPivot))) return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
-
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GROUNDLANTERN_TAG, matPivot))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_HATHEAP_TAG, matPivot))) return E_FAIL;
@@ -397,6 +397,8 @@ HRESULT CLoader::Deco()
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SCOURGEALTAR_TAG, matPivot))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WOODFUCKER_TAG, matPivot))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
 
@@ -443,6 +445,17 @@ HRESULT CLoader::Wood()
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WOODWALL2_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
+
+	return S_OK;
+}
+
+HRESULT CLoader::Instancing()
+{
+	_matrix	matPivot;
+
+	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODELINSTANCING_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
 
 	return S_OK;
 }

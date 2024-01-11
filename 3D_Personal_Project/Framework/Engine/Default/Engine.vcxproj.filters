@@ -259,8 +259,8 @@
     <Filter Include="01.Utility\06. RenderTarget\Manager">
       <UniqueIdentifier>{9aa892ac-da0f-4fe8-8716-60ec02750e62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\03. Component\04. Model\00.Mesh\Mesh_Instancing">
-      <UniqueIdentifier>{ec15d11d-2fa3-4cd9-82c1-9200c9cc3b86}</UniqueIdentifier>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing">
+      <UniqueIdentifier>{ba26694f-fa2d-4433-af42-16eb4a069466}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -510,8 +510,8 @@
     <ClInclude Include="..\Public\RenderTarget_Manager.h">
       <Filter>01.Utility\06. RenderTarget\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Mesh_Instancing.h">
-      <Filter>01.Utility\03. Component\04. Model\00.Mesh\Mesh_Instancing</Filter>
+    <ClInclude Include="..\Public\Model_Instancing.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -740,8 +740,8 @@
     <ClCompile Include="..\Private\RenderTarget_Manager.cpp">
       <Filter>01.Utility\06. RenderTarget\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Mesh_Instancing.cpp">
-      <Filter>01.Utility\03. Component\04. Model\00.Mesh\Mesh_Instancing</Filter>
+    <ClCompile Include="..\Private\Model_Instancing.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

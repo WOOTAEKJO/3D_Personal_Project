@@ -805,5 +805,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticleRect.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

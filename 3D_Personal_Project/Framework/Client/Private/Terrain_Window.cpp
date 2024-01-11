@@ -276,7 +276,7 @@ void CTerrain_Window::HeightMap()
 
 void CTerrain_Window::Navigation()
 {
-	ImVec2 vSize = ImVec2(250, 100);
+	ImVec2 vSize = ImVec2(200, 100);
 	ImGui::BeginListBox("Sphere", vSize);
 	_uint iSize = m_vecSphere.size();
 	for (_uint i = 0; i < iSize; i++)

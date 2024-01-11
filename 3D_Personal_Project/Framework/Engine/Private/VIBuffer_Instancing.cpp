@@ -19,7 +19,7 @@ HRESULT CVIBuffer_Instancing::Initialize_ProtoType()
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
+HRESULT CVIBuffer_Instancing::Initialize(void* pArg) 
 {
 	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
 
@@ -32,15 +32,17 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 
 	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
 
-	VTXINSTANCING* pVerpostex = new VTXINSTANCING[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
+	VTXINSTANCING* pVerpostex = new VTXINSTANCING[m_iInstanceNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
 
-	switch (m_eType)
+	switch (m_eInstanceType)
 	{
 	case Engine::CVIBuffer_Instancing::TYPE_PARTICLE:
-		Init_Particle(pVerpostex);
+		if (FAILED(Init_Particle(pVerpostex)))
+			return E_FAIL;
 		break;
 	case Engine::CVIBuffer_Instancing::TYPE_MESH:
-		Init_Mesh(pVerpostex);
+		if (FAILED(Init_Mesh(pVerpostex)))
+			return E_FAIL;
 		break;
 	}
 
@@ -155,7 +157,14 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 
 HRESULT CVIBuffer_Instancing::Init_Mesh(VTXINSTANCING* pVerpostex)
 {
-	
+	for (_uint i = 0; i < m_iInstanceNum; i++)
+	{
+		memcpy(&pVerpostex[i].vRight, &m_vecInstanceVertex[i].m[0], sizeof(_float4));
+		memcpy(&pVerpostex[i].vUp, &m_vecInstanceVertex[i].m[1], sizeof(_float4));
+		memcpy(&pVerpostex[i].vLook, &m_vecInstanceVertex[i].m[2], sizeof(_float4));
+		memcpy(&pVerpostex[i].vPos, &m_vecInstanceVertex[i].m[3], sizeof(_float4));
+		// 초기화 당시 받은 상태 행렬을 인스턴스 정점에 저장한다.
+	}
 
 	return S_OK;
 }

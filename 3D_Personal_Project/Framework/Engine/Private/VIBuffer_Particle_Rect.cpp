@@ -12,7 +12,7 @@ CVIBuffer_Particle_Rect::CVIBuffer_Particle_Rect(const CVIBuffer_Particle_Rect& 
 
 HRESULT CVIBuffer_Particle_Rect::Initialize_ProtoType(_uint iInstanceNum)
 {
-	m_eType = INSTANCING_TYPE::TYPE_PARTICLE;
+	m_eInstanceType = INSTANCING_TYPE::TYPE_PARTICLE;
 
 	m_iVertexBuffersNum = 2;
 	m_iVertexNum = 4;

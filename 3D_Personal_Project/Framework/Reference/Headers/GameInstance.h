@@ -109,6 +109,13 @@ public: /* For.Component_Manager*/
 				Load_Models_Path(strProtoTypeTag), matPivot));
 	}
 
+	HRESULT	Add_ModelInstancing_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel_Instancing::Create(m_pDevice, m_pContext,
+				Load_Models_Path(strProtoTypeTag), matPivot));
+	}
+
 	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,

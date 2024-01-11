@@ -28,12 +28,13 @@
 
 #pragma region Ω¶¿Ã¥ı
 
-#define	SHADER_POS_TAG			TEXT("Prototype_Component_Shader_VtxPosTex")
-#define SHADER_NOR_TAG			TEXT("Prototype_Component_Shader_VtxNorTex")
-#define	SHADER_BTN_TAG			TEXT("Prototype_Component_Shader_VtxTBN")
-#define	SHADER_MESH_TAG			TEXT("Prototype_Component_Shader_VtxMesh")
-#define	SHADER_ANIMMESH_TAG		TEXT("Prototype_Component_Shader_VtxAnimMesh")
-#define	SHADER_CUBE_TAG			TEXT("Prototype_Component_Shader_VtxCube")
+#define	SHADER_POS_TAG						TEXT("Prototype_Component_Shader_VtxPosTex")
+#define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
+#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
+#define	SHADER_MESH_TAG						TEXT("Prototype_Component_Shader_VtxMesh")
+#define	SHADER_MESHINSTANCING_TAG			TEXT("Prototype_Component_Shader_VtxMeshInstancing")
+#define	SHADER_ANIMMESH_TAG					TEXT("Prototype_Component_Shader_VtxAnimMesh")
+#define	SHADER_CUBE_TAG						TEXT("Prototype_Component_Shader_VtxCube")
 
 #pragma endregion
 
@@ -125,8 +126,6 @@
 
 #define	MODEL_FLOORLAMP_TAG			TEXT("Prototype_Component_Model_FloorLamp")
 
-#define	MODEL_GRASSMESHBIG_TAG			TEXT("Prototype_Component_Model_GrassMeshBig")
-
 #define	MODEL_GROUNDLANTERN_TAG			TEXT("Prototype_Component_Model_GroundLantern")
 
 #define	MODEL_HATHEAP_TAG			TEXT("Prototype_Component_Model_HayHeap")
@@ -140,6 +139,8 @@
 #define	MODEL_SCOURGEALTAR_TAG			TEXT("Prototype_Component_Model_ScourgeAltar")
 
 #define	MODEL_WOODFUCKER_TAG			TEXT("Prototype_Component_Model_WoodFucker")
+
+#define	MODEL_GRASSMESHBIG_TAG		TEXT("Prototype_Component_Model_GrassMeshBig")
 
 #pragma endregion
 
@@ -207,6 +208,12 @@
 #define	MODEL_WOODROPEHOLDER_TAG			TEXT("Prototype_Component_Model_woodRopeHolder")
 
 #define	MODEL_WOODWALL2_TAG					TEXT("Prototype_Component_Model_woodWall2")
+
+#pragma endregion
+
+#pragma region ¿ŒΩ∫≈œΩÃ
+
+#define	MODELINSTANCING_GRASSMESHBIG_TAG		TEXT("Prototype_Component_ModelInstancing_GrassMeshBig")
 
 #pragma endregion
 

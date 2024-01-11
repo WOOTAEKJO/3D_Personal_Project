@@ -28,6 +28,16 @@ HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
 		m_strModelTag = ObjectDemoValue->strModelTag;
 
+		if (!wcscmp(CUtility_String::Get_MiddleName(m_strModelTag).c_str(), L"Model"))
+		{
+			m_eModelType = MODEL_TYPE::TYPE_NORMAL;
+		}
+		else if (!wcscmp(CUtility_String::Get_MiddleName(m_strModelTag).c_str(), L"ModelInstancing"))
+		{
+			m_vecVertexMat = ObjectDemoValue->vecVertexMat;
+			m_eModelType = MODEL_TYPE::TYPE_INSTANCING;
+		}
+
 		if (FAILED(Ready_Component()))
 			return E_FAIL;
 	}
@@ -206,16 +216,22 @@ HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 
 HRESULT CObjectMesh_Demo::Ready_Component()
 {
-	
-	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_MESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	switch (m_eModelType)
+	{
+	case Client::CObjectMesh_Demo::TYPE_NORMAL:
+		if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
+		if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
-	/* For.Com_Model*/
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
+		break;
+	case Client::CObjectMesh_Demo::TYPE_INSTANCING:
+		if (FAILED(Add_Component<CShader>(SHADER_MESHINSTANCING_TAG, &m_pShaderCom))) return E_FAIL;
+		CModel_Instancing::MESH_INSTANCE_DESC Instancing_Desc = {};
+		Instancing_Desc.vecInstanceVertex = m_vecVertexMat;
+
+		if (FAILED(Add_Component<CModel_Instancing>(m_strModelTag, &m_pModelInstancingCom,&Instancing_Desc))) return E_FAIL;
+
+		break;
+	}
 
 	return S_OK;
 }
@@ -252,4 +268,5 @@ void CObjectMesh_Demo::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pModelInstancingCom);
 }

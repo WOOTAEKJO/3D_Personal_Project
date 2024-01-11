@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CModel;
+class CModel_Instancing;
 
 END
 
@@ -12,8 +13,11 @@ BEGIN(Client)
 class CObjectMesh_Demo final : public CDemo
 {
 public:
+	enum MODEL_TYPE {TYPE_NORMAL, TYPE_INSTANCING,TYPE_END};
+
 	typedef struct tagObjectMeshDemoValue : public DEMO_DESC
 	{
+		vector<_float4x4> vecVertexMat;
 
 	}OBDEMOVALUE;
 private:
@@ -34,6 +38,9 @@ public:
 	void	Set_TransformState(CTransform::STATE eType, _float4 vVector);
 	_float4	Get_TransformState(CTransform::STATE eType);
 
+	void	Set_ModelType(MODEL_TYPE eType) {m_eModelType = eType; }
+	MODEL_TYPE	Get_ModelType() { return m_eModelType; }
+
 	void	Rotation(_float fX, _float fY, _float fZ);
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
@@ -48,6 +55,13 @@ public:
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
+	CModel_Instancing* m_pModelInstancingCom = { nullptr };
+
+private:
+	MODEL_TYPE	m_eModelType = { MODEL_TYPE::TYPE_END };
+
+private:
+	vector<_float4x4>	m_vecVertexMat;
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

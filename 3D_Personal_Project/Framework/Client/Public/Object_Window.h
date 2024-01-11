@@ -9,11 +9,24 @@ class CAnimMesh_Demo;
 class CObject_Window final : public CImGui_Window
 {
 public:
-	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
+	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_INSTANCING, TYPE_END};
 
 	typedef struct tagObject_Window_Desc
 	{
 	}OBJECTWINDOWDESC;
+
+	typedef struct tagObject_Demo_Desc
+	{
+		vector<wstring>					vecModelTag;
+		wstring							strPickModelTag;
+
+		vector<CObjectMesh_Demo*>		vecDemo;
+		vector<CAnimMesh_Demo*>			vecAnimDemo;
+		_uint							iCurrentIndex = { 0 };
+		string							strCurrentTag;
+
+	}OBJECTDEMO_DESC;
+
 private:
 	CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CObject_Window() = default;
@@ -45,6 +58,10 @@ private:
 	string							m_strCurrentDemoTag;
 
 private:
+	OBJECTDEMO_DESC					m_eInstancingModel;
+	OBJECTDEMO_DESC					m_eTMP;
+
+private:
 	vector<wstring>					m_vecAnimModelTag;
 	wstring							m_strPickAnimModelTag;
 
@@ -62,9 +79,13 @@ private: /* For.RadioButton_Transform*/
 private:
 	void	ObjectMesh();
 	void	AnimObjectMesh();
+	void	InstancingMesh();
 	void	Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	Create_AnimModel(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_TMP(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_Instancing(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	NotGuizmo();
+	void	TransformGuizmo();
 
 public:
 	static	CObject_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);
