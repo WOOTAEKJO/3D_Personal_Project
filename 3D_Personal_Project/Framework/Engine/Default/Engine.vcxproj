@@ -238,6 +238,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClInclude Include="..\public\Level_Manager.h" />
     <ClInclude Include="..\Public\Mesh.h" />
     <ClInclude Include="..\Public\MeshData.h" />
+    <ClInclude Include="..\Public\Mesh_Instancing.h" />
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\Mouse_Manager.h" />
     <ClInclude Include="..\Public\Navigation.h" />
@@ -315,6 +316,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
     <ClCompile Include="..\private\Level_Manager.cpp" />
     <ClCompile Include="..\Private\Mesh.cpp" />
     <ClCompile Include="..\Private\MeshData.cpp" />
+    <ClCompile Include="..\Private\Mesh_Instancing.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\Mouse_Manager.cpp" />
     <ClCompile Include="..\Private\Navigation.cpp" />

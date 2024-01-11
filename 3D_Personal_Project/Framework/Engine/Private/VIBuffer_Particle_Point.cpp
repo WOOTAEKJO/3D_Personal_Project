@@ -12,6 +12,8 @@ CVIBuffer_Particle_Point::CVIBuffer_Particle_Point(const CVIBuffer_Particle_Poin
 
 HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType(_uint iInstanceNum)
 {
+	m_eInstanceType = INSTANCING_TYPE::TYPE_PARTICLE;
+
 	m_iVertexBuffersNum = 2;
 	m_iVertexNum = 1;
 	m_iVertexStride = sizeof(VTXPOINT);

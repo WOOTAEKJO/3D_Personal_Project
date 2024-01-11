@@ -1,6 +1,7 @@
 #include "..\Public\Model.h"
 
 #include "Mesh.h"
+#include "Mesh_Instancing.h"
 #include "Bone.h"
 #include "Texture.h"
 #include "Animation.h"

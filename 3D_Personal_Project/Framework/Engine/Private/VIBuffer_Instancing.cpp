@@ -32,38 +32,16 @@ HRESULT CVIBuffer_Instancing::Initialize(void* pArg)
 
 	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
 
-
-
 	VTXINSTANCING* pVerpostex = new VTXINSTANCING[m_iVertexNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
 
-	_vector vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-
-	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);
-	uniform_real_distribution<float>	RandomAngle(0.f, XMConvertToRadians(360.f));
-	uniform_real_distribution<float>	RandomSpeed(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
-	uniform_real_distribution<float>	RandomLifeTime(m_Instancing_Desc.fLifeTime.x, m_Instancing_Desc.fLifeTime.y);
-	uniform_real_distribution<float>	RandomScale(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
-
-	for (_uint i = 0; i < m_iInstanceNum; i++)
+	switch (m_eType)
 	{
-		m_pSpeeds[i] = RandomSpeed(m_RandomNumber);
-		m_pLifeTime[i] = RandomLifeTime(m_RandomNumber);
-
-		_float fScale = RandomScale(m_RandomNumber);
-
-		vDir = XMVector3Normalize(vDir) * RandomRange(m_RandomNumber);
-
-		_vector vRot = XMQuaternionRotationRollPitchYaw(RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber));
-
-		_matrix matRot = XMMatrixRotationQuaternion(vRot);
-
-		vDir = XMVector3TransformNormal(vDir, matRot);
-
-		pVerpostex[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
-		pVerpostex[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
-		pVerpostex[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		XMStoreFloat4(&pVerpostex[i].vPos,XMLoadFloat3(&m_Instancing_Desc.vCenter) + vDir);
-		pVerpostex[i].vPos.w = 1.f;
+	case Engine::CVIBuffer_Instancing::TYPE_PARTICLE:
+		Init_Particle(pVerpostex);
+		break;
+	case Engine::CVIBuffer_Instancing::TYPE_MESH:
+		Init_Mesh(pVerpostex);
+		break;
 	}
 
 	m_SubResource_Data.pSysMem = pVerpostex;
@@ -136,6 +114,48 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 HRESULT CVIBuffer_Instancing::Render()
 {
 	m_pContext->DrawIndexedInstanced(m_iIndexCountPerInstance, m_iInstanceNum, 0, 0, 0);
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
+{
+	_vector vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+
+	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);
+	uniform_real_distribution<float>	RandomAngle(0.f, XMConvertToRadians(360.f));
+	uniform_real_distribution<float>	RandomSpeed(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
+	uniform_real_distribution<float>	RandomLifeTime(m_Instancing_Desc.fLifeTime.x, m_Instancing_Desc.fLifeTime.y);
+	uniform_real_distribution<float>	RandomScale(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
+
+	for (_uint i = 0; i < m_iInstanceNum; i++)
+	{
+		m_pSpeeds[i] = RandomSpeed(m_RandomNumber);
+		m_pLifeTime[i] = RandomLifeTime(m_RandomNumber);
+
+		_float fScale = RandomScale(m_RandomNumber);
+
+		vDir = XMVector3Normalize(vDir) * RandomRange(m_RandomNumber);
+
+		_vector vRot = XMQuaternionRotationRollPitchYaw(RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber));
+
+		_matrix matRot = XMMatrixRotationQuaternion(vRot);
+
+		vDir = XMVector3TransformNormal(vDir, matRot);
+
+		pVerpostex[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
+		pVerpostex[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
+		pVerpostex[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+		XMStoreFloat4(&pVerpostex[i].vPos, XMLoadFloat3(&m_Instancing_Desc.vCenter) + vDir);
+		pVerpostex[i].vPos.w = 1.f;
+	}
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Instancing::Init_Mesh(VTXINSTANCING* pVerpostex)
+{
+	
 
 	return S_OK;
 }

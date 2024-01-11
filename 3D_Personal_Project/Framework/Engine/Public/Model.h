@@ -5,6 +5,8 @@
 BEGIN(Engine)
 
 class CMesh;
+class CMesh_Instancing;
+class CMesh_DInstancing;
 class CAnimation;
 class CBone;
 

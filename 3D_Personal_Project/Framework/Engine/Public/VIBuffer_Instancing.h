@@ -6,6 +6,9 @@ BEGIN(Engine)
 class CVIBuffer_Instancing abstract : public CVIBuffer
 {
 public:
+	enum INSTANCING_TYPE {TYPE_PARTICLE, TYPE_MESH,TYPE_END};
+
+public:
 	typedef struct tagInstancing_Desc
 	{
 		_float3		vCenter;
@@ -43,6 +46,13 @@ protected:
 	_float*			m_pLifeTime = { nullptr };
 	INSTANCING_DESC	m_Instancing_Desc;
 	_float			m_fTimeAcc = { 0.f };
+
+protected:
+	INSTANCING_TYPE	m_eType = { TYPE_END };
+
+private:
+	HRESULT		Init_Particle(VTXINSTANCING* pVerpostex);
+	HRESULT		Init_Mesh(VTXINSTANCING* pVerpostex);
 
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;
