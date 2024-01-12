@@ -45,7 +45,7 @@ _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 			return CMonster::STATE::ATTACK;
 		}
 
-		Translate(CTransform::STATE::STATE_LOOK, 1.f, fTimeDelta);
+		Translate(CTransform::STATE::STATE_LOOK, 0.3f, fTimeDelta);
 	}
 		
 

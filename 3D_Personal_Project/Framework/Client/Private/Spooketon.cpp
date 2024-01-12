@@ -55,8 +55,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;
 
-	m_Status_Desc.iMaxHP = 10;
-	m_Status_Desc.iCurHP = 10;
+	m_Status_Desc.iMaxHP = 5;
+	m_Status_Desc.iCurHP = 5;
 
 	return S_OK;
 }
