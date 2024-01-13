@@ -66,8 +66,17 @@ private:
 	vector<_float4x4>	m_vecVertexMat;
 
 private:
+	_float	m_fAngleZ = { XMConvertToRadians(20.f) };
+
+	_float  m_fAmplitude = {1.01f};
+	_float	m_fAngularVelocity = { 0.f };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
+
+private:
+	void	Pendulum_Movement(_float fTimeDelta);
 
 public:
 	static CObjectMesh_Demo* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

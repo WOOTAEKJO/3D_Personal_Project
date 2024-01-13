@@ -51,7 +51,8 @@ void CObjectMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CObjectMesh_Demo::Tick(_float fTimeDelta)
 {
-	
+	if (m_iNaviCellIndex == -2)
+		Pendulum_Movement(fTimeDelta);
 }
 
 void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
@@ -272,6 +273,22 @@ HRESULT CObjectMesh_Demo::Ready_Component()
 	}
 
 	return S_OK;
+}
+
+void CObjectMesh_Demo::Pendulum_Movement(_float fTimeDelta)
+{
+	_float fGravity = 9.81f;
+	_float fLength = 1.f;
+
+	_float fAcceleration = -(fGravity / fLength) * sin(m_fAngleZ);
+	//_float fConstantAngularAcceLeration = 1.f;
+
+	m_fAngularVelocity += fAcceleration * fTimeDelta;
+	m_fAngleZ += m_fAngularVelocity * fTimeDelta;
+
+	m_fAngleZ = m_fAmplitude * sin(m_fAngleZ);
+	
+	m_pTransformCom->Rotation_Quaternio(0.f, XMConvertToRadians(30.f), m_fAngleZ);
 }
 
 CObjectMesh_Demo* CObjectMesh_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

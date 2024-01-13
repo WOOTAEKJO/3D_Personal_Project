@@ -80,6 +80,9 @@ HRESULT CDataMgr::Level_Object_Load(const _char* strFilePath)
 					return E_FAIL;
 			}
 			else {
+				if(!wcscmp(CUtility_String::string_To_Wstring(strProTagName).c_str(), GO_PLATEFORM_TRAP_TAG))
+					int a = 0;
+
 				CPlateform::PLATEFORM_DESC Plateform_Desc = {};
 				Plateform_Desc.strModelTag = CUtility_String::string_To_Wstring(strModelName);
 				Plateform_Desc.vPos = _float4(0.f, 0.f, 0.f, 1.f);
@@ -93,7 +96,7 @@ HRESULT CDataMgr::Level_Object_Load(const _char* strFilePath)
 
 			pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
 
-			if (iNaviIndex != -1)
+			if (0 <= iNaviIndex)
 			{
 				pObject_Demo->Get_Component<CNavigation>()->Set_CurrentIndex(iNaviIndex);
 			}

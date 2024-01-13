@@ -279,6 +279,7 @@
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 #define GO_PLATEFORM_INSTANCING_TAG		TEXT("Prototype_GameObject_PlateformInstancing")
+#define GO_PLATEFORM_TRAP_TAG		TEXT("Prototype_GameObject_PlateformTrap")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

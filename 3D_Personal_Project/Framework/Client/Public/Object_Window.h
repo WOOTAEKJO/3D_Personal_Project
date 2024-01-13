@@ -57,6 +57,8 @@ private:
 	_uint							m_iCurrentDemoIndex = { 0 };
 	string							m_strCurrentDemoTag;
 
+	_int							m_iNaviIndxRadiButton = { -1 };
+
 private:
 	OBJECTDEMO_DESC					m_eInstancingModel;
 	OBJECTDEMO_DESC					m_eTMP;

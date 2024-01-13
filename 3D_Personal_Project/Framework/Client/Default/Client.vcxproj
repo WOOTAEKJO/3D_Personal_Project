@@ -233,6 +233,7 @@
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Plateform_Instancing.h" />
+    <ClInclude Include="..\Public\Plateform_Trap.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Fall.h" />
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Land.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Plateform_Instancing.cpp" />
+    <ClCompile Include="..\Private\Plateform_Trap.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Land.cpp" />

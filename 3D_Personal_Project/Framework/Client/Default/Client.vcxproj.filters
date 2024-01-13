@@ -567,6 +567,9 @@
     <ClInclude Include="..\Public\Plateform_Instancing.h">
       <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Plateform_Trap.h">
+      <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -796,6 +799,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Plateform_Instancing.cpp">
       <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform_Trap.cpp">
+      <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

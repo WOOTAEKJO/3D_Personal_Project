@@ -16,6 +16,8 @@
 
 #include "Trigger.h"
 
+#include "Plateform_Trap.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -96,22 +98,36 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
 
-	/*json jLoad;
-
-	if (FAILED(CJson_Utility::Load_Json(JSON_STAGE1_PATH, jLoad)))
+	CPlateform_Trap::PLATEFORM_TRAP_DESC TrapDesc = {};
+	TrapDesc.strModelTag = MODEL_WOODFUCKER_TAG;
+	TrapDesc.vPos = _float4(14.004f, 10.f, 23.227f,1.f);
+	TrapDesc.fAngle = _float3(0.f, 0.f, XMConvertToRadians(30.f));
+	TrapDesc.fAmplitude = 1.01f;
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TRAP_TAG,
+		&TrapDesc)))
 		return E_FAIL;
 
-	for (auto& iter : jLoad["Demo"])
-	{
-		CGameObject* pObject_Demo = nullptr;
+	TrapDesc.vPos = _float4(13.990f, 10.f, 25.996f, 1.f);
+	TrapDesc.fAngle = _float3(0.f, 0.f, XMConvertToRadians(-30.f));
+	TrapDesc.fAmplitude = 1.01f;
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TRAP_TAG,
+		&TrapDesc)))
+		return E_FAIL;
 
-		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TAG,
-			nullptr, reinterpret_cast<CGameObject**>(&pObject_Demo))))
-			return E_FAIL;
+	TrapDesc.vPos = _float4(15.407f, 10.f, 28.781f, 1.f);
+	TrapDesc.fAngle = _float3(0.f, XMConvertToRadians(30.f), XMConvertToRadians(35.f));
+	TrapDesc.fAmplitude = 1.02f;
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TRAP_TAG,
+		&TrapDesc)))
+		return E_FAIL;
 
-		pObject_Demo->Load_FromJson(iter);
-
-	}*/
+	TrapDesc.vPos = _float4(17.109f, 10.f, 30.635f, 1.f);
+	TrapDesc.fAngle = _float3(0.f, XMConvertToRadians(35.f), XMConvertToRadians(-20.f));
+	TrapDesc.fAmplitude = 1.005f;
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_PLATEFORM_TRAP_TAG,
+		&TrapDesc)))
+		return E_FAIL;
+	
 
 	return S_OK;
 }

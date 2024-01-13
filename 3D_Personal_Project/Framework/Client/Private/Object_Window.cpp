@@ -209,7 +209,8 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 				fout.write(strModelTag.c_str(), istrSize);
 
-				_int iNaviInd = -1;
+				//_int iNaviInd = -1;
+				_int iNaviInd = iter->Get_NaviCellIndex();
 				fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
 
 				fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
@@ -242,7 +243,14 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 				fout.write(strLayer.c_str(), istrSize);
 
-				string strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
+				string strProTag;
+				
+				_int iNaviInd = iter->Get_NaviCellIndex();
+				if (iNaviInd == -2)
+					strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TRAP_TAG);
+				else
+					strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
+
 				istrSize = strProTag.size();
 				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 				fout.write(strProTag.c_str(), istrSize);
@@ -252,7 +260,7 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
 				fout.write(strModelTag.c_str(), istrSize);
 
-				_int iNaviInd = -1;
+				//_int iNaviInd = -1;
 				fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
 
 				fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
@@ -526,15 +534,28 @@ void CObject_Window::ObjectMesh()
 	}
 	ImGui::EndListBox();
 
-	ImGui::Separator();
-	string strMessage = "Selected : " + m_strCurrentDemoTag;
-	ImGui::Text(strMessage.c_str());
+	
 
 	if (!m_vecDemo.empty()&& m_vecDemo[m_iCurrentDemoIndex] != nullptr) {
+
+		ImGui::Separator();
+		string strMessage = "Selected : " + m_strCurrentDemoTag;
+		ImGui::Text(strMessage.c_str());
+		string strNaviInd = "NaviIndex : " + to_string(m_vecDemo[m_iCurrentDemoIndex]->Get_NaviCellIndex());
+		ImGui::Text(strNaviInd.c_str());
 
 		TransformGuizmo();
 
 		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecDemo[m_iCurrentDemoIndex]);
+	}
+
+	ImGui::RadioButton("NonFunction", &m_iNaviIndxRadiButton, -1);
+	ImGui::SameLine();
+	ImGui::RadioButton("Trap", &m_iNaviIndxRadiButton, -2);
+
+	if (ImGui::Button("Apply Function"))
+	{
+		m_vecDemo[m_iCurrentDemoIndex]->Set_NaviCellIndex(m_iNaviIndxRadiButton);
 	}
 
 	if (ImGui::Button("Delete Object")) {
