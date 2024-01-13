@@ -316,6 +316,12 @@
     <Filter Include="02.GameObjects\03. Platform\02. Trap\00. Col">
       <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\01. Normal">
+      <UniqueIdentifier>{746c6ea4-61de-43f2-9f80-4ad4e2801f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear">
+      <UniqueIdentifier>{ced739ab-2448-4144-968a-7dfb15716e1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -576,6 +582,18 @@
     <ClInclude Include="..\Public\Plateform_Trap.h">
       <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\SkullCrossBow.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bullet.h">
+      <Filter>02.GameObjects\07. Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Normal_Bullet.h">
+      <Filter>02.GameObjects\07. Bullet\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -808,6 +826,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Plateform_Trap.cpp">
       <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkullCrossBow.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Normal_Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

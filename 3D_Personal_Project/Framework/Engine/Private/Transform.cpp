@@ -301,6 +301,11 @@ void CTransform::Translate(_fvector vTranslation, CNavigation* pNavigation, _flo
 	}
 }
 
+void CTransform::Translate_Simple(_fvector vTranslation)
+{
+	XMStoreFloat4x4(&m_matWorldMatrix, XMLoadFloat4x4(&m_matWorldMatrix) *= XMMatrixTranslationFromVector(vTranslation));
+}
+
 void CTransform::LookAt_Dir(_fvector vDir, _float fTimeDelta, _bool bGround)
 {
 	_vector vLook = XMVector3Normalize(vDir);

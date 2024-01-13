@@ -27,7 +27,10 @@ HRESULT CRigidBody::Initialize(void* pArg)
 
 	m_pOwner = ((RIGIDBODY_DESC*)pArg)->pOwner;
 	m_pOwnerTransform = m_pOwner->Get_Component<CTransform>();
-	m_pOwnerNavigation = m_pOwner->Get_Component<CNavigation>();
+
+	CNavigation* pNavi = m_pOwner->Get_Component<CNavigation>();
+	if(pNavi != nullptr)
+		m_pOwnerNavigation = pNavi;
 
 	return S_OK;
 }
@@ -109,8 +112,16 @@ void CRigidBody::Reset_Force(TYPE eType)
 
 void CRigidBody::Update_Transform(TYPE eType, _float fTimeDelta)
 {
-	m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[eType])* fTimeDelta,
-		m_pOwnerNavigation);
+	if (m_pOwnerNavigation == nullptr)
+	{
+		m_pOwnerTransform->Translate_Simple(XMLoadFloat3(&m_vPower[eType]) * fTimeDelta);
+	}
+	else
+	{
+		m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[eType]) * fTimeDelta,
+			m_pOwnerNavigation);
+	}
+	
 }
 
 void CRigidBody::Resistance(TYPE eType,_float fTimeDelta)

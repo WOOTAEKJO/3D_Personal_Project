@@ -71,7 +71,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	Mouse_Fix();
+	//Mouse_Fix();
 	StateTrans(fTimeDelta);
 	Mouse_Input(fTimeDelta);
 }
@@ -155,7 +155,8 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	if (m_bStateTrans)
 		vEye.m128_f32[1] = vTargetPos.m128_f32[1] - m_vOffset.y;
 
-	Camera_Sliding(Camera_Spring(vEye, vPos, fTimeDelta), m_pNavigationCom, fTimeDelta);
+	//Camera_Sliding(Camera_Spring(vEye, vPos, fTimeDelta), m_pNavigationCom, fTimeDelta);
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta));
 
 	m_pTransformCom->LookAt(Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta));
 	XMStoreFloat4(&m_vPrevTargetPos, vTargetPos);

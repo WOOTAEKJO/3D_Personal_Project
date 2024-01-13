@@ -116,7 +116,7 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
+	
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
 	m_pColliderCom->Render();

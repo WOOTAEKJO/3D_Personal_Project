@@ -17,6 +17,7 @@ public:
 	{
 		wstring		strEventName;
 		_float4		vPosition;
+		_float3     vScale = _float3(1.f,1.f,1.f);
 
 	}TRIGGER_DESC;
 
@@ -44,6 +45,7 @@ private:
 
 private:
 	wstring			m_strEventName;
+	_bool			m_bCheck = { false };
 
 private:
 	HRESULT	Ready_Component();

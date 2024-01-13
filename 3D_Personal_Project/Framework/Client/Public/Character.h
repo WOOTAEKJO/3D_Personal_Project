@@ -45,6 +45,9 @@ public:
 		_int	iMaxHP = 10;
 		_int	iCurHP = 10;
 
+		_float  fDetection_Range = 0.f;
+		_float  fAttack_Range = 0.f;
+
 		_bool	bHited = false;
 		_bool	bDead = false;
 

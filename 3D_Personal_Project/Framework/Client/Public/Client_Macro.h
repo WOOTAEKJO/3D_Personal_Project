@@ -285,6 +285,8 @@
 
 #define GO_TRIGGER_TAG			TEXT("Prototype_GameObject_Trigger")
 
+#define GO_NORMAL_BULLET_TAG			TEXT("Prototype_GameObject_NormalBullet")
+
 #pragma region Ä³¸¯ÅÍ
 
 //#define GO_PLAYER_TAG			TEXT("Prototype_GameObject_PLAYER")

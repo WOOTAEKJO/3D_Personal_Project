@@ -38,6 +38,7 @@ HRESULT CTrigger::Initialize(void* pArg)
 
 	_vector vPos = XMLoadFloat4(&pTriggerDesc->vPosition);
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
+	m_pTransformCom->Set_Scaling(pTriggerDesc->vScale.x, pTriggerDesc->vScale.y, pTriggerDesc->vScale.z);
 
 	return S_OK;
 }
@@ -69,8 +70,13 @@ HRESULT CTrigger::Render()
 
 void CTrigger::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	if(pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER)
+	
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER && !m_bCheck)
+	{
 		m_pGameInstance->Execute_Event(m_strEventName);
+		m_bCheck = true;
+	}
+		
 }
 
 void CTrigger::OnCollisionStay(CCollider* pCollider, _uint iColID)

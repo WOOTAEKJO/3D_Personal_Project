@@ -35,7 +35,7 @@ protected:
 
 protected:
 	void	Translate(CTransform::STATE eType,_float fSpeed, _float fTimeDelta,_bool bTurn = false);
-	void	Is_Attack_Time(CCollider* pOwnerCol, _float fTimeDelta, _float fTime);
+	_bool	Is_Attack_Time(_float fTimeDelta, _float fTime, CCollider* pOwnerCol = nullptr);
 	void	Reset_Attack_Time(CCollider* pOwnerCol);
 
 public:

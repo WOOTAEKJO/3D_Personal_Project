@@ -12,7 +12,9 @@ BEGIN(Client)
 class CMonster abstract : public CCharacter
 {
 public:
-	enum STATE {IDLE, MOVE, ATTACK, DELAY,HITED, DEAD, STATE_END};
+	enum STATE {IDLE, MOVE, ATTACK, DELAY,HITED, DEAD,APPEAR, STATE_END};
+
+	enum MONSTER_TYPE {SPOOKETON,SKULLCROSSBOW,MONSTER_TYPE_END};
 
 protected:
 	CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -35,6 +37,10 @@ public:
 
 public:
 	CCollider* Get_WeaponCollider();
+	MONSTER_TYPE	Get_MonsterType() { return m_eMonsterType; }
+	CTransform* Get_PlayerTransform() { return m_pPlayer_Transform; }
+
+	void		Set_Activate() { m_bActivate = true; }
 
 protected:
 	CBone*		m_pSocketBone = { nullptr };
@@ -43,6 +49,14 @@ protected:
 protected:
 	class CPlayer*	m_pPlayer = { nullptr };
 	CTransform*		m_pPlayer_Transform = { nullptr };
+
+protected:
+	MONSTER_TYPE		m_eMonsterType = { MONSTER_TYPE::MONSTER_TYPE_END };
+
+protected:
+	_bool				m_bActivate = { true };
+
+protected:
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;

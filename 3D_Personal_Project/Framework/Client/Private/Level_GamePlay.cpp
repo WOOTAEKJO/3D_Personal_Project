@@ -49,7 +49,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
@@ -147,34 +147,6 @@ HRESULT CLevel_GamePlay::Ready_Layer_Camera(const wstring& strLayerTag)
 HRESULT CLevel_GamePlay::Ready_Layer_Monster(const wstring& strLayerTag)
 {
 	
-	/*CMonster::MONSTER_DESC Monster_Desc = {};
-
-	Monster_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	Monster_Desc.fSpeedPerSec = 5.f;
-	Monster_Desc.vPos = _float4(55.f, 0.f, 65.f, 1.f);
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG, &Monster_Desc, nullptr)))
-		return E_FAIL;
-
-	Monster_Desc.vPos = _float4(60.f, 0.f, 60.f, 1.f);
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG, &Monster_Desc, nullptr)))
-		return E_FAIL;
-
-	Monster_Desc.vPos = _float4(50.f, 0.f, 70.f, 1.f);
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, GO_SPOOKETON_TAG, &Monster_Desc, nullptr)))
-		return E_FAIL;*/
-
-	/*for (_uint i = 0; i < 3; i++)
-	{
-		CMonster::MONSTER_DESC Monster_Desc = {};
-
-		Monster_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-		Monster_Desc.fSpeedPerSec = 5.f;
-		Monster_Desc.vPos = _float4(50.f + (5.f * i), 0.f, 20.f + (5.f * i), 1.f);
-		if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, ANIMMODEL_SPOOKETON_TAG, &Monster_Desc, nullptr)))
-			return E_FAIL;
-	}*/
-
-
 	return S_OK;
 }
 
@@ -188,9 +160,30 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 	CTrigger::TRIGGER_DESC TriggerDesc = {};
 	TriggerDesc.strEventName = TEXT("Portal_Boss1");
 	TriggerDesc.vPosition = _float4(46.f, 9.f, 34.f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
 		, GO_TRIGGER_TAG,&TriggerDesc)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle1"), [this]() {
+		list<CGameObject*> listMonst = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+			g_strLayerName[LAYER::LAYER_MONSTER]);
+
+		for (auto& iter : listMonst)
+		{
+			dynamic_cast<CMonster*>(iter)->Set_Activate();
+		}
+		
+		})))
+		return E_FAIL;
+
+	TriggerDesc.strEventName = TEXT("Battle1");
+	TriggerDesc.vPosition = _float4(13.5f, 7.f, 13.2f, 1.f);
+	TriggerDesc.vScale = _float3(5.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
 
 	return S_OK;

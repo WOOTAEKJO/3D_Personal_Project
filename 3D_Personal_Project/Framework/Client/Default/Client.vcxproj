@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\Animation_Window.h" />
     <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Character_State.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="..\Public\Mark.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState\Monster_State.h" />
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Attack.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Dead.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Delay.h" />
@@ -224,6 +226,7 @@
     <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\AI_Normal_Monster_IDLE.h" />
+    <ClInclude Include="..\Public\Normal_Bullet.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Follow.h" />
@@ -250,6 +253,7 @@
     <ClInclude Include="..\Public\Player\Player_Body.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
+    <ClInclude Include="..\Public\SkullCrossBow.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Spooketon.h" />
     <ClInclude Include="..\Public\SubObject_Demo.h" />
@@ -278,6 +282,7 @@
     <ClCompile Include="..\Private\Animation_Window.cpp" />
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Character_State.cpp" />
@@ -297,6 +302,7 @@
     <ClCompile Include="..\Private\Mark.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState\Monster_State.cpp" />
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Attack.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Delay.cpp" />
@@ -305,6 +311,7 @@
     <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\AI_Normal_Monster_IDLE.cpp" />
+    <ClCompile Include="..\Private\Normal_Bullet.cpp" />
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Follow.cpp" />
@@ -331,6 +338,7 @@
     <ClCompile Include="..\Private\Player\Player_Body.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
+    <ClCompile Include="..\Private\SkullCrossBow.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Spooketon.cpp" />
     <ClCompile Include="..\Private\SubObject_Demo.cpp" />

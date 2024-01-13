@@ -37,6 +37,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	m_eMonsterType = CMonster::MONSTER_TYPE::SPOOKETON;
+
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
@@ -57,6 +59,13 @@ HRESULT CSpooketon::Initialize(void* pArg)
 
 	m_Status_Desc.iMaxHP = 5;
 	m_Status_Desc.iCurHP = 5;
+
+	m_Status_Desc.fDetection_Range = 5.f;
+	m_Status_Desc.fAttack_Range = 2.f * 0.16f;
+
+	m_Physics_Desc.fForwardSpeed = 0.5f;
+
+	m_bActivate = false;
 
 	return S_OK;
 }
@@ -171,7 +180,7 @@ HRESULT CSpooketon::Ready_Component()
 
 HRESULT CSpooketon::Ready_State()
 {
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
+	/*if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CNorMonster_Dead::Create(this)))) return E_FAIL;
@@ -179,6 +188,9 @@ HRESULT CSpooketon::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::HITED, CNorMonster_Hited::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+		return E_FAIL;*/
+
+	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
 
 	return S_OK;
