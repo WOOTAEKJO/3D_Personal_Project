@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Plateform_Trap.h"
 
+#include "Bone.h"
+
 CPlateform_Trap::CPlateform_Trap(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -35,13 +37,18 @@ HRESULT CPlateform_Trap::Initialize(void* pArg)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMLoadFloat4(&TrapDesc->vPos));
 		m_pTransformCom->Set_Scaling(2.f, 2.f, 2.f);
 		m_pTransformCom->Rotation(m_pTransformCom->Get_State(CTransform::STATE::STATE_UP), m_fAngle.y);
+
+		if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_TRAP, m_pColliderCom)))
+			return E_FAIL;
 	}
+
 
 	return S_OK;
 }
 
 void CPlateform_Trap::Priority_Tick(_float fTimeDelta)
 {
+	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 }
 
 void CPlateform_Trap::Tick(_float fTimeDelta)
@@ -73,6 +80,10 @@ HRESULT CPlateform_Trap::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+#ifdef _DEBUG
+	m_pColliderCom->Render();
+#endif
 
 	return S_OK;
 }
@@ -124,6 +135,14 @@ HRESULT CPlateform_Trap::Ready_Component()
 {
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
+	CBounding_OBB::BOUNDING_OBB_DESC OBB_Desc = {};
+	OBB_Desc.pOnwer = this;
+	OBB_Desc.eType = CBounding::TYPE::TYPE_OBB;
+	OBB_Desc.bUseCol = true;
+	OBB_Desc.vExtents = _float3(0.1f, 0.1f, 0.3f);
+	OBB_Desc.vCenter = _float3(0.f, -OBB_Desc.vExtents.y * 14.f, 0.f);
+	OBB_Desc.vRotation = _float3(0.f, 0.f, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &OBB_Desc))) return E_FAIL;
 
 	return S_OK;
 }
@@ -140,10 +159,7 @@ void CPlateform_Trap::Pendulum_Movement(_float fTimeDelta)
 
 	m_fAngle.z = m_fAmplitude * sin(m_fAngle.z);
 
-	//m_pTransformCom->Rotation_Total(m_fAngle.x, m_fAngle.y, m_fAngle.z);
-	//m_pTransformCom->Turn(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK), m_fAngle.z * 0.2f);
 	m_pTransformCom->Rotation_Quaternio(m_fAngle.x, m_fAngle.y, m_fAngle.z);
-		
 }
 
 CPlateform_Trap* CPlateform_Trap::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -178,4 +194,6 @@ void CPlateform_Trap::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pColliderCom);
+	
 }

@@ -6,6 +6,7 @@ BEGIN(Engine)
 
 class CModel;
 class CShader;
+class CCollider;
 
 END
 
@@ -46,6 +47,7 @@ public:
 private:
 	CShader*	m_pShaderCom = { nullptr };
 	CModel*		m_pModelCom = { nullptr };
+	CCollider*	m_pColliderCom = { nullptr };
 
 private:
 	wstring		m_strModelTag;

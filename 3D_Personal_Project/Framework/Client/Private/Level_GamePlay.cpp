@@ -51,8 +51,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
-
+	
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRAP))) return E_FAIL;
 	
 	return S_OK; 
 }
@@ -97,7 +98,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 
 HRESULT CLevel_GamePlay::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
-
+	// 일단 급하니 툴 거치지 않고 하드코딩함
 	CPlateform_Trap::PLATEFORM_TRAP_DESC TrapDesc = {};
 	TrapDesc.strModelTag = MODEL_WOODFUCKER_TAG;
 	TrapDesc.vPos = _float4(14.004f, 10.f, 23.227f,1.f);

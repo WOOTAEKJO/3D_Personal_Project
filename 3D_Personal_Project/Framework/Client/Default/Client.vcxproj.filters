@@ -310,6 +310,12 @@
     <Filter Include="02.GameObjects\03. Platform\02. Trap">
       <UniqueIdentifier>{e1127747-3cfa-46b7-a4b1-48734cd78b99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07. Bullet">
+      <UniqueIdentifier>{b94d8bd2-28d4-45c9-8ea4-a05fb810445f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\02. Trap\00. Col">
+      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
