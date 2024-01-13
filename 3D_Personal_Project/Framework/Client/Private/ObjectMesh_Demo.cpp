@@ -62,21 +62,36 @@ void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
 
 HRESULT CObjectMesh_Demo::Render()
 {
-	if (m_pModelCom == nullptr)
-		return E_FAIL;
+	
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
-
-	for (_uint i = 0; i < iNumMeshs; i++)
+	if (m_eModelType == MODEL_TYPE::TYPE_NORMAL)
 	{
-		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+		_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		for (_uint i = 0; i < iNumMeshs; i++)
+		{
+			m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pModelCom->Render(i);
+			m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+
+			m_pModelCom->Render(i);
+		}
+	}
+	else if (m_eModelType == MODEL_TYPE::TYPE_INSTANCING)
+	{
+		_uint iNumMeshs = m_pModelInstancingCom->Get_MeshesNum();
+
+		for (_uint i = 0; i < iNumMeshs; i++)
+		{
+			m_pModelInstancingCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+			m_pShaderCom->Begin(1);
+
+			m_pModelInstancingCom->Render(i);
+		}
 	}
 
 	return S_OK;
@@ -129,6 +144,14 @@ void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 		return;
 
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
+}
+
+_float4x4 CObjectMesh_Demo::Get_WorldMat()
+{
+	if (m_pTransformCom == nullptr)
+		return _float4x4();
+
+	return m_pTransformCom->Get_WorldMatrix_Float4x4();
 }
 
 _bool CObjectMesh_Demo::Get_Picked(_float4* vOutPos)
@@ -226,9 +249,24 @@ HRESULT CObjectMesh_Demo::Ready_Component()
 	case Client::CObjectMesh_Demo::TYPE_INSTANCING:
 		if (FAILED(Add_Component<CShader>(SHADER_MESHINSTANCING_TAG, &m_pShaderCom))) return E_FAIL;
 		CModel_Instancing::MESH_INSTANCE_DESC Instancing_Desc = {};
-		Instancing_Desc.vecInstanceVertex = m_vecVertexMat;
 
-		if (FAILED(Add_Component<CModel_Instancing>(m_strModelTag, &m_pModelInstancingCom,&Instancing_Desc))) return E_FAIL;
+		_matrix matLocal = XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix_Matrix());
+
+		for (auto& iter : m_vecVertexMat)
+		{
+			_matrix matTmp = XMLoadFloat4x4(&iter) * matLocal;
+
+			_float4x4 matResult;
+
+			XMStoreFloat4x4(&matResult, matTmp);
+
+			Instancing_Desc.vecInstanceVertex.push_back(matResult);
+		}
+
+		//Instancing_Desc.vecInstanceVertex = m_vecVertexMat;
+
+		if (FAILED(Add_Component<CModel_Instancing>(m_strModelTag, &m_pModelInstancingCom,&Instancing_Desc)))
+			return E_FAIL;
 
 		break;
 	}

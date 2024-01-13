@@ -20,6 +20,7 @@ public:
 
 public:
 	HRESULT		Level_Object_Load(const _char* strFilePath);
+	HRESULT		Level_Object_Instancing_Load(const _char* strFilePath);
 
 private:
 	CGameInstance* m_pGameInstance = { nullptr };

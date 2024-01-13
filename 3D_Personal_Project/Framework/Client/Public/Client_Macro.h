@@ -278,6 +278,7 @@
 #define G0_SUBMESH_DEMO_TAG		TEXT("Prototype_GameObject_Submesh_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
+#define GO_PLATEFORM_INSTANCING_TAG		TEXT("Prototype_GameObject_PlateformInstancing")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

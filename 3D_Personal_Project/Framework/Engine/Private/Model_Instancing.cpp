@@ -9,8 +9,18 @@ CModel_Instancing::CModel_Instancing(ID3D11Device* pDevice, ID3D11DeviceContext*
 }
 
 CModel_Instancing::CModel_Instancing(const CModel_Instancing& rhs)
-	: CVIBuffer_Instancing(rhs)
+	: CVIBuffer_Instancing(rhs),m_iMeshesNum(rhs.m_iMeshesNum),m_iMaterialsNum(rhs.m_iMaterialsNum),
+	m_matPivot(rhs.m_matPivot),m_vecMesh(rhs.m_vecMesh),
+	m_vecMaterial(rhs.m_vecMaterial)
 {
+	for (auto& iter1 : m_vecMaterial)
+	{
+		for (auto& iter2 : iter1.pMtrlTexture)
+			Safe_AddRef(iter2);
+	}
+
+	for (auto& iter : m_vecMesh)
+		Safe_AddRef(iter);
 }
 
 HRESULT CModel_Instancing::Initialize_ProtoType(const string& strModelFilePath,_fmatrix matPivot)
@@ -34,6 +44,8 @@ HRESULT CModel_Instancing::Initialize_ProtoType(const string& strModelFilePath,_
 
 	if (FAILED(Ready_Materials(MeshData, strModelFilePath)))
 		return E_FAIL;
+
+	Safe_Release(pMeshData);
 
 	return S_OK;
 }
@@ -101,6 +113,19 @@ HRESULT CModel_Instancing::Render(_uint iMeshIndx)
 		m_iInstanceNum, 0, 0, 0);
 
 	return S_OK;
+}
+
+HRESULT CModel_Instancing::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType)
+{
+	if(pShader == nullptr || iMeshIndex >= m_iMeshesNum)
+		return E_FAIL;
+
+	_uint	iMaterialIndex = m_vecMesh[iMeshIndex]->Get_MaterialIndex();
+
+	if (m_vecMaterial[iMaterialIndex].pMtrlTexture[eType] == nullptr)
+		return S_OK;
+
+	return m_vecMaterial[iMaterialIndex].pMtrlTexture[eType]->Bind_ShaderResource(pShader, pName);
 }
 
 HRESULT CModel_Instancing::Ready_Meshes(CMeshData::MESHDATADESC MeshData)

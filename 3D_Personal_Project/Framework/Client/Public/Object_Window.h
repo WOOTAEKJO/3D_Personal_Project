@@ -83,7 +83,7 @@ private:
 	void	Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	Create_AnimModel(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	Create_TMP(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
-	void	Create_Instancing(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_Instancing();
 	void	NotGuizmo();
 	void	TransformGuizmo();
 

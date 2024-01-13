@@ -170,7 +170,7 @@ string CObject_Window::Get_Path()
 {
 	if (m_eCurrentType == TYPE::TYPE_INSTANCING)
 	{
-		return "../Bin/Data/Object/";
+		return "../Bin/Data/Object/Instancing/";
 	}
 	else {
 		return "../Bin/Data/Object/";
@@ -187,60 +187,104 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 
 	if (fout.is_open())
 	{
-		_uint iObjNum = m_vecDemo.size() + m_vecAnimDemo.size();
-		fout.write(reinterpret_cast<const char*>(&iObjNum), sizeof(_uint));
-
-		for (auto& iter : m_vecDemo)
+		if (m_eCurrentType == TYPE::TYPE_INSTANCING)
 		{
-			fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
+			_uint iObjNum = m_eInstancingModel.vecDemo.size();
+			fout.write(reinterpret_cast<const char*>(&iObjNum), sizeof(_uint));
 
-			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
-			size_t istrSize = strLayer.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strLayer.c_str(), istrSize);
+			for (auto& iter : m_eInstancingModel.vecDemo)
+			{
+				string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
+				size_t istrSize = strLayer.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strLayer.c_str(), istrSize);
 
-			string strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
-			istrSize = strProTag.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strProTag.c_str(), istrSize);
+				string strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_INSTANCING_TAG);
+				istrSize = strProTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strProTag.c_str(), istrSize);
 
-			string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
-			istrSize = strModelTag.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strModelTag.c_str(), istrSize);
+				string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+				istrSize = strModelTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strModelTag.c_str(), istrSize);
 
-			_int iNaviInd = -1;
-			fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+				_int iNaviInd = -1;
+				fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
 
-			fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
-				, sizeof(_float4x4));
+				fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
+					, sizeof(_float4x4));
+
+
+				// 인스턴스 정점 상태 행렬 정보들
+
+				vector<_float4x4> vecVertex = iter->Get_Component<CModel_Instancing>()->Get_InstanceVertex();
+				_uint ivecVertexSize = vecVertex.size();
+				fout.write(reinterpret_cast<const char*>(&ivecVertexSize), sizeof(_uint));
+
+				for (auto& InstanceVertex : vecVertex)
+				{
+					fout.write(reinterpret_cast<const char*>(&InstanceVertex), sizeof(_float4x4));
+				}
+			}
 		}
-
-		for (auto& iter : m_vecAnimDemo)
+		else
 		{
-			bAnim = true;
-			fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
+			_uint iObjNum = m_vecDemo.size() + m_vecAnimDemo.size();
+			fout.write(reinterpret_cast<const char*>(&iObjNum), sizeof(_uint));
 
-			string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
-			size_t istrSize = strLayer.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strLayer.c_str(), istrSize);
+			for (auto& iter : m_vecDemo)
+			{
+				fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
 
-			string strProTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
-			istrSize = strProTag.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strProTag.c_str(), istrSize);
+				string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
+				size_t istrSize = strLayer.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strLayer.c_str(), istrSize);
 
-			string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
-			istrSize = strModelTag.size();
-			fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
-			fout.write(strModelTag.c_str(), istrSize);
+				string strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
+				istrSize = strProTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strProTag.c_str(), istrSize);
 
-			_int iNaviInd = iter->Get_NaviCellIndex();
-			fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+				string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+				istrSize = strModelTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strModelTag.c_str(), istrSize);
 
-			fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
-				, sizeof(_float4x4));
+				_int iNaviInd = -1;
+				fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+
+				fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
+					, sizeof(_float4x4));
+			}
+
+			for (auto& iter : m_vecAnimDemo)
+			{
+				bAnim = true;
+				fout.write(reinterpret_cast<const char*>(&bAnim), sizeof(_bool));
+
+				string strLayer = CUtility_String::WString_To_string(iter->Get_LayerName());
+				size_t istrSize = strLayer.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strLayer.c_str(), istrSize);
+
+				string strProTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+				istrSize = strProTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strProTag.c_str(), istrSize);
+
+				string strModelTag = CUtility_String::WString_To_string(iter->Get_ModelTag());
+				istrSize = strModelTag.size();
+				fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+				fout.write(strModelTag.c_str(), istrSize);
+
+				_int iNaviInd = iter->Get_NaviCellIndex();
+				fout.write(reinterpret_cast<const char*>(&iNaviInd), sizeof(_int));
+
+				fout.write(reinterpret_cast<const char*>(&iter->Get_Component<CTransform>()->Get_WorldMatrix_Float4x4())
+					, sizeof(_float4x4));
+			}
 		}
 	}
 	else
@@ -259,55 +303,57 @@ HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 
 	if (fIn.is_open())
 	{
-		_uint iSize;
-		fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+		if (m_eCurrentType == TYPE::TYPE_INSTANCING)
+		{
+			_uint iSize;
+			fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
 
-		for(_uint i = 0; i < iSize; i++) {
+			for (_uint i = 0; i < iSize; i++)
+			{
+				size_t LayerNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&LayerNameSize), sizeof(size_t));
+				string strLayerName;
+				strLayerName.resize(LayerNameSize);
+				fIn.read(&strLayerName[0], LayerNameSize);
 
-			_bool bAnim;
-			fIn.read(reinterpret_cast<char*>(&bAnim), sizeof(_bool));
-			
-			size_t LayerNameSize = {};
-			fIn.read(reinterpret_cast<char*>(&LayerNameSize), sizeof(size_t));
-			string strLayerName;
-			strLayerName.resize(LayerNameSize);
-			fIn.read(&strLayerName[0], LayerNameSize);
+				size_t ProTagNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&ProTagNameSize), sizeof(size_t));
+				string strProTagName;
+				strProTagName.resize(ProTagNameSize);
+				fIn.read(&strProTagName[0], ProTagNameSize);
 
-			size_t ProTagNameSize = {};
-			fIn.read(reinterpret_cast<char*>(&ProTagNameSize), sizeof(size_t));
-			string strProTagName;
-			strProTagName.resize(ProTagNameSize);
-			fIn.read(&strProTagName[0], ProTagNameSize);
+				size_t ModelNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&ModelNameSize), sizeof(size_t));
+				string strModelName;
+				strModelName.resize(ModelNameSize);
+				fIn.read(&strModelName[0], ModelNameSize);
 
-			size_t ModelNameSize = {};
-			fIn.read(reinterpret_cast<char*>(&ModelNameSize), sizeof(size_t));
-			string strModelName;
-			strModelName.resize(ModelNameSize);
-			fIn.read(&strModelName[0], ModelNameSize);
+				_int iNaviIndex;
+				fIn.read(reinterpret_cast<char*>(&iNaviIndex), sizeof(_int));
 
-			_int iNaviIndex;
-			fIn.read(reinterpret_cast<char*>(&iNaviIndex), sizeof(_int));
+				_float4x4 matWorld;
+				fIn.read(reinterpret_cast<char*>(&matWorld), sizeof(_float4x4));
 
-			_float4x4 matWorld;
-			fIn.read(reinterpret_cast<char*>(&matWorld), sizeof(_float4x4));
+				_uint ivecVertexSize = 0;
+				fIn.read(reinterpret_cast<char*>(&ivecVertexSize), sizeof(_uint));
 
-			CGameObject* pObject_Demo = nullptr;
-			CDemo::Demo_Desc ObjectDemoValue;
+				vector<_float4x4> vecVertex;
+				vecVertex.reserve(ivecVertexSize);
 
-			ObjectDemoValue.strModelTag = CUtility_String::string_To_Wstring(strModelName);
-			ObjectDemoValue.vPos = _float4(0.f,0.f,0.f,1.f);
+				for (_uint j = 0; j < ivecVertexSize; j++)
+				{
+					_float4x4 matVertex;
+					fIn.read(reinterpret_cast<char*>(&matVertex), sizeof(_float4x4));
+					vecVertex.push_back(matVertex);
+				}
 
-			if (bAnim) {
-				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
-					, CUtility_String::string_To_Wstring(strLayerName), G0_ANIMMESH_DEMO_TAG,
-					&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
-					return E_FAIL;
+				CGameObject* pObject_Demo = nullptr;
+				CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
 
-				dynamic_cast<CAnimMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
+				ObjectDemoValue.strModelTag = CUtility_String::string_To_Wstring(strModelName);
+				ObjectDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
+				ObjectDemoValue.vecVertexMat = vecVertex;
 
-				m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
-			}
-			else {
 				strLayerName = CUtility_String::WString_To_string(g_strLayerName[LAYER::LAYER_PLATEFORM]);
 
 				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
@@ -317,10 +363,76 @@ HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 
 				dynamic_cast<CObjectMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
 
-				m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
-			}
+				m_eInstancingModel.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
 
-			pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
+				pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
+			}
+		}
+		else
+		{
+			_uint iSize;
+			fIn.read(reinterpret_cast<char*>(&iSize), sizeof(_uint));
+
+			for (_uint i = 0; i < iSize; i++) {
+
+				_bool bAnim;
+				fIn.read(reinterpret_cast<char*>(&bAnim), sizeof(_bool));
+
+				size_t LayerNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&LayerNameSize), sizeof(size_t));
+				string strLayerName;
+				strLayerName.resize(LayerNameSize);
+				fIn.read(&strLayerName[0], LayerNameSize);
+
+				size_t ProTagNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&ProTagNameSize), sizeof(size_t));
+				string strProTagName;
+				strProTagName.resize(ProTagNameSize);
+				fIn.read(&strProTagName[0], ProTagNameSize);
+
+				size_t ModelNameSize = {};
+				fIn.read(reinterpret_cast<char*>(&ModelNameSize), sizeof(size_t));
+				string strModelName;
+				strModelName.resize(ModelNameSize);
+				fIn.read(&strModelName[0], ModelNameSize);
+
+				_int iNaviIndex;
+				fIn.read(reinterpret_cast<char*>(&iNaviIndex), sizeof(_int));
+
+				_float4x4 matWorld;
+				fIn.read(reinterpret_cast<char*>(&matWorld), sizeof(_float4x4));
+
+				CGameObject* pObject_Demo = nullptr;
+				CDemo::Demo_Desc ObjectDemoValue;
+
+				ObjectDemoValue.strModelTag = CUtility_String::string_To_Wstring(strModelName);
+				ObjectDemoValue.vPos = _float4(0.f, 0.f, 0.f, 1.f);
+
+				if (bAnim) {
+					if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
+						, CUtility_String::string_To_Wstring(strLayerName), G0_ANIMMESH_DEMO_TAG,
+						&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+						return E_FAIL;
+
+					dynamic_cast<CAnimMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
+
+					m_vecAnimDemo.push_back(dynamic_cast<CAnimMesh_Demo*>(pObject_Demo));
+				}
+				else {
+					strLayerName = CUtility_String::WString_To_string(g_strLayerName[LAYER::LAYER_PLATEFORM]);
+
+					if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level()
+						, CUtility_String::string_To_Wstring(strLayerName), G0_OBJECTMESH_DEMO_TAG,
+						&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
+						return E_FAIL;
+
+					dynamic_cast<CObjectMesh_Demo*>(pObject_Demo)->Set_NaviCellIndex(iNaviIndex);
+
+					m_vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+				}
+
+				pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
+			}
 		}
 	}
 	else
@@ -507,7 +619,7 @@ void CObject_Window::AnimObjectMesh()
 void CObject_Window::InstancingMesh()
 {
 	ImGui::Text("TMP_ModelList");
-	ImVec2 vSize = ImVec2(250, 100);
+	ImVec2 vSize = ImVec2(200, 100);
 
 	ImGui::BeginListBox("Model", vSize);
 	for (auto& iter : m_eTMP.vecModelTag) {
@@ -521,8 +633,7 @@ void CObject_Window::InstancingMesh()
 	}
 	ImGui::EndListBox();
 
-	ImVec2 vSize2 = ImVec2(250, 100);
-	ImGui::BeginListBox("TMP", vSize2);
+	ImGui::BeginListBox("TMP", vSize);
 	_uint iSize = m_eTMP.vecDemo.size();
 	for (_uint i = 0; i < iSize; i++)
 	{
@@ -539,7 +650,6 @@ void CObject_Window::InstancingMesh()
 	ImGui::EndListBox();
 
 	//ImGui::Text("Instancing_ModelList");
-	//vSize = ImVec2(250, 100);
 	//ImGui::BeginListBox("Model", vSize);
 	//for (auto& iter : m_eInstancingModel.vecModelTag) {
 
@@ -552,10 +662,7 @@ void CObject_Window::InstancingMesh()
 	//}
 	//ImGui::EndListBox();
 
-	
-
-	ImVec2 vSize4 = ImVec2(250, 100);
-	ImGui::BeginListBox("Layer", vSize4);
+	ImGui::BeginListBox("Layer", vSize);
 	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)
 	{
 		string str = CUtility_String::WString_To_string(g_strLayerName[i]);
@@ -587,10 +694,14 @@ void CObject_Window::InstancingMesh()
 		}
 	}
 
+	if (ImGui::Button("Instancing Create"))
+	{
+		Create_Instancing();
+	}
+
 	if (!m_eInstancingModel.vecDemo.empty())
 	{
-		ImVec2 vSize3 = ImVec2(250, 100);
-		ImGui::BeginListBox("Instancing", vSize3);
+		ImGui::BeginListBox("Instancing", vSize);
 		iSize = m_eInstancingModel.vecDemo.size();
 		for (_uint i = 0; i < iSize; i++)
 		{
@@ -601,7 +712,7 @@ void CObject_Window::InstancingMesh()
 			str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
 			if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eInstancingModel.iCurrentIndex)) {
 				m_eInstancingModel.iCurrentIndex = i;
-				m_eInstancingModel.strCurrentTag = (str + "." + str2);
+				//m_eInstancingModel.strCurrentTag = (str + "." + str2);
 			}
 		}
 		ImGui::EndListBox();
@@ -659,25 +770,45 @@ void CObject_Window::Create_TMP(const wstring& strLayerTag, const wstring& strMo
 	m_eTMP.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
 }
 
-void CObject_Window::Create_Instancing(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos)
+void CObject_Window::Create_Instancing()
 {
 	CGameObject* pObject_Demo = nullptr;
 	CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
 
-	ObjectDemoValue.strModelTag = strModelTag;
+	wstring strTag;
+
+	for (auto& iter : m_eInstancingModel.vecModelTag)
+	{
+		if (!wcscmp(CUtility_String::Get_LastName(iter).c_str(), CUtility_String::Get_LastName(m_eTMP.strPickModelTag).c_str()))
+		{
+			strTag = iter;
+			break;
+		}
+	}
+
+	ObjectDemoValue.strModelTag = strTag;
 	ObjectDemoValue.vPos = _float4(0.f,0.f,0.f,1.f);
 
 	// 오브젝트들을 담아서 이제 만들어야 함
 	// 구조가 이상해서 수정해야 함
 	// 같은 오브젝트들을 다 찍고 그걸로 인스턴싱을 만들 생각이었음
 
-	//ObjectDemoValue.vecVertexMat = 
+	for (auto& iter : m_eTMP.vecDemo)
+	{
+		ObjectDemoValue.vecVertexMat.push_back(iter->Get_WorldMat());
+	}
 
-	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, strLayerTag, G0_OBJECTMESH_DEMO_TAG,
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[LAYER::LAYER_PLATEFORM], G0_OBJECTMESH_DEMO_TAG,
 		&ObjectDemoValue, reinterpret_cast<CGameObject**>(&pObject_Demo))))
 		return;
 
 	m_eInstancingModel.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+
+	for (auto& iter : m_eTMP.vecDemo)
+	{
+		iter->Set_Dead();
+	}
+	m_eTMP.vecDemo.clear();
 }
 
 void CObject_Window::NotGuizmo()

@@ -34,6 +34,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	if (FAILED(CDataMgr::GetInstance()->Level_Object_Load("../Bin/Data/Object/Stage1.bin")))
 		return E_FAIL;
+	if (FAILED(CDataMgr::GetInstance()->Level_Object_Instancing_Load("../Bin/Data/Object/Instancing/Stage1.bin")))
+		return E_FAIL;
 		
 	if (FAILED(Ready_Layer_Camera(g_strLayerName[LAYER_CAMERA])))
 		return E_FAIL;

@@ -33,6 +33,9 @@ public:
 	virtual	void	Update(_float fTimeDelta);
 	virtual HRESULT	Render();
 
+public:
+	vector<_float4x4>	Get_InstanceVertex() { return m_vecInstanceVertex; }
+
 protected:
 	ID3D11Buffer*	m_pInstanceBuffer = { nullptr };
 	_uint			m_iInstanceStride = { 0 };

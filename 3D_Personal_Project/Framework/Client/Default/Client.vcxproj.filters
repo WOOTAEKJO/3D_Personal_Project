@@ -301,6 +301,15 @@
     <Filter Include="02.GameObjects\97. Trigger">
       <UniqueIdentifier>{1809758c-041d-4bf2-bdfc-49a990eb5301}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03. Platform\00. Normal">
+      <UniqueIdentifier>{c1de3519-6195-45e8-9ca4-5c1a5dd63f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\01. Instancing">
+      <UniqueIdentifier>{a85ed077-59c1-4a2d-ad0a-b89dd916dd8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\02. Trap">
+      <UniqueIdentifier>{e1127747-3cfa-46b7-a4b1-48734cd78b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -432,9 +441,6 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Plateform.h">
-      <Filter>02.GameObjects\03. Platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObjects\04.Sky</Filter>
     </ClInclude>
@@ -555,6 +561,12 @@
     <ClInclude Include="..\Public\Trigger.h">
       <Filter>02.GameObjects\97. Trigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Plateform.h">
+      <Filter>02.GameObjects\03. Platform\00. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Plateform_Instancing.h">
+      <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -658,9 +670,6 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Plateform.cpp">
-      <Filter>02.GameObjects\03. Platform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObjects\04.Sky</Filter>
@@ -781,6 +790,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Trigger.cpp">
       <Filter>02.GameObjects\97. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform.cpp">
+      <Filter>02.GameObjects\03. Platform\00. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform_Instancing.cpp">
+      <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

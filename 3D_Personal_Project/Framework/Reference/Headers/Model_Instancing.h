@@ -24,6 +24,12 @@ public:
 	virtual	HRESULT	Initialize(void* pArg);
 	virtual HRESULT	Render(_uint iMeshIndx);
 
+public:
+	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType);
+
+public:
+	_uint	Get_MeshesNum() { return m_iMeshesNum; }
+
 private:
 	char	m_szName[MAX_PATH] = {};
 	_uint	m_iMaterialIndex = { 0 };

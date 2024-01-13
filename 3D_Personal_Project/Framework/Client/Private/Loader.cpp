@@ -17,6 +17,7 @@
 #include "Terrain_Demo.h"
 
 #include "Plateform.h"
+#include "Plateform_Instancing.h"
 #include "SkyBox.h"
 
 #include "Player.h"
@@ -173,6 +174,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(Rock())) return E_FAIL;
 	if (FAILED(Deco())) return E_FAIL;
 	if (FAILED(Wood())) return E_FAIL;
+	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
 
@@ -183,6 +185,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(SHADER_NOR_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<INSTANCING_MESH>(SHADER_MESHINSTANCING_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
 
@@ -195,6 +198,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CAnimMesh_Demo>(G0_ANIMMESH_DEMO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform>(GO_PLATEFORM_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform_Instancing>(GO_PLATEFORM_INSTANCING_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkyBox>(GO_SKYBOX_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(ANIMMODEL_JACK_TAG))) return E_FAIL;
@@ -301,6 +305,7 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	if (FAILED(Rock())) return E_FAIL;
 	if (FAILED(Deco())) return E_FAIL;
 	if (FAILED(Wood())) return E_FAIL;
+	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
 
@@ -311,6 +316,7 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXNORTEX>(SHADER_NOR_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_MESH_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<INSTANCING_MESH>(SHADER_MESHINSTANCING_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
 
@@ -538,7 +544,7 @@ HRESULT CLoader::Instancing()
 
 	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 
-	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODELINSTANCING_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_ModelInstancing_ProtoType(MODELINSTANCING_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
 
 	return S_OK;
 }

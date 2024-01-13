@@ -44,6 +44,8 @@ public:
 	void	Rotation(_float fX, _float fY, _float fZ);
 	void	Set_Scale(_float fX, _float fY, _float fZ);
 
+	_float4x4	Get_WorldMat();
+
 public:
 	_bool	Get_Picked(_float4* vOutPos);
 	_bool	Get_Picked_Dist(_float4* vOutPos,_float* fDist);

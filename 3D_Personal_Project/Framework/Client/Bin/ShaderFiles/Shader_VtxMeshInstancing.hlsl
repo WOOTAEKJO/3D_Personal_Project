@@ -57,9 +57,9 @@ VS_OUT VS_MAIN(VS_IN In)
 	matWV = mul(g_matWorld, g_matView);
 	matWVP = mul(matWV, g_matProj);
 
-    Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    Out.vPosition = mul(vPosition, matWVP);
 	Out.vNormal = mul(float4(In.vNormal, 0.f), g_matWorld);
-    Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_matWorld);
+    Out.vWorldPos = mul(vPosition, g_matWorld);
 	Out.vTexCoord = In.vTexCoord;
     //Out.vColor = In.vColor;
 
@@ -114,52 +114,6 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
-PS_OUT PS_DTERRAIN(PS_IN In)
-{
-	PS_OUT Out = (PS_OUT)0;
-
-	vector vBrush = vector(0.f, 0.f, 0.f, 0.f);
-
-	if ((g_vBrushPos.x - g_fBrushRange) <= In.vWorldPos.x && In.vWorldPos.x <= (g_vBrushPos.x + g_fBrushRange) &&
-		(g_vBrushPos.z - g_fBrushRange) <= In.vWorldPos.z && In.vWorldPos.z <= (g_vBrushPos.z + g_fBrushRange)) {
-
-		float2 vUV;
-
-		vUV.x = (In.vWorldPos.x - (g_vBrushPos.x - g_fBrushRange)) / (2.f * g_fBrushRange);
-		vUV.y = ((g_vBrushPos.z + g_fBrushRange) - In.vWorldPos.z) / (2.f * g_fBrushRange);
-
-		vBrush = g_BrushTexture.Sample(LinearSampler, vUV);
-
-	}
-
-	if (!g_bWireFrame) {
-
-		/*vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
-		vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);
-
-		vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
-
-		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;*/
-
-		vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 1000.f) + vBrush;
-
-		float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // 명암
-
-		vector vLook = In.vWorldPos - g_CamWorldPos;
-		vector vReflect = reflect(normalize(g_LightDir), normalize(In.vNormal)); // 반사벡터
-
-		float fSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f); // 빛 반사
-
-		Out.vColor = g_LightDiffuse * vDiffuse * min((fContrast + (g_LightAmbient * g_MtrlAmbient)), 1.f)
-			+ (g_LightSpecular * g_MtrlSpecular) * fSpecular;
-	}
-	else {
-		Out.vColor = vector(0.f, 1.f, 0.f, 1.f) + vBrush;
-	}
-
-	return Out;
-}
-
 PS_OUT PS_MODEL(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
@@ -185,32 +139,6 @@ PS_OUT PS_MODEL(PS_IN In)
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
-	pass Terrain
-	{
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        HullShader = NULL;
-        DomainShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
-	}
-
-	pass DTerrain
-	{
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
-
-		VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        HullShader = NULL;
-        DomainShader = NULL;
-		PixelShader = compile ps_5_0 PS_DTERRAIN();
-	}
-
 	pass Model
 	{
         SetRasterizerState(RS_Default);
@@ -221,6 +149,19 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         HullShader = NULL;
         DomainShader = NULL;
+		PixelShader = compile ps_5_0 PS_MODEL();
+	}
+
+	pass Cull_Non_Model
+	{
+		SetRasterizerState(RS_Cull_None);
+		SetDepthStencilState(DSS_Default, 0);
+		SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		HullShader = NULL;
+		DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
 
