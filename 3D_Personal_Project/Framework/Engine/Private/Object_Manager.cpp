@@ -137,7 +137,7 @@ list<class CGameObject*> CObject_Manager::Get_ObjectList(_uint iLevelIndex, cons
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, strLayerTag);
 	if (pLayer == nullptr)
-		list<class CGameObject*>();
+		return list<class CGameObject*>();
 
 	return pLayer->Get_ObjectList();
 }
