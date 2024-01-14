@@ -29,7 +29,6 @@ public:
 	HRESULT	Add_Bounding(void* pArg);
 
 public:
-	//CBounding* Get_Bounding() { return m_pBounding; }
 	CBounding* Get_Bounding(_uint iIndex) { return m_vecBounding[iIndex]; }
 	vector<CBounding*> Get_BoundingVec() { return m_vecBounding; }
 	_bool		Get_UseCol() { return m_bUseCol; }
@@ -41,6 +40,13 @@ public:
 	void		Set_Collider_ID(_uint iID) { m_iColID = iID; }
 	void		Set_UseCol(_bool bCheck) { m_bUseCol = bCheck; }
 	void		Set_Collision(_bool bCheck) { m_bCollision = bCheck; }
+
+	_float3		Get_CollisionDir() { return m_vCollisionDir; }
+	void		Set_CollisionDir(_float3 vDir) { m_vCollisionDir = vDir; }
+
+	_float		Get_PushedDist() { return m_fPushedDist; }
+	void		Set_PushedDist(_float fDist) { m_fPushedDist = fDist; }
+
 public:
 	void	OnCollisionEnter(CCollider* pOtherCollider);
 	void	OnCollisionStay(CCollider* pOtherCollider);
@@ -67,6 +73,10 @@ private:
 	_bool					m_bCollision = { false };
 	_uint					m_eColLayer_Type = { 0 };
 	_uint					m_iColID = { 0 };
+
+private:
+	_float3					m_vCollisionDir = { 0.f,0.f,0.f };
+	_float					m_fPushedDist = { 0.f };
 
 private:
 	static _uint			m_iNextID;

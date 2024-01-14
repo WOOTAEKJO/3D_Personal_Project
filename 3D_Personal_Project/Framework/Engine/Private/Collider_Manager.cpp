@@ -23,6 +23,9 @@ void CCollider_Manager::Update()
 		{
 			for (auto& DestColl : Layer.second->Get_ColliderList())
 			{
+				if (SourColl == DestColl)
+					continue;
+
 				Check_Collision(SourColl, DestColl);
 			}
 		}

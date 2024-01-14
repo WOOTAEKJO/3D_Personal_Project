@@ -17,6 +17,7 @@ HRESULT CPlayer_Spear_AirAttack::Initialize(CGameObject* pGameObject)
 
 void CPlayer_Spear_AirAttack::State_Enter()
 {
+	Trans_Attack(true);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::AIR_ATTACK);
 }
 
@@ -55,6 +56,7 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_AirAttack::State_Exit()
 {
+	Trans_Attack(false);
 }
 
 CPlayer_Spear_AirAttack* CPlayer_Spear_AirAttack::Create(CGameObject* pGameObject)

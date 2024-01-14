@@ -152,6 +152,21 @@ _int CCharacter::Find_TypeAnimIndex(_uint iAnimTag)
 	return iter->second;
 }
 
+void CCharacter::Pushed()
+{
+	_vector vDir = XMLoadFloat3(&m_pColliderCom->Get_CollisionDir());
+	_float fDist = m_pColliderCom->Get_PushedDist();
+
+	vDir.m128_f32[1] = 0.f;
+
+	m_pRigidBodyCom->Force(vDir, fDist * 10.f, CRigidBody::TYPE::TYPE_ACCEL);
+}
+
+void CCharacter::Pushed_Reset()
+{
+	m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_ACCEL);
+}
+
 void CCharacter::Free()
 {
 	__super::Free();

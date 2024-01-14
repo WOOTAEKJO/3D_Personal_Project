@@ -176,14 +176,20 @@ void CPlayer::Animation_By_Type(STATE eType)
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
+	
 }
 
 void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
 {
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
+	{
+		Pushed();
+	}
 }
 
 void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
 {
+	Pushed_Reset();
 }
 
 HRESULT CPlayer::Bind_ShaderResources()

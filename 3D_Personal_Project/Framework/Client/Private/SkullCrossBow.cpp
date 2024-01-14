@@ -150,11 +150,16 @@ void CSkullCrossBow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 
 void CSkullCrossBow::OnCollisionStay(CCollider* pCollider, _uint iColID)
 {
-
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER ||
+		pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
+	{
+		Pushed();
+	}
 }
 
 void CSkullCrossBow::OnCollisionExit(CCollider* pCollider, _uint iColID)
 {
+	Pushed_Reset();
 }
 
 HRESULT CSkullCrossBow::Bind_ShaderResources()
@@ -170,13 +175,20 @@ HRESULT CSkullCrossBow::Ready_Component()
 	if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;
 
-	CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
 	AABB_Desc.pOnwer = this;
 	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
 	AABB_Desc.bUseCol = true;
 	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
 	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
+	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.bUseCol = true;
+	Sphere_Desc.fRadius = 0.7f;
+	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 
 	return S_OK;
 }

@@ -104,6 +104,10 @@ protected:
 	void	Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex);
 	_int	Find_TypeAnimIndex(_uint iAnimTag);
 
+protected:
+	void	Pushed();
+	void	Pushed_Reset();
+
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual	void	Free() override;

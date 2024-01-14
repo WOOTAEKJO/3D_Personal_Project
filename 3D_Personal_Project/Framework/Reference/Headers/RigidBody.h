@@ -8,7 +8,7 @@ class CGameObject;
 class ENGINE_DLL CRigidBody final : public CComponent
 {
 public:
-	enum TYPE {TYPE_VELOCITY,TYPE_ACCEL,TYPE_END};
+	enum TYPE {TYPE_VELOCITY,TYPE_ACCEL,TYPE_ALL,TYPE_END};
 
 public:
 	typedef struct tagRigidBody_Desc
@@ -38,6 +38,7 @@ public:
 public:
 	void	Force(_fvector vDir, _float fPower,TYPE eType);
 	void	Reset_Force(TYPE eType);
+	void	Reset_Force_Type(TYPE eType);
 	_bool	Is_Power_Zero(TYPE eType);
 
 public:

@@ -23,7 +23,7 @@ protected:
 
 public:
 	virtual	void	Update(_fmatrix	matWorld) = 0;
-	virtual _bool	Collision(class CCollider* pTargetCollider) = 0;
+	virtual _bool	Collision(class CCollider* pTargetCollider, _float3* vCollisionDir,_float* fPushedDist) = 0;
 
 #ifdef _DEBUG
 public:
