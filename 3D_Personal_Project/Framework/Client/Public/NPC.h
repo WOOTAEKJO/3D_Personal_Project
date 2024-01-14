@@ -8,6 +8,8 @@ class CNPC abstract : public CCharacter
 public:
 	enum STATE { IDLE, FOLLOW, ATTACK, TALK, STATE_END };
 
+	enum NPC_TYPE { CROW, OWL, NPC_TYPE_END };
+
 protected:
 	CNPC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CNPC(const CNPC& rhs);
@@ -32,9 +34,14 @@ public:
 	_float	Distance_Proportional(_float fMin, _float fMax, _float fRange);
 
 	_bool	Is_Target_State(_uint iTargetState);
+
+	void	Trans_Attack(_bool bCheck);
+
 public:
 	void		Set_ModelTag(const wstring& strModelTag) { m_strModelTag = strModelTag; }
 	wstring		Get_ModelTag() { return m_strModelTag; }
+
+	NPC_TYPE	Get_NPCType() { return m_eNPCType; }
 
 protected:
 	class CPlayer*	m_pPlayer = { nullptr };
@@ -42,6 +49,9 @@ protected:
 
 protected:
 	_float4			m_vTargetPos = {};
+
+protected:
+	NPC_TYPE		m_eNPCType = { NPC_TYPE::NPC_TYPE_END };
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;

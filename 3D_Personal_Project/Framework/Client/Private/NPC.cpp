@@ -141,6 +141,11 @@ _bool CNPC::Is_Target_State(_uint iTargetState)
 	return false;
 }
 
+void CNPC::Trans_Attack(_bool bCheck)
+{
+	m_pColliderCom->Set_UseCol(bCheck);
+}
+
 HRESULT CNPC::Bind_ShaderResources()
 {
 	if (FAILED(CCharacter::Bind_ShaderResources()))

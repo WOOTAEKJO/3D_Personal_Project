@@ -232,8 +232,10 @@
     <ClInclude Include="..\Public\NPCState\NPC_Follow.h" />
     <ClInclude Include="..\Public\NPCState\NPC_IDLE.h" />
     <ClInclude Include="..\Public\NPCState\NPC_State.h" />
+    <ClInclude Include="..\Public\NPCState\NPC_Talk.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
+    <ClInclude Include="..\Public\Owl.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Plateform_Instancing.h" />
     <ClInclude Include="..\Public\Plateform_Trap.h" />
@@ -318,8 +320,10 @@
     <ClCompile Include="..\Private\NPCState\NPC_Follow.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_IDLE.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_State.cpp" />
+    <ClCompile Include="..\Private\NPCState\NPC_Talk.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
+    <ClCompile Include="..\Private\Owl.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Plateform_Instancing.cpp" />
     <ClCompile Include="..\Private\Plateform_Trap.cpp" />

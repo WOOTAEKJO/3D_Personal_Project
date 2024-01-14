@@ -59,6 +59,8 @@
 
 #define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
 
+#define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

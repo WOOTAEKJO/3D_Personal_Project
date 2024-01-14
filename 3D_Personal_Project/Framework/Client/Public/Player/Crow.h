@@ -26,6 +26,8 @@ public:
 	_bool	Attack_Input();
 
 	_bool	Find_Range_Monster(_float fRange);
+
+	_bool	Is_Col();
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;

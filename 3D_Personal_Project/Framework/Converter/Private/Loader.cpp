@@ -99,6 +99,11 @@ HRESULT CLoader::Loading_For_Converter_Level()
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_CROW_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_CROW_PATH))))
 		return E_FAIL;*/
+	/*
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_OWL_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_OWL_PATH))))
+		return E_FAIL;*/
+
 	
 #pragma region Level1 Moster
 
@@ -474,10 +479,6 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		return E_FAIL;*/
 
 #pragma endregion 
-
-    /*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_LAND_TAG,
-    	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_LAND_PATH))))
-    	return E_FAIL; */
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	

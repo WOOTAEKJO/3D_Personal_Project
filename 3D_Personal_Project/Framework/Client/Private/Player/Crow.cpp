@@ -39,6 +39,8 @@ HRESULT CCrow::Initialize(void* pArg)
 	if (FAILED(Ready_Animation()))
 		return E_FAIL;
 
+	m_eNPCType = CNPC::NPC_TYPE::CROW;
+
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
@@ -193,6 +195,11 @@ _bool CCrow::Find_Range_Monster(_float fRange)
 	}
 
 	return bCheck;
+}
+
+_bool CCrow::Is_Col()
+{
+	return m_pColliderCom->Get_Collision();
 }
 
 void CCrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
