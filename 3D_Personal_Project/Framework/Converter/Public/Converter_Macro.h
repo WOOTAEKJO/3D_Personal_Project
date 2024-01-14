@@ -221,7 +221,8 @@
 #define	MODEL_ROCKPACK7_TAG				TEXT("Prototype_Component_Model_rockPack7")
 #define	MODEL_ROCKPACK7_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack7.fbx"
 
-
+#define	MODEL_SMALLROCK_TAG				TEXT("Prototype_Component_Model_SmallRock")
+#define	MODEL_SMALLROCK_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/SmallRock.fbx"
 
 #pragma endregion
 

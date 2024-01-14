@@ -898,9 +898,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl">
-      <Filter>94. Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
@@ -908,6 +905,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTerrain.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

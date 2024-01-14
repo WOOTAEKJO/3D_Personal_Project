@@ -76,7 +76,7 @@ HRESULT CPlateform_Trap::Render()
 	{
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		m_pShaderCom->Begin(3);
 
 		m_pModelCom->Render(i);
 	}

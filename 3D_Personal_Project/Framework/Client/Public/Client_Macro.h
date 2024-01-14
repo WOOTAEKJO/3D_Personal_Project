@@ -31,11 +31,12 @@
 
 #define	SHADER_POS_TAG						TEXT("Prototype_Component_Shader_VtxPosTex")
 #define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
-#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
+//#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
 #define	SHADER_MESH_TAG						TEXT("Prototype_Component_Shader_VtxMesh")
 #define	SHADER_MESHINSTANCING_TAG			TEXT("Prototype_Component_Shader_VtxMeshInstancing")
 #define	SHADER_ANIMMESH_TAG					TEXT("Prototype_Component_Shader_VtxAnimMesh")
 #define	SHADER_CUBE_TAG						TEXT("Prototype_Component_Shader_VtxCube")
+#define	SHADER_TERRAIN_TAG						TEXT("Prototype_Component_Shader_VtxTerrain")
 
 #pragma endregion
 
@@ -175,6 +176,8 @@
 
 #define	MODEL_ROCKPACK7_TAG				TEXT("Prototype_Component_Model_rockPack7")
 
+#define	MODEL_SMALLROCK_TAG				TEXT("Prototype_Component_Model_SmallRock")
+
 #pragma endregion
 
 #pragma region 나무
@@ -217,6 +220,8 @@
 #pragma region 인스턴싱
 
 #define	MODELINSTANCING_GRASSMESHBIG_TAG		TEXT("Prototype_Component_ModelInstancing_GrassMeshBig")
+#define	MODELINSTANCING_SMALLROCK_TAG			TEXT("Prototype_Component_ModelInstancing_SmallRock")
+#define	MODELINSTANCING_PURPLESCHROOMS_TAG		TEXT("Prototype_Component_ModelInstancing_PurpleSchrooms")
 
 #pragma endregion
 
