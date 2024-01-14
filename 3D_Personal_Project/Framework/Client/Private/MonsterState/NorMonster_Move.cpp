@@ -51,7 +51,6 @@ _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 
 			Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
 
-
 			m_bMove = true;
 		}
 	}

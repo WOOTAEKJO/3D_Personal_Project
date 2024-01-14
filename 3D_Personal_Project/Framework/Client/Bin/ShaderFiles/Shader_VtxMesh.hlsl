@@ -86,7 +86,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	/*vector vSourDiffuse = g_DiffuseTexture[0].Sample(LinearSampler, In.vTexCoord * 100.f);
 	vector vDestDiffuse = g_DiffuseTexture[1].Sample(LinearSampler, In.vTexCoord * 100.f);*/
-	vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 1000.f);
+    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 300.f);
 
 	//vector vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
 
@@ -134,7 +134,7 @@ PS_OUT PS_DTERRAIN(PS_IN In)
 
 		vector vDiffuse = vMask * vDestDiffuse + (1.f - vMask) * vSourDiffuse + vBrush;*/
 
-		vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 1000.f) + vBrush;
+		vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord * 300.f) + vBrush;
 
 		float fContrast = max(dot(normalize(g_LightDir) * -1.f, normalize(In.vNormal)), 0.f); // ΈνΎΟ
 
@@ -216,5 +216,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
+
+    pass Cull_Non_Model
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MODEL();
+    }
 
 }

@@ -79,6 +79,14 @@ private: /* For.RadioButton_Transform*/
 	_uint	m_iCurrentLayerName = { LAYER::LAYER_END };
 
 private:
+	_float	m_fTimeAcc = { 0.f };
+
+private:
+	random_device	m_RandomDevice;
+	mt19937_64		m_RandomNumber;
+	_bool			m_bRandomRotation[3] = { false,false,false };
+
+private:
 	void	ObjectMesh();
 	void	AnimObjectMesh();
 	void	InstancingMesh();
@@ -88,6 +96,7 @@ private:
 	void	Create_Instancing();
 	void	NotGuizmo();
 	void	TransformGuizmo();
+	_float3	Random_Roation();
 
 public:
 	static	CObject_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);

@@ -30,6 +30,8 @@ HRESULT CLevel_Boss1::Initialize()
 
 	if (FAILED(CDataMgr::GetInstance()->Level_Object_Load("../Bin/Data/Object/Stage2.bin")))
 		return E_FAIL;
+	if (FAILED(CDataMgr::GetInstance()->Level_Object_Instancing_Load("../Bin/Data/Object/Instancing/Stage2.bin")))
+		return E_FAIL;
 		
 	if (FAILED(Ready_Layer_Camera(g_strLayerName[LAYER_CAMERA])))
 		return E_FAIL;

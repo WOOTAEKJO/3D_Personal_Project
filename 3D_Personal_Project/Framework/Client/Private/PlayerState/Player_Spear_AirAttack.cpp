@@ -38,7 +38,10 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOnwerRigidBody->Is_Land())
 	{
+		m_pOwner->Create_Range_Bullet();
+
 		if (m_pOwnerModel->Is_Animation_Finished()) {
+
 			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
 			m_pOwner->Open_Physics_Desc()->bJump = false;
 

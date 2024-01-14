@@ -309,7 +309,6 @@ void CNavigation::Delete_Cell(_uint iCellIndex)
 				if(iIdnx != -1)
 					iter->Set_NeighborIndex((CCell::LINES)i, iIdnx - 1);
 			}
-				
 		}
 	}
 

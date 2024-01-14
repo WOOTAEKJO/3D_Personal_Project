@@ -60,7 +60,7 @@ HRESULT CTerrain_Demo::Render()
 		if (FAILED(Bind_ShaderResources()))
 			return E_FAIL;
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_DTERRAIN);
+		m_pShaderCom->Begin(1);
 
 		m_pVIBufferCom->Bind_Buffer();
 
@@ -134,10 +134,10 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
+	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
-	/*if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
-		return E_FAIL;*/
+	if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
+		return E_FAIL;
 	if (FAILED(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResource(m_pShaderCom, "g_BrushTexture")))
 		return E_FAIL;
 	
@@ -158,9 +158,9 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 HRESULT CTerrain_Demo::Ready_Component()
 {
 	
-	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
-	if (FAILED(Add_Component<CTexture>(TEX_LANDSCAPE_TAG, &m_pTextureCom[TYPE_DIFFUSE]))) return E_FAIL;
-	//if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_MASK_TAG, &m_pTextureCom[TYPE_MASK],nullptr,1))) return E_FAIL;
+	if (FAILED(Add_Component<CShader>(SHADER_TERRAIN_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_TAG, &m_pTextureCom[TYPE_DIFFUSE]))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_MASK_TAG, &m_pTextureCom[TYPE_MASK],nullptr,1))) return E_FAIL;
 	if (FAILED(Add_Component<CTexture>(TEX_TERRAIN_BRUSH_TAG, &m_pTextureCom[TYPE_BRUSH], nullptr,2))) return E_FAIL;
 	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_DEMO_TAG, &m_pNavigationCom))) return E_FAIL;
 
@@ -187,7 +187,7 @@ HRESULT CTerrain_Demo::Ready_Component()
 	return S_OK;
 }
 
-_bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
+_bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint, _bool bPressing)
 {
 	if (m_pVIBufferCom == nullptr)
 		return false;
@@ -200,12 +200,20 @@ _bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
 	if (vMousePos.x == 0)
 		return false; 
 
-	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
-		return true;
-	}
-
 	XMStoreFloat4(fPickPoint, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
 	m_vMouseWorldPos = *fPickPoint;
+
+	if (bPressing)
+	{
+		return true;
+	}
+	else {
+		if (m_pGameInstance->Mouse_Down(DIM_LB)) {
+			return true;
+		}
+	}
+
+	
 
 	return false;
 }

@@ -41,6 +41,7 @@ public:
 	CTransform* Get_PlayerTransform() { return m_pPlayer_Transform; }
 
 	void		Set_Activate() { m_bActivate = true; }
+	_bool		Is_Activate() { return m_bActivate; }
 
 protected:
 	CBone*		m_pSocketBone = { nullptr };

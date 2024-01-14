@@ -322,6 +322,15 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear">
       <UniqueIdentifier>{ced739ab-2448-4144-968a-7dfb15716e1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol">
+      <UniqueIdentifier>{1cdbf9ae-535e-4837-8851-0d8da367c688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\02. NPC\01. Owl">
+      <UniqueIdentifier>{1c67b86b-36fd-4945-92b3-044e05401684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk">
+      <UniqueIdentifier>{1dc97220-1ed9-46d5-997a-e8929bb1bd92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -594,6 +603,15 @@
     <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Range_Bullet.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Owl.h">
+      <Filter>02.GameObjects\05. Character\02. NPC\01. Owl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_Talk.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -839,6 +857,15 @@
     <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Range_Bullet.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Owl.cpp">
+      <Filter>02.GameObjects\05. Character\02. NPC\01. Owl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_Talk.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -871,9 +898,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTBN.hlsl">
-      <Filter>94. Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
@@ -881,6 +905,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTerrain.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

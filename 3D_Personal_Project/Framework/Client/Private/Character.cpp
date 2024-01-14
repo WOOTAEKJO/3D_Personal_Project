@@ -35,7 +35,9 @@ HRESULT CCharacter::Initialize(void* pArg)
 
 void CCharacter::Priority_Tick(_float fTimeDelta)
 {
-	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
+	if(m_pColliderCom != nullptr)
+		m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
+
 	CGameObject::Priority_Tick(fTimeDelta);
 }
 

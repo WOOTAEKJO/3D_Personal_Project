@@ -19,26 +19,28 @@ HRESULT CNPC_IDLE::Initialize(CGameObject* pGameObject)
 void CNPC_IDLE::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::IDLE);
-	dynamic_cast<CCrow*>(m_pOwner)->Set_IDLE_Pos();
 }
 
 _uint CNPC_IDLE::State_Priority_Tick(_float fTimeDelta)
 {
-
+	
 	return m_iStateID;
 }
 
 _uint CNPC_IDLE::State_Tick(_float fTimeDelta)
 {
-	if (dynamic_cast<CCrow*>(m_pOwner)->Attack_Input())
-		return CNPC::STATE::ATTACK;
-
-	if (!m_pOwner->Is_Target_State(CPlayer::STATE::IDLE))
+	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
 	{
-		return CNPC::STATE::FOLLOW;
-	}
+		if (dynamic_cast<CCrow*>(m_pOwner)->Attack_Input())
+			return CNPC::STATE::ATTACK;
 
-	m_pOwner->PlayerLook();
+		if (!m_pOwner->Is_Target_Range(0.02f))
+		{
+			return CNPC::STATE::FOLLOW;
+		}
+
+		m_pOwner->PlayerLook();
+	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

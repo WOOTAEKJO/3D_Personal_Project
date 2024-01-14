@@ -71,6 +71,9 @@
 #define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
 #define	ANIMMODEL_CROW_PATH			"../Bin/Resources/Models/AnimModel/Crow/Crow.fbx"
 
+#define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
+#define	ANIMMODEL_OWL_PATH			"../Bin/Resources/Models/AnimModel/Owl/Owl.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨
@@ -218,7 +221,8 @@
 #define	MODEL_ROCKPACK7_TAG				TEXT("Prototype_Component_Model_rockPack7")
 #define	MODEL_ROCKPACK7_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/rockPack7.fbx"
 
-
+#define	MODEL_SMALLROCK_TAG				TEXT("Prototype_Component_Model_SmallRock")
+#define	MODEL_SMALLROCK_PATH			"../Bin/Resources/Models/NonAnimModel/Rock/SmallRock.fbx"
 
 #pragma endregion
 

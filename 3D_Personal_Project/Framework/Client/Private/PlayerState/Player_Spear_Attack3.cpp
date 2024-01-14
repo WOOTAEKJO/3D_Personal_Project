@@ -45,9 +45,10 @@ _uint CPlayer_Spear_Attack3::State_Tick(_float fTimeDelta)
 	if (m_pOwnerModel->Is_Animation_Finished())
 		return CPlayer::STATE::IDLE;
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, false);
+	if (m_fTime > 0.2f)
+		Shovel_Rush_Attack(fTimeDelta);
 
-	Shovel_Rush_Attack(fTimeDelta);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }

@@ -61,6 +61,8 @@ HRESULT CObject_Window::Initialize(void* pArg)
 		}
 	}
 
+	m_RandomNumber = mt19937_64(m_RandomDevice());
+
 	return S_OK;
 }
 
@@ -122,7 +124,21 @@ void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 	else if (m_eCurrentType == TYPE::TYPE_ANIM)
 		Create_AnimModel(g_strLayerName[m_iCurrentLayerName], m_strPickAnimModelTag, vPickPoint);
 	else if (m_eCurrentType == TYPE::TYPE_INSTANCING)
-		Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+	{
+		if (m_bPressing)
+		{
+			m_fTimeAcc += 1.f;
+
+			if (m_fTimeAcc >= 3.f)
+			{
+				Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+				m_fTimeAcc = 0.f;
+			}
+		}
+		else {
+			Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+		}
+	}
 }
 
 void CObject_Window::Demo_Picked()
@@ -654,21 +670,21 @@ void CObject_Window::InstancingMesh()
 	}
 	ImGui::EndListBox();
 
-	ImGui::BeginListBox("TMP", vSize);
-	_uint iSize = m_eTMP.vecDemo.size();
-	for (_uint i = 0; i < iSize; i++)
-	{
-		string str = to_string(i);
-		string str2;
-		size_t pos = m_eTMP.vecDemo[i]->Get_ModelTag().rfind(L"_");
-		wstring wstr = m_eTMP.vecDemo[i]->Get_ModelTag().substr(pos + 1);
-		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
-		if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eTMP.iCurrentIndex)) {
-			m_eTMP.iCurrentIndex = i;
-			m_eTMP.strCurrentTag = (str + "." + str2);
-		}
-	}
-	ImGui::EndListBox();
+	//ImGui::BeginListBox("TMP", vSize);
+	//_uint iSize = m_eTMP.vecDemo.size();
+	//for (_uint i = 0; i < iSize; i++)
+	//{
+	//	string str = to_string(i);
+	//	string str2;
+	//	size_t pos = m_eTMP.vecDemo[i]->Get_ModelTag().rfind(L"_");
+	//	wstring wstr = m_eTMP.vecDemo[i]->Get_ModelTag().substr(pos + 1);
+	//	str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+	//	if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eTMP.iCurrentIndex)) {
+	//		m_eTMP.iCurrentIndex = i;
+	//		m_eTMP.strCurrentTag = (str + "." + str2);
+	//	}
+	//}
+	//ImGui::EndListBox();
 
 	//ImGui::Text("Instancing_ModelList");
 	//ImGui::BeginListBox("Model", vSize);
@@ -682,6 +698,16 @@ void CObject_Window::InstancingMesh()
 	//		m_eInstancingModel.strPickModelTag = iter;
 	//}
 	//ImGui::EndListBox();
+
+	ImGui::Checkbox("Pressing", &m_bPressing);
+
+	ImGui::Text("RandomAngle");
+
+	ImGui::Checkbox("X", &m_bRandomRotation[0]);
+	ImGui::SameLine();
+	ImGui::Checkbox("Y", &m_bRandomRotation[1]);
+	ImGui::SameLine();
+	ImGui::Checkbox("Z", &m_bRandomRotation[2]);
 
 	ImGui::BeginListBox("Layer", vSize);
 	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)
@@ -720,24 +746,25 @@ void CObject_Window::InstancingMesh()
 		Create_Instancing();
 	}
 
-	if (!m_eInstancingModel.vecDemo.empty())
-	{
-		ImGui::BeginListBox("Instancing", vSize);
-		iSize = m_eInstancingModel.vecDemo.size();
-		for (_uint i = 0; i < iSize; i++)
-		{
-			string str = to_string(i);
-			string str2;
-			size_t pos = m_eInstancingModel.vecDemo[i]->Get_ModelTag().rfind(L"_");
-			wstring wstr = m_eInstancingModel.vecDemo[i]->Get_ModelTag().substr(pos + 1);
-			str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
-			if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eInstancingModel.iCurrentIndex)) {
-				m_eInstancingModel.iCurrentIndex = i;
-				//m_eInstancingModel.strCurrentTag = (str + "." + str2);
-			}
-		}
-		ImGui::EndListBox();
-	}
+	//if (!m_eInstancingModel.vecDemo.empty())
+	//{
+	//	ImVec2 vSize2 = ImVec2(150, 50);
+	//	ImGui::BeginListBox("Instancing", vSize2);
+	//	iSize = m_eInstancingModel.vecDemo.size();
+	//	for (_uint i = 0; i < iSize; i++)
+	//	{
+	//		string str = to_string(i);
+	//		string str2;
+	//		size_t pos = m_eInstancingModel.vecDemo[i]->Get_ModelTag().rfind(L"_");
+	//		wstring wstr = m_eInstancingModel.vecDemo[i]->Get_ModelTag().substr(pos + 1);
+	//		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+	//		if (ImGui::Selectable((str + "." + str2).c_str(), i == m_eInstancingModel.iCurrentIndex)) {
+	//			m_eInstancingModel.iCurrentIndex = i;
+	//			//m_eInstancingModel.strCurrentTag = (str + "." + str2);
+	//		}
+	//	}
+	//	ImGui::EndListBox();
+	//}
 }
 
 void CObject_Window::Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos)
@@ -789,6 +816,13 @@ void CObject_Window::Create_TMP(const wstring& strLayerTag, const wstring& strMo
 		return;
 
 	m_eTMP.vecDemo.push_back(dynamic_cast<CObjectMesh_Demo*>(pObject_Demo));
+
+	if (m_bRandomRotation[0] || m_bRandomRotation[1] || m_bRandomRotation[2])
+	{
+		_float3 vRot = Random_Roation();
+
+		pObject_Demo->Get_Component<CTransform>()->Rotation_Quaternio(vRot.x, vRot.y, vRot.z);
+	}
 }
 
 void CObject_Window::Create_Instancing()
@@ -897,6 +931,31 @@ void CObject_Window::TransformGuizmo()
 		break;
 	}
 	
+}
+
+_float3 CObject_Window::Random_Roation()
+{
+	//m_pLifeTime[i] = RandomLifeTime(m_RandomNumber);
+	uniform_real_distribution<float>	RandomAngle(0.f, 180.f);
+
+	_float3 vRot = { 0.f,0.f,0.f };
+
+	if (m_bRandomRotation[0])
+	{
+		vRot.x = RandomAngle(m_RandomNumber);
+	}
+
+	if (m_bRandomRotation[1])
+	{
+		vRot.y = RandomAngle(m_RandomNumber);
+	}
+
+	if (m_bRandomRotation[2])
+	{
+		vRot.z = RandomAngle(m_RandomNumber);
+	}
+
+	return vRot;
 }
 
 CObject_Window* CObject_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

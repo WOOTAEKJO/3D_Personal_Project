@@ -18,6 +18,7 @@ HRESULT CNPC_Follow::Initialize(CGameObject* pGameObject)
 void CNPC_Follow::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::FOLLOW);
+	
 }
 
 _uint CNPC_Follow::State_Priority_Tick(_float fTimeDelta)

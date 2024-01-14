@@ -19,6 +19,8 @@
 #include "Player_Land.h"
 #include "Player_Fall.h"
 
+#include "Range_Bullet.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -172,6 +174,28 @@ void CPlayer::Animation_By_Type(STATE eType)
 		return;
 
 	pBody->Set_AnimationIndex(iAnimIndex);
+}
+
+void CPlayer::Create_Range_Bullet()
+{
+	CRange_Bullet::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_PLAYER_BULLET;
+	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fLifeTime = 0.03f;
+	BulletDesc.fSpeed = 0.f;
+	BulletDesc.pTarget = nullptr;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS) +
+		XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK)) * 0.3f;
+
+	vPos.m128_f32[1] -= BulletDesc.fRadius;
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_RANGE_BULLET_TAG, &BulletDesc)))
+		return;
 }
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)

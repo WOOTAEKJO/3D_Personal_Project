@@ -43,11 +43,14 @@ HRESULT CBullet::Initialize(void* pArg)
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, BulletDesc->fStartPos);
 
-	_vector vTargetPos = BulletDesc->pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+	if (BulletDesc->pTarget != nullptr)
+	{
+		_vector vTargetPos = BulletDesc->pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
 
-	_vector vLook = XMVector3Normalize(vTargetPos - m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+		_vector vLook = XMVector3Normalize(vTargetPos - m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
-	XMStoreFloat3(&m_vLook, vLook);
+		XMStoreFloat3(&m_vLook, vLook);
+	}
 
 	return S_OK;
 }

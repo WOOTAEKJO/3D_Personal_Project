@@ -20,7 +20,8 @@ void CNPC_Attack::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::ATTACK);
 
-	dynamic_cast<CCrow*>(m_pOwner)->Find_Range_Monster();
+	m_bFind = dynamic_cast<CCrow*>(m_pOwner)->Find_Range_Monster(5.f);
+	m_pOwner->Trans_Attack(true);
 }
 
 _uint CNPC_Attack::State_Priority_Tick(_float fTimeDelta)
@@ -30,9 +31,12 @@ _uint CNPC_Attack::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNPC_Attack::State_Tick(_float fTimeDelta)
 {
+	if(!m_bFind)
+		return CNPC::STATE::IDLE;
+
 	if (m_pOwner->Turn(fTimeDelta * 10.f))
 	{
-		m_pOwner->Target_Follow(fTimeDelta * 30.f);
+		m_pOwner->Target_Follow(fTimeDelta * 20.f);
 	}
 	/*m_pOwner->Target_Follow_Look();
 	m_pOwner->Target_Follow(fTimeDelta * 30.f);*/
@@ -44,14 +48,21 @@ _uint CNPC_Attack::State_Tick(_float fTimeDelta)
 
 _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 {
-	if (m_pOwner->Is_Target_Range(0.3f))
-		return CNPC::STATE::IDLE;
+	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
+	{
+		/*if (m_pOwner->Is_Target_Range(0.1f))
+			return CNPC::STATE::IDLE;*/
+		if (dynamic_cast<CCrow*>(m_pOwner)->Is_Col())
+			return CNPC::STATE::IDLE;
+	}
 
 	return m_iStateID;
 }
 
 void CNPC_Attack::State_Exit()
 {
+	m_pOwner->Trans_Attack(false);
+	m_bFind = false;
 }
 
 CNPC_Attack* CNPC_Attack::Create(CGameObject* pGameObject)

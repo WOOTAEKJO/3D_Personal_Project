@@ -44,6 +44,7 @@ public:
 
 public:
 	void	Animation_By_Type(STATE eType);
+	void	Create_Range_Bullet();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
