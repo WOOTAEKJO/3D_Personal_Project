@@ -170,6 +170,12 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
 	}PARTICLE_POINT;
 
+	typedef struct ENGINE_DLL tagInstancing_Mesh
+	{
+		static const unsigned int	iElementsNum = 9;
+		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
+	}INSTANCING_MESH;
+
 	typedef struct tagMeshDesc
 	{
 		string				szName;
@@ -220,6 +226,24 @@ namespace Engine
 		vector<CHANNEL>		vecChannel;
 
 	}ANIMATION;
+
+	typedef struct tagCellDesc
+	{
+		FLOAT3X3	vPoints;
+		_uint		iCellType;
+
+		//_uint3		iNeighborIndexs;
+
+	}CELL;
+
+	typedef struct tagCell2Desc
+	{
+		FLOAT3X3	vPoints;
+		_uint		iCellType;
+
+		_int3		iNeighborIndexs;
+
+	}CELL2;
 
 	typedef struct tagLevelObjectDesc
 	{

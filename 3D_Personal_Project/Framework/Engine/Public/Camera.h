@@ -24,11 +24,23 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 
+public:
+	void	Camera_Sliding(_fvector vPosition,CNavigation* pNavigation,_float fTimeDelta);
+	_vector	Camera_Spring(_fvector vTargetPos, _fvector vPos, _float fTimeDelta ,_float fRatio = 0.2f);
+
 protected:
 	_float m_fFovy = { 0.f };
 	_float m_fAspect = { 0.f };
 	_float m_fNear = { 0.f };
 	_float m_fFar = { 0.f };
+
+protected:
+	_float			m_fSpringConstant = { 0.f };
+	_float			m_fDampConstant = { 0.f };
+	_float3			m_vVeclocity;
+
+protected:
+	_bool			m_bWallCheck = { false };
 
 public:
 	virtual	CGameObject* Clone(void* pArg) = 0;

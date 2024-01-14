@@ -77,6 +77,7 @@ _uint CPlayer_Spear_Attack2::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack2::State_Exit()
 {
+	Trans_Attack(false);
 	m_fTime = 0.f;
 }
 

@@ -27,7 +27,7 @@ HRESULT CNPC::Initialize(void* pArg)
 	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;
@@ -69,26 +69,26 @@ void CNPC::PlayerLook()
 	m_pTransformCom->LookAt_Dir(vDir);
 }
 
-void CNPC::Target_Follow_Look()
+void CNPC::Target_Follow_Look(_bool bGround)
 {
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = XMLoadFloat4(&m_vTargetPos);
 
 	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
 
-	m_pTransformCom->LookAt_Dir(vDir);
+	m_pTransformCom->LookAt_Dir(vDir, bGround);
 }
 
 _bool CNPC::Turn(_float fTimeDelta)
 {
-	//return m_pTransformCom->Turn_Target(XMLoadFloat4(&m_vTargetPos), fTimeDelta * 4.f);
+	//return m_pTransformCom->Turn_Target_Yaxis(XMLoadFloat4(&m_vTargetPos), fTimeDelta * 4.f);
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = XMLoadFloat4(&m_vTargetPos);
 
 	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
 
-	return m_pTransformCom->Turn_Dir(vDir, fTimeDelta * 4.f);
+	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f);
 }
 
 _bool CNPC::Is_Target_Range( _float fRange)

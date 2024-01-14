@@ -47,8 +47,7 @@ _uint CPlayer_Spear_Attack3::State_Tick(_float fTimeDelta)
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
-	if(m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
-		Shovel_Rush_Attack(fTimeDelta);
+	Shovel_Rush_Attack(fTimeDelta);
 
 	return m_iStateID;
 }
@@ -68,7 +67,7 @@ void CPlayer_Spear_Attack3::State_Exit()
 
 void CPlayer_Spear_Attack3::Shovel_Rush_Attack(_float fTimeDelta)
 {
-	Translate(CTransform::STATE::STATE_LOOK, 12.f, fTimeDelta);
+	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 2.f, fTimeDelta);
 }
 
 CPlayer_Spear_Attack3* CPlayer_Spear_Attack3::Create(CGameObject* pGameObject)

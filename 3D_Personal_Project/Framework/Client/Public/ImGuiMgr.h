@@ -10,6 +10,7 @@ BEGIN(Client)
 
 class CImGui_Window;
 class CTerrain_Demo;
+class CObjectMesh_Demo;
 class CDemo;
 
 class CImGuiMgr final : public CBase
@@ -31,7 +32,7 @@ public:
 
 public: 
 	CTerrain_Demo* Get_Terrain() { return m_pTerrain; }
-
+	vector<CObjectMesh_Demo*>* Get_ObjectDemo();
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };

@@ -17,7 +17,10 @@ HRESULT CNorMonster_IDLE::Initialize(CGameObject* pGameObject)
 
 void CNorMonster_IDLE::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(8);
+	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
+		m_pOwnerModel->Set_AnimationIndex(8);
+	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
+		m_pOwnerModel->Set_AnimationIndex(3);
 }
 
 _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
@@ -28,7 +31,7 @@ _uint CNorMonster_IDLE::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_IDLE::State_Tick(_float fTimeDelta)
 {
 
-	if (m_pOwner->Is_Target_Range(7.f))
+	if (m_pOwner->Is_Target_Range(m_pOwner->Open_Status_Desc()->fDetection_Range))
 	{
 		return CMonster::STATE::MOVE;
 	}

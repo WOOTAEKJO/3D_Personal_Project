@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\Animation_Window.h" />
     <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Character_State.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\ImGuiMgr.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
+    <ClInclude Include="..\Public\Level_Boss1.h" />
     <ClInclude Include="..\Public\Level_GamePlay.h" />
     <ClInclude Include="..\Public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="..\Public\Mark.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState\Monster_State.h" />
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Attack.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Dead.h" />
     <ClInclude Include="..\Public\MonsterState\NorMonster_Delay.h" />
@@ -223,6 +226,7 @@
     <ClInclude Include="..\Public\MonsterState\NorMonster_Move.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\AI_Normal_Monster_IDLE.h" />
+    <ClInclude Include="..\Public\Normal_Bullet.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Follow.h" />
@@ -231,6 +235,9 @@
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Plateform.h" />
+    <ClInclude Include="..\Public\Plateform_Instancing.h" />
+    <ClInclude Include="..\Public\Plateform_Trap.h" />
+    <ClInclude Include="..\Public\PlayerState\Player_Fall.h" />
     <ClInclude Include="..\Public\PlayerState\Player_IDLE.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Land.h" />
     <ClInclude Include="..\Public\PlayerState\Player_Roll.h" />
@@ -246,6 +253,7 @@
     <ClInclude Include="..\Public\Player\Player_Body.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
+    <ClInclude Include="..\Public\SkullCrossBow.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Spooketon.h" />
     <ClInclude Include="..\Public\SubObject_Demo.h" />
@@ -256,6 +264,7 @@
     <ClInclude Include="..\Public\TestAction.h" />
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
+    <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -273,6 +282,7 @@
     <ClCompile Include="..\Private\Animation_Window.cpp" />
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Character_State.cpp" />
@@ -282,6 +292,7 @@
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\ImGuiMgr.cpp" />
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
+    <ClCompile Include="..\Private\Level_Boss1.cpp" />
     <ClCompile Include="..\Private\Level_GamePlay.cpp" />
     <ClCompile Include="..\Private\Level_Loading.cpp" />
     <ClCompile Include="..\private\Level_Logo.cpp" />
@@ -291,6 +302,7 @@
     <ClCompile Include="..\Private\Mark.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState\Monster_State.cpp" />
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Attack.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState\NorMonster_Delay.cpp" />
@@ -299,6 +311,7 @@
     <ClCompile Include="..\Private\MonsterState\NorMonster_Move.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\AI_Normal_Monster_IDLE.cpp" />
+    <ClCompile Include="..\Private\Normal_Bullet.cpp" />
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Follow.cpp" />
@@ -307,6 +320,9 @@
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
+    <ClCompile Include="..\Private\Plateform_Instancing.cpp" />
+    <ClCompile Include="..\Private\Plateform_Trap.cpp" />
+    <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_IDLE.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Land.cpp" />
     <ClCompile Include="..\Private\PlayerState\Player_Roll.cpp" />
@@ -322,6 +338,7 @@
     <ClCompile Include="..\Private\Player\Player_Body.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
+    <ClCompile Include="..\Private\SkullCrossBow.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Spooketon.cpp" />
     <ClCompile Include="..\Private\SubObject_Demo.cpp" />
@@ -332,6 +349,7 @@
     <ClCompile Include="..\Private\TestAction.cpp" />
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
+    <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -351,6 +369,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticleRect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />

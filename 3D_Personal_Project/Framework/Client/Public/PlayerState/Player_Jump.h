@@ -20,9 +20,6 @@ private:
 	
 private:
 	void	Jump();
-	void	Land();
-	void	Fall();
-	void	Move(_float fTimeDelta);
 
 public:
 	static	CPlayer_Jump* Create(CGameObject * pGameObject);

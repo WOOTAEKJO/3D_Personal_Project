@@ -8,7 +8,7 @@ class CGameObject;
 class ENGINE_DLL CRigidBody final : public CComponent
 {
 public:
-	enum TYPE {TYPE_VELOCITY,TYPE_ACCEL,TYPE_END};
+	enum TYPE {TYPE_VELOCITY,TYPE_ACCEL,TYPE_ALL,TYPE_END};
 
 public:
 	typedef struct tagRigidBody_Desc
@@ -33,17 +33,15 @@ public:
 	void	Set_GravityPower(_float fPower) { m_fGravity = fPower; }
 
 public:
-	void	Jump(_float fJumpPower,_float fGravityPower);
 	_bool	Is_Land();
-	void	Land();
 
 public:
 	void	Force(_fvector vDir, _float fPower,TYPE eType);
 	void	Reset_Force(TYPE eType);
+	void	Reset_Force_Type(TYPE eType);
 	_bool	Is_Power_Zero(TYPE eType);
 
 public:
-	//CGameObject*	m_pOwner = { nullptr };
 	CTransform*		m_pOwnerTransform = { nullptr };
 	CNavigation*	m_pOwnerNavigation = { nullptr };
 
@@ -51,7 +49,6 @@ private:
 	_float			m_fGravity = { -9.8f };
 
 private:
-	_bool			m_bGravity = { false };
 	_float3			m_vResist = {};
 	_float3			m_vPower[TYPE_END] = {};
 

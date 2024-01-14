@@ -31,12 +31,35 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 {
 	Key_Input(fTimeDelta);
 
+	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
+	{
+		if (m_pOwnerModel->Is_Animation_Finished())
+			return CPlayer::STATE::RUN;
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
+	{
+		if (m_pOwnerModel->Is_Animation_Finished())
+			return CPlayer::STATE::RUN;
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
+	{
+		if (m_pOwnerModel->Is_Animation_Finished())
+			return CPlayer::STATE::RUN;
+	}
+	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
+	{
+		if (m_pOwnerModel->Is_Animation_Finished())
+			return CPlayer::STATE::RUN;
+	}
+
+	
+
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
 		return CPlayer::STATE::IDLE;	
 	}
 
-	Translate(CTransform::STATE::STATE_LOOK, 10.f, fTimeDelta);
+	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 1.5f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 

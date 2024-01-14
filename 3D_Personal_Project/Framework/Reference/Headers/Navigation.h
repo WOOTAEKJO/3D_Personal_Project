@@ -29,10 +29,11 @@ public:
 	_bool	IsMove(_fvector vPosition, _Out_ _float3* vLine);
 	void	Find_CurrentCell(_fvector vPosition);
 	_int	Find_PositionCell(_fvector vPosition);
-	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex);
+	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex, _uint iCellType);
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Delete_Cell(_uint iCellIndex);
+	void	Add_Neighbor(_uint iSourCellIndx,_float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);
 
 public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
@@ -43,6 +44,9 @@ public:
 public:
 	HRESULT	Save_Navigation(const _char * strFilePath);
 	HRESULT	File_Load(const _char* strNavigationPath);
+
+public:
+	void	Set_Cell_Type(_uint iCellType, _uint iIndex);
 
 public:
 	vector<class CCell*> Get_Navigation_Cells();
@@ -65,6 +69,8 @@ private:
 
 private:
 	HRESULT	Init_Neighbor();
+	HRESULT	Init_Neighbor_XZ();
+	HRESULT	Init_Neighbor_Cell(CCell* pCell);
 
 public:
 	static CNavigation* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, NAVITYPE eType, const _char* strNavigationPath);

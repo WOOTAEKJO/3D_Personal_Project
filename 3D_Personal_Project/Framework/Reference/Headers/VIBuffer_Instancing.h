@@ -6,6 +6,9 @@ BEGIN(Engine)
 class CVIBuffer_Instancing abstract : public CVIBuffer
 {
 public:
+	enum INSTANCING_TYPE {TYPE_PARTICLE, TYPE_MESH,TYPE_END};
+
+public:
 	typedef struct tagInstancing_Desc
 	{
 		_float3		vCenter;
@@ -13,6 +16,8 @@ public:
 		_float2		fSpeed;
 		_float2		fScale;
 		_float2		fLifeTime;
+
+
 
 	}INSTANCING_DESC;
 
@@ -27,6 +32,9 @@ public:
 	virtual HRESULT	Bind_Buffer() override;
 	virtual	void	Update(_float fTimeDelta);
 	virtual HRESULT	Render();
+
+public:
+	vector<_float4x4>	Get_InstanceVertex() { return m_vecInstanceVertex; }
 
 protected:
 	ID3D11Buffer*	m_pInstanceBuffer = { nullptr };
@@ -43,6 +51,16 @@ protected:
 	_float*			m_pLifeTime = { nullptr };
 	INSTANCING_DESC	m_Instancing_Desc;
 	_float			m_fTimeAcc = { 0.f };
+
+protected:
+	vector<_float4x4>		m_vecInstanceVertex;
+
+protected:
+	INSTANCING_TYPE	m_eInstanceType = { TYPE_END };
+
+private:
+	HRESULT		Init_Particle(VTXINSTANCING* pVerpostex);
+	HRESULT		Init_Mesh(VTXINSTANCING* pVerpostex);
 
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;

@@ -15,13 +15,16 @@ CCell::CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 #endif
 }
 
-HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
+HRESULT CCell::Initialize(CELL2 Cell, _uint iIndex, CNavigation::NAVITYPE eType)
 {
-	memcpy(&m_pPoints, &pPoints, sizeof(_float3)*3);
+	memcpy(&m_pPoints, &Cell.vPoints, sizeof(_float3)*3);
+	memcpy(&m_iNeighborIndex, &Cell.iNeighborIndexs, sizeof(_int3));
 
 	m_iIndex = iIndex;
 
 	m_eNaviType = eType;
+
+	m_eCell_Type = (CELLTYPE)Cell.iCellType;
 
 	_vector Line = XMLoadFloat3(&m_pPoints[POINT_B]) - XMLoadFloat3(&m_pPoints[POINT_A]);
 	XMStoreFloat3(&m_vLine[LINE_AB], Line);
@@ -53,8 +56,12 @@ HRESULT CCell::Initialize(FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE 
 	return S_OK;
 }
 
-HRESULT CCell::Render()
+HRESULT CCell::Render(CShader* pShader, _float4 vColor)
 {
+	if (FAILED(pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
+		return E_FAIL;
+
+	pShader->Begin(0);
 
 	if(m_eNaviType== CNavigation::NAVITYPE::TYPE_LOAD)
 	{
@@ -81,7 +88,7 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
 			return true;
 	}
-
+	
 	if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_B]), XMLoadFloat3(&SourPoint)))
 	{
 		if (XMVector3Equal(XMLoadFloat3(&m_pPoints[POINT_C]), XMLoadFloat3(&DestPoint)))
@@ -101,15 +108,57 @@ _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 	return false;
 }
 
+_bool CCell::Compare_Points_XZ(_float3 SourPoint, _float3 DestPoint)
+{
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+	}
+
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+	}
+
+	if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_C].x, m_pPoints[POINT_C].z, 0.f, 0.f),
+		XMVectorSet(SourPoint.x, SourPoint.z, 0.f, 0.f)))
+	{
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_A].x, m_pPoints[POINT_A].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+
+		if (XMVector2Equal(XMVectorSet(m_pPoints[POINT_B].x, m_pPoints[POINT_B].z, 0.f, 0.f),
+			XMVectorSet(DestPoint.x, DestPoint.z, 0.f, 0.f)))
+			return true;
+	}
+
+	return false;
+}
+
 _bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _Out_ _float3* vLine)
 {
+	
 	for (_uint i = 0; i < (_uint)LINE_END; i++)
 	{
 		_vector vStartPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pPoints[i]), matWorld);
 		_vector vNormal = XMVector3TransformNormal(XMLoadFloat3(&m_vLineNormal[i]), matWorld);
 
 		_vector vDir = vPosition - vStartPoint;
-
+		
 		if (0 < XMVectorGetX(XMVector3Dot(XMVector3Normalize(vDir),
 			XMVector3Normalize(vNormal))))
 		{
@@ -117,7 +166,6 @@ _bool CCell::IsIn(_fvector vPosition, _fmatrix matWorld, _int* iNeighborIndex, _
 			XMStoreFloat3(vLine, XMVector3Normalize(XMLoadFloat3(&m_vLine[i])));
 			return false;
 		}
-			
 	}
 
 	return true;
@@ -136,6 +184,45 @@ _float CCell::Get_Height(_float3 vPos)
 	return fHeight;
 }
 
+_bool CCell::Is_Height(_float3 vPos)
+{
+	_float fHeight = Get_Height(vPos);
+
+	if (vPos.y >= fHeight)
+		return true;
+
+	return false;
+}
+
+CCell::LINES CCell::Get_Line(_float3 vPos1, _float3 vPos2)
+{
+	if (XMVector3Equal(XMLoadFloat3(&vPos1), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_A])))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_B])))
+			return CCell::LINES::LINE_AB;
+		if(XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_C])))
+			return CCell::LINES::LINE_CA;
+	}
+
+	if (XMVector3Equal(XMLoadFloat3(&vPos1), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_B])))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_A])))
+			return CCell::LINES::LINE_AB;
+		if (XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_C])))
+			return CCell::LINES::LINE_BC;
+	}
+
+	if (XMVector3Equal(XMLoadFloat3(&vPos1), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_C])))
+	{
+		if (XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_B])))
+			return CCell::LINES::LINE_BC;
+		if (XMVector3Equal(XMLoadFloat3(&vPos2), XMLoadFloat3(&m_pPoints[CCell::POINTS::POINT_A])))
+			return CCell::LINES::LINE_CA;
+	}
+
+	return CCell::LINES::LINE_END;
+}
+
 void CCell::Update_Buffer(FLOAT3X3 vPositions)
 {
 	if (m_pDBufferCom == nullptr)
@@ -148,11 +235,12 @@ void CCell::Update_Buffer(FLOAT3X3 vPositions)
 	m_pDBufferCom->Update_Buffer(vPositions);
 }
 
-CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, FLOAT3X3 pPoints, _uint iIndex, CNavigation::NAVITYPE eType)
+CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CELL2 Cell, _uint iIndex,
+	CNavigation::NAVITYPE eType)
 {
 	CCell* pInstance = new CCell(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize(pPoints, iIndex, eType))) {
+    if (FAILED(pInstance->Initialize(Cell, iIndex, eType))) {
 		MSG_BOX("Failed to Created : CCell");
 		Safe_Release(pInstance);
 	}

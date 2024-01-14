@@ -46,16 +46,20 @@ public:
 	HRESULT	Load_Terrain(const _char* strPath);
 
 public:
-	HRESULT	Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex);
+	HRESULT	Add_Navigation_Cell(_float3* pPoints, _uint* iCellIndex, _uint iCellType = 0);
 	HRESULT	Save_Navigation(const _char* strPath);
 	HRESULT	Load_Navigation(const _char* strPath);
 	void	Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions);
 	void	All_Delete_Cell();
 	void	Selected_Delete_Cell(_uint iCellIndex);
+	void	Set_Cell_Type(_uint iCellType, _uint iIndex);
+
+	void	Add_Neighbor(_uint iSourCellIndx, _float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);
 
 	_bool	Picked_Cell(_uint* iCellIndex);
 
 	vector<CCell*>	Get_Navigation_Cells();
+	void	Set_Add(_bool bCheck);
 
 private:
 	CVIBuffer_DTerrain*		m_pVIBufferCom = { nullptr };

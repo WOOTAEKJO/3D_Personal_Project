@@ -72,10 +72,13 @@ HRESULT CTerrain::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
+	/*if (FAILED(m_pTextureCom[TYPE_DIFFUSE]->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
 	if (FAILED(m_pTextureCom[TYPE_MASK]->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture")))
+		return E_FAIL;*/
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_DiffuseTexture")))
 		return E_FAIL;
+	
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos", 
 		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS),sizeof(_float4))))
 		return E_FAIL;
@@ -85,32 +88,16 @@ HRESULT CTerrain::Bind_ShaderResources()
 
 HRESULT CTerrain::Ready_Component()
 {
+	wstring strTerrainTag;
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+		strTerrainTag = BUFFER_TERRAIN_TAG;
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		strTerrainTag = BUFFER_TERRAIN2_TAG;
 
-	/* For.Com_VIBuffer*/ 
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, BUFFER_TERRAIN_TAG,
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, SHADER_MESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
-
-	/* For.Com_Texture*/ 
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEX_TERRAIN_TAG,
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_DIFFUSE]))))
-		return E_FAIL;
-
-	/* For.Com_Mask*/ 
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, TEX_TERRAIN_MASK_TAG,
-		TEXT("Com_Mask"), reinterpret_cast<CComponent**>(&m_pTextureCom[TYPE_MASK]))))
-		return E_FAIL;
-
-	/* For.Com_Navigation*/
-	if (FAILED(Add_Component(LEVEL_GAMEPLAY, COM_NAVIGATION_TAG,
-		TEXT("Com_Navigation"), reinterpret_cast<CComponent**>(&m_pNavigationCom))))
-		return E_FAIL;
-	
+	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CVIBuffer_Terrain>(strTerrainTag, &m_pVIBufferCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(TEX_LANDSCAPE_TAG, &m_pTextureCom))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom))) return E_FAIL;
 
 	return S_OK;
 }
@@ -145,11 +132,12 @@ void CTerrain::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < TYPE_END; i++)
+	/*for (_uint i = 0; i < TYPE_END; i++)
 	{
 		Safe_Release(m_pTextureCom[i]);
-	}
+	}*/
 
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pShaderCom);

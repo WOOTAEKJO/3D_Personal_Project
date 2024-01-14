@@ -22,13 +22,14 @@ HRESULT CDynamicCamera::Initialize(void* pArg)
 	CDynamicCamera::DYNAMICCAMERADESC DynamicCameraDesc;
 
 	DynamicCameraDesc.fMouseSensitivity = 0.1f;
-	DynamicCameraDesc.vEye = _float4(0.f, 20.f, -15.f, 1.f);
+	DynamicCameraDesc.vEye = _float4(0.f, 5.f, -3.f, 1.f);
+	//DynamicCameraDesc.vEye = _float4(44.f, 12.f, 33.f, 1.f);
 	DynamicCameraDesc.vAte = _float4(0.f, 0.f, 0.f, 1.f);
 	DynamicCameraDesc.fFovy = XMConvertToRadians(60.f);
 	DynamicCameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
 	DynamicCameraDesc.fNear = 0.1f;
 	DynamicCameraDesc.fFar = 1000.f;
-	DynamicCameraDesc.fSpeedPerSec = 30.f;
+	DynamicCameraDesc.fSpeedPerSec = 5.f;
 	DynamicCameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
 	if (FAILED(__super::Initialize(&DynamicCameraDesc)))

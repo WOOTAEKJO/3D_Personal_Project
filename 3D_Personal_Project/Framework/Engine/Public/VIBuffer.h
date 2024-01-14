@@ -27,6 +27,14 @@ public:
 	virtual HRESULT	Set_Buffer(const _char* strPath);
 	virtual HRESULT	Init_Buffer(CMeshData::MESHDATADESC tMeshData);
 
+public:
+	ID3D11Buffer* Get_VertexBuffer() { return m_pVB; }
+	ID3D11Buffer* Get_IndexBuffer() { return m_pIB; }
+	_uint		Get_VertexStride() { return m_iVertexStride; }
+	DXGI_FORMAT	Get_IndexFormat() { return m_eIndexForMat; }
+	D3D_PRIMITIVE_TOPOLOGY	Get_Topology() { return m_eTopology; }
+	_uint		Get_IndexNum() { return m_iIndexNum; }
+
 protected:
 	ID3D11Buffer*	m_pVB = { nullptr };	// 버텍스 버퍼를 저장하는 변수
 	ID3D11Buffer*	m_pIB = { nullptr };	// 인덱스 버퍼를 저장하는 변수

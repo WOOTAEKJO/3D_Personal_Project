@@ -54,6 +54,7 @@ public:
 	virtual	void	Set_Variable(void* pArg) = 0;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) = 0;
 	virtual	void	Demo_Picked() = 0;
+	virtual	string	Get_Path() = 0;
 	virtual	HRESULT	Save_Data(const _char* strFilePath) { return S_OK; }
 	virtual	HRESULT	Load_Data(const _char* strFilePath) { return S_OK; }
 public:

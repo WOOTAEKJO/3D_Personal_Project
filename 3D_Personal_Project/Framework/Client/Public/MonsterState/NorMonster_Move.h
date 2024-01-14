@@ -22,6 +22,7 @@ public:
 	virtual void	State_Exit() override;
 
 private:
+	_bool			m_bMove = { false };
 	
 public:
 	static	CNorMonster_Move* Create(CGameObject* pGameObject);

@@ -40,7 +40,7 @@ HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _f
 	return S_OK;
 }
 
-_bool CBounding_Sphere::Collision(CCollider* pTargetCollider)
+_bool CBounding_Sphere::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, _float* fPushedDist)
 {
 	//CBounding* pBounding = pTargetCollider->Get_Bounding();
 
@@ -56,7 +56,27 @@ _bool CBounding_Sphere::Collision(CCollider* pTargetCollider)
 			return m_pSphere->Intersects(*dynamic_cast<CBounding_OBB*>(iter)->Get_BoundingOBB());
 			break;
 		case TYPE::TYPE_SPHERE:
-			return m_pSphere->Intersects(*dynamic_cast<CBounding_Sphere*>(iter)->Get_BoundingSphere());
+			//return ;
+			
+			BoundingSphere* pShpere = dynamic_cast<CBounding_Sphere*>(iter)->Get_BoundingSphere();
+			if (m_pSphere->Intersects(*pShpere))
+			{
+				_float fLength = 0.f;
+				_vector vTmp;
+				_float3 vDir;
+				vTmp = XMLoadFloat3(&pShpere->Center) - XMLoadFloat3(&m_pSphere->Center);
+
+				fLength = (pShpere->Radius + m_pSphere->Radius) - XMVectorGetX(XMVector3Length(vTmp));
+				*fPushedDist = fLength;
+				pTargetCollider->Set_PushedDist(fLength);
+
+				XMStoreFloat3(&vDir, XMVector3Normalize(vTmp) * -1.f);
+				*vCollisionDir = vDir;
+				XMStoreFloat3(&vDir, XMVector3Normalize(vTmp));
+				pTargetCollider->Set_CollisionDir(vDir);
+
+				return true;
+			}
 			break;
 		}
 	}

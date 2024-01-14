@@ -66,20 +66,11 @@ HRESULT CCharacter::Render()
 	}
 
 #ifdef _DEBUG
-	m_pNavigationCom->Render();
+	//m_pNavigationCom->Render();
 	m_pColliderCom->Render();
 #endif
 
 	return S_OK;
-}
-
-void CCharacter::Reset_Physics_Desc()
-{
-	m_Physics_Desc.bGround = true;
-	m_Physics_Desc.bJump = false;
-	m_Physics_Desc.bDoubleJump = false;
-	m_Physics_Desc.bFall = false;
-	m_Physics_Desc.bLanding = false;
 }
 
 void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
@@ -91,7 +82,7 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 	if (iAnimIndex == -1)
 		return;
 
-	m_eCurrentTypeAnimIndex = iAnimIndex;
+	m_eCurrentTypeAnimIndex = iAnimTag;
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
 }
 
@@ -118,7 +109,7 @@ HRESULT CCharacter::Ready_Component()
 
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
-	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
@@ -159,6 +150,21 @@ _int CCharacter::Find_TypeAnimIndex(_uint iAnimTag)
 		return -1;
 
 	return iter->second;
+}
+
+void CCharacter::Pushed()
+{
+	_vector vDir = XMLoadFloat3(&m_pColliderCom->Get_CollisionDir());
+	_float fDist = m_pColliderCom->Get_PushedDist();
+
+	vDir.m128_f32[1] = 0.f;
+
+	m_pRigidBodyCom->Force(vDir, fDist * 10.f, CRigidBody::TYPE::TYPE_ACCEL);
+}
+
+void CCharacter::Pushed_Reset()
+{
+	m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_ACCEL);
 }
 
 void CCharacter::Free()

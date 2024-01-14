@@ -17,7 +17,10 @@ HRESULT CNorMonster_Delay::Initialize(CGameObject* pGameObject)
 
 void CNorMonster_Delay::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(8);
+	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
+		m_pOwnerModel->Set_AnimationIndex(8);
+	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
+		m_pOwnerModel->Set_AnimationIndex(3);
 }
 
 _uint CNorMonster_Delay::State_Priority_Tick(_float fTimeDelta)

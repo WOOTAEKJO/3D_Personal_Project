@@ -20,7 +20,7 @@ public:
 	HRESULT	Initialize(BOUNDING_DESC* Bounding_Desc);
 	virtual	void	Update(_fmatrix	matWorld) override;
 	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
-	virtual _bool	Collision(class CCollider* pTargetCollider) override;
+	virtual _bool	Collision(class CCollider* pTargetCollider, _float3* vCollisionDir, _float* fPushedDist) override;
 
 public:
 	BoundingBox*	Get_BoundingAABB() { return m_pAABB; }

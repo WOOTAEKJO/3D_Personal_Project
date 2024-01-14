@@ -6,6 +6,7 @@
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 #include "Level_Tool.h"
+#include "Level_Boss1.h"
 
 
 CLevel_Loading::CLevel_Loading(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -28,6 +29,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
+	m_pGameInstance->Collision_Clear();
+
 	return S_OK;
 }
 
@@ -42,6 +45,8 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 		{
 			CLevel*		pNewLevel = { nullptr };
 
+			
+
 			switch (m_eNextLevelID)
 			{
 			case LEVEL_LOGO:
@@ -52,6 +57,9 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 				break;
 			case LEVEL_TOOL:
 				pNewLevel = CLevel_Tool::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_BOSS1:
+				pNewLevel = CLevel_Boss1::Create(m_pDevice, m_pContext);
 				break;
 			}
 

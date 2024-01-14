@@ -40,6 +40,8 @@ HRESULT CTerrain_Window::Initialize(void* pArg)
 
 	m_vecSphere.clear();
 
+	m_vecDemo = CImGuiMgr::GetInstance()->Get_ObjectDemo();
+
 	return S_OK;
 }
 
@@ -96,15 +98,21 @@ void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 	if (m_pTerrain == nullptr)
 		return;
 
-   	m_vPickPos = vPickPoint;
-
 	if (m_eCurrentMode == MODE_HEIGHT) {
+
+		m_vPickPos = vPickPoint;
 		m_pTerrain->Update_HeightMap(XMLoadFloat4(&vPickPoint), (_float)m_iHeight_Control[0], (_float)m_iHeight_Control[1], m_fSharpness);
 	}
 	else if (m_eCurrentMode == MODE_NAVIGATION)
 	{
-		if (Set_NaviPickPos()) {
-			
+		if (m_iNaviWorkType == 0)
+		{
+			m_vPickPos = vPickPoint;
+			Set_NaviPickPos();
+		}else if (m_iNaviWorkType == 2)
+		{
+			m_vPickPos = vPickPoint;
+			Add_Neighbor();
 		}
 	}
 }
@@ -112,19 +120,53 @@ void CTerrain_Window::Terrain_Picked(_float4 vPickPoint)
 void CTerrain_Window::Demo_Picked()
 {
 	if (m_eCurrentMode == MODE_NAVIGATION) {
-		if (m_vecSphere.empty())
-			return;
 
-		if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+		if (m_iNaviWorkType == 1)
+		{
+			if (m_pGameInstance->Key_Pressing(DIK_SPACE)) {
+				if (m_pGameInstance->Mouse_Down(DIM_RB)) {
 
+					_uint iSize = m_vecDemo->size();
+					_float fMinDist = 1000.f;
+					_float fDist = 0.f;
+					_float4 vPos = {};
+					for (size_t i = 0; i < iSize; i++)
+					{
+  						if ((*m_vecDemo)[i]->Get_Picked_Dist(&vPos, &fDist))
+						{
+							if (fMinDist > fDist)
+							{
+								fMinDist = fDist;
+								m_vPickPos = vPos;
+							}
+						}
+					}
 
-			Picked_Navigation();
+					Set_NaviPickPos();
+				}
+			}
+		}
+		else {
+			if (m_vecSphere.empty())
+				return;
 
-			
+			if (m_pGameInstance->Mouse_Down(DIM_RB)) {
+
+				Picked_Navigation();
+			}
+
+			Fix_Navigation();
 		}
 
-		Fix_Navigation();
 	}
+}
+
+string CTerrain_Window::Get_Path()
+{
+	if (m_eCurrentMode == TERRAINMODE::MODE_HEIGHT)
+		return "../Bin/Data/Terrain/";
+	else if(m_eCurrentMode == TERRAINMODE::MODE_NAVIGATION)
+		return "../Bin/Data/Terrain/Navigation/";
 }
 
 HRESULT CTerrain_Window::Save_Data(const _char* strFilePath)
@@ -190,7 +232,7 @@ HRESULT CTerrain_Window::Load_Data(const _char* strFilePath)
 
 				if (bCheck)
 				{
-					BoundingSphere* pSphere = new BoundingSphere(vecCells[i]->Get_Point((CCell::POINTS)j), 0.5f);
+					BoundingSphere* pSphere = new BoundingSphere(vecCells[i]->Get_Point((CCell::POINTS)j), 0.1f);
 					NaviCellDesc.iSphereIndex[j] = m_vecSphere.size();
 					m_vecSphere.push_back(pSphere);
 				}
@@ -222,6 +264,11 @@ void CTerrain_Window::HeightMap()
 	ImGui::SliderInt("Height", &m_iHeight_Control[1], 0, 30);
 	ImGui::SliderFloat("Sharpness", &m_fSharpness, 0.f, 1.f);
 
+	if (ImGui::Checkbox("ADD", &m_bAdd))
+	{
+		m_pTerrain->Set_Add(m_bAdd);
+	}
+
 	ImGui::Checkbox("WireFrame", &m_bWireFrame);
 
 	ImGui::Text(to_string(m_vPickPos.x).c_str());
@@ -229,7 +276,7 @@ void CTerrain_Window::HeightMap()
 
 void CTerrain_Window::Navigation()
 {
-	ImVec2 vSize = ImVec2(250, 100);
+	ImVec2 vSize = ImVec2(200, 100);
 	ImGui::BeginListBox("Sphere", vSize);
 	_uint iSize = m_vecSphere.size();
 	for (_uint i = 0; i < iSize; i++)
@@ -258,23 +305,98 @@ void CTerrain_Window::Navigation()
 	ImGui::SameLine();
 	ImGui::RadioButton("Cell", &m_iCurrentNaviModeRadioButton, 2);
 
+	ImGui::RadioButton("Terrain", &m_iNaviWorkType, 0);
+	ImGui::SameLine();
+	ImGui::RadioButton("Mesh", &m_iNaviWorkType, 1);
+	ImGui::SameLine();
+	ImGui::RadioButton("Add_Neighbor", &m_iNaviWorkType, 2);
+
+
 	if (!m_vecCell.empty())
 	{
 		string strNaviInd = "NaviIndex : " + to_string(m_iCurrentCellIndex);
 		ImGui::Text(strNaviInd.c_str());
+
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[0])+ " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[1]) + " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_vecCell[m_iCurrentCellIndex].iSphereIndex[2]) + " ").c_str());
+
+		ImGui::Text((to_string(m_pTerrain->Get_Navigation_Cells()[m_iCurrentCellIndex]
+			->Get_NeighborIndex((CCell::LINES)0))+ " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_pTerrain->Get_Navigation_Cells()[m_iCurrentCellIndex]
+			->Get_NeighborIndex((CCell::LINES)1)) + " ").c_str());
+		ImGui::SameLine();
+		ImGui::Text((to_string(m_pTerrain->Get_Navigation_Cells()[m_iCurrentCellIndex]
+			->Get_NeighborIndex((CCell::LINES)2)) + " ").c_str());
+
+		ImGui::RadioButton("Normal", &m_iCellType, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Jump", &m_iCellType, 1);
+
+		if (m_iCellType == 1)
+		{
+			Arrow_Button("Interval", 0.1f, &m_fJumpCellHeight);
+		}
 	}
 
-	if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
+	ImGui::Checkbox("Trans", &m_bNeviPosTrans);
+	if(m_bNeviPosTrans){
+		if (!m_vecSphere.empty() && m_vecSphere[m_iCurrentSphereIndex] != nullptr) {
 
-		__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
+			__super::ImGuizmo(ImGuizmo::MODE::WORLD, &m_vecSphere[m_iCurrentSphereIndex]->Center);
+		}
 	}
 
-	if (ImGui::Button("All_Delete"))
+	if (m_iNaviWorkType == 2)
+	{
+		for (_uint i = 0; i < 2; i++)
+		{
+			string strTag = i == 0 ? "SourCell :" : "DestCell :";
+
+			ImGui::Text((strTag + to_string(m_iSelectedCellIdx[i])).c_str());
+
+			ImGui::Text(("Sphere1 :" + to_string(m_eSelectedSphere[0 + (i * 2)].vPosition.x) + " " +
+				to_string(m_eSelectedSphere[0 + (i * 2)].vPosition.y) + 
+				" " + to_string(m_eSelectedSphere[0 + (i * 2)].vPosition.z)).c_str());
+			ImGui::Text(("Sphere2 :" + to_string(m_eSelectedSphere[1 + (i * 2)].vPosition.x) + " " +
+				to_string(m_eSelectedSphere[1 + (i * 2)].vPosition.y) + 
+				" " + to_string(m_eSelectedSphere[1 + (i * 2)].vPosition.z)).c_str());
+		}
+
+		if (m_iSelectedCellIdx[0] != -1 && m_eSelectedSphere[0].bCheck && m_eSelectedSphere[1].bCheck &&
+			m_iSelectedCellIdx[1] != -1 && m_eSelectedSphere[2].bCheck && m_eSelectedSphere[3].bCheck)
+		{
+			_float3 pSour[2] = { m_eSelectedSphere[0].vPosition, m_eSelectedSphere[1].vPosition };
+			_float3 pDest[2] = { m_eSelectedSphere[2].vPosition, m_eSelectedSphere[3].vPosition };
+
+			m_pTerrain->Add_Neighbor(m_iSelectedCellIdx[0], pSour, m_iSelectedCellIdx[1], pDest);
+
+			for (_uint i = 0; i < 2; i++)
+			{
+				m_iSelectedCellIdx[i] = -1;
+				m_eSelectedSphere[0 + (i * 2)].bCheck = false;
+				m_eSelectedSphere[0 + (i * 2)].vPosition = _float3(0.f, 0.f, 0.f);
+				m_eSelectedSphere[1 + (i * 2)].bCheck = false;
+				m_eSelectedSphere[1 + (i * 2)].vPosition = _float3(0.f, 0.f, 0.f);
+			}
+		}
+	}
+
+	/*if (ImGui::Button("All_Delete"))
 	{
 		All_Delete_Cell();
-	}
+	}*/
 
 	if (m_iCurrentNaviModeRadioButton == 2) {
+		
+		if (ImGui::Button("Change Cell Type"))
+		{
+			m_pTerrain->Set_Cell_Type(m_iCellType, m_iCurrentCellIndex);
+		}
+
 		if (ImGui::Button("Selected_Delete"))
 		{
 			Selected_Delete_Cell();
@@ -291,6 +413,16 @@ void CTerrain_Window::Navigation_Update()
 	
 		Calculate_Cell();
 
+		for (_uint i = 0; i < 3; i++)
+		{
+			if (m_iCalculate[i] == -1)
+			{
+				Reset_NaviPickPos();
+				MSG_BOX("Cell Create Failed");
+				return;
+			}
+		}
+
 		_float3 vPoints[3] = { m_vNaviPos[m_iCalculate[0]].vPosition,
 			m_vNaviPos[m_iCalculate[1]].vPosition,m_vNaviPos[m_iCalculate[2]].vPosition };
 
@@ -300,7 +432,7 @@ void CTerrain_Window::Navigation_Update()
 		NaviCellDesc.iSphereIndex[1] = m_vNaviPos[m_iCalculate[1]].iSphereIndex;
 		NaviCellDesc.iSphereIndex[2] = m_vNaviPos[m_iCalculate[2]].iSphereIndex;
 
-        m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex);
+        m_pTerrain->Add_Navigation_Cell(vPoints, &NaviCellDesc.iCellIndex,m_iCellType);
 		m_vecCell.push_back(NaviCellDesc);
 		Reset_NaviPickPos();
 		 
@@ -320,14 +452,36 @@ _bool CTerrain_Window::Set_NaviPickPos()
 				_float fDist = 0.f;
 				if (m_pGameInstance->Intersect_Sphere(m_vecSphere[j], &fDist))
 				{
-					m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
-					m_vNaviPos[i].iSphereIndex = j;
-					return false;
+					if (m_iCellType == 0) // 셀이 Normal 타입일 때
+					{
+						m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
+						m_vNaviPos[i].iSphereIndex = j;
+						return false;
+					}
+					else if (m_iCellType == 1) // 셀이 Jump 타입일 때
+					{
+						if (m_fJumpCellHeight == 0.f)
+						{
+							m_vNaviPos[i].vPosition = m_vecSphere[j]->Center;
+							m_vNaviPos[i].iSphereIndex = j;
+							return false;
+						}
+						else
+						{
+							m_vNaviPos[i].vPosition = _float3(m_vecSphere[j]->Center.x,
+								m_vecSphere[j]->Center.y + 0.001f + m_fJumpCellHeight,
+								m_vecSphere[j]->Center.z);
+							BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.1f);
+							m_vNaviPos[i].iSphereIndex = m_vecSphere.size();
+							m_vecSphere.push_back(pSphere);
+							return false;
+						}
+					}
 				}
 			}
 
 			m_vNaviPos[i].vPosition = _float3(m_vPickPos.x, m_vPickPos.y + 0.001f, m_vPickPos.z);
-     		BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.5f);
+     		BoundingSphere* pSphere = new BoundingSphere(m_vNaviPos[i].vPosition, 0.1f);
 			m_vNaviPos[i].iSphereIndex = m_vecSphere.size();
 			m_vecSphere.push_back(pSphere);
 			return false;
@@ -344,6 +498,7 @@ void CTerrain_Window::Reset_NaviPickPos()
 		m_vNaviPos[i].bCheck = false;
 		m_vNaviPos[i].vPosition = _float3(0.f,0.f,0.f);
 		m_vNaviPos[i].iSphereIndex = 0;
+		m_iCalculate[i] = -1;
 	}
 }
 
@@ -378,39 +533,21 @@ void CTerrain_Window::Calculate_Cell()
 
 	for (_uint i = 0; i < 3; i++) {
 		
-		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[c].vPosition.z - m_vNaviPos[a].vPosition.z)
+		_float iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[c].vPosition.z - m_vNaviPos[a].vPosition.z)
 			- (m_vNaviPos[c].vPosition.x - m_vNaviPos[a].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[a].vPosition.z);
 
-		if (0 > iResult)
+		if (0.f > iResult)
 		{
 			m_iCalculate[0] = a;
 			m_iCalculate[1] = b;
 			m_iCalculate[2] = c;
 
 			return;
-		}
-
-		a -= 1;
-		if (a < 0)
-			a = 2;
-		b -= 1;
-		if (b < 0)
-			b = 2;
-		c -= 1;
-		if (c < 0)
-			c = 2;
-	}
-
-	for (_uint i = 0; i < 3; i++) {
-
-		_int iResult = (m_vNaviPos[b].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[a].vPosition.z - m_vNaviPos[c].vPosition.z)
-			- (m_vNaviPos[a].vPosition.x - m_vNaviPos[c].vPosition.x) * (m_vNaviPos[b].vPosition.z - m_vNaviPos[c].vPosition.z);
-
-		if (0 > iResult)
+		}else if(0.f < iResult)
 		{
-			m_iCalculate[0] = c;
-			m_iCalculate[1] = b;
-			m_iCalculate[2] = a;
+			m_iCalculate[0] = a;
+			m_iCalculate[1] = c;
+			m_iCalculate[2] = b;
 
 			return;
 		}
@@ -426,7 +563,6 @@ void CTerrain_Window::Calculate_Cell()
 			c = 2;
 	}
 
-	
 }
 
 void CTerrain_Window::Fix_Navigation()
@@ -499,6 +635,8 @@ void CTerrain_Window::All_Delete_Cell()
 	for (auto& iter : m_vecSphere)
 		Safe_Delete(iter);
 	m_vecSphere.clear();
+
+	m_iCurrentCellIndex = 0;
 }
 
 void CTerrain_Window::Create_HeightMap()
@@ -533,6 +671,20 @@ void CTerrain_Window::Selected_Delete_Cell()
 	SphereIndex[1].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[1];
 	SphereIndex[2].iSphereIndex = m_vecCell[m_iCurrentCellIndex].iSphereIndex[2];
 
+	for (_uint i = 0; i < 3; ++i)
+	{
+		for (_uint j = i + 1; j < 3; ++j)
+		{
+			if (SphereIndex[i].iSphereIndex < SphereIndex[j].iSphereIndex)
+			{
+				_uint iTmp;
+				iTmp = SphereIndex[j].iSphereIndex;
+				SphereIndex[j].iSphereIndex = SphereIndex[i].iSphereIndex;
+				SphereIndex[i].iSphereIndex = iTmp;
+			}
+		}
+	}
+
 	m_vecCell.erase(m_vecCell.begin() + m_iCurrentCellIndex);
 
 	for (auto& iter : m_vecCell)
@@ -557,9 +709,6 @@ void CTerrain_Window::Selected_Delete_Cell()
 	{
 		if (!SphereIndex[i].bCheck)
 		{
-			Safe_Delete(m_vecSphere[SphereIndex[i].iSphereIndex]);
-			m_vecSphere.erase(m_vecSphere.begin() + SphereIndex[i].iSphereIndex);
-
 			for (auto& iter : m_vecCell)
 			{
 				for (_uint j = 0; j < 3; j++)
@@ -570,8 +719,60 @@ void CTerrain_Window::Selected_Delete_Cell()
 					}
 				}
 			}
+
+			_uint iIndx = SphereIndex[i].iSphereIndex;
+			if ((iIndx >= m_vecSphere.size()))
+			{
+				iIndx -= 1;
+			}
+
+			Safe_Delete(m_vecSphere[iIndx]);
+			m_vecSphere.erase(m_vecSphere.begin() + iIndx);
 		}
 	}
+	if(m_iCurrentCellIndex != 0)
+		m_iCurrentCellIndex -= 1;
+}
+
+void CTerrain_Window::Add_Neighbor()
+{
+
+	_uint iIdnx = 0;
+
+	if (m_iSelectedCellIdx[0] != -1 && m_eSelectedSphere[0].bCheck && m_eSelectedSphere[1].bCheck)
+		++iIdnx;
+
+	if(m_iSelectedCellIdx[iIdnx] == -1)
+		m_iSelectedCellIdx[iIdnx] = m_iCurrentCellIndex;
+	else {
+		for (_uint i = iIdnx * 2; i < i + 2; i++)
+		{
+			if (!m_eSelectedSphere[i].bCheck)
+			{
+				_float fDist = 0.f;
+
+				for (auto& iter : m_vecSphere)
+				{
+					if (m_pGameInstance->Intersect_Sphere(iter, &fDist))
+					{
+						for (_uint j = 0; j < 3; j++)
+						{
+							if (XMVector3Equal(XMLoadFloat3(&iter->Center),
+								XMLoadFloat3(&m_pTerrain->Get_Navigation_Cells()[m_iSelectedCellIdx[iIdnx]]
+									->Get_Point((CCell::POINTS)j))))
+							{
+								m_eSelectedSphere[i].vPosition = iter->Center;
+								m_eSelectedSphere[i].bCheck = true;
+								return;
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
+
 }
 
 CTerrain_Window* CTerrain_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

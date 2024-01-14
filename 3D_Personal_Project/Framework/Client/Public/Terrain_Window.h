@@ -41,6 +41,7 @@ public:
 	virtual	void	Set_Variable(void* pArg) override;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
 	virtual	void	Demo_Picked() override;
+	virtual	string	Get_Path() override;
 	virtual	HRESULT	Save_Data(const _char* strFilePath) override;
 	virtual	HRESULT	Load_Data(const _char* strFilePath) override;
 
@@ -49,6 +50,7 @@ private: /* For. Terrain*/ // 여기서 조정해주는 값
 	_int	m_iHeight_Control[2] = {};
 	_float	m_fSharpness = { 0.f };
 	_bool	m_bWireFrame = false;
+	_bool	m_bAdd = false;
 
 private: // 외부에서 받아 와야 하는 값
 	_float4 m_vPickPos = {};
@@ -68,9 +70,22 @@ private: /* For. Navigation*/
 	_uint									m_iCurrentSphereIndex = { 0 };
 	_uint									m_iCurrentCellIndex = { 0 };
 
-	_int									m_iCalculate[3];
+	_int									m_iCalculate[3] = {-1,-1,-1};
 private:
 	_int									m_iCurrentNaviModeRadioButton = { 0 };
+
+private:
+	_bool									m_bNeviPosTrans = { false };
+	_int									m_iCellType = { 0 };
+	_int									m_iNaviWorkType = { 0 };
+	_float									m_fJumpCellHeight = { 0.1f };
+
+private:
+	vector<CObjectMesh_Demo*>*				m_vecDemo;
+
+private:
+	_int									m_iSelectedCellIdx[2] = { -1,-1 };
+	NAVIDEMO_DESC							m_eSelectedSphere[4] = {};
 
 private:
 	void	HeightMap();
@@ -92,6 +107,8 @@ private:
 
 	void	All_Delete_Cell();
 	void	Selected_Delete_Cell();
+
+	void	Add_Neighbor();
 
 public:
 	static	CTerrain_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, void* pArg);

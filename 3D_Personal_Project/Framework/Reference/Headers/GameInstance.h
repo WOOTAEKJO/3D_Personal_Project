@@ -36,6 +36,8 @@ public: /* For.Graphic_Device */
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();	
 	HRESULT Present();
+	ID3D11RenderTargetView* Get_BackBuffer();
+	ID3D11DepthStencilView* Get_DSV();
 
 public: /* For.Input_Device*/
 	_byte   Get_DIKeyState(_ubyte byKeyID);
@@ -56,6 +58,8 @@ public: /* For.Timer_Manager */
 
 public: /* For.Level_Manager */
 	HRESULT Open_Level(_uint iCurrentLevelIndex,class CLevel* pNewLevel);
+	void	Set_CurNavigationTag(const wstring & strNavigationTag);
+	wstring	Get_CurNavigationTag();
 
 public: /* For.Object_Manager */
 	HRESULT	Add_ProtoType(const wstring & strProtoTypeTag, class CGameObject* pGameObeject);
@@ -107,6 +111,13 @@ public: /* For.Component_Manager*/
 				Load_Models_Path(strProtoTypeTag), matPivot));
 	}
 
+	HRESULT	Add_ModelInstancing_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CModel_Instancing::Create(m_pDevice, m_pContext,
+				Load_Models_Path(strProtoTypeTag), matPivot));
+	}
+
 	HRESULT	Add_ANIM_Model_ProtoType(const wstring& strProtoTypeTag, _fmatrix matPivot)
 	{
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
@@ -129,6 +140,8 @@ public: /* For.Component_Manager*/
 
 	HRESULT	Add_Navigation_ProtoType_File(const wstring& strProtoTypeTag)
 	{
+		Set_CurNavigationTag(strProtoTypeTag);
+
 		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
 			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_LOAD,
 				Load_Data_Path(strProtoTypeTag).c_str()));
@@ -188,12 +201,25 @@ public: /* For. File_Manager*/
 public: /* For. Collider_Manager*/
 	HRESULT	Add_Collision(_uint iColLayer, CCollider* pCollider);
 	HRESULT	Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLayer);
+	void	Collision_Clear();
 
 public: /* For. Font_Manager*/
 	HRESULT	Add_Font(_uint iFontTag, const wstring& strFontFilePath);
 	HRESULT	Render(_uint iFontTag, const wstring& strText, _float2 vPosition, 
 		_fvector vColor = XMVectorSet(1.f,1.f,1.f,1.f),
 		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
+
+public: /* For. CRednerTarget_Manager*/
+	HRESULT	Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
+	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
+	HRESULT	Begin_MRT(const wstring& strMRTTag);
+	HRESULT	End_MRT();
+
+#ifdef _DEBUG
+	HRESULT	Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	HRESULT	Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer);
+
+#endif
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -210,6 +236,7 @@ private:
 	class CFile_Manager*			m_pFile_Manager = { nullptr };
 	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	class CFont_Manager*			m_pFont_Manager = { nullptr };
+	class CRenderTarget_Manager*	m_pRenderTarget_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

@@ -37,6 +37,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	m_eMonsterType = CMonster::MONSTER_TYPE::SPOOKETON;
+
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
@@ -55,8 +57,15 @@ HRESULT CSpooketon::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;
 
-	m_Status_Desc.iMaxHP = 10;
-	m_Status_Desc.iCurHP = 10;
+	m_Status_Desc.iMaxHP = 5;
+	m_Status_Desc.iCurHP = 5;
+
+	m_Status_Desc.fDetection_Range = 5.f;
+	m_Status_Desc.fAttack_Range = 2.f * 0.16f;
+
+	m_Physics_Desc.fForwardSpeed = 0.5f;
+
+	m_bActivate = false;
 
 	return S_OK;
 }
@@ -110,10 +119,6 @@ void CSpooketon::Load_FromJson(const json& In_Json)
 
 void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	/*if (iColID == m_pWeaponColliderCom->Get_Collider_ID())
-	{
-		m_pWeaponColliderCom->Set_UseCol(false);
-	}*/
 
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
@@ -127,15 +132,22 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			m_Status_Desc.iCurHP -= 1;
 		}
 	}
+
+	
 }
 
 void CSpooketon::OnCollisionStay(CCollider* pCollider, _uint iColID)
 {
-
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER ||
+		pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
+	{
+		Pushed();
+	}
 }
 
 void CSpooketon::OnCollisionExit(CCollider* pCollider, _uint iColID)
 {
+	Pushed_Reset();
 }
 
 HRESULT CSpooketon::Bind_ShaderResources()
@@ -151,15 +163,22 @@ HRESULT CSpooketon::Ready_Component()
 	if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;
 
-	CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
+	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
 	AABB_Desc.pOnwer = this;
 	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
 	AABB_Desc.bUseCol = true;
 	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
 	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;
-
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.bUseCol = true;
+	Sphere_Desc.fRadius = 0.7f;
+	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
+
+	Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
 	Sphere_Desc.fRadius = 0.6f;
@@ -171,7 +190,7 @@ HRESULT CSpooketon::Ready_Component()
 
 HRESULT CSpooketon::Ready_State()
 {
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
+	/*if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CNorMonster_Dead::Create(this)))) return E_FAIL;
@@ -179,6 +198,9 @@ HRESULT CSpooketon::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::HITED, CNorMonster_Hited::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+		return E_FAIL;*/
+
+	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
 
 	return S_OK;

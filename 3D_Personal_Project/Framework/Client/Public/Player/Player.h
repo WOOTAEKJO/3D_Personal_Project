@@ -41,6 +41,7 @@ public:
 	CCollider* Get_WeaponCollider();
 	_uint		Get_NextAttackID() { return m_iAttackID; }
 	_int	Get_CurrentState();
+
 public:
 	void	Animation_By_Type(STATE eType);
 

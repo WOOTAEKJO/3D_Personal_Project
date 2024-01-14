@@ -101,6 +101,11 @@ void CAnimation_Window::Demo_Picked()
 {
 }
 
+string CAnimation_Window::Get_Path()
+{
+	return "../Bin/Data/Animation/";
+}
+
 HRESULT CAnimation_Window::Save_Data(const _char* strFilePath)
 {
 	json jSave;

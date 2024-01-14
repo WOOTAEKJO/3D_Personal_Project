@@ -9,11 +9,24 @@ class CAnimMesh_Demo;
 class CObject_Window final : public CImGui_Window
 {
 public:
-	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_END};
+	enum TYPE {TYPE_NONANIM, TYPE_ANIM,TYPE_INSTANCING, TYPE_END};
 
 	typedef struct tagObject_Window_Desc
 	{
 	}OBJECTWINDOWDESC;
+
+	typedef struct tagObject_Demo_Desc
+	{
+		vector<wstring>					vecModelTag;
+		wstring							strPickModelTag;
+
+		vector<CObjectMesh_Demo*>		vecDemo;
+		vector<CAnimMesh_Demo*>			vecAnimDemo;
+		_uint							iCurrentIndex = { 0 };
+		string							strCurrentTag;
+
+	}OBJECTDEMO_DESC;
+
 private:
 	CObject_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual	~CObject_Window() = default;
@@ -25,12 +38,16 @@ public:
 	virtual	void	Set_Variable(void* pArg) override;
 	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
 	virtual	void	Demo_Picked() override;
+	virtual	string	Get_Path() override;
 	virtual	HRESULT	Save_Data(const _char* strFilePath) override;
 	virtual	HRESULT	Load_Data(const _char* strFilePath) override;
 
 public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
+
+public:
+	vector<CObjectMesh_Demo*>* Get_ObjectDemo() { return &m_vecDemo; }
 
 private:
 	vector<wstring>					m_vecModelTag;
@@ -39,6 +56,12 @@ private:
 	vector<CObjectMesh_Demo*>		m_vecDemo;
 	_uint							m_iCurrentDemoIndex = { 0 };
 	string							m_strCurrentDemoTag;
+
+	_int							m_iNaviIndxRadiButton = { -1 };
+
+private:
+	OBJECTDEMO_DESC					m_eInstancingModel;
+	OBJECTDEMO_DESC					m_eTMP;
 
 private:
 	vector<wstring>					m_vecAnimModelTag;
@@ -58,9 +81,13 @@ private: /* For.RadioButton_Transform*/
 private:
 	void	ObjectMesh();
 	void	AnimObjectMesh();
+	void	InstancingMesh();
 	void	Create_Model(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
 	void	Create_AnimModel(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_TMP(const wstring& strLayerTag, const wstring& strModelTag, _float4 vPickPos);
+	void	Create_Instancing();
 	void	NotGuizmo();
+	void	TransformGuizmo();
 
 public:
 	static	CObject_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);

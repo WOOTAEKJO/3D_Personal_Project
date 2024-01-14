@@ -9,6 +9,7 @@
 #include "SaveLoad_Manager.h"
 #include "Collider_Manager.h"
 #include "Font_Manager.h"
+#include "RenderTarget_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -42,6 +43,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 오브젝트 매니저 사용 준비*/
 	m_pObject_Manager = CObject_Manager::Create(iNumLevels);
 	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	/* 렌더 타겟 매니저 사용 준비*/
+	m_pRenderTarget_Manager = CRenderTarget_Manager::Create(*ppDevice, *ppContext);
+	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
 	/* 렌더러 사용 준비*/
@@ -142,7 +148,7 @@ void CGameInstance::Clear(_uint iLevelIndex)
 
 	m_pComponent_Manager->Clear(iLevelIndex);
 	m_pObject_Manager->Clear(iLevelIndex);
-
+	//m_pCollider_Manager->Clear();
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)
@@ -164,6 +170,22 @@ HRESULT CGameInstance::Present()
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 	return m_pGraphic_Device->Present();
+}
+
+ID3D11RenderTargetView* CGameInstance::Get_BackBuffer()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_BackBuffer();
+}
+
+ID3D11DepthStencilView* CGameInstance::Get_DSV()
+{
+	if (nullptr == m_pGraphic_Device)
+		return nullptr;
+
+	return m_pGraphic_Device->Get_DSV();
 }
 
 _byte CGameInstance::Get_DIKeyState(_ubyte byKeyID)
@@ -260,6 +282,22 @@ HRESULT CGameInstance::Open_Level(_uint iCurrentLevelIndex, CLevel * pNewLevel)
 		return E_FAIL;
 
 	return m_pLevel_Manager->Open_Level(iCurrentLevelIndex,pNewLevel);
+}
+
+void CGameInstance::Set_CurNavigationTag(const wstring& strNavigationTag)
+{
+	if (nullptr == m_pLevel_Manager)
+		return;
+
+	m_pLevel_Manager->Set_CurNavigationTag(strNavigationTag);
+}
+
+wstring CGameInstance::Get_CurNavigationTag()
+{
+	if (nullptr == m_pLevel_Manager)
+		return wstring();
+
+	return m_pLevel_Manager->Get_CurNavigationTag();
 }
 
 HRESULT CGameInstance::Add_ProtoType(const wstring& strProtoTypeTag, CGameObject* pGameObeject)
@@ -559,6 +597,14 @@ HRESULT CGameInstance::Add_Pair_Collision(_uint iSourColLayer, _uint iDestColLay
 	return m_pCollider_Manager->Add_Pair_Collision(iSourColLayer, iDestColLayer);
 }
 
+void CGameInstance::Collision_Clear()
+{
+	if (nullptr == m_pCollider_Manager)
+		return;
+
+	m_pCollider_Manager->Clear();
+}
+
 HRESULT CGameInstance::Add_Font(_uint iFontTag, const wstring& strFontFilePath)
 {
 	if (nullptr == m_pFont_Manager)
@@ -573,6 +619,54 @@ HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vP
 		return E_FAIL;
 
 	return m_pFont_Manager->Render(iFontTag, strText, vPosition, vColor, fScale, vOrigin, fRotation);
+}
+
+HRESULT CGameInstance::Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Add_RenderTarget(eType, iSizeX, iSizeY, Pixel_Format, vColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RTV_TYPE eType)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Add_MRT(strMRTTag, eType);
+}
+
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Ready_Debug(eType, fX, fY, fSizeX, fSizeY);
+}
+
+HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
 
 void CGameInstance::Release_Manager()
@@ -591,6 +685,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pLevel_Manager);
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pTimer_Manager);
+	Safe_Release(m_pRenderTarget_Manager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pGraphic_Device);

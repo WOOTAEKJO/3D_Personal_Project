@@ -27,7 +27,10 @@ HRESULT CRigidBody::Initialize(void* pArg)
 
 	m_pOwner = ((RIGIDBODY_DESC*)pArg)->pOwner;
 	m_pOwnerTransform = m_pOwner->Get_Component<CTransform>();
-	m_pOwnerNavigation = m_pOwner->Get_Component<CNavigation>();
+
+	CNavigation* pNavi = m_pOwner->Get_Component<CNavigation>();
+	if(pNavi != nullptr)
+		m_pOwnerNavigation = pNavi;
 
 	return S_OK;
 }
@@ -38,16 +41,16 @@ void CRigidBody::Priority_Tick(_float fTimeDelta)
 
 void CRigidBody::Tick(_float fTimeDelta)
 {
-	
-	if(m_bGravity)
+	if (!m_pOwnerTransform->Is_Ground())
 		Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fGravity * fTimeDelta, TYPE_VELOCITY);
 
-	XMStoreFloat3(&m_vPower[TYPE_VELOCITY], XMLoadFloat3(&m_vPower[TYPE_VELOCITY]) +
-		XMLoadFloat3(&m_vPower[TYPE_ACCEL]) * fTimeDelta);
+	/*XMStoreFloat3(&m_vPower[TYPE_VELOCITY], XMLoadFloat3(&m_vPower[TYPE_VELOCITY]) +
+		XMLoadFloat3(&m_vPower[TYPE_ACCEL]) * fTimeDelta);*/
 
-	Resistance(TYPE_VELOCITY,fTimeDelta);
+	Resistance(TYPE_VELOCITY, fTimeDelta);
 
 	Update_Transform(TYPE_VELOCITY,fTimeDelta);
+	Update_Transform(TYPE_ACCEL, fTimeDelta);
 }
 
 void CRigidBody::Late_Tick(_float fTimeDelta)
@@ -55,47 +58,16 @@ void CRigidBody::Late_Tick(_float fTimeDelta)
 	Near_Zero_Force(TYPE_VELOCITY);
 }
 
-void CRigidBody::Jump(_float fJumpPower, _float fGravityPower)
-{
-	m_bGravity = true;
-	m_fGravity = fGravityPower;
-	Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), fJumpPower,TYPE_VELOCITY);
-}
-
 _bool CRigidBody::Is_Land()
 {
-	_float3 vOnwerPos = {};
-
-	XMStoreFloat3(&vOnwerPos, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_float fHeight = m_pOwnerNavigation->Get_Cell_Height(vOnwerPos);
-
-	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] <= fHeight)
+	
+	if (m_pOwnerTransform->Is_Ground())
+	{
+		Reset_Force(TYPE_VELOCITY);
 		return true;
+	}
 
 	return false;
-}
-
-void CRigidBody::Land()
-{
-	m_bGravity = false;
-
-	Reset_Force(TYPE_VELOCITY);
-
-	_float3 vOnwerPos = {};
-
-	XMStoreFloat3(&vOnwerPos, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_float fHeight = m_pOwnerNavigation->Get_Cell_Height(vOnwerPos);
-
-	if (m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3][1] <= 
-		fHeight) {
-
-		_float4 vPos;
-		memcpy(&vPos, &m_pOwnerTransform->Get_WorldMatrix_Float4x4().m[3], sizeof(_float4));
-
-		m_pOwnerTransform->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(vPos.x, fHeight, vPos.z, vPos.w));
-	}
 }
 
 _bool CRigidBody::Is_Power_Zero(TYPE eType)
@@ -124,10 +96,42 @@ void CRigidBody::Reset_Force(TYPE eType)
 	m_vPower[eType] = _float3(0.f, 0.f, 0.f);
 }
 
+void CRigidBody::Reset_Force_Type(TYPE eType)
+{
+	switch (eType)
+	{
+	case Engine::CRigidBody::TYPE_VELOCITY:
+		m_vPower[TYPE::TYPE_VELOCITY].y = 0.f;
+		break;
+	case Engine::CRigidBody::TYPE_ACCEL:
+		m_vPower[TYPE::TYPE_VELOCITY].x = 0.f;
+		m_vPower[TYPE::TYPE_VELOCITY].z = 0.f;
+		break;
+	case Engine::CRigidBody::TYPE_ALL:
+		m_vPower[TYPE::TYPE_VELOCITY] = _float3(0.f, 0.f, 0.f);
+		break;
+	}
+}
+
+
 void CRigidBody::Update_Transform(TYPE eType, _float fTimeDelta)
 {
-	m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[eType])* fTimeDelta,
-		m_pOwnerNavigation);
+	if (m_pOwnerNavigation == nullptr)
+	{
+		m_pOwnerTransform->Translate_Simple(XMLoadFloat3(&m_vPower[eType]) * fTimeDelta);
+		/*m_pOwnerTransform->Translate_Simple(XMLoadFloat3(&m_vPower[TYPE::TYPE_VELOCITY]) * fTimeDelta);
+		m_pOwnerTransform->Translate_Simple(XMLoadFloat3(&m_vPower[TYPE::TYPE_ACCEL]) * fTimeDelta);*/
+	}
+	else
+	{
+		m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[eType]) * fTimeDelta,
+			m_pOwnerNavigation);
+		/*m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[TYPE::TYPE_VELOCITY]) * fTimeDelta,
+			m_pOwnerNavigation);
+		m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[TYPE::TYPE_ACCEL]) * fTimeDelta,
+			m_pOwnerNavigation);*/
+	}
+	
 }
 
 void CRigidBody::Resistance(TYPE eType,_float fTimeDelta)

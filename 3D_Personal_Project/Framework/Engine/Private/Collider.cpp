@@ -101,6 +101,8 @@ HRESULT CCollider::Render()
 	if (m_vecBounding.empty())
 		return E_FAIL;
 
+	m_pContext->GSSetShader(nullptr, nullptr, 0);
+
 	m_pBatch->Begin();
 	
 	m_pEffect->SetWorld(XMMatrixIdentity());
@@ -129,7 +131,7 @@ _bool CCollider::Collision(CCollider* pTargetCollider)
 
 	for (auto& iter : m_vecBounding)
 	{
-		if (iter->Collision(pTargetCollider))
+		if (iter->Collision(pTargetCollider,&m_vCollisionDir,&m_fPushedDist))
 			return true;
 	}
 

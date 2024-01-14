@@ -112,9 +112,6 @@
     <Filter Include="97. ImGui\ImGuiFileDialog">
       <UniqueIdentifier>{5ddcb7e7-5639-4bd2-b3c5-fe5a992e26d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03. Plateform">
-      <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05. Character">
       <UniqueIdentifier>{9213d9ae-3b36-4700-bead-33fd73624f7a}</UniqueIdentifier>
     </Filter>
@@ -292,6 +289,39 @@
     <Filter Include="02.GameObjects\06. Particle\01. Point">
       <UniqueIdentifier>{350ef919-b34a-49dd-a5b2-a0bf9e6c44da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\03. Platform">
+      <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\06. Fall">
+      <UniqueIdentifier>{8a25b8a5-cb57-45b2-9b05-1d68e7eb4037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02. Level_Boss1">
+      <UniqueIdentifier>{46373d3d-f409-415e-8c28-8db9a288c2e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97. Trigger">
+      <UniqueIdentifier>{1809758c-041d-4bf2-bdfc-49a990eb5301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\00. Normal">
+      <UniqueIdentifier>{c1de3519-6195-45e8-9ca4-5c1a5dd63f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\01. Instancing">
+      <UniqueIdentifier>{a85ed077-59c1-4a2d-ad0a-b89dd916dd8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\02. Trap">
+      <UniqueIdentifier>{e1127747-3cfa-46b7-a4b1-48734cd78b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet">
+      <UniqueIdentifier>{b94d8bd2-28d4-45c9-8ea4-a05fb810445f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\02. Trap\00. Col">
+      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\01. Normal">
+      <UniqueIdentifier>{746c6ea4-61de-43f2-9f80-4ad4e2801f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear">
+      <UniqueIdentifier>{ced739ab-2448-4144-968a-7dfb15716e1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -423,9 +453,6 @@
     <ClInclude Include="..\Imgui\ImGuiFileDialog\stb\stb_image_resize.h">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Plateform.h">
-      <Filter>02.GameObjects\03. Plateform</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02.GameObjects\04.Sky</Filter>
     </ClInclude>
@@ -537,6 +564,36 @@
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerState\Player_Fall.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Boss1.h">
+      <Filter>01.Levels\02. Level_Boss1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Trigger.h">
+      <Filter>02.GameObjects\97. Trigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Plateform.h">
+      <Filter>02.GameObjects\03. Platform\00. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Plateform_Instancing.h">
+      <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Plateform_Trap.h">
+      <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\SkullCrossBow.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bullet.h">
+      <Filter>02.GameObjects\07. Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Normal_Bullet.h">
+      <Filter>02.GameObjects\07. Bullet\01. Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -640,9 +697,6 @@
     </ClCompile>
     <ClCompile Include="..\Imgui\ImGuiFileDialog\ImGuiFileDialog.cpp">
       <Filter>97. ImGui\ImGuiFileDialog</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Plateform.cpp">
-      <Filter>02.GameObjects\03. Plateform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02.GameObjects\04.Sky</Filter>
@@ -755,6 +809,36 @@
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\02. Attack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerState\Player_Fall.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\06. Fall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Boss1.cpp">
+      <Filter>01.Levels\02. Level_Boss1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Trigger.cpp">
+      <Filter>02.GameObjects\97. Trigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform.cpp">
+      <Filter>02.GameObjects\03. Platform\00. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform_Instancing.cpp">
+      <Filter>02.GameObjects\03. Platform\01. Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Plateform_Trap.cpp">
+      <Filter>02.GameObjects\03. Platform\02. Trap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\SkullCrossBow.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\00.Normal\01. SkullCrossBow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Normal_Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet\01. Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -794,6 +878,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticleRect.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

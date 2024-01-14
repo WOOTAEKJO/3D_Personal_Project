@@ -34,6 +34,8 @@ public:
 	HRESULT Loading_For_Logo_Level();
 	HRESULT Loading_For_GamePlay_Level();
 	HRESULT Loading_For_Tool_Level();
+	HRESULT Loading_For_Boss1_Level();
+	HRESULT Loading_For_Boss2_Level();
 
 private:
 	ID3D11Device*			m_pDevice = { nullptr };
@@ -48,6 +50,15 @@ private:
 	LEVEL					m_eNextLevelID = { LEVEL_END };		// 어떤 레벨의 자원을 로딩해야 하는지를 알려줌
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
 	_bool					m_isFinished = { false }; // 다음 레벨을 위한 자원을 모두 로드했는지를 판단
+
+private:
+	HRESULT					Monster();
+	HRESULT					Item();
+	HRESULT					Forest();
+	HRESULT					Rock();
+	HRESULT					Deco();
+	HRESULT					Wood();
+	HRESULT					Instancing();
 
 public:
 	static CLoader * Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL eNextLevelID);

@@ -17,8 +17,10 @@ HRESULT CNorMonster_Move::Initialize(CGameObject* pGameObject)
 
 void CNorMonster_Move::State_Enter()
 {
-	
-	m_pOwnerModel->Set_AnimationIndex(10);
+	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
+		m_pOwnerModel->Set_AnimationIndex(10);
+	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
+		m_pOwnerModel->Set_AnimationIndex(11);
 }
 
 _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
@@ -30,21 +32,45 @@ _uint CNorMonster_Move::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Move::State_Tick(_float fTimeDelta)
 {
 	
-	if (!m_pOwner->Is_Target_Range(7.f))
+	if (m_pOwner->Open_Status_Desc()->bHited)
+		return CMonster::STATE::HITED;
+
+	if (!m_pOwner->Is_Target_Range(m_pOwner->Open_Status_Desc()->fDetection_Range))
 	{
 		return CMonster::STATE::IDLE;
 	}
 
-	if (m_pOwner->Is_Target_Range(2.f))
+	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
 	{
-		return CMonster::STATE::ATTACK;
+		if (m_pOwner->Turn(fTimeDelta))
+		{
+			if (m_pOwner->Is_Target_Range(m_pOwner->Open_Status_Desc()->fAttack_Range))
+			{
+				return CMonster::STATE::ATTACK;
+			}
+
+			Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
+
+
+			m_bMove = true;
+		}
 	}
+	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
+	{
+		if (m_pOwner->Turn(fTimeDelta))
+			m_bMove = true;
 
-	if (m_pOwner->Open_Status_Desc()->bHited)
-		return CMonster::STATE::HITED;
 
-	if(m_pOwner->Turn(fTimeDelta))
-		Translate(CTransform::STATE::STATE_LOOK, 2.f, fTimeDelta);
+		if (m_bMove)
+		{
+			if (m_pOwner->Is_Target_Range(m_pOwner->Open_Status_Desc()->fAttack_Range))
+			{
+				return CMonster::STATE::ATTACK;
+			}
+
+			Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed, fTimeDelta);
+		}
+	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -59,6 +85,7 @@ _uint CNorMonster_Move::State_Late_Tick(_float fTimeDelta)
 
 void CNorMonster_Move::State_Exit()
 {
+	//m_bMove = false;
 }
 
 CNorMonster_Move* CNorMonster_Move::Create(CGameObject* pGameObject)

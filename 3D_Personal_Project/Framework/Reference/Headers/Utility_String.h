@@ -18,7 +18,13 @@ public:
 	static wstring string_To_Wstring(string str);
 	static string WString_To_string(wstring str);
 
+	static wstring Standard_Cut_Wstring(_uint iCount, wstring strFull, _tchar cSeperator);
+	static string Standard_Cut_string(_uint iCount, string strFull, _char cSeperator);
+
 	static wstring Remove_Numbers(wstring str);
+
+	static wstring Get_MiddleName(wstring str);
+	static wstring Get_LastName(wstring str);
 };
 
 END

@@ -31,18 +31,35 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 
 private:
-	CGameObject*	m_pTarget = { nullptr };
-	CTransform*		m_pTargetTransform = { nullptr };
-	CStateMachine*	m_pTargetStateMachine = { nullptr };
+	CGameObject* m_pTarget = { nullptr };
+	CTransform* m_pTargetTransform = { nullptr };
+	CStateMachine* m_pTargetStateMachine = { nullptr };
 
 private:
-	_float			m_iRadiusX = { 7 };
-	_float			m_iRadiusY = { 3 };
+	CNavigation* m_pNavigationCom = { nullptr };
+
+private:
+	_float			m_fAngleAccY = { 0.f };
+	_float			m_fAngleAccX = { 0.f };
+	_float3			m_vOffset = { 1.f,-0.7f,1.f };
+
+private:
+	wstring			m_strCurrentNaviTag;
+
+private:
+	_float4			m_vPrevTargetPos;
+
+private:
+	_bool			m_bStateTrans = { false };
+	_float			m_fTransAcc = { 0.f };
+
+private:
+	HRESULT	Ready_Component();
+	void	StateTrans(_float fTimeDelta);
 
 private:
 	void	Mouse_Input(_float fTimeDelta);
 	void	Mouse_Fix();
-	void	Target_Follow(_float fTimeDelta);
 
 public:
 	static	CTargetCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

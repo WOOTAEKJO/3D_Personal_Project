@@ -28,6 +28,16 @@ HRESULT CObjectMesh_Demo::Initialize(void* pArg)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, ObjectDemoValue->vPos);
 		m_strModelTag = ObjectDemoValue->strModelTag;
 
+		if (!wcscmp(CUtility_String::Get_MiddleName(m_strModelTag).c_str(), L"Model"))
+		{
+			m_eModelType = MODEL_TYPE::TYPE_NORMAL;
+		}
+		else if (!wcscmp(CUtility_String::Get_MiddleName(m_strModelTag).c_str(), L"ModelInstancing"))
+		{
+			m_vecVertexMat = ObjectDemoValue->vecVertexMat;
+			m_eModelType = MODEL_TYPE::TYPE_INSTANCING;
+		}
+
 		if (FAILED(Ready_Component()))
 			return E_FAIL;
 	}
@@ -41,7 +51,8 @@ void CObjectMesh_Demo::Priority_Tick(_float fTimeDelta)
 
 void CObjectMesh_Demo::Tick(_float fTimeDelta)
 {
-	
+	if (m_iNaviCellIndex == -2)
+		Pendulum_Movement(fTimeDelta);
 }
 
 void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
@@ -52,21 +63,36 @@ void CObjectMesh_Demo::Late_Tick(_float fTimeDelta)
 
 HRESULT CObjectMesh_Demo::Render()
 {
-	if (m_pModelCom == nullptr)
-		return E_FAIL;
+	
 
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
-
-	for (_uint i = 0; i < iNumMeshs; i++)
+	if (m_eModelType == MODEL_TYPE::TYPE_NORMAL)
 	{
-		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+		_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		for (_uint i = 0; i < iNumMeshs; i++)
+		{
+			m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pModelCom->Render(i);
+			m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+
+			m_pModelCom->Render(i);
+		}
+	}
+	else if (m_eModelType == MODEL_TYPE::TYPE_INSTANCING)
+	{
+		_uint iNumMeshs = m_pModelInstancingCom->Get_MeshesNum();
+
+		for (_uint i = 0; i < iNumMeshs; i++)
+		{
+			m_pModelInstancingCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+			m_pShaderCom->Begin(1);
+
+			m_pModelInstancingCom->Render(i);
+		}
 	}
 
 	return S_OK;
@@ -121,7 +147,15 @@ void CObjectMesh_Demo::Set_Scale(_float fX, _float fY, _float fZ)
 	m_pTransformCom->Set_Scaling(fX, fY, fZ);
 }
 
-_bool CObjectMesh_Demo::Get_Picked()
+_float4x4 CObjectMesh_Demo::Get_WorldMat()
+{
+	if (m_pTransformCom == nullptr)
+		return _float4x4();
+
+	return m_pTransformCom->Get_WorldMatrix_Float4x4();
+}
+
+_bool CObjectMesh_Demo::Get_Picked(_float4* vOutPos)
 {
 	if (m_pModelCom == nullptr || 
 		m_pTransformCom==nullptr)
@@ -132,8 +166,32 @@ _bool CObjectMesh_Demo::Get_Picked()
 	//m_pGameInstance->Update_Mouse();
 
 	if (m_pModelCom->Compute_MousePos(&vPickPos, m_pTransformCom->Get_WorldMatrix_Matrix()))
+	{
+		XMStoreFloat4(vOutPos, XMVector3TransformCoord(XMLoadFloat3(&vPickPos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+
+		//*vOutPos = _float4(vPickPos.x, vPickPos.y, vPickPos.z, 1.f);
+
 		return true;
-	
+	}
+
+	return false;
+}
+
+_bool CObjectMesh_Demo::Get_Picked_Dist(_float4* vOutPos, _float* fDist)
+{
+	if (m_pModelCom == nullptr ||
+		m_pTransformCom == nullptr)
+		return false;
+
+	_float3 vPickPos;
+
+	if (m_pModelCom->Compute_MousePos_Dist(&vPickPos,m_pTransformCom->Get_WorldMatrix_Matrix(), fDist))
+	{
+		XMStoreFloat4(vOutPos, XMVector3TransformCoord(XMLoadFloat3(&vPickPos), m_pTransformCom->Get_WorldMatrix_Matrix()));
+
+		return true;
+	}
+
 	return false;
 }
 
@@ -182,18 +240,55 @@ HRESULT CObjectMesh_Demo::Bind_ShaderResources()
 
 HRESULT CObjectMesh_Demo::Ready_Component()
 {
-	
-	/* For.Com_Shader*/ 
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), SHADER_MESH_TAG,
-		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-		return E_FAIL;
+	switch (m_eModelType)
+	{
+	case Client::CObjectMesh_Demo::TYPE_NORMAL:
+		if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
+		if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
-	/* For.Com_Model*/
-	if (FAILED(Add_Component(m_pGameInstance->Get_Current_Level(), m_strModelTag,
-		TEXT("Com_Model"), reinterpret_cast<CComponent**>(&m_pModelCom))))
-		return E_FAIL;
+		break;
+	case Client::CObjectMesh_Demo::TYPE_INSTANCING:
+		if (FAILED(Add_Component<CShader>(SHADER_MESHINSTANCING_TAG, &m_pShaderCom))) return E_FAIL;
+		CModel_Instancing::MESH_INSTANCE_DESC Instancing_Desc = {};
+
+		_matrix matLocal = XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix_Matrix());
+
+		for (auto& iter : m_vecVertexMat)
+		{
+			_matrix matTmp = XMLoadFloat4x4(&iter) * matLocal;
+
+			_float4x4 matResult;
+
+			XMStoreFloat4x4(&matResult, matTmp);
+
+			Instancing_Desc.vecInstanceVertex.push_back(matResult);
+		}
+
+		//Instancing_Desc.vecInstanceVertex = m_vecVertexMat;
+
+		if (FAILED(Add_Component<CModel_Instancing>(m_strModelTag, &m_pModelInstancingCom,&Instancing_Desc)))
+			return E_FAIL;
+
+		break;
+	}
 
 	return S_OK;
+}
+
+void CObjectMesh_Demo::Pendulum_Movement(_float fTimeDelta)
+{
+	_float fGravity = 9.81f;
+	_float fLength = 1.f;
+
+	_float fAcceleration = -(fGravity / fLength) * sin(m_fAngleZ);
+	//_float fConstantAngularAcceLeration = 1.f;
+
+	m_fAngularVelocity += fAcceleration * fTimeDelta;
+	m_fAngleZ += m_fAngularVelocity * fTimeDelta;
+
+	m_fAngleZ = m_fAmplitude * sin(m_fAngleZ);
+	
+	m_pTransformCom->Rotation_Quaternio(0.f, XMConvertToRadians(30.f), m_fAngleZ);
 }
 
 CObjectMesh_Demo* CObjectMesh_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -228,4 +323,5 @@ void CObjectMesh_Demo::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+	Safe_Release(m_pModelInstancingCom);
 }

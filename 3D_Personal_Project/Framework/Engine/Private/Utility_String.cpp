@@ -57,6 +57,34 @@ string CUtility_String::WString_To_string(wstring str)
 	return strTmp.assign(str.begin() + 0, str.begin() + iLength);
 }
 
+wstring CUtility_String::Standard_Cut_Wstring(_uint iCount, wstring strFull, _tchar cSeperator)
+{
+	wstring strTmp;
+	_uint iPos = 0;
+
+	
+	strTmp = strFull;
+	for (_uint i = 0; i < iCount; i++) {
+		iPos = strTmp.find(cSeperator);
+		strTmp = strTmp.substr(iPos + 1);
+	}
+
+	return strTmp;
+}
+
+string CUtility_String::Standard_Cut_string(_uint iCount, string strFull, _char cSeperator)
+{
+	string strTmp;
+	_uint iPos = 0;
+
+	for (_uint i = 0; i < iCount; i++) {
+		iPos = strFull.find(cSeperator);
+		strTmp = strFull.substr(iPos + 1);
+	}
+
+	return strTmp;
+}
+
 wstring CUtility_String::Remove_Numbers(wstring str)
 {
 	wstring strTmp;
@@ -69,5 +97,24 @@ wstring CUtility_String::Remove_Numbers(wstring str)
 
 	return strTmp;
 }
+
+wstring CUtility_String::Get_MiddleName(wstring str)
+{ 
+	wstring strTmp;
+	strTmp = Standard_Cut_Wstring(2, str, L'_');
+	strTmp = Split_Wstring(strTmp, L'_');
+
+	return strTmp;
+}
+
+wstring CUtility_String::Get_LastName(wstring str)
+{
+	wstring strTmp;
+	strTmp = Standard_Cut_Wstring(3, str, L'_');
+	strTmp = Split_Wstring(strTmp, L'_');
+
+	return strTmp;
+}
+
 
 

@@ -1,7 +1,7 @@
 #include	"Shader_Defines.hlsli"
 
 matrix		g_matWorld, g_matView, g_matProj;
-vector g_vColor = vector(1.f,1.f,1.f,1.f);
+vector		g_vColor = vector(1.f,1.f,1.f,1.f);
 
 struct VS_IN
 {
@@ -57,6 +57,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 

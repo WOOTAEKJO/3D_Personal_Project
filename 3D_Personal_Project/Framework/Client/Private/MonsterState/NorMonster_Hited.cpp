@@ -17,7 +17,10 @@ HRESULT CNorMonster_Hited::Initialize(CGameObject* pGameObject)
 
 void CNorMonster_Hited::State_Enter()
 {		
-	m_pOwnerModel->Set_AnimationIndex(7);
+	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
+		m_pOwnerModel->Set_AnimationIndex(7);
+	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
+		m_pOwnerModel->Set_AnimationIndex(2);
 }
 
 _uint CNorMonster_Hited::State_Priority_Tick(_float fTimeDelta)

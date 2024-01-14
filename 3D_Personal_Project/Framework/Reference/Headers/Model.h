@@ -44,6 +44,7 @@ public:
 
 public:
 	_bool	Compute_MousePos(_float3 * pOut, _matrix matWorld);
+	_bool	Compute_MousePos_Dist(_float3* pOut, _matrix matWorld,_float* fDist);
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName,_uint iMeshIndex, TEXTURETYPE eType);
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex, _int iNonBindInd = -1);
 

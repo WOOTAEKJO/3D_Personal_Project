@@ -41,7 +41,7 @@ public:
 		CComponent* pComponent = Find_Component(TAG_NAME<T>() + to_wstring(iNum));
 		if (pComponent == nullptr)
 		{
-			MSG_BOX("Failed Find Component");
+			//MSG_BOX("Failed Find Component");
 			return nullptr;
 		}
 

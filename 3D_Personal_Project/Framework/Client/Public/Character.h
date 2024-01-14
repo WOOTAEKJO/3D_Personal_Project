@@ -26,19 +26,17 @@ public:
 
 	typedef struct tagPhysicsDesc
 	{
-		_float	fForwardSpeed = 10.f;
+		_float	fForwardSpeed = 1.5f;
+		//_float	fForwardSpeed = 5.5f;
 
-		_float	fJumpPower = 10.f;
-		_float	fJumpGravity = -9.8f;
-		_float  fFallGravity = -30.f;
+		_float	fJumpPower = 2.f;
+		_float	fJumpGravity = -9.8f * 0.2f;
+		_float  fFallGravity = -30.f * 0.3f;
 
 		_float	fTurnSpeed = 25.f;
 
-		_bool	bGround = true;
 		_bool	bJump = false;
 		_bool	bDoubleJump = false;
-		_bool	bFall = false;
-		_bool	bLanding = false;
 
 	}PHYSICS_DESC;
 
@@ -46,6 +44,9 @@ public:
 	{
 		_int	iMaxHP = 10;
 		_int	iCurHP = 10;
+
+		_float  fDetection_Range = 0.f;
+		_float  fAttack_Range = 0.f;
 
 		_bool	bHited = false;
 		_bool	bDead = false;
@@ -67,7 +68,6 @@ public:
 
 public:
 	PHYSICS_DESC*	Open_Physics_Desc() { return &m_Physics_Desc; }
-	void			Reset_Physics_Desc();
 	STATUS_DESC*	Open_Status_Desc() { return &m_Status_Desc; }
 
 public:
@@ -103,6 +103,10 @@ protected:
 protected:
 	void	Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex);
 	_int	Find_TypeAnimIndex(_uint iAnimTag);
+
+protected:
+	void	Pushed();
+	void	Pushed_Reset();
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

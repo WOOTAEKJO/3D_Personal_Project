@@ -4,6 +4,14 @@
 
 #include "Player_Body.h"
 
+#include "NorMonster_IDLE.h"
+#include "NorMonster_Move.h"
+#include "NorMonster_Attack.h"
+#include "NorMonster_Delay.h"
+#include "NorMonster_Dead.h"
+#include "NorMonster_Hited.h"
+#include "NorMonster_Appear.h"
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -39,21 +47,35 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Tick(_float fTimeDelta)
 {
+	if (!m_bActivate)
+		return;
+
+	
+
 	CCharacter::Priority_Tick(fTimeDelta);
 }
 
 void CMonster::Tick(_float fTimeDelta)
 {
+	if (!m_bActivate)
+		return;
+
 	CCharacter::Tick(fTimeDelta);
 }
 
 void CMonster::Late_Tick(_float fTimeDelta)
 {
+	if (!m_bActivate)
+		return;
+
 	CCharacter::Late_Tick(fTimeDelta);
 }
 
 HRESULT CMonster::Render()
 {
+	if (!m_bActivate)
+		return S_OK;
+
 	if (FAILED(CCharacter::Render()))
 		return E_FAIL;
 
@@ -67,7 +89,8 @@ void CMonster::TargetLook()
 
 _bool CMonster::Turn(_float fTimeDelta)
 {
-	return m_pTransformCom->Turn_Target(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 4.f);
+
+	return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 5.f);
 }
 
 _bool CMonster::Is_Target_Range(_float fRange)
@@ -109,6 +132,17 @@ HRESULT CMonster::Ready_Component()
 
 HRESULT CMonster::Ready_State()
 {
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CNorMonster_Dead::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::DELAY, CNorMonster_Delay::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::HITED, CNorMonster_Hited::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::APPEAR, CNorMonster_Appear::Create(this)))) return E_FAIL;
+
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::APPEAR)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

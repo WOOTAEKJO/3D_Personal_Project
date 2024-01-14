@@ -41,20 +41,29 @@ void CCharacter_State::Translate(CTransform::STATE eType,_float fSpeed, _float f
 	_vector vDir = m_pOnwerTransform->Get_State(eType);
 	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
 		* (bTurn == false ? 1.f : -1.f);
+
+	if (std::isnan(vPos.m128_f32[0]))
+		return;
+
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation, fTimeDelta);
 }
 
-void CCharacter_State::Is_Attack_Time(CCollider* pOwnerCol ,_float fTimeDelta, _float fTime)
+_bool CCharacter_State::Is_Attack_Time(_float fTimeDelta, _float fTime, CCollider* pOwnerCol)
 {
 	if (m_bAttack)
 		m_fTime += fTimeDelta;
 
 	if (m_fTime > fTime && m_bAttack)
 	{
-		pOwnerCol->Set_UseCol(true);
+		if(pOwnerCol != nullptr)
+			pOwnerCol->Set_UseCol(true);
+
 		m_bAttack = false;
 		m_fTime = 0.f;
+		return true;
 	}
+
+	return false;
 }
 
 void CCharacter_State::Reset_Attack_Time(CCollider* pOwnerCol)

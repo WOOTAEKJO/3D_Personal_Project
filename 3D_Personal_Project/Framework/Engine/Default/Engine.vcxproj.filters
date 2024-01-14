@@ -253,6 +253,15 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\01. Particle_Point">
       <UniqueIdentifier>{285a8de4-67b9-403e-ba5c-bcf52420b893}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\06. RenderTarget">
+      <UniqueIdentifier>{d1bad15a-66eb-47f2-9a8c-6a3a44bd8d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\06. RenderTarget\Manager">
+      <UniqueIdentifier>{9aa892ac-da0f-4fe8-8716-60ec02750e62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing">
+      <UniqueIdentifier>{ba26694f-fa2d-4433-af42-16eb4a069466}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -495,6 +504,15 @@
     <ClInclude Include="..\Public\VIBuffer_Particle_Point.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\01. Particle_Point</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RenderTarget.h">
+      <Filter>01.Utility\06. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RenderTarget_Manager.h">
+      <Filter>01.Utility\06. RenderTarget\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Model_Instancing.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -716,9 +734,21 @@
     <ClCompile Include="..\Private\VIBuffer_Particle_Point.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\01. Particle_Point</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\RenderTarget.cpp">
+      <Filter>01.Utility\06. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RenderTarget_Manager.cpp">
+      <Filter>01.Utility\06. RenderTarget\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Model_Instancing.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNavigation.hlsl">
+      <Filter>98. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl">
       <Filter>98. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

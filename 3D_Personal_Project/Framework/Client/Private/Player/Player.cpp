@@ -17,6 +17,7 @@
 #include "Player_Jump.h"
 #include "Player_Roll.h"
 #include "Player_Land.h"
+#include "Player_Fall.h"
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -59,9 +60,16 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Controller()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(45.f, 0.f, 45.f, 1.f));
+	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
+
+	if(m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(10.f, 2.f, 13.f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
+
+	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
 	return S_OK;
 }
@@ -108,7 +116,7 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
+	
 #ifdef _DEBUG
 	m_pNavigationCom->Render();
 	m_pColliderCom->Render();
@@ -168,14 +176,20 @@ void CPlayer::Animation_By_Type(STATE eType)
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
+	
 }
 
 void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
 {
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
+	{
+		Pushed();
+	}
 }
 
 void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
 {
+	Pushed_Reset();
 }
 
 HRESULT CPlayer::Bind_ShaderResources()
@@ -190,7 +204,7 @@ HRESULT CPlayer::Ready_Component()
 {
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
-	if (FAILED(Add_Component<CNavigation>(COM_NAVIGATION_TAG, &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
 
@@ -226,6 +240,7 @@ HRESULT CPlayer::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::JUMP, CPlayer_Jump::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::LAND, CPlayer_Land::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ROLL, CPlayer_Roll::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::FALL, CPlayer_Fall::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
