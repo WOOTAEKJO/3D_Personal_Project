@@ -89,8 +89,14 @@ void CMonster::TargetLook()
 
 _bool CMonster::Turn(_float fTimeDelta)
 {
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vTargetPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
 
-	return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 5.f);
+	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
+
+	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f);
+
+	//return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 5.f);
 }
 
 _bool CMonster::Is_Target_Range(_float fRange)

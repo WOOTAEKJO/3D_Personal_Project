@@ -6,6 +6,7 @@
 #include "Bone.h"
 #include "Player.h"
 
+#include "Monster.h"
 
 CCrow::CCrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CNPC(pDevice, pContext)
@@ -49,6 +50,8 @@ HRESULT CCrow::Initialize(void* pArg)
 		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 
 	m_pTransformCom->Set_Ground(false);
+
+	//m_Status_Desc.fDetection_Range = ;
 
 	return S_OK;
 }
@@ -107,6 +110,8 @@ void CCrow::Set_IDLE_Pos()
 	if (m_pPlayer_Transform == nullptr)
 		return;
 
+	
+
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_vTargetPos);
 }
 
@@ -139,56 +144,55 @@ void CCrow::Attack_Cool(_float fCool,_float fTimeDelta)
 
 _bool CCrow::Attack_Input()
 {
-	/*if (m_bAttack && m_pGameInstance->Mouse_Down(DIM_RB))
+	if (m_bAttack && m_pGameInstance->Mouse_Down(DIM_RB))
 	{
 		m_bAttack = false;
 
 		return true;
-	}*/
+	}
 
 	return false;
 }
 
-void CCrow::Find_Range_Monster()
+_bool CCrow::Find_Range_Monster(_float fRange)
 {
+	_bool bCheck = false;
+
 	list<CGameObject*> listMonster = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level()
 		, g_strLayerName[LAYER::LAYER_MONSTER]);
 
-	_float fMinDist = 10000.f;
+	_float fMinDist = fRange;
 
 	for (auto& iter : listMonster)
 	{
+		if (!dynamic_cast<CMonster*>(iter)->Is_Activate())
+			continue;
+
 		CTransform* pMonsterTransform = iter->Get_Component<CTransform>();
 
 		_vector vMonsterPos = pMonsterTransform->Get_State(CTransform::STATE::STATE_POS);
 		_vector vPlayerPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
 
-		/*_vector vDir = (vMonsterPos - m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
-		_vector vLook = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_LOOK);*/
-
-		//_vector vDir = (vMonsterPos - m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_POS)); 
-
 		_vector vDir = (vMonsterPos - vPlayerPos);
 		_vector vLook = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_LOOK);
-
-		_float fAngle = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vLook), XMVector3Normalize(vDir)));
-
-		_float fStandard = XMConvertToRadians(60.f);
-
-		if (fabsf(fAngle) > fStandard)
-			continue;
 
 		_float fDist = XMVectorGetX(XMVector3Length(vDir));
 
 		if (fMinDist > fDist)
 		{
+			bCheck = true;
+
 			fMinDist = fDist;
 
-			vMonsterPos.m128_f32[1] = pMonsterTransform->Get_Scaled().y;
+			vMonsterPos.m128_f32[1] += pMonsterTransform->Get_Scaled().y * 0.5f;
 
 			XMStoreFloat4(&m_vTargetPos, vMonsterPos);
+
+			int a = 9;
 		}
 	}
+
+	return bCheck;
 }
 
 void CCrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)

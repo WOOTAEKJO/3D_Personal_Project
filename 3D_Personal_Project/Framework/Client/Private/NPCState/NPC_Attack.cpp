@@ -20,7 +20,7 @@ void CNPC_Attack::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::ATTACK);
 
-	dynamic_cast<CCrow*>(m_pOwner)->Find_Range_Monster();
+	m_bFind = dynamic_cast<CCrow*>(m_pOwner)->Find_Range_Monster(5.f);
 }
 
 _uint CNPC_Attack::State_Priority_Tick(_float fTimeDelta)
@@ -30,9 +30,12 @@ _uint CNPC_Attack::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNPC_Attack::State_Tick(_float fTimeDelta)
 {
+	if(!m_bFind)
+		return CNPC::STATE::IDLE;
+
 	if (m_pOwner->Turn(fTimeDelta * 10.f))
 	{
-		m_pOwner->Target_Follow(fTimeDelta * 30.f);
+		m_pOwner->Target_Follow(fTimeDelta * 20.f);
 	}
 	/*m_pOwner->Target_Follow_Look();
 	m_pOwner->Target_Follow(fTimeDelta * 30.f);*/
@@ -52,6 +55,7 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 
 void CNPC_Attack::State_Exit()
 {
+	m_bFind = false;
 }
 
 CNPC_Attack* CNPC_Attack::Create(CGameObject* pGameObject)

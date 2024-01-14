@@ -17,6 +17,8 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 
+private:
+	_bool		m_bFind = { false };
 
 public:
 	static CNPC_Attack* Create(CGameObject* pGameObject);

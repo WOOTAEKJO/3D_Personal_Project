@@ -322,6 +322,9 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear">
       <UniqueIdentifier>{ced739ab-2448-4144-968a-7dfb15716e1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol">
+      <UniqueIdentifier>{1cdbf9ae-535e-4837-8851-0d8da367c688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -594,6 +597,9 @@
     <ClInclude Include="..\Public\MonsterState\NorMonster_Appear.h">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Range_Bullet.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -838,6 +844,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState\NorMonster_Appear.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Range_Bullet.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
