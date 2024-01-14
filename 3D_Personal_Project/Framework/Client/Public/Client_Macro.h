@@ -258,7 +258,7 @@
 
 #define TEX_SKYBOX_TAG			TEXT("Prototype_Component_Texture_SkyBox")
 
-#define TEX_LANDSCAPE_TAG		TEXT("Prototype_Component_Texture_groundBrick")
+#define TEX_LANDSCAPE_TAG		TEXT("Prototype_Component_Texture_groundCrackedDirt")
 
 #pragma endregion
 

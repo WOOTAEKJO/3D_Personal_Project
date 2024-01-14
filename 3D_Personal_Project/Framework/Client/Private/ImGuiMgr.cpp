@@ -258,12 +258,12 @@ void CImGuiMgr::Update_Terrain_Pick()
     if (m_pTerrain == nullptr)
         return;
 
-    if (m_pTerrain->Update_Mouse(&m_vPickedPoint))
-    {
-        CImGui_Window* pWindow = Find_Window(M_eCurentMode, WS_MAIN);
-        if (pWindow == nullptr)
-            return;
+    CImGui_Window* pWindow = Find_Window(M_eCurentMode, WS_MAIN);
+    if (pWindow == nullptr)
+        return;
 
+    if (m_pTerrain->Update_Mouse(&m_vPickedPoint, pWindow->Is_Pressing()))
+    {
         if (m_pGameInstance->Key_Pressing(DIK_SPACE)) {
             pWindow->Terrain_Picked(m_vPickedPoint);
         }

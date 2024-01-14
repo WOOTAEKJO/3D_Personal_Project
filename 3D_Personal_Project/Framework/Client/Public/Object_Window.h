@@ -79,6 +79,9 @@ private: /* For.RadioButton_Transform*/
 	_uint	m_iCurrentLayerName = { LAYER::LAYER_END };
 
 private:
+	_float	m_fTimeAcc = { 0.f };
+
+private:
 	void	ObjectMesh();
 	void	AnimObjectMesh();
 	void	InstancingMesh();

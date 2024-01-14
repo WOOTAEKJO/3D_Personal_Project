@@ -504,6 +504,7 @@ HRESULT CLoader::Deco()
 
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WOODFUCKER_TAG, matPivot))) return E_FAIL;
 
+	matPivot = XMMatrixScaling(0.0015f, 0.0015f, 0.0015f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
@@ -559,7 +560,7 @@ HRESULT CLoader::Instancing()
 {
 	_matrix	matPivot;
 
-	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	matPivot = XMMatrixScaling(0.0015f, 0.0015f, 0.0015f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 
 	if (FAILED(m_pGameInstance->Add_ModelInstancing_ProtoType(MODELINSTANCING_GRASSMESHBIG_TAG, matPivot))) return E_FAIL;
 

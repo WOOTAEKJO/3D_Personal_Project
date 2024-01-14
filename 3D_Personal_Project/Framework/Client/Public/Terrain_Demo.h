@@ -40,7 +40,7 @@ public:
 public:
 	HRESULT	Create_DynamicBuffer(_uint iVerticesXNum = 3, _uint iVerticesZNum = 3);
 	HRESULT	Set_Control_Variable(void* pArg);
-	_bool	Update_Mouse(_float4* fPickPoint);
+	_bool	Update_Mouse(_float4* fPickPoint, _bool bPressing = false);
 	void	Update_HeightMap(_fvector vPickPos, _float fRadius, _float fHeight, _float fSharpness);
 	HRESULT	Save_Terrain(const _char* strPath);
 	HRESULT	Load_Terrain(const _char* strPath);

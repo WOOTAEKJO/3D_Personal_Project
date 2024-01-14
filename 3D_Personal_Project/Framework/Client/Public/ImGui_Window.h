@@ -61,6 +61,9 @@ public:
 	void	ImGuizmo(ImGuizmo::MODE eMode, CDemo* pDemo);
 	void	ImGuizmo(ImGuizmo::MODE eMode, _float3* vPosition);
 
+public:
+	_bool	Is_Pressing() { return m_bPressing; }
+
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
@@ -90,6 +93,9 @@ protected:
 	OPENFILENAME	m_ofn;
 
 	Data m_Data;
+
+protected:
+	_bool		m_bPressing = { false };
 
 protected:
 	void	Begin();

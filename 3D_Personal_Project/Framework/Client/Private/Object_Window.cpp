@@ -122,7 +122,21 @@ void CObject_Window::Terrain_Picked(_float4 vPickPoint)
 	else if (m_eCurrentType == TYPE::TYPE_ANIM)
 		Create_AnimModel(g_strLayerName[m_iCurrentLayerName], m_strPickAnimModelTag, vPickPoint);
 	else if (m_eCurrentType == TYPE::TYPE_INSTANCING)
-		Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+	{
+		if (m_bPressing)
+		{
+			m_fTimeAcc += 1.f;
+
+			if (m_fTimeAcc >= 3.f)
+			{
+				Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+				m_fTimeAcc = 0.f;
+			}
+		}
+		else {
+			Create_TMP(g_strLayerName[m_iCurrentLayerName], m_eTMP.strPickModelTag, vPickPoint);
+		}
+	}
 }
 
 void CObject_Window::Demo_Picked()
@@ -682,6 +696,8 @@ void CObject_Window::InstancingMesh()
 	//		m_eInstancingModel.strPickModelTag = iter;
 	//}
 	//ImGui::EndListBox();
+
+	ImGui::Checkbox("Pressing", &m_bPressing);
 
 	ImGui::BeginListBox("Layer", vSize);
 	for (_uint i = 0; i < (_uint)LAYER::LAYER_END; i++)

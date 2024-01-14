@@ -187,7 +187,7 @@ HRESULT CTerrain_Demo::Ready_Component()
 	return S_OK;
 }
 
-_bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
+_bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint, _bool bPressing)
 {
 	if (m_pVIBufferCom == nullptr)
 		return false;
@@ -200,12 +200,20 @@ _bool CTerrain_Demo::Update_Mouse(_float4* fPickPoint)
 	if (vMousePos.x == 0)
 		return false; 
 
-	if (m_pGameInstance->Mouse_Down(DIM_LB)) {
-		return true;
-	}
-
 	XMStoreFloat4(fPickPoint, XMVector3TransformCoord(XMLoadFloat3(&vMousePos), m_pTransformCom->Get_WorldMatrix_Matrix()));
 	m_vMouseWorldPos = *fPickPoint;
+
+	if (bPressing)
+	{
+		return true;
+	}
+	else {
+		if (m_pGameInstance->Mouse_Down(DIM_LB)) {
+			return true;
+		}
+	}
+
+	
 
 	return false;
 }
