@@ -369,8 +369,64 @@ HRESULT CObject_Window::Load_Data(const _char* strFilePath)
 					_float4x4 matVertex;
 					fIn.read(reinterpret_cast<char*>(&matVertex), sizeof(_float4x4));
 					vecVertex.push_back(matVertex);
+
 				}
 
+#pragma region 랜덤 수정 코드
+
+				/*if (!wcscmp(CUtility_String::string_To_Wstring(strModelName).c_str(),
+					MODELINSTANCING_GRASSMESHBIG_TAG))
+				{
+					uniform_real_distribution<float>	RandomAngle(0.f, 180.f);
+
+					for (_uint j = 0; j < ivecVertexSize; j++)
+					{
+						_float4x4 matVertex;
+						fIn.read(reinterpret_cast<char*>(&matVertex), sizeof(_float4x4));
+
+						_float fX = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&matVertex).r[0]));
+						_float fY = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&matVertex).r[1]));
+						_float fZ = XMVectorGetX(XMVector3Length(XMLoadFloat4x4(&matVertex).r[2]));
+
+						_vector	vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * fX;
+						_vector	vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * fY;
+						_vector	vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * fZ;
+
+						_vector vRot = XMQuaternionRotationRollPitchYaw(0.f, RandomAngle(m_RandomNumber), 0.f);
+						_matrix matRot = XMMatrixRotationQuaternion(vRot);
+
+						_vector vX = XMVector3TransformNormal(vRight, matRot);
+						_vector vY = XMVector3TransformNormal(vUp, matRot);
+						_vector vZ = XMVector3TransformNormal(vLook, matRot);
+
+						matVertex.m[0][0] = XMVectorGetX(vX);
+						matVertex.m[0][1] = XMVectorGetY(vX);
+						matVertex.m[0][2] = XMVectorGetZ(vX);
+						matVertex.m[0][3] = XMVectorGetW(vX);
+						
+						matVertex.m[1][0] = XMVectorGetX(vY);
+						matVertex.m[1][1] = XMVectorGetY(vY);
+						matVertex.m[1][2] = XMVectorGetZ(vY);
+						matVertex.m[1][3] = XMVectorGetW(vY);
+
+						matVertex.m[2][0] = XMVectorGetX(vZ);
+						matVertex.m[2][1] = XMVectorGetY(vZ);
+						matVertex.m[2][2] = XMVectorGetZ(vZ);
+						matVertex.m[2][3] = XMVectorGetW(vZ);
+
+						vecVertex.push_back(matVertex);
+					}
+				}
+				else {
+					for (_uint j = 0; j < ivecVertexSize; j++)
+					{
+						_float4x4 matVertex;
+						fIn.read(reinterpret_cast<char*>(&matVertex), sizeof(_float4x4));
+						vecVertex.push_back(matVertex);
+
+					}
+				}*/
+#pragma endregion
 				CGameObject* pObject_Demo = nullptr;
 				CObjectMesh_Demo::OBDEMOVALUE ObjectDemoValue;
 
