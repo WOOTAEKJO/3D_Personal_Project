@@ -248,7 +248,7 @@ void CImGuiMgr::Set_Animation_Edit()
     ImguiMrgWinDesc.strName = "Animation";
     ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
         | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
-    ImguiMrgWinDesc.vWinSize = _float2(350.f, 700.f);
+    ImguiMrgWinDesc.vWinSize = _float2(500.f, 700.f);
 
     m_mapWindow[MODE_ANIMATION].emplace(WS_MAIN, CAnimation_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }

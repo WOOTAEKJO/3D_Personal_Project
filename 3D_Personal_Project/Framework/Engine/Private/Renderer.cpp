@@ -107,8 +107,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 
 #ifdef _DEBUG
 
-	if (FAILED(Render_Debug()))
-		return E_FAIL;
+	/*if (FAILED(Render_Debug()))
+		return E_FAIL;*/
 
 #endif
 

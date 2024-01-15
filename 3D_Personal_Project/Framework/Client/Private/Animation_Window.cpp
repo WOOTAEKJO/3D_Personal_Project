@@ -195,7 +195,8 @@ void CAnimation_Window::Animation()
 		Create_Animation_Model(m_strPickModelTag);
 	}
 	if (m_pCurrentAnimModel != nullptr) {
-		ImGui::BeginListBox("Animation", vSize);
+		ImVec2 vSize2 = ImVec2(450, 100);
+		ImGui::BeginListBox("Animation", vSize2);
 		_uint iSize = m_pCurrentAnimModel->Get_Animations().size();
 		for (_uint i = 0; i < iSize; i++)
 		{

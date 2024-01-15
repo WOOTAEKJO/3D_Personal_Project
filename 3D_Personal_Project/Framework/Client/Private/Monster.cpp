@@ -33,7 +33,7 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;
@@ -49,8 +49,6 @@ void CMonster::Priority_Tick(_float fTimeDelta)
 {
 	if (!m_bActivate)
 		return;
-
-	
 
 	CCharacter::Priority_Tick(fTimeDelta);
 }
@@ -130,8 +128,6 @@ HRESULT CMonster::Ready_Component()
 {
 	if (FAILED(CCharacter::Ready_Component()))
 		return E_FAIL;
-
-	
 
 	return S_OK;
 }

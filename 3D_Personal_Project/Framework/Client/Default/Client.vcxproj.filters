@@ -331,6 +331,45 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk">
       <UniqueIdentifier>{1dc97220-1ed9-46d5-997a-e8929bb1bd92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico">
+      <UniqueIdentifier>{6153dd81-f417-4ceb-a153-5887fcfc1709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive">
+      <UniqueIdentifier>{ba603e41-e531-4519-82d9-d6fe8675f9c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE">
+      <UniqueIdentifier>{ac031cf5-879b-4ec6-9f47-dd8e6f5568a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead">
+      <UniqueIdentifier>{d473b827-a4cc-4dec-9a19-932e7f99b955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE">
+      <UniqueIdentifier>{956ea941-a904-4e2a-a782-b0202c8b5300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit">
+      <UniqueIdentifier>{3fa93064-01ea-40a3-9289-03c68495600e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake">
+      <UniqueIdentifier>{0a00592c-9547-4f3e-b702-50f14d718d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE">
+      <UniqueIdentifier>{2ea52f9e-e818-4b00-821e-20e3b2bb5663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack">
+      <UniqueIdentifier>{a6de9365-a530-4bef-b23b-2454804176a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start">
+      <UniqueIdentifier>{ddf73abe-d389-4376-99af-3de1ba0f8b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End">
+      <UniqueIdentifier>{5e2b2563-8a02-47df-bc1a-78e2dd4486fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up">
+      <UniqueIdentifier>{2a5f98ef-4932-43b1-ab73-00c0d1e9fff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash">
+      <UniqueIdentifier>{d246c5b2-d18a-45da-94d0-74dcd28d5c37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -612,6 +651,45 @@
     <ClInclude Include="..\Public\NPCState\NPC_Talk.h">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HelicoScarrow.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dead.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_Hit.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_Wake.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack_End.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack_Start.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive_Up.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Ground_Smash.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -865,6 +943,45 @@
     </ClCompile>
     <ClCompile Include="..\Private\NPCState\NPC_Talk.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HelicoScarrow.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_Hit.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_Wake.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack_End.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack_Start.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive_Up.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Ground_Smash.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

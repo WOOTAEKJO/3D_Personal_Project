@@ -117,13 +117,6 @@ HRESULT CCharacter::Ready_Component()
 	RigidBody_Desc.pOwner = this;
 	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom, &RigidBody_Desc))) return E_FAIL;
 
-	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
-	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
-	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
-	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
-
 	return S_OK;
 }
 
