@@ -30,7 +30,7 @@
 #pragma region Ω¶¿Ã¥ı
 
 #define	SHADER_POS_TAG						TEXT("Prototype_Component_Shader_VtxPosTex")
-#define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
+//#define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
 //#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
 #define	SHADER_MESH_TAG						TEXT("Prototype_Component_Shader_VtxMesh")
 #define	SHADER_MESHINSTANCING_TAG			TEXT("Prototype_Component_Shader_VtxMeshInstancing")

@@ -22,6 +22,7 @@ public:
 	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Monster(const wstring& strLayerTag);
 	HRESULT	Ready_Trigger();
+	HRESULT	Ready_LightDesc();
 
 public:
 	void	Set_NextLevel() { m_bNextLevel = true; }

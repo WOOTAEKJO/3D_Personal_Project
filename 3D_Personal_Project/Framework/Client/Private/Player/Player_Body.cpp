@@ -68,7 +68,7 @@ HRESULT CPlayer_Body::Render()
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
@@ -121,10 +121,6 @@ HRESULT CPlayer_Body::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
-		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

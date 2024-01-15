@@ -35,12 +35,15 @@ private:
 	CShader*					m_pShader = {nullptr};
 
 private:
+	_float4x4					m_matWorld;
 	_float4x4					m_matView, m_matProj;
 
 private:
 	HRESULT Render_Priority();
 	HRESULT Render_NonLight();
 	HRESULT Render_NonBlend();
+	HRESULT Render_LightAcc();
+	HRESULT Render_Deferred();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
 

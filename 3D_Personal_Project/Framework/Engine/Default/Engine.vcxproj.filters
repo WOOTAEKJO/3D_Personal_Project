@@ -262,6 +262,12 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing">
       <UniqueIdentifier>{ba26694f-fa2d-4433-af42-16eb4a069466}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\07. Light">
+      <UniqueIdentifier>{19cff58d-4c82-41b4-9c8e-17f3f45ba1ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07. Light\00. Light_Manager">
+      <UniqueIdentifier>{1e93b3b0-f758-45fe-b3e8-73fcb64c1148}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -513,6 +519,12 @@
     <ClInclude Include="..\Public\Model_Instancing.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light.h">
+      <Filter>01.Utility\07. Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light_Manager.h">
+      <Filter>01.Utility\07. Light\00. Light_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -742,6 +754,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Model_Instancing.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\06. VIBuffer_Instancing\02. Mesh_Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light.cpp">
+      <Filter>01.Utility\07. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Manager.cpp">
+      <Filter>01.Utility\07. Light\00. Light_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

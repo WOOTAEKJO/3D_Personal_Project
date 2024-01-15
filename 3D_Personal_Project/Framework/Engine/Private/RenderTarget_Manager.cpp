@@ -21,7 +21,7 @@ HRESULT CRenderTarget_Manager::Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _u
 	if (pRenderTarget != nullptr)
 		return E_FAIL;
 
-	pRenderTarget = CRenderTarget::Create(m_pDevice,m_pContext,iSizeX, iSizeY, Pixel_Format);
+	pRenderTarget = CRenderTarget::Create(m_pDevice,m_pContext,iSizeX, iSizeY, Pixel_Format, vColor);
 	if (pRenderTarget == nullptr)
 		return E_FAIL;
 
@@ -64,6 +64,7 @@ HRESULT CRenderTarget_Manager::Begin_MRT(const wstring& strMRTTag)
 
 	for (auto& iter : *pList)
 	{
+		iter->Clear();
 		pRenderTargets[iNum++] = iter->Get_RTV();
 	}
 	
@@ -81,6 +82,15 @@ HRESULT CRenderTarget_Manager::End_MRT()
 	m_pContext->OMSetRenderTargets(1, pRenderTargets, m_pGameInstance->Get_DSV());
 
 	return S_OK;
+}
+
+HRESULT CRenderTarget_Manager::Bind_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName)
+{
+	CRenderTarget* pRTV = Find_RenderTarget(eType);
+	if (pRTV == nullptr)
+		return E_FAIL;
+
+	return pRTV->Bind_ShaderResource(pShader, pConstantName);
 }
 
 #ifdef _DEBUG

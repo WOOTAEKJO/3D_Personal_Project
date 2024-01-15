@@ -10,6 +10,7 @@
 #include "Collider_Manager.h"
 #include "Font_Manager.h"
 #include "RenderTarget_Manager.h"
+#include "Light_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -93,6 +94,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 폰트 매니저 사용 준비*/
 	m_pFont_Manager = CFont_Manager::Create(*ppDevice, *ppContext);
 	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
+
+	/* 라이트 매니저 사용 준비*/
+	m_pLight_Manager = CLight_Manager::Create();
+	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -653,6 +659,14 @@ HRESULT CGameInstance::End_MRT()
 	return m_pRenderTarget_Manager->End_MRT();
 }
 
+HRESULT CGameInstance::Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Bind_ShaderResource(eType, pShader, pConstantName);
+}
+
 HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	if (nullptr == m_pRenderTarget_Manager)
@@ -669,11 +683,28 @@ HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShad
 	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
 
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(eLightDesc);
+}
+
+HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Render(pShader, pBuffer);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFile_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pCollider_Manager);

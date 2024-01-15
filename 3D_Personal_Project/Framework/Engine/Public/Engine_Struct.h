@@ -51,6 +51,22 @@ namespace Engine
 
 	}RAY;
 
+	typedef struct tagLight
+	{
+		enum LIGHT_TYPE {TYPE_DIRECTION,TYPE_POINT,TYPE_END};
+
+		LIGHT_TYPE eType;
+
+		_float4 vDirection;
+
+		_float4 vPos;
+		_float fRange;
+
+		_float4 vDiffuse;
+		_float4 vAmbient;
+		_float4 vSpecular;
+	}LIGHT_DESC;
+
 	typedef	struct tagKeyFrame
 	{
 		_float3 vScale;

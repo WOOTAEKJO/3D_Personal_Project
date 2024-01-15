@@ -214,12 +214,17 @@ public: /* For. CRednerTarget_Manager*/
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
 	HRESULT	Begin_MRT(const wstring& strMRTTag);
 	HRESULT	End_MRT();
+	HRESULT Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 
 #ifdef _DEBUG
 	HRESULT	Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT	Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 #endif
+
+public: /* For. CLight_Manager*/
+	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc);
+	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -237,6 +242,7 @@ private:
 	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	class CFont_Manager*			m_pFont_Manager = { nullptr };
 	class CRenderTarget_Manager*	m_pRenderTarget_Manager = { nullptr };
+	class CLight_Manager*			m_pLight_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 
