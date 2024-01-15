@@ -310,9 +310,9 @@ HRESULT CLoader::Loading_For_Converter_Level()
 //	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK7_PATH))))
 //	return E_FAIL;
 
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMALLROCK_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMALLROCK_PATH))))
-	return E_FAIL;
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMALLROCK_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMALLROCK_PATH))))
+//	return E_FAIL;
 
 #pragma endregion
 
@@ -482,9 +482,9 @@ if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SHOVEL_PATH))))
 		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_HELICOBULLET_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_HELICOBULLET_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_HELICOBULLET_PATH))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 
 
