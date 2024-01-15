@@ -28,6 +28,8 @@ _uint CHelico_Attack_Start::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Attack_Start::State_Tick(_float fTimeDelta)
 {
+	m_pOwner->Turn(fTimeDelta);
+
 	if (m_pOwnerModel->Is_Animation_Finished())
 		return CHelicoScarrow::STATE::HELICO_ATTACK;
 

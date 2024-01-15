@@ -25,22 +25,27 @@ void CHelico_Attack::State_Enter()
 
 _uint CHelico_Attack::State_Priority_Tick(_float fTimeDelta)
 {
-	m_pOwnerModel;
 	return m_iStateID;
 }
 
 _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 {
+	m_pOwner->Turn(fTimeDelta);
 
-	if (!m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(100.f))
+	//_float ff = m_pOwnerModel->CurAnim_Get_Duration(CHelicoScarrow::STATE::HELICO_ATTACK);
+
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CHelicoScarrow::STATE::HELICO_ATTACK, 90.f))
 	{
+
 		if (m_pOwnerCollider->Get_Collision())
 		{
 			return CHelicoScarrow::STATE::HELICO_END;
 		}
-
-		m_pOwner->Open_Status_Desc()->bAttack_able = true;
-		m_pOwnerCollider->Set_UseCol(true);
+		else {
+			m_pOwner->Open_Status_Desc()->bAttack_able = true;
+			m_pOwnerCollider->Set_UseCol(true);
+		}
+		
 	}
 	else {
 		m_pOwner->Open_Status_Desc()->bAttack_able = false;
@@ -49,12 +54,13 @@ _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
+	
+
 	return m_iStateID;
 }
 
 _uint CHelico_Attack::State_Late_Tick(_float fTimeDelta)
 {
-	m_pOwnerModel;
 	return m_iStateID;
 }
 

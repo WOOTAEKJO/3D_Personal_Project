@@ -28,6 +28,7 @@ _uint CHelico_Dive_Up::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Dive_Up::State_Tick(_float fTimeDelta)
 {
+	m_pOwner->Turn(fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 

@@ -482,6 +482,12 @@ if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SHOVEL_PATH))))
 		return E_FAIL;*/
 
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_HELICOBULLET_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_HELICOBULLET_PATH))))
+		return E_FAIL;
+
+
+
 #pragma endregion 
 
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));

@@ -350,6 +350,9 @@
 #define	MODEL_SHOVEL_TAG			TEXT("Prototype_Component_Model_Shovel")
 #define	MODEL_SHOVEL_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Shovel/Shovel.fbx"
 
+#define	MODEL_HELICOBULLET_TAG			TEXT("Prototype_Component_Model_HelicoBullet")
+#define	MODEL_HELICOBULLET_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/HelicoBullet/HelicoBullet.fbx"
+
 #pragma endregion
 
 #define	MODEL_LAND_TAG			TEXT("Prototype_Component_Model_Land")

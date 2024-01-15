@@ -28,6 +28,7 @@ _uint CHelico_Exhausted_Wake::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Exhausted_Wake::State_Tick(_float fTimeDelta)
 {
+	m_pOwner->Turn(fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 

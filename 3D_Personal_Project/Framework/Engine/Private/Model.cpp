@@ -218,14 +218,20 @@ _bool CModel::Is_Animation_Finished()
 	return false;
 }
 
-_bool CModel::Is_CurAnim_Arrival_TrackPosition(_float fTime)
+_bool CModel::Is_CurAnim_Arrival_TrackPosition(_uint iIndx, _float fTime)
 {
-	return m_vecAnimation[m_iCurrentAnimationIndex]->Is_Arrival_TrackPosition(fTime);
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Is_Arrival_TrackPosition(fTime);
 }
 
-_float CModel::CurAnim_Get_Duration()
+_float CModel::CurAnim_Get_Duration(_uint iIndx)
 {
-	return m_vecAnimation[m_iCurrentAnimationIndex]->Get_Duration();
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Get_Duration();
 }
 
 void CModel::Write_Json(json& Out_Json)

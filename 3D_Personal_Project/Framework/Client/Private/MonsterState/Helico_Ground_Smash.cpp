@@ -35,6 +35,7 @@ _uint CHelico_Ground_Smash::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Ground_Smash::State_Tick(_float fTimeDelta)
 {
+	m_pOwner->Turn(fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 

@@ -50,8 +50,8 @@ public:
 
 	_bool	Is_Animation_Finished();
 
-	_bool	Is_CurAnim_Arrival_TrackPosition(_float fTime);
-	_float  CurAnim_Get_Duration();
+	_bool	Is_CurAnim_Arrival_TrackPosition(_uint iIndx,_float fTime);
+	_float  CurAnim_Get_Duration(_uint iIndx);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;
