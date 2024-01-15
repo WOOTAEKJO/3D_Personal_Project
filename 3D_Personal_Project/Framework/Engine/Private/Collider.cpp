@@ -164,6 +164,14 @@ HRESULT CCollider::Add_Bounding(void* pArg)
 	return S_OK;
 }
 
+_float4x4 CCollider::Get_Collider_WorldMat(_uint iCollIdnx)
+{
+	if(iCollIdnx >= m_vecBounding.size())
+		return _float4x4();
+
+	return m_vecBounding[iCollIdnx]->Get_CollsionWorldMat();
+}
+
 void CCollider::OnCollisionEnter(CCollider* pOtherCollider)
 {
 	if (m_pOwner == nullptr || pOtherCollider == nullptr)

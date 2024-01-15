@@ -19,6 +19,8 @@ HRESULT CMonster_State::Initialize(CGameObject* pGameObject)
 	Safe_AddRef(m_pOnwerTransform);
 	m_pOnwerNavigation = m_pOwner->Get_Component<CNavigation>();
 	Safe_AddRef(m_pOnwerNavigation);
+	m_pOwnerCollider = m_pOwner->Get_Component<CCollider>();
+	Safe_AddRef(m_pOwnerCollider);
 
 	return S_OK;
 }

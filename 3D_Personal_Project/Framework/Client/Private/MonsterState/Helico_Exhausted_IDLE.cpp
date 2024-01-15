@@ -18,7 +18,10 @@ HRESULT CHelico_Exhausted_IDLE::Initialize(CGameObject* pGameObject)
 
 void CHelico_Exhausted_IDLE::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::EXHAUSTED_IDLE);
+
+	m_pOwner->Open_Status_Desc()->bAttack_able = true;
+	m_pOwnerCollider->Set_UseCol(true);
 }
 
 _uint CHelico_Exhausted_IDLE::State_Priority_Tick(_float fTimeDelta)
@@ -28,6 +31,8 @@ _uint CHelico_Exhausted_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Exhausted_IDLE::State_Tick(_float fTimeDelta)
 {
+	if (m_pOwner->Open_Status_Desc()->bHited)
+		return CHelicoScarrow::STATE::EXHAUSTED_HIT;
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -42,6 +47,8 @@ _uint CHelico_Exhausted_IDLE::State_Late_Tick(_float fTimeDelta)
 
 void CHelico_Exhausted_IDLE::State_Exit()
 {
+	m_pOwner->Open_Status_Desc()->bAttack_able = false;
+	m_pOwnerCollider->Set_UseCol(false);
 }
 
 CHelico_Exhausted_IDLE* CHelico_Exhausted_IDLE::Create(CGameObject* pGameObject)

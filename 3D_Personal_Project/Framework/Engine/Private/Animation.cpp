@@ -121,6 +121,14 @@ wstring CAnimation::Get_Name()
 	return szFullName;
 }
 
+_bool CAnimation::Is_Arrival_TrackPosition(_float fTime)
+{
+	if (m_fTrackPosition >= fTime)
+		return true;
+
+	return false;
+}
+
 void CAnimation::Write_Json(json& Out_Json)
 {
 	Out_Json.emplace("Animation_ExtraSpeed", m_fExtraSpeed[TYPE_EXTRASPEED]);

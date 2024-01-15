@@ -18,7 +18,7 @@ HRESULT CHelico_Dead::Initialize(CGameObject* pGameObject)
 
 void CHelico_Dead::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DEAD);
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)
@@ -29,7 +29,7 @@ _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)
 _uint CHelico_Dead::State_Tick(_float fTimeDelta)
 {
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }

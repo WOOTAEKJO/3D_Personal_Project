@@ -28,6 +28,7 @@ protected:
 	CNavigation*	m_pOnwerNavigation = { nullptr };
 	CRigidBody*		m_pOnwerRigidBody = { nullptr };
 	CController*	m_pOnwerController = { nullptr };
+	CCollider*		m_pOwnerCollider = { nullptr };
 
 protected:
 	_float			m_fTime = { 0.f };

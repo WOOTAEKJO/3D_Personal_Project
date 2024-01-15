@@ -24,6 +24,9 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	/*if (pArg == nullptr)
 		return E_FAIL;*/
 
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		m_vOffset = _float3(1.3f, -1.5f, 1.3f);
+
 	m_pTarget = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_PLAYER]).front();
 	if (m_pTarget == nullptr)

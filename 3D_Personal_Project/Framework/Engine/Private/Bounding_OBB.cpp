@@ -31,6 +31,7 @@ HRESULT CBounding_OBB::Initialize(BOUNDING_DESC* Bounding_Desc)
 
 void CBounding_OBB::Update(_fmatrix matWorld)
 {
+	XMStoreFloat4x4(&m_matWorld, matWorld);
 	m_pOriOBB->Transform(*m_pOBB, matWorld);
 }
 

@@ -116,6 +116,14 @@ CCollider* CMonster::Get_WeaponCollider()
 	return m_pWeaponColliderCom;
 }
 
+_float4x4 CMonster::Get_Col_WorldMat()
+{
+	if(m_pColliderCom == nullptr)
+		return _float4x4();
+
+	return m_pColliderCom->Get_Collider_WorldMat();
+}
+
 HRESULT CMonster::Bind_ShaderResources()
 {
 	if (FAILED(CCharacter::Bind_ShaderResources()))

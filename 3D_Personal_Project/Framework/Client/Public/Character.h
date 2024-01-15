@@ -27,7 +27,6 @@ public:
 	typedef struct tagPhysicsDesc
 	{
 		_float	fForwardSpeed = 1.5f;
-		//_float	fForwardSpeed = 5.5f;
 
 		_float	fJumpPower = 2.f;
 		_float	fJumpGravity = -9.8f * 0.2f;
@@ -48,8 +47,11 @@ public:
 		_float  fDetection_Range = 0.f;
 		_float  fAttack_Range = 0.f;
 
-		_bool	bHited = false;
-		_bool	bDead = false;
+		_bool	bHited = false; // 맞았는 지를 판단
+		_bool	bDead = false; // 죽었는 지를 판단
+
+		_bool  bAttack_able = true; // 공격을 받을 수 있는 지를 판단
+		_bool  bTalk = false; // Npc 모드인지를 판단
 
 	}STATUS_DESC;
 

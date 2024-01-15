@@ -18,24 +18,36 @@ HRESULT CHelico_Ground_Smash::Initialize(CGameObject* pGameObject)
 
 void CHelico_Ground_Smash::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::GROUND_SMASH);
 }
 
 _uint CHelico_Ground_Smash::State_Priority_Tick(_float fTimeDelta)
 {
+	if (m_iCount >= 4)
+	{
+		m_iCount = 0;
+		return  CHelicoScarrow::STATE::DIVE;
+	}
+		
+
 	return m_iStateID;
 }
 
 _uint CHelico_Ground_Smash::State_Tick(_float fTimeDelta)
 {
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }
 
 _uint CHelico_Ground_Smash::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_Animation_Finished())
+	{
+		m_iCount += 1;
+		m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::GROUND_SMASH);
+	}
 
 	return m_iStateID;
 }

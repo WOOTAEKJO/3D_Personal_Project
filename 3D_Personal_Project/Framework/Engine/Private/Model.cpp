@@ -218,6 +218,16 @@ _bool CModel::Is_Animation_Finished()
 	return false;
 }
 
+_bool CModel::Is_CurAnim_Arrival_TrackPosition(_float fTime)
+{
+	return m_vecAnimation[m_iCurrentAnimationIndex]->Is_Arrival_TrackPosition(fTime);
+}
+
+_float CModel::CurAnim_Get_Duration()
+{
+	return m_vecAnimation[m_iCurrentAnimationIndex]->Get_Duration();
+}
+
 void CModel::Write_Json(json& Out_Json)
 {
 	_uint iSize = m_vecAnimation.size();

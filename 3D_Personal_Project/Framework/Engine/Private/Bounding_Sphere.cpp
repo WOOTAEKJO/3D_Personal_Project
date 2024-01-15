@@ -27,6 +27,8 @@ HRESULT CBounding_Sphere::Initialize(BOUNDING_DESC* Bounding_Desc)
 
 void CBounding_Sphere::Update(_fmatrix matWorld)
 {
+
+	XMStoreFloat4x4(&m_matWorld, matWorld);
 	m_pOriSphere->Transform(*m_pSphere, matWorld);
 }
 

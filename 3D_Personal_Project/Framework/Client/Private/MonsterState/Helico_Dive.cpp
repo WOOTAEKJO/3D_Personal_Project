@@ -18,7 +18,7 @@ HRESULT CHelico_Dive::Initialize(CGameObject* pGameObject)
 
 void CHelico_Dive::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DIVE);
 }
 
 _uint CHelico_Dive::State_Priority_Tick(_float fTimeDelta)
@@ -29,19 +29,24 @@ _uint CHelico_Dive::State_Priority_Tick(_float fTimeDelta)
 _uint CHelico_Dive::State_Tick(_float fTimeDelta)
 {
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }
 
 _uint CHelico_Dive::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_Animation_Finished())
+	{
+		return CHelicoScarrow::STATE::DIVE_IDLE;
+	}
 
 	return m_iStateID;
 }
 
 void CHelico_Dive::State_Exit()
 {
+	dynamic_cast<CHelicoScarrow*>(m_pOwner)->Create_Monster();
 }
 
 CHelico_Dive* CHelico_Dive::Create(CGameObject* pGameObject)

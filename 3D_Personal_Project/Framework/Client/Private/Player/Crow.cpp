@@ -167,7 +167,9 @@ _bool CCrow::Find_Range_Monster(_float fRange)
 
 	for (auto& iter : listMonster)
 	{
-		if (!dynamic_cast<CMonster*>(iter)->Is_Activate())
+		CMonster* pMonster = dynamic_cast<CMonster*>(iter);
+
+		if (!pMonster->Is_Activate() || !pMonster->Open_Status_Desc()->bAttack_able)
 			continue;
 
 		CTransform* pMonsterTransform = iter->Get_Component<CTransform>();
@@ -186,11 +188,13 @@ _bool CCrow::Find_Range_Monster(_float fRange)
 
 			fMinDist = fDist;
 
-			vMonsterPos.m128_f32[1] += pMonsterTransform->Get_Scaled().y * 0.5f;
+			//vMonsterPos.m128_f32[1] += pMonsterTransform->Get_Scaled().y * 0.5f;
+			//XMStoreFloat4(&m_vTargetPos, vMonsterPos);
 
-			XMStoreFloat4(&m_vTargetPos, vMonsterPos);
+			_float4x4 matColWorld = pMonster->Get_Col_WorldMat();
 
-			int a = 9;
+			// 공격 위치를 몬스터의 월드 위치에서 몬스터가 가지고 있는 콜라이더의 월드 위치로 변경
+			m_vTargetPos = _float4(matColWorld.m[3][0], matColWorld.m[3][1], matColWorld.m[3][2], 1.f);
 		}
 	}
 

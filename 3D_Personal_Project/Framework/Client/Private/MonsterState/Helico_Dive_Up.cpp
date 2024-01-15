@@ -18,7 +18,7 @@ HRESULT CHelico_Dive_Up::Initialize(CGameObject* pGameObject)
 
 void CHelico_Dive_Up::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DIVE_UP);
 }
 
 _uint CHelico_Dive_Up::State_Priority_Tick(_float fTimeDelta)
@@ -29,13 +29,15 @@ _uint CHelico_Dive_Up::State_Priority_Tick(_float fTimeDelta)
 _uint CHelico_Dive_Up::State_Tick(_float fTimeDelta)
 {
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }
 
 _uint CHelico_Dive_Up::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_Animation_Finished())
+		return CHelicoScarrow::STATE::IDLE;
 
 	return m_iStateID;
 }

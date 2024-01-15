@@ -50,6 +50,9 @@ public:
 
 	_bool	Is_Animation_Finished();
 
+	_bool	Is_CurAnim_Arrival_TrackPosition(_float fTime);
+	_float  CurAnim_Get_Duration();
+
 public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;

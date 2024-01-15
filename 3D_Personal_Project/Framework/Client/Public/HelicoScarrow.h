@@ -23,9 +23,24 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	_bool	Is_AllHited(_uint iNum);
+	void	Reset_Hited();
+
+	void	Create_Monster();
+	_bool	Is_SubMonster_AllDead();
+
+	void	Dead_CountDown();
+
+public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
+
+private:
+	vector<CGameObject*> m_vecSubMonster;
+
+private:
+	_uint		m_iHited_Count[2] = {0,0};
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

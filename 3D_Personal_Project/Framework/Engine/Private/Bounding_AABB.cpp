@@ -33,6 +33,7 @@ void CBounding_AABB::Update(_fmatrix matWorld)
 	WorldMat.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f) * XMVectorGetX(XMVector3Length(WorldMat.r[1]));
 	WorldMat.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f) * XMVectorGetX(XMVector3Length(WorldMat.r[2]));
 
+	XMStoreFloat4x4(&m_matWorld, matWorld);
 	m_pOriAABB->Transform(*m_pAABB, WorldMat);
 }
 

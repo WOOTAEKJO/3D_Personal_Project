@@ -18,16 +18,34 @@ HRESULT CHelico_Attack::Initialize(CGameObject* pGameObject)
 
 void CHelico_Attack::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::HELICO_ATTACK);
+	
 }
 
 _uint CHelico_Attack::State_Priority_Tick(_float fTimeDelta)
 {
+	m_pOwnerModel;
 	return m_iStateID;
 }
 
 _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 {
+
+	if (!m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(100.f))
+	{
+		if (m_pOwnerCollider->Get_Collision())
+		{
+			return CHelicoScarrow::STATE::HELICO_END;
+		}
+
+		m_pOwner->Open_Status_Desc()->bAttack_able = true;
+		m_pOwnerCollider->Set_UseCol(true);
+	}
+	else {
+		m_pOwner->Open_Status_Desc()->bAttack_able = false;
+		m_pOwnerCollider->Set_UseCol(false);
+	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -36,12 +54,14 @@ _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 
 _uint CHelico_Attack::State_Late_Tick(_float fTimeDelta)
 {
-
+	m_pOwnerModel;
 	return m_iStateID;
 }
 
 void CHelico_Attack::State_Exit()
 {
+	m_pOwner->Open_Status_Desc()->bAttack_able = false;
+	m_pOwnerCollider->Set_UseCol(false);
 }
 
 CHelico_Attack* CHelico_Attack::Create(CGameObject* pGameObject)

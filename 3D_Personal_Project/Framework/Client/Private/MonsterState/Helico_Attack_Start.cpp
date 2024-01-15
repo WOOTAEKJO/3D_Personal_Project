@@ -18,7 +18,7 @@ HRESULT CHelico_Attack_Start::Initialize(CGameObject* pGameObject)
 
 void CHelico_Attack_Start::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::HELICO_START);
 }
 
 _uint CHelico_Attack_Start::State_Priority_Tick(_float fTimeDelta)
@@ -28,8 +28,10 @@ _uint CHelico_Attack_Start::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Attack_Start::State_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_Animation_Finished())
+		return CHelicoScarrow::STATE::HELICO_ATTACK;
 
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }

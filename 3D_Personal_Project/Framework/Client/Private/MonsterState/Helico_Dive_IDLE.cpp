@@ -18,7 +18,8 @@ HRESULT CHelico_Dive_IDLE::Initialize(CGameObject* pGameObject)
 
 void CHelico_Dive_IDLE::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DIVE_IDLE);
+
 }
 
 _uint CHelico_Dive_IDLE::State_Priority_Tick(_float fTimeDelta)
@@ -36,6 +37,8 @@ _uint CHelico_Dive_IDLE::State_Tick(_float fTimeDelta)
 
 _uint CHelico_Dive_IDLE::State_Late_Tick(_float fTimeDelta)
 {
+	if (dynamic_cast<CHelicoScarrow*>(m_pOwner)->Is_SubMonster_AllDead())
+		return CHelicoScarrow::STATE::DIVE_UP;
 
 	return m_iStateID;
 }

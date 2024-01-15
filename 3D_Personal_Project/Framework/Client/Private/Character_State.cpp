@@ -81,4 +81,5 @@ void CCharacter_State::Free()
 	Safe_Release(m_pOnwerNavigation);
 	Safe_Release(m_pOnwerRigidBody);
 	Safe_Release(m_pOnwerController);
+	Safe_Release(m_pOwnerCollider);
 }

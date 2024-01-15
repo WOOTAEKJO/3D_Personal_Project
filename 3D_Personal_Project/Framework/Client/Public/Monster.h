@@ -43,6 +43,8 @@ public:
 	void		Set_Activate() { m_bActivate = true; }
 	_bool		Is_Activate() { return m_bActivate; }
 
+	_float4x4	Get_Col_WorldMat(); // 콜라이더의 월드행렬을 가져옴
+
 protected:
 	CBone*		m_pSocketBone = { nullptr };
 	CCollider*	m_pWeaponColliderCom = { nullptr };

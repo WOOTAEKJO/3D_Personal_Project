@@ -47,6 +47,7 @@ public:
 	_float		Get_PushedDist() { return m_fPushedDist; }
 	void		Set_PushedDist(_float fDist) { m_fPushedDist = fDist; }
 
+	_float4x4	Get_Collider_WorldMat(_uint iCollIdnx = 0);
 public:
 	void	OnCollisionEnter(CCollider* pOtherCollider);
 	void	OnCollisionStay(CCollider* pOtherCollider);
