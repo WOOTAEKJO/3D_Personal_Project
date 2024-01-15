@@ -16,6 +16,8 @@
 
 #include "Bone.h"
 
+#include "Helico_Bullet.h"
+
 CHelicoScarrow::CHelicoScarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -167,6 +169,45 @@ _bool CHelicoScarrow::Is_SubMonster_AllDead()
 void CHelicoScarrow::Dead_CountDown()
 {
 	m_iHited_Count[0] += 1;
+}
+
+void CHelicoScarrow::Creat_Bullet()
+{
+	CHelico_Bullet::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.1f;
+	BulletDesc.fLifeTime = 1.f;
+	BulletDesc.fSpeed = 5.f;
+	BulletDesc.pTarget = m_pPlayer;
+
+	_uint iNum = 0;
+
+	if (m_bSelectBonNum)
+	{
+		iNum = 6;
+		m_bSelectBonNum = false;
+	}
+	else {
+		iNum = 12;
+		m_bSelectBonNum = true;
+	}
+
+	CBone* pBone = m_pModelCom->Get_Bone(iNum);
+
+	_matrix matWorld = pBone->Get_CombinedTransformationMatrix() *
+		m_pTransformCom->Get_WorldMatrix_Matrix();
+
+	_vector vBonePos;
+
+	memcpy(&vBonePos, &matWorld.r[3], sizeof(_float4));
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vBonePos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		MODEL_HELICOBULLET_TAG, &BulletDesc)))
+		return;
+		
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)

@@ -56,6 +56,11 @@ void CNormal_Bullet::Tick(_float fTimeDelta)
 
 void CNormal_Bullet::Late_Tick(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc > m_fLifeTime)
+		Set_Dead();
+
 	__super::Late_Tick(fTimeDelta);
 
 	Dead_Judge();
@@ -133,8 +138,4 @@ CGameObject* CNormal_Bullet::Clone(void* pArg)
 void CNormal_Bullet::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pShaderCom);
 }

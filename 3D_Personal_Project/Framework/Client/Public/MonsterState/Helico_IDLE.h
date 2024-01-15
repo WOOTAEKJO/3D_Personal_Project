@@ -22,7 +22,7 @@ public:
 	virtual _uint	State_Tick(_float fTimeDelta) override;
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
-	
+
 public:
 	static	CHelico_IDLE* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;

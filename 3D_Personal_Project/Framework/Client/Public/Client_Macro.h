@@ -230,6 +230,8 @@
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
 #define	MODEL_SHOVEL_TAG		TEXT("Prototype_Component_Sub_Shovel")
 
+#define	MODEL_HELICOBULLET_TAG			TEXT("Prototype_Component_Model_HelicoBullet")
+
 #pragma endregion
 
 #pragma endregion

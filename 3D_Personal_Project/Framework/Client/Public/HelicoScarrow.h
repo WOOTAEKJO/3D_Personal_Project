@@ -31,6 +31,8 @@ public:
 
 	void	Dead_CountDown();
 
+	void	Creat_Bullet();
+
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
@@ -41,6 +43,7 @@ private:
 
 private:
 	_uint		m_iHited_Count[2] = {0,0};
+	_bool		m_bSelectBonNum = { true };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

@@ -31,7 +31,6 @@ _uint CHelico_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_IDLE::State_Tick(_float fTimeDelta)
 {
-
 	if (!m_pOwner->Open_Status_Desc()->bTalk)
 	{
 		return CHelicoScarrow::STATE::HELICO_START;

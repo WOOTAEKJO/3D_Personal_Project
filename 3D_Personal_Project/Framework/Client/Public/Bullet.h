@@ -59,6 +59,7 @@ protected:
 
 protected:
 	_float3			m_vLook;
+	_float4			m_vTargetPos;
 
 protected:
 	HRESULT	Bind_ShaderResources();

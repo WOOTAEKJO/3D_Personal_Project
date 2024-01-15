@@ -30,6 +30,7 @@ _uint CHelico_Attack::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 {
+
 	m_pOwner->Turn(fTimeDelta);
 
 	//_float ff = m_pOwnerModel->CurAnim_Get_Duration(CHelicoScarrow::STATE::HELICO_ATTACK);
@@ -48,13 +49,19 @@ _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 		
 	}
 	else {
+		m_fCoolTime += fTimeDelta;
+
+		if (m_fCoolTime > 0.3f)
+		{
+			dynamic_cast<CHelicoScarrow*>(m_pOwner)->Creat_Bullet();
+			m_fCoolTime = 0.f;
+		}
+
 		m_pOwner->Open_Status_Desc()->bAttack_able = false;
 		m_pOwnerCollider->Set_UseCol(false);
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
-
-	
 
 	return m_iStateID;
 }

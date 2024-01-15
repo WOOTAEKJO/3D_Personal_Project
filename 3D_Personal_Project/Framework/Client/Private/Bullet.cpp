@@ -46,6 +46,7 @@ HRESULT CBullet::Initialize(void* pArg)
 	if (BulletDesc->pTarget != nullptr)
 	{
 		_vector vTargetPos = BulletDesc->pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+		XMStoreFloat4(&m_vTargetPos, vTargetPos);
 
 		_vector vLook = XMVector3Normalize(vTargetPos - m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
@@ -69,13 +70,7 @@ void CBullet::Tick(_float fTimeDelta)
 
 void CBullet::Late_Tick(_float fTimeDelta)
 {
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
-		return;
 
-	m_fTimeAcc += fTimeDelta;
-
-	if (m_fTimeAcc > m_fLifeTime)
-		Set_Dead();
 	CGameObject::Late_Tick(fTimeDelta);
 }
 

@@ -39,6 +39,11 @@ void CRange_Bullet::Tick(_float fTimeDelta)
 
 void CRange_Bullet::Late_Tick(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc > m_fLifeTime)
+		Set_Dead();
+
 	__super::Late_Tick(fTimeDelta);
 }
 
@@ -93,8 +98,4 @@ CGameObject* CRange_Bullet::Clone(void* pArg)
 void CRange_Bullet::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pShaderCom);
 }

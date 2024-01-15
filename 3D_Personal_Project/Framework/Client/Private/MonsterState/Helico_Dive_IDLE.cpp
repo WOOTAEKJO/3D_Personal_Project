@@ -29,6 +29,7 @@ _uint CHelico_Dive_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_Dive_IDLE::State_Tick(_float fTimeDelta)
 {
+	
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

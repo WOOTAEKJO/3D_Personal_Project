@@ -23,6 +23,9 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 	
+private:
+	_float			m_fCoolTime = { 0.f };
+
 public:
 	static	CHelico_Attack* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;

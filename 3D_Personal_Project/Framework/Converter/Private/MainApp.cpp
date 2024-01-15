@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
+#include "ImGuiMgr.h"
+
 CMainApp::CMainApp()	
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -29,6 +31,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Open_Level(LEVET_CONVERTER)))
 		return E_FAIL;
 
+	if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -36,6 +41,8 @@ void CMainApp::Tick(_float fTimeDelta)
 {
 	
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+	CImGuiMgr::GetInstance()->Tick();
+
 }
 
 HRESULT CMainApp::Render()
@@ -45,7 +52,10 @@ HRESULT CMainApp::Render()
 	m_pGameInstance->Clear_DepthStencil_View();
 
 	/* 그려야할 모델들을 그리낟.*/	
-	m_pGameInstance->Render_Engine();
+	//m_pGameInstance->Render_Engine();
+
+	if (FAILED(CImGuiMgr::GetInstance()->Render()))
+		return E_FAIL;
 
 	m_pGameInstance->Present();
 
@@ -87,6 +97,8 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
+	CImGuiMgr::GetInstance()->DestroyInstance();
+
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 
