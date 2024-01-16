@@ -11,6 +11,7 @@
 #include "Font_Manager.h"
 #include "RenderTarget_Manager.h"
 #include "Light_Manager.h"
+#include "Camera_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -99,6 +100,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 라이트 매니저 사용 준비*/
 	m_pLight_Manager = CLight_Manager::Create();
 	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	/* 카메라 매니저 사용 준비*/
+	m_pCamera_Manager = CCamera_Manager::Create();
+	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
 	m_pDevice = *ppDevice;
@@ -699,6 +705,22 @@ HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
 	return m_pLight_Manager->Render(pShader, pBuffer);
 }
 
+HRESULT CGameInstance::Add_Camera(const wstring& strCameraTag, CCamera* pCamera)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Add_Camera(strCameraTag, pCamera);
+}
+
+void CGameInstance::SetUp_Camera_Offset(_float3 vOffset)
+{
+	if (nullptr == m_pCamera_Manager)
+		return;
+
+	m_pCamera_Manager->SetUp_Offset(vOffset);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
@@ -709,6 +731,7 @@ void CGameInstance::Release_Manager()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pCollider_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pMouse_Manager);
 	Safe_Release(m_pSaveLoad_Manager);

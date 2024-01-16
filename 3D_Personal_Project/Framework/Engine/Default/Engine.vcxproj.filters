@@ -268,6 +268,9 @@
     <Filter Include="01.Utility\07. Light\00. Light_Manager">
       <UniqueIdentifier>{1e93b3b0-f758-45fe-b3e8-73fcb64c1148}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.GameObjects\01. Camera\00. Camera_Manager">
+      <UniqueIdentifier>{aa50471e-00dd-4b1a-aeeb-3127ff86ef92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -525,6 +528,9 @@
     <ClInclude Include="..\Public\Light_Manager.h">
       <Filter>01.Utility\07. Light\00. Light_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Camera_Manager.h">
+      <Filter>01.Utility\02.GameObjects\01. Camera\00. Camera_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -760,6 +766,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Light_Manager.cpp">
       <Filter>01.Utility\07. Light\00. Light_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Camera_Manager.cpp">
+      <Filter>01.Utility\02.GameObjects\01. Camera\00. Camera_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,8 @@ _uint CHelico_Attack_End::State_Late_Tick(_float fTimeDelta)
 
 void CHelico_Attack_End::State_Exit()
 {
+	m_pOwner->Camera_Zoom();
+	m_pOwner->Camera_SetUp_LookAt_Hegith();
 }
 
 CHelico_Attack_End* CHelico_Attack_End::Create(CGameObject* pGameObject)

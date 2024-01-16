@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Character.h"
 
+#include "TargetCamera.h"
+
 #include "GameInstance.h"
 
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -86,6 +88,28 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 
 	m_eCurrentTypeAnimIndex = iAnimTag;
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
+}
+
+void CCharacter::Camera_Zoom(_float3 vOffset)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	if (XMVector3Equal(XMLoadFloat3(&vOffset), XMVectorZero()))
+		pCamera->Reset_Offset();
+	else
+		pCamera->SetUp_Offset(vOffset);
+}
+
+void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	if (fHeight == 0.f)
+		pCamera->Reset_LookAt_Height();
+	else
+		pCamera->SetUp_LookAt_Height(fHeight);
 }
 
 HRESULT CCharacter::Bind_ShaderResources()

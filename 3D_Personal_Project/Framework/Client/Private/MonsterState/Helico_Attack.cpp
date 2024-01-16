@@ -51,7 +51,7 @@ _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 	else {
 		m_fCoolTime += fTimeDelta;
 
-		if (m_fCoolTime > 0.3f)
+		if (m_fCoolTime > 0.2f)
 		{
 			dynamic_cast<CHelicoScarrow*>(m_pOwner)->Creat_Bullet();
 			m_fCoolTime = 0.f;

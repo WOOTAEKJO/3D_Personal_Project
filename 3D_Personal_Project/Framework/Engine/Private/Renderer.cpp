@@ -26,7 +26,7 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	//Normal
 	if (FAILED(m_pGameInstance->Add_RenderTarget(RTV_TYPE::RT_NORMAL, Viewport.Width, Viewport.Height,
-		DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 1.f, 1.f))))
 		return E_FAIL;
 	//Depth
 	if (FAILED(m_pGameInstance->Add_RenderTarget(RTV_TYPE::RT_DEPTH, Viewport.Width, Viewport.Height,
@@ -34,7 +34,7 @@ HRESULT CRenderer::Initialize()
 		return E_FAIL;
 	//Shader
 	if (FAILED(m_pGameInstance->Add_RenderTarget(RTV_TYPE::RT_SHADE, Viewport.Width, Viewport.Height,
-		DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		return E_FAIL;
 	//Specular
 	if (FAILED(m_pGameInstance->Add_RenderTarget(RTV_TYPE::RT_SPECULAR, Viewport.Width, Viewport.Height,

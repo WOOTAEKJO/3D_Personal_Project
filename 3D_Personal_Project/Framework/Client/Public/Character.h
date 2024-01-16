@@ -79,6 +79,10 @@ public:
 public:
 	void		Set_TypeAnimIndex(_uint iAnimTag);
 
+public:
+	void	Camera_Zoom(_float3 vOffset = _float3(0.f,0.f,0.f));
+	void	Camera_SetUp_LookAt_Hegith(_float fHeight = 0.f);
+
 protected:
 	CShader*		m_pShaderCom = { nullptr };
 	CModel*			m_pModelCom = { nullptr };

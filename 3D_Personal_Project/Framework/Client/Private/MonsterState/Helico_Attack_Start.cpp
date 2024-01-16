@@ -18,6 +18,8 @@ HRESULT CHelico_Attack_Start::Initialize(CGameObject* pGameObject)
 
 void CHelico_Attack_Start::State_Enter()
 {
+	m_pOwner->Camera_Zoom(_float3(1.f,-0.5f,1.f));
+	//m_pOwner->Camera_SetUp_LookAt_Hegith(1.5f);
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::HELICO_START);
 }
 

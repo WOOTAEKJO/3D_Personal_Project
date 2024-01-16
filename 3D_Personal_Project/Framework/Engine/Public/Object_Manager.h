@@ -27,7 +27,6 @@ public:
 
 	list<class CGameObject*>	Get_ObjectList(_uint iLevelIndex, const wstring& strLayerTag);
 	
-
 private:
 	map<const wstring, class CGameObject*> m_mapProtoType;				// 원형 객체 보관
 	map<const wstring, class CLayer*>* m_mapLayer = {nullptr};		   // 사본 객체 보관

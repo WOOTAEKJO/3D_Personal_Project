@@ -18,6 +18,8 @@
 
 #include "Helico_Bullet.h"
 
+
+
 CHelicoScarrow::CHelicoScarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -178,7 +180,7 @@ void CHelicoScarrow::Creat_Bullet()
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.1f;
 	BulletDesc.fLifeTime = 1.f;
-	BulletDesc.fSpeed = 5.f;
+	BulletDesc.fSpeed = 6.f;
 	BulletDesc.pTarget = m_pPlayer;
 
 	_uint iNum = 0;
