@@ -376,6 +376,66 @@
     <Filter Include="02.GameObjects\07. Bullet\02. Shock_Wave">
       <UniqueIdentifier>{dfa29cbe-1849-44c6-baf7-c65f98eb9f02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\02. Level_Boss2">
+      <UniqueIdentifier>{f13ce1c4-d854-4416-866e-24be5413129d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom">
+      <UniqueIdentifier>{ffc26f9f-4732-4752-a449-588dd3989793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom">
+      <UniqueIdentifier>{29083c34-7faa-4ecd-bb73-2680acbbd05a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse">
+      <UniqueIdentifier>{ae693966-6039-4729-99c7-9cac1a74084e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse">
+      <UniqueIdentifier>{0044740f-e849-48b0-a7f5-522beb6eb8a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse">
+      <UniqueIdentifier>{b235c38a-1e6f-4da2-94f8-7d27ee3a5138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE">
+      <UniqueIdentifier>{46bd25d2-3f46-4c48-9e1c-8c4780e07dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear">
+      <UniqueIdentifier>{6e9ebb98-3001-4598-95a7-2e9ace17fbf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh">
+      <UniqueIdentifier>{e30b8c65-d974-4bbe-8c91-28e0a496c668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit">
+      <UniqueIdentifier>{dbb33ab7-7ed9-47f8-ac45-03c4f1d0ccb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro">
+      <UniqueIdentifier>{319d1be8-5c50-45a3-bdb9-f628f784b8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser">
+      <UniqueIdentifier>{cd083e68-fd5a-4fbb-8d3a-5f8278622773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau">
+      <UniqueIdentifier>{c2524db2-5ff1-48c5-bfb9-b8c345639b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead">
+      <UniqueIdentifier>{9e8d9394-1347-4642-a457-8547b51af6ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot">
+      <UniqueIdentifier>{491915c2-09f9-46bf-9628-85a01279234b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon">
+      <UniqueIdentifier>{e7bb1646-6401-4c4b-a396-3d8267b5ab78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb">
+      <UniqueIdentifier>{26a22c0c-ddda-4989-b1ca-965b36166f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop">
+      <UniqueIdentifier>{a5fb6b09-0a17-48a3-8483-340cbe4af8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish">
+      <UniqueIdentifier>{b83a98cc-8d22-4d01-9f39-618e5e4d69ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\03. Laser">
+      <UniqueIdentifier>{77c319c4-0f7e-41ac-9c7a-4f83cf7b126e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -702,6 +762,63 @@
     <ClInclude Include="..\Public\Shock_Wave.h">
       <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Level_Boss2.h">
+      <Filter>01.Levels\02. Level_Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Phantom.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Attaque_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Hit_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Appear.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Bouh.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Hit.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Intro.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Laser.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Marteau.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Dead.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Shoot.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon_Bomb.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon_Loop.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Vanish.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Laser.h">
+      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1000,6 +1117,63 @@
     </ClCompile>
     <ClCompile Include="..\Private\Shock_Wave.cpp">
       <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Boss2.cpp">
+      <Filter>01.Levels\02. Level_Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Phantom.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Attaque_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Hit_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Appear.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Bouh.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Hit.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Intro.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Laser.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Marteau.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Shoot.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon_Bomb.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon_Loop.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Vanish.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Laser.cpp">
+      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

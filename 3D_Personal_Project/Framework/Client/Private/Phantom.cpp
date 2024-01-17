@@ -1,0 +1,295 @@
+#include "stdafx.h"
+#include "..\Public\Phantom.h"
+
+#include "Bone.h"
+
+#include "Shock_Wave.h"
+#include "Laser.h"
+
+#include "Phantom_Attaque_Chasse.h"
+#include "Phantom_Chasse.h"
+#include "Phantom_Hit_Chasse.h"
+#include "Phantom_IDLE.h"
+#include "Phantom_Appear.h"
+#include "Phantom_Bouh.h"
+#include "Phantom_Hit.h"
+#include "Phantom_Intro.h"
+#include "Phantom_Laser.h"
+#include "Phantom_Marteau.h"
+#include "Phantom_Dead.h"
+#include "Phantom_Shoot.h"
+#include "Phantom_Summon.h"
+#include "Phantom_Summon_Bomb.h"
+#include "Phantom_Summon_Loop.h"
+#include "Phantom_Vanish.h"
+
+
+
+CPhantom::CPhantom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+	:CMonster(pDevice, pContext)
+{
+}
+
+CPhantom::CPhantom(const CPhantom& rhs)
+	:CMonster(rhs)
+{
+}
+
+HRESULT CPhantom::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CPhantom::Initialize(void* pArg)
+{
+
+	if (FAILED(CMonster::Initialize(pArg)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
+	if (FAILED(Ready_State()))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
+		return E_FAIL;
+
+	m_pSocketBone = m_pModelCom->Get_Bone(5);
+	Safe_AddRef(m_pSocketBone);
+
+	/*m_Status_Desc.iMaxHP = 5;
+	m_Status_Desc.iCurHP = 5;*/
+
+	m_pTransformCom->Set_Scaling(0.5f, 0.5f, 0.5f);
+
+	m_Status_Desc.bAttack_able = false;
+	m_Status_Desc.bTalk = true;
+
+	return S_OK;
+}
+
+void CPhantom::Priority_Tick(_float fTimeDelta)
+{
+	if (!m_bActivate)
+		return;
+
+	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
+	CGameObject::Priority_Tick(fTimeDelta);
+}
+
+void CPhantom::Tick(_float fTimeDelta)
+{
+	if (m_pGameInstance->Key_Down(DIK_0))
+		m_Status_Desc.bTalk = false;
+
+	CMonster::Tick(fTimeDelta);
+}
+
+void CPhantom::Late_Tick(_float fTimeDelta)
+{
+
+	CMonster::Late_Tick(fTimeDelta);
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
+
+}
+
+HRESULT CPhantom::Render()
+{
+	if (!m_bActivate)
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(1);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
+void CPhantom::Load_FromJson(const json& In_Json)
+{
+	if (m_pModelCom == nullptr)
+		return;
+
+	m_pModelCom->Load_FromJson(In_Json);
+}
+
+
+void CPhantom::Create_Shock_Wave()
+{
+	CShock_Wave::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fLifeTime = 0.9f;
+	BulletDesc.fSpeed = 2.f;
+	BulletDesc.pTarget = nullptr;
+	
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vLook = XMVector3Normalize( m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
+
+	vPos = vPos + vLook * 2.f;
+
+	vPos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y * 1.f;
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_SHOCK_WAVE_TAG, &BulletDesc)))
+		return;
+}
+
+void CPhantom::Create_Laser()
+{
+	CShock_Wave::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fLifeTime = 0.f;
+	BulletDesc.fSpeed = 0.f;
+	BulletDesc.pTarget = m_pPlayer;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vLook = XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
+
+	vPos = vPos + vLook * 0.5f;
+
+	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y * 12.f;
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_LASER_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&m_pLaser))))
+		return;
+}
+
+void CPhantom::Adjust_Pos(_float3 vAdjust)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos = vPos + XMLoadFloat3(&vAdjust);
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
+}
+
+void CPhantom::Delete_Laser()
+{
+	if (m_pLaser == nullptr || m_pLaser->Get_Dead())
+		return;
+
+	dynamic_cast<CLaser*>(m_pLaser)->Set_Dead();
+	m_pLaser == nullptr;
+}
+
+void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)
+{
+
+}
+
+void CPhantom::OnCollisionStay(CCollider* pCollider, _uint iColID)
+{
+	
+}
+
+void CPhantom::OnCollisionExit(CCollider* pCollider, _uint iColID)
+{
+}
+
+HRESULT CPhantom::Bind_ShaderResources()
+{
+	if (FAILED(CMonster::Bind_ShaderResources()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Ready_Component()
+{
+	/*if (FAILED(CMonster::Ready_Component()))
+		return E_FAIL;*/
+	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
+	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
+
+	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
+	Sphere_Desc.pOnwer = this;
+	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
+	Sphere_Desc.bUseCol = false;
+	Sphere_Desc.fRadius = 4.f;
+	Sphere_Desc.vCenter = _float3(0.f, Sphere_Desc.fRadius - 2.f, 0.f);
+	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Ready_State()
+{
+
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTAQUE_CHASSE,CPhantom_Attaque_Chasse::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::CHASSE, CPhantom_Chasse::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::HIT_CHASSE, CPhantom_Hit_Chasse::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CPhantom_IDLE::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::APPEAR, CPhantom_Appear::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::BOUH, CPhantom_Bouh::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::HIT, CPhantom_Hit::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::INTRO, CPhantom_Intro::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::LASER, CPhantom_Laser::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::MARTEAU, CPhantom_Marteau::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CPhantom_Dead::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::SHOOT, CPhantom_Shoot::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::SUMMON, CPhantom_Summon::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::SUMMON_BOMB, CPhantom_Summon_Bomb::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::SUMMON_LOOP, CPhantom_Summon_Loop::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::VANISH, CPhantom_Vanish::Create(this)))) return E_FAIL;
+
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+CPhantom* CPhantom::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+{
+	CPhantom* pInstance = new CPhantom(pDevice, pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Created : CPhantom");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+CGameObject* CPhantom::Clone(void* pArg)
+{
+	CPhantom* pInstance = new CPhantom(*this);
+
+	if (FAILED(pInstance->Initialize(pArg)))
+	{
+		MSG_BOX("Failed to Cloned : CPhantom");
+		Safe_Release(pInstance);
+	}
+	return pInstance;
+}
+
+void CPhantom::Free()
+{
+	__super::Free();
+}

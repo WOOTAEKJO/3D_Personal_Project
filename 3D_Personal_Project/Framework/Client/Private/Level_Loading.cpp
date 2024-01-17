@@ -7,6 +7,7 @@
 #include "Level_GamePlay.h"
 #include "Level_Tool.h"
 #include "Level_Boss1.h"
+#include "Level_Boss2.h"
 
 
 CLevel_Loading::CLevel_Loading(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -60,6 +61,9 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 				break;
 			case LEVEL_BOSS1:
 				pNewLevel = CLevel_Boss1::Create(m_pDevice, m_pContext);
+				break;
+			case LEVEL_BOSS2:
+				pNewLevel = CLevel_Boss2::Create(m_pDevice, m_pContext);
 				break;
 			}
 

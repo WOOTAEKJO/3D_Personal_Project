@@ -69,6 +69,9 @@ HRESULT CCollider::Initialize(void* pArg)
 	case CBounding::TYPE_SPHERE:
 		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
+	case CBounding::TYPE_RAY:
+		pBounding = CBounding_Ray::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
 	}
 	if (pBounding == nullptr)
 		return E_FAIL;
@@ -166,6 +169,9 @@ HRESULT CCollider::Add_Bounding(void* pArg)
 		break;
 	case CBounding::TYPE_SPHERE:
 		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
+	case CBounding::TYPE_RAY:
+		pBounding = CBounding_Ray::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
 	}
 	if (pBounding == nullptr)

@@ -50,7 +50,7 @@ protected:
 
 protected:
 	CCharacter*		m_pOwner = { nullptr };
-
+	CCharacter*		m_pTarget = { nullptr };
 protected:
 	_float			m_fTimeAcc = { 0.f };
 	_float			m_fLifeTime = { 0.f };

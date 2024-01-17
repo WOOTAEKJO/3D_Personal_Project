@@ -6,7 +6,7 @@ BEGIN(Engine)
 class CBounding abstract : public CBase
 {
 public:
-	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END };
+	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE,TYPE_RAY, TYPE_END };
 
 	typedef struct tagBounding_Desc
 	{

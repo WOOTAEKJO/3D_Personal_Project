@@ -32,7 +32,8 @@ public:
 
 public:
 	void	TargetLook();
-	_bool	Turn(_float fTimeDelta);
+	void	TargetLook_Y();
+	_bool	Turn(_float fTimeDelta,_bool bCheck = true);
 	_bool	Is_Target_Range(_float fRange);
 
 public:

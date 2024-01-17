@@ -50,9 +50,9 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
 
 void CImGuiMgr::Tick()
 {
-    if (!m_bCheck)
+    if (!m_bCheck && m_pGameInstance->Key_Pressing(DIK_SPACE))
     {
-        if (FAILED(Init_Model()))
+           if (FAILED(Init_Model()))
             return;
 
         m_bCheck = true;

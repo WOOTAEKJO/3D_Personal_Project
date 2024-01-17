@@ -48,6 +48,18 @@ void CCharacter_State::Translate(CTransform::STATE eType,_float fSpeed, _float f
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation, fTimeDelta);
 }
 
+void CCharacter_State::Translate_Simple(CTransform::STATE eType, _float fSpeed, _float fTimeDelta, _bool bTurn)
+{
+	_vector vDir = m_pOnwerTransform->Get_State(eType);
+	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
+		* (bTurn == false ? 1.f : -1.f);
+
+	if (std::isnan(vPos.m128_f32[0]))
+		return;
+
+	m_pOnwerTransform->Translate_Simple(vPos);
+}
+
 _bool CCharacter_State::Is_Attack_Time(_float fTimeDelta, _float fTime, CCollider* pOwnerCol)
 {
 	if (m_bAttack)

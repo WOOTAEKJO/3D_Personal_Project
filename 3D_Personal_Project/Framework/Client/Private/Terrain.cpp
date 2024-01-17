@@ -87,6 +87,8 @@ HRESULT CTerrain::Ready_Component()
 		strTerrainTag = BUFFER_TERRAIN_TAG;
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
 		strTerrainTag = BUFFER_TERRAIN2_TAG;
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		strTerrainTag = BUFFER_TERRAIN3_TAG;
 
 	if (FAILED(Add_Component<CShader>(SHADER_TERRAIN_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CVIBuffer_Terrain>(strTerrainTag, &m_pVIBufferCom))) return E_FAIL;

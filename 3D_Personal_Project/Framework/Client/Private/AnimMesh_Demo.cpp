@@ -36,6 +36,8 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
+	m_pModelCom->Set_AnimationIndex(3);
+
 	return S_OK;
 }
 

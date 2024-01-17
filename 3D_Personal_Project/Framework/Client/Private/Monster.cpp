@@ -85,14 +85,19 @@ void CMonster::TargetLook()
 	m_pTransformCom->LookAt_OnLand(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 }
 
-_bool CMonster::Turn(_float fTimeDelta)
+void CMonster::TargetLook_Y()
+{
+	m_pTransformCom->LookAt(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+}
+
+_bool CMonster::Turn(_float fTimeDelta, _bool bCheck)
 {
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
 
 	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
 
-	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f);
+	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f, bCheck);
 
 	//return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 5.f);
 }

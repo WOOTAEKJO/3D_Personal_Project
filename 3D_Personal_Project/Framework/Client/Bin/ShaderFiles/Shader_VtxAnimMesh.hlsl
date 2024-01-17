@@ -160,7 +160,20 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
 
-    pass NonCull_InvisibleModel
+    pass NonCul_Model
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MODEL();
+    }
+
+    pass NonCul_InvisibleModel
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);

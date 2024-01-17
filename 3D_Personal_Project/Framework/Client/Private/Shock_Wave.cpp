@@ -24,11 +24,6 @@ HRESULT CShock_Wave::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS) -
-		m_pOwner->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
-
-	XMStoreFloat3(&m_vLook, vLook);
-
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
@@ -44,13 +39,11 @@ void CShock_Wave::Priority_Tick(_float fTimeDelta)
 {
 	Update_MatWorlds(fTimeDelta);
 
-	//m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 	for (_uint i = 0; i < 20; i++)
 	{
 		m_pColliderCom->Update_Each(i, XMLoadFloat4x4(&m_matWorlds[i]));
 	}
 
-	//__super::Priority_Tick(fTimeDelta);
 }
 
 void CShock_Wave::Tick(_float fTimeDelta)
@@ -86,46 +79,23 @@ HRESULT CShock_Wave::Bind_ShaderResources()
 
 HRESULT CShock_Wave::Ready_Component()
 {
-	_float3 vCenter = _float3(0.f, m_fRadius, 0.f);
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
 	Sphere_Desc.bUseCol = true;
 	Sphere_Desc.fRadius = m_fRadius;
-	Sphere_Desc.vCenter = vCenter;
+	Sphere_Desc.vCenter = _float3(0.f, m_fRadius, 0.f);
 
 	Create_MatWorlds();
 
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 	for (_uint i = 1; i < 20; i++)
 	{
-		_matrix matRot = XMMatrixRotationY(XMConvertToRadians(18.f));
-		_vector vRotLook = XMVector3TransformNormal(XMLoadFloat3(&m_vLook), matRot);
-		
-		_vector vDir = (vRotLook) - (XMLoadFloat3(&m_vLook));
-		XMStoreFloat3(&m_vLook, vRotLook);
-
-		_vector vPos;
-		memcpy(&vPos, &m_matWorlds[i - 1].m[3], sizeof(_float4));
-		vPos += vDir;
-
-		memcpy(&m_matWorlds[i].m[3], &vPos, sizeof(_float4));
-
 		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
 
 	return S_OK;
-}
-
-void CShock_Wave::Toward(_float fTimeDelta)
-{
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-	_vector vLook = XMLoadFloat3(&m_vLook);
-
-	vPos = vPos + vLook * fTimeDelta * m_fSpeed;
-
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 }
 
 void CShock_Wave::Update_MatWorlds(_float fTimeDelta)
@@ -163,7 +133,7 @@ void CShock_Wave::Create_MatWorlds()
 			memcpy(&m_matWorlds[i].m[0], &vRight, sizeof(_float4));
 			memcpy(&m_matWorlds[i].m[1], &m_matWorlds[i - 1].m[1], sizeof(_float4));
 			memcpy(&m_matWorlds[i].m[2], &vLook, sizeof(_float4));
-
+			memcpy(&m_matWorlds[i].m[3], &m_matWorlds[0].m[3], sizeof(_float4));
 		}
 	}
 }

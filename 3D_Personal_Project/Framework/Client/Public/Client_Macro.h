@@ -19,6 +19,7 @@
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
 #define BUFFER_TERRAIN2_TAG			TEXT("Prototype_Component_VIBuffer_Terrain2")
+#define BUFFER_TERRAIN3_TAG			TEXT("Prototype_Component_VIBuffer_Terrain3")
 #define BUFFER_TERRAIN_HEIGHT_PATH	TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")
 
 #define BUFFER_DTERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_DTerrain")
@@ -61,6 +62,8 @@
 #define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
 
 #define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
+
+#define	ANIMMODEL_PHANTOM_TAG			TEXT("Prototype_Component_AnimModel_PhantomBoss")
 
 #pragma endregion
 
@@ -244,6 +247,7 @@
 #define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
 #define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navi")
 #define	COM_NAVIGATION2_TAG			TEXT("Prototype_Component_Navi2")
+#define	COM_NAVIGATION3_TAG			TEXT("Prototype_Component_Navi3")
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
 
@@ -297,6 +301,7 @@
 #define GO_NORMAL_BULLET_TAG			TEXT("Prototype_GameObject_NormalBullet")
 #define GO_RANGE_BULLET_TAG			TEXT("Prototype_GameObject_RangeBullet")
 #define GO_SHOCK_WAVE_TAG			TEXT("Prototype_GameObject_ShockWave")
+#define GO_LASER_TAG			TEXT("Prototype_GameObject_Laser")
 
 #pragma region Ä³¸¯ÅÍ
 

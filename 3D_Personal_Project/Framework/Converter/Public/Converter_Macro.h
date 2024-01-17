@@ -74,6 +74,9 @@
 #define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
 #define	ANIMMODEL_OWL_PATH			"../Bin/Resources/Models/AnimModel/Owl/Owl.fbx"
 
+#define	ANIMMODEL_PHANTOM_TAG				TEXT("Prototype_Component_AnimModel_PhantomBoss")
+#define	ANIMMODEL_PHANTOM_PATH			"../Bin/Resources/Models/AnimModel/PhantomBoss/PhantomBoss.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

@@ -271,6 +271,9 @@
     <Filter Include="01.Utility\02.GameObjects\01. Camera\00. Camera_Manager">
       <UniqueIdentifier>{aa50471e-00dd-4b1a-aeeb-3127ff86ef92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\03. Ray">
+      <UniqueIdentifier>{8329ae8d-66f2-4ffe-af38-302a0601030e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -531,6 +534,9 @@
     <ClInclude Include="..\Public\Camera_Manager.h">
       <Filter>01.Utility\02.GameObjects\01. Camera\00. Camera_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Bounding_Ray.h">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\03. Ray</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -769,6 +775,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Manager.cpp">
       <Filter>01.Utility\02.GameObjects\01. Camera\00. Camera_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bounding_Ray.cpp">
+      <Filter>01.Utility\03. Component\06. Collider\00.Bounding\03. Ray</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

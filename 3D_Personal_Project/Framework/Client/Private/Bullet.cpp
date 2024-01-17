@@ -35,16 +35,12 @@ HRESULT CBullet::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(BulletDesc)))
 		return E_FAIL;
 
-	/*if (FAILED(CBullet::Ready_Component()))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
-		return E_FAIL;*/
-
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, BulletDesc->fStartPos);
 
 	if (BulletDesc->pTarget != nullptr)
 	{
+		m_pTarget = BulletDesc->pTarget;
+
 		_vector vTargetPos = BulletDesc->pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
 		XMStoreFloat4(&m_vTargetPos, vTargetPos);
 

@@ -45,6 +45,9 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	m_vOffset = m_vOriginOffset;
 	m_fLookAt_Height = m_fOriginLookAt_Height;
 
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		m_vOffset = _float3(-1.5f, -0.5f, -1.5f);
+
 	_vector vPos,vDir;
 	vPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
 	vDir = XMVector4Normalize(m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK));

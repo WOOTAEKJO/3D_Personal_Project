@@ -92,7 +92,7 @@ _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _f
 void	CAnimation::Set_ReStart()
 {
 	//m_bFinished = false;
-	//m_fTrackPosition = 0.f;
+	m_fTrackPosition = 0.f;
 	m_bFinished = false;
 	/*if (m_fTrackPosition >= m_fDuration)
 	{

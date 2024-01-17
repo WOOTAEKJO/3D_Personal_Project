@@ -25,7 +25,6 @@ private:
 	HRESULT	Ready_Component();
 
 private:
-	void	Toward(_float fTimeDelta);
 	void	Update_MatWorlds(_float fTimeDelta);
 	void	Create_MatWorlds();
 
