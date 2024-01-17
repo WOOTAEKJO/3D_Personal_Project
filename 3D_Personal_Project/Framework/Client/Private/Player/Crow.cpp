@@ -77,6 +77,10 @@ void CCrow::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
+		return;
+
 	CNPC::Late_Tick(fTimeDelta);
 	
 }
@@ -100,9 +104,6 @@ HRESULT CCrow::Render()
 		m_pModelCom->Render(i);
 	}
 
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
 
 	return S_OK;
 }

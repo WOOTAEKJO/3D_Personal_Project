@@ -507,7 +507,9 @@ void CTerrain_Window::Sphere_Render()
 	if (m_vecSphere.empty())
 		return;
 
-	_float4 vColor(1.f, 0.f, 1.f, 0.f);
+	/*m_pContext->GSSetShader(nullptr, nullptr, 0);
+
+	m_pBatch->Begin();
 
 	m_pEffect->SetWorld(XMMatrixIdentity());
 	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::VIEW));
@@ -517,7 +519,25 @@ void CTerrain_Window::Sphere_Render()
 
 	m_pEffect->Apply(m_pContext);
 
+	for (auto& iter : m_vecBounding)
+		if (FAILED(iter->Render(m_pBatch, m_bCollision == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f))))
+			return E_FAIL;
+
+	m_pBatch->End();*/
+
+	_float4 vColor(1.f, 0.f, 1.f, 0.f);
+
+	m_pContext->GSSetShader(nullptr, nullptr, 0);
+
 	m_pBatch->Begin();
+
+	m_pEffect->SetWorld(XMMatrixIdentity());
+	m_pEffect->SetView(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::VIEW));
+	m_pEffect->SetProjection(m_pGameInstance->Get_Transform_Matrix(CPipeLine::TRANSFORMSTATE::PROJ));
+
+	m_pContext->IASetInputLayout(m_pInputLayout);
+
+	m_pEffect->Apply(m_pContext);
 
 	for (auto& iter : m_vecSphere)
 	{

@@ -51,6 +51,8 @@ void CCharacter::Tick(_float fTimeDelta)
 void CCharacter::Late_Tick(_float fTimeDelta)
 {	
 	CGameObject::Late_Tick(fTimeDelta);
+
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
 }
 
 HRESULT CCharacter::Render()
@@ -68,11 +70,6 @@ HRESULT CCharacter::Render()
 
 		m_pModelCom->Render(i);
 	}
-
-#ifdef _DEBUG
-	//m_pNavigationCom->Render();
-	m_pColliderCom->Render();
-#endif
 
 	return S_OK;
 }

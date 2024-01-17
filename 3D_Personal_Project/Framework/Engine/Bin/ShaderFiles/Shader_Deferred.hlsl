@@ -14,8 +14,10 @@ float		g_fLightRange;
 
 vector		g_vLightDiffuse;
 vector		g_vLightAmbient;
+vector      g_vLightSpecular;
 
 vector		g_vMtrlAmbient = vector(1.f,1.f,1.f,1.f);
+vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 // 객체마다 ambient를 만들지 말고 다 공유해서 사용
 
 vector		g_vCameraPos;
@@ -91,8 +93,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT(PS_IN In)
     float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
     // 원래 노멀 벡터 값으로 돌려준다.
     
-    Out.vShade = g_vLightDiffuse * min(max(dot(normalize(g_vLightDir) * -1.f, vNormal), 0.f)
-    + (g_vLightAmbient * g_vMtrlAmbient), 1.f);
+    Out.vShade = g_vLightDiffuse * min((max(dot(normalize(g_vLightDir) * -1.f, vNormal), 0.f)
+    + (g_vLightAmbient * g_vMtrlAmbient)), 1.f);
     // 원래 빛의 색에 빛 세기를 곱해주고 명암이 무조건 0이 나오지 않게 하기 위해 Ambient 값을 더해준다.
     // 내적한 값이 음수가 나오면 0값으로 만든다.
     // 총 빛 세기가 1이 넘지 않게 만들어준다.
@@ -123,7 +125,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT(PS_IN In)
     vector vReflect = reflect(normalize(g_vLightDir), normalize(vNormal));
     // 반사벡터
     
-    Out.vSpecular = pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) *
+    pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
 	
     return Out;
 }
@@ -149,7 +152,7 @@ technique11 DefaultTechnique
 	pass Default
 	{
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
@@ -162,7 +165,7 @@ technique11 DefaultTechnique
     pass Light_Dir
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Blend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -175,7 +178,7 @@ technique11 DefaultTechnique
     pass Light_Point
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Blend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -188,7 +191,7 @@ technique11 DefaultTechnique
     pass Final
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_None, 0);
         SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN();

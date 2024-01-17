@@ -54,6 +54,8 @@ void CAnimMesh_Demo::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom)))
+		return;
 }
 
 HRESULT CAnimMesh_Demo::Render()
@@ -77,8 +79,6 @@ HRESULT CAnimMesh_Demo::Render()
 
 		m_pModelCom->Render(i);
 	}
-
-	m_pNavigationCom->Render();
 
 	return S_OK;
 }

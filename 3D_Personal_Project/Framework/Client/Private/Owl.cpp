@@ -87,10 +87,6 @@ HRESULT COwl::Render()
 		m_pModelCom->Render(i);
 	}
 
-#ifdef _DEBUG
-	//m_pColliderCom->Render();
-#endif
-
 	return S_OK;
 }
 

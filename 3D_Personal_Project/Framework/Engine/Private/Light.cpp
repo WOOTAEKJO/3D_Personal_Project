@@ -39,6 +39,8 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 		return E_FAIL;
 	if (FAILED(pShader->Bind_RawValue("g_vLightAmbient", &m_eLight_Desc.vAmbient, sizeof(_float4))))
 		return E_FAIL;
+	if (FAILED(pShader->Bind_RawValue("g_vLightSpecular", &m_eLight_Desc.vSpecular, sizeof(_float4))))
+		return E_FAIL;
 
 	pShader->Begin(iPassIndx);
 

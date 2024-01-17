@@ -88,6 +88,8 @@ void CSpooketon::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pWeaponColliderCom)))
+		return;
 
 	if (m_Status_Desc.iCurHP <= 0)
 		Set_Dead();
@@ -100,11 +102,6 @@ HRESULT CSpooketon::Render()
 
 	if (FAILED(CMonster::Render()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-	m_pWeaponColliderCom->Render();
-#endif
-
 
 	return S_OK;
 }

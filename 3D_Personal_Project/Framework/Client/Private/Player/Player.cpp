@@ -111,8 +111,8 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	/*if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
-	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;*/
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
 
 	CCharacter::Late_Tick(fTimeDelta);
 }
@@ -121,11 +121,6 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-	
-#ifdef _DEBUG
-	m_pNavigationCom->Render();
-	m_pColliderCom->Render();
-#endif
 
 	return S_OK;
 }
