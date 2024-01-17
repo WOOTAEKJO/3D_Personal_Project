@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CGameInstance;
 class CShader;
 class CVIBuffer_Rect;
+class CComponent;
 
 class CRenderer final : public CBase
 {
@@ -19,6 +20,7 @@ private:
 public:
 	HRESULT	Initialize();
 	HRESULT	Add_RenderGroup(RENDERGROUP eRenderID, class CGameObject* pGameObject);
+	HRESULT	Add_DebugRender(CComponent* pComponent);
 	HRESULT	Draw_RenderGroup();
 private:
 	ID3D11Device* m_pDevice = { nullptr };
@@ -37,6 +39,13 @@ private:
 private:
 	_float4x4					m_matWorld;
 	_float4x4					m_matView, m_matProj;
+
+#ifdef _DEBUG
+private:
+	list<CComponent*>			m_listComponent;
+#endif 
+
+
 
 private:
 	HRESULT Render_Priority();

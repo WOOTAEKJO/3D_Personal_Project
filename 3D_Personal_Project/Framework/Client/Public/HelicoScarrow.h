@@ -32,6 +32,7 @@ public:
 	void	Dead_CountDown();
 
 	void	Creat_Bullet();
+	void	Create_Shock_Wave();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;

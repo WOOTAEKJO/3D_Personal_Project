@@ -373,6 +373,9 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\00.Common\00. Spear_AirAttack\00. RangeCol">
       <UniqueIdentifier>{1cdbf9ae-535e-4837-8851-0d8da367c688}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\02. Shock_Wave">
+      <UniqueIdentifier>{dfa29cbe-1849-44c6-baf7-c65f98eb9f02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -696,6 +699,9 @@
     <ClInclude Include="..\Public\Helico_Bullet.h">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Shock_Wave.h">
+      <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -991,6 +997,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Helico_Bullet.cpp">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shock_Wave.cpp">
+      <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

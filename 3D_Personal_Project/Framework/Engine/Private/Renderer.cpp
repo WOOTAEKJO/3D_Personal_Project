@@ -82,6 +82,18 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject* pGameObje
 	return S_OK;
 }
 
+HRESULT CRenderer::Add_DebugRender(CComponent* pComponent)
+{
+	if (pComponent == nullptr)
+		return E_FAIL;
+
+	m_listComponent.push_back(pComponent);
+
+	Safe_AddRef(pComponent);
+
+	return S_OK;
+}
+
 HRESULT CRenderer::Draw_RenderGroup()
 {
 	if (FAILED(Render_Priority()))
@@ -107,8 +119,8 @@ HRESULT CRenderer::Draw_RenderGroup()
 
 #ifdef _DEBUG
 
-	/*if (FAILED(Render_Debug()))
-		return E_FAIL;*/
+	if (FAILED(Render_Debug()))
+		return E_FAIL;
 
 #endif
 
@@ -262,10 +274,18 @@ HRESULT CRenderer::Render_Debug()
 	if (FAILED(m_pShader->Bind_Matrix("g_matProj", &m_matProj)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObject"), m_pShader, m_pBufferCom)))
+
+	for (auto& iter : m_listComponent)
+	{
+		iter->Render();
+		Safe_Release(iter);
+	}
+	m_listComponent.clear();
+
+	/*if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObject"), m_pShader, m_pBufferCom)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pBufferCom)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -316,6 +336,10 @@ CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 void CRenderer::Free()
 {
+	for (auto& iter : m_listComponent)
+		Safe_Release(iter);
+	m_listComponent.clear();
+
 	Safe_Release(m_pShader);
 	Safe_Release(m_pBufferCom);
 

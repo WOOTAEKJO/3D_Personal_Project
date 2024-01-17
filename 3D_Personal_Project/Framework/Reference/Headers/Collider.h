@@ -19,8 +19,9 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 
 	void	Update(_fmatrix	matWorld);
+	void	Update_Each(_uint iBoundingIdx,_fmatrix	matWorld);
 #ifdef _DEBUG
-	HRESULT	Render();
+	virtual HRESULT	Render() override;
 #endif
 
 	_bool	Collision(class CCollider* pTargetCollider);

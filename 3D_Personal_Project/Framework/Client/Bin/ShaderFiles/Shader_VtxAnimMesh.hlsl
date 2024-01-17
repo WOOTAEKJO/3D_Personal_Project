@@ -52,7 +52,7 @@ VS_OUT VS_MAIN(VS_IN In)
     matWVP = mul(matWV, g_matProj);
 
 	Out.vPosition = mul(vPosition, matWVP);
-    Out.vNormal = mul(vNormal, g_matWorld);
+    Out.vNormal = normalize(mul(vNormal, g_matWorld));
 	Out.vWorldPos = mul(float4(In.vPosition, 1.f),g_matWorld);
     Out.vProjPos = Out.vPosition;
 	Out.vTexCoord = In.vTexCoord;

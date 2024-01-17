@@ -270,6 +270,7 @@
     <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
     <ClInclude Include="..\Public\Range_Bullet.h" />
+    <ClInclude Include="..\Public\Shock_Wave.h" />
     <ClInclude Include="..\Public\SkullCrossBow.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Spooketon.h" />
@@ -372,6 +373,7 @@
     <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
     <ClCompile Include="..\Private\Range_Bullet.cpp" />
+    <ClCompile Include="..\Private\Shock_Wave.cpp" />
     <ClCompile Include="..\Private\SkullCrossBow.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Spooketon.cpp" />

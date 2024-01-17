@@ -35,7 +35,7 @@ _uint CHelico_Attack::State_Tick(_float fTimeDelta)
 
 	//_float ff = m_pOwnerModel->CurAnim_Get_Duration(CHelicoScarrow::STATE::HELICO_ATTACK);
 
-	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CHelicoScarrow::STATE::HELICO_ATTACK, 90.f))
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CHelicoScarrow::STATE::HELICO_ATTACK, 70.f))
 	{
 
 		if (m_pOwnerCollider->Get_Collision())

@@ -25,6 +25,7 @@ public:
 	
 private:
 	_uint			m_iCount = { 0 };
+	_bool			m_bAttack = { true };
 
 public:
 	static	CHelico_Ground_Smash* Create(CGameObject* pGameObject);

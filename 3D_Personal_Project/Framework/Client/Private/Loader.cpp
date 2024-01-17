@@ -37,6 +37,7 @@
 
 #include "HelicoScarrow.h"
 #include "Helico_Bullet.h"
+#include "Shock_Wave.h"
 
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -361,6 +362,7 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(ANIMMODEL_SPOOKETON_TAG))) return E_FAIL;*/
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelicoScarrow>(ANIMMODEL_HELICOSCARROW_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelico_Bullet>(MODEL_HELICOBULLET_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

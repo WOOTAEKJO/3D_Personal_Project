@@ -20,6 +20,10 @@ public: /* 임시. 정쌤 방식은 아직 배우지 않은 상태에서 사용*/
 	virtual void	Tick(_float fTimeDelta) {};
 	virtual void	Late_Tick(_float fTimeDelta) {};
 
+#ifdef _DEBUG
+	virtual HRESULT	Render() { return S_OK; }
+#endif
+
 public:
 	wstring	Get_ClassName() { return m_strClassName; }
 	void	Set_ClassName(wstring strName) { m_strClassName = strName; }

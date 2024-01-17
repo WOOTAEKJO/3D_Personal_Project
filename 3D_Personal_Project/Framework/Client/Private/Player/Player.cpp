@@ -106,10 +106,13 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 		iter.second->Late_Tick(fTimeDelta);
 	}
 
+	NextAttackID();
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	NextAttackID();
+	/*if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;*/
 
 	CCharacter::Late_Tick(fTimeDelta);
 }

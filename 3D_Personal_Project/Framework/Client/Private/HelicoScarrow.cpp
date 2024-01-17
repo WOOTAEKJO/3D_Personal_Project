@@ -17,6 +17,7 @@
 #include "Bone.h"
 
 #include "Helico_Bullet.h"
+#include "Shock_Wave.h"
 
 
 
@@ -210,6 +211,30 @@ void CHelicoScarrow::Creat_Bullet()
 		MODEL_HELICOBULLET_TAG, &BulletDesc)))
 		return;
 		
+}
+
+void CHelicoScarrow::Create_Shock_Wave()
+{
+	CShock_Wave::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fLifeTime = 0.9f;
+	BulletDesc.fSpeed = 2.f;
+	BulletDesc.pTarget = nullptr;
+	
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vLook = XMVector3Normalize( m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
+
+	vPos = vPos + vLook * 0.1f;
+
+	vPos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y;
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_SHOCK_WAVE_TAG, &BulletDesc)))
+		return;
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)

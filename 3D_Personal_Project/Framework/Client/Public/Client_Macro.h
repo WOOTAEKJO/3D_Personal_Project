@@ -230,7 +230,7 @@
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
 #define	MODEL_SHOVEL_TAG		TEXT("Prototype_Component_Sub_Shovel")
 
-#define	MODEL_HELICOBULLET_TAG			TEXT("Prototype_Component_Model_HelicoBullet")
+#define	MODEL_HELICOBULLET_TAG	TEXT("Prototype_Component_Model_HelicoBullet")
 
 #pragma endregion
 
@@ -296,6 +296,7 @@
 
 #define GO_NORMAL_BULLET_TAG			TEXT("Prototype_GameObject_NormalBullet")
 #define GO_RANGE_BULLET_TAG			TEXT("Prototype_GameObject_RangeBullet")
+#define GO_SHOCK_WAVE_TAG			TEXT("Prototype_GameObject_ShockWave")
 
 #pragma region Ä³¸¯ÅÍ
 

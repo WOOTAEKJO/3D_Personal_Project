@@ -43,6 +43,7 @@ void CTerrain::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	//m_pGameInstance->Add_DebugRender(m_pNavigationCom);
 }
 
 HRESULT CTerrain::Render()

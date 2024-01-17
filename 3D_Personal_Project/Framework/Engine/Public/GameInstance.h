@@ -78,6 +78,7 @@ public: /* For.Object_Manager */
 
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
+	HRESULT	Add_DebugRender(CComponent* pComponent);
 
 public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);

@@ -22,7 +22,9 @@ private:
 public:
 	virtual	HRESULT	Initialize_ProtoType(NAVITYPE eType,const _char* strNavigationPath);
 	virtual	HRESULT	Initialize(void* pArg) override;
-	virtual	HRESULT	Render();
+#ifdef _DEBUG
+	virtual HRESULT	Render() override;
+#endif
 
 public:
 	void	Update(_float4x4 matWorld);

@@ -27,6 +27,11 @@ HRESULT CHelico_Bullet::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	BULLET_DESC* BulletDesc = (BULLET_DESC*)pArg;
+
+	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -122,8 +127,9 @@ HRESULT CHelico_Bullet::Bind_ShaderResources()
 
 HRESULT CHelico_Bullet::Ready_Component()
 {
-	/*if (FAILED(CBullet::Ready_Component()))
-		return E_FAIL;*/
+	if (FAILED(CBullet::Ready_Component()))
+		return E_FAIL;
+
 
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(MODEL_HELICOBULLET_TAG, &m_pModelCom))) return E_FAIL;

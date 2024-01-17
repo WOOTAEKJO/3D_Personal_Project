@@ -92,6 +92,18 @@ void CCollider::Update(_fmatrix matWorld)
 		iter->Update(matWorld);
 }
 
+void CCollider::Update_Each(_uint iBoundingIdx, _fmatrix matWorld)
+{
+	if (m_vecBounding.empty())
+		return;
+
+	if (iBoundingIdx >= m_vecBounding.size())
+		return;
+
+	m_vecBounding[iBoundingIdx]->Update(matWorld);
+	
+}
+
 #ifdef _DEBUG
 
 HRESULT CCollider::Render()

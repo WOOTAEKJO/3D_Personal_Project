@@ -24,6 +24,14 @@ HRESULT CRange_Bullet::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
+	BULLET_DESC* BulletDesc = (BULLET_DESC*)pArg;
+
+	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

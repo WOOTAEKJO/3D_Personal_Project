@@ -35,11 +35,11 @@ HRESULT CBullet::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(BulletDesc)))
 		return E_FAIL;
 
-	if (FAILED(CBullet::Ready_Component()))
+	/*if (FAILED(CBullet::Ready_Component()))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, BulletDesc->fStartPos);
 
@@ -70,6 +70,8 @@ void CBullet::Tick(_float fTimeDelta)
 
 void CBullet::Late_Tick(_float fTimeDelta)
 {
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
 
 	CGameObject::Late_Tick(fTimeDelta);
 }

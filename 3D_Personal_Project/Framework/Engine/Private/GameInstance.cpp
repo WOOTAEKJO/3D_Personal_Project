@@ -369,6 +369,14 @@ HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameOb
 	return m_pRenderer->Add_RenderGroup(eRenderID, pGameObject);
 }
 
+HRESULT CGameInstance::Add_DebugRender(CComponent* pComponent)
+{
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	return m_pRenderer->Add_DebugRender(pComponent);
+}
+
 HRESULT CGameInstance::Add_Event(const wstring& strEventTag, function<void()> pFunction)
 {
 	if (nullptr == m_pEvent_Manager)
