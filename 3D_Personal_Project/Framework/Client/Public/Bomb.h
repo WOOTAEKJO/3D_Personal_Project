@@ -22,6 +22,15 @@ public:
 	void	Set_TartgetPos(_float4 vTargetPos);
 	void	Set_Start(_bool bCheck) { m_bStart = bCheck; }
 
+	void	Host_Bite();
+
+	_bool	Is_Failed() { return m_bFailed; }
+
+public:
+	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
+	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
+
 private:
 	CModel* m_pModelCom = { nullptr };
 
@@ -31,6 +40,11 @@ private:
 	_bool		m_bArrive = { true };
 	_bool		m_bStart = { false };
 	_bool		m_bFall = {false};
+
+	_float		m_fPower = { 15.f };
+
+	_bool		m_bFailed = { false };
+	_bool		m_bBite = { false };
 
 private:
 	HRESULT	Bind_ShaderResources();

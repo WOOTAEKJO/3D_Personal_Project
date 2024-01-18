@@ -43,6 +43,8 @@
 #include "Laser.h"
 #include "Multiply.h"
 #include "Bomb.h"
+#include "Target_Bullet.h"
+#include "Meteor.h"
 
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -443,10 +445,10 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CLaser>(GO_LASER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CMultiply>(GO_MULTIPLY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CBomb>(GO_BOMB_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTarget_Bullet>(GO_TARGETBULLET_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CMeteor>(GO_METEOR_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPhantom>(ANIMMODEL_PHANTOM_TAG))) return E_FAIL;
-
-	
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

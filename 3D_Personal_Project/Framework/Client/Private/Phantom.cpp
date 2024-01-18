@@ -6,6 +6,8 @@
 #include "Shock_Wave.h"
 #include "Laser.h"
 #include "Bomb.h"
+#include "Target_Bullet.h"
+#include "Meteor.h"
 
 #include "Phantom_Attaque_Chasse.h"
 #include "Phantom_Chasse.h"
@@ -73,7 +75,10 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 	SetUp_Random_Pos();
 
-	m_eCurrentPhase = PHASE::PAHSE1;
+	//m_eCurrentPhase = PHASE::PAHSE1;
+	m_eCurrentPhase = PHASE::PAHSE2;
+	m_iHitCount = 3;
+	
 
 	return S_OK;
 }
@@ -133,6 +138,11 @@ HRESULT CPhantom::Render()
 	}
 
 	return S_OK;
+}
+
+_uint CPhantom::Get_PrevState()
+{
+	return m_pStateMachineCom->Get_PrevID();
 }
 
 void CPhantom::Load_FromJson(const json& In_Json)
@@ -206,7 +216,7 @@ void CPhantom::Delete_Laser()
 		return;
 
 	dynamic_cast<CLaser*>(m_pLaser)->Set_Dead();
-	m_pLaser == nullptr;
+	m_pLaser = nullptr;
 }
 
 void CPhantom::Create_Multiply()
@@ -264,7 +274,7 @@ void CPhantom::SetUp_Random_Pos()
 	}
 
 	/* 5 ~ 9*/
-	fStartXZ = _float2(17.6f, 13.6);
+	fStartXZ = _float2(17.6f, 13.6f);
 	for (_uint i = 0; i < 5; i++)
 	{
 		m_vRandomPos[i + 5].x = i * fSign + fStartXZ.x + 1;
@@ -273,7 +283,7 @@ void CPhantom::SetUp_Random_Pos()
 	}
 
 	/* 10 ~ 14*/
-	fStartXZ = _float2(21.6f, 19.6);
+	fStartXZ = _float2(21.6f, 19.6f);
 	for (_uint i = 0; i < 5; i++)
 	{
 		m_vRandomPos[i + 10].x = i * -fSign + fStartXZ.x + 1;
@@ -282,7 +292,7 @@ void CPhantom::SetUp_Random_Pos()
 	}
 
 	/* 15 ~ 19*/
-	fStartXZ = _float2(15.6, 23.6);
+	fStartXZ = _float2(15.6f, 23.6f);
 	for (_uint i = 0; i < 5; i++)
 	{
 		m_vRandomPos[i + 15].x = i * -fSign + fStartXZ.x -1;
@@ -340,6 +350,10 @@ void CPhantom::Modify_Pos(_float3 vPos)
 void CPhantom::Appear_PlayerPos()
 {
 	_vector vPlayerPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
+	_vector vPlayerLook = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_LOOK);
+
+	vPlayerPos += XMVector3Normalize(vPlayerLook) * 2.f;
+	vPlayerPos.m128_f32[1] = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS).m128_f32[1];
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPlayerPos);
 	TargetLook();
 }
@@ -348,11 +362,11 @@ void CPhantom::Create_Bomb()
 {
 	CBomb::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
-	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_PLAYER_BULLET;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_TRIGGER_BULLET;
 	BulletDesc.fRadius = 0.3f;
 	BulletDesc.fLifeTime = 0.f;
 	BulletDesc.fSpeed =5.f;
-	BulletDesc.pTarget = nullptr;
+	BulletDesc.pTarget = m_pPlayer;
 
 	for (_uint i = 0; i < 3; i++)
 	{
@@ -373,16 +387,117 @@ void CPhantom::Start_Point_Toward_Bomb()
 {
 	for (_uint i = 0; i < 3; i++)
 	{
-		if (m_pBomb[i] != nullptr)
+		if (m_pBomb[i] != nullptr || !m_pBomb[i]->Get_Dead())
 		{
 			dynamic_cast<CBomb*>(m_pBomb[i])->Set_Start(true);
 		}
 	}
 }
 
+void CPhantom::Delete_Bomb()
+{
+	for (_uint i = 0; i < 3; i++)
+	{
+		if (m_pBomb[i] != nullptr || !m_pBomb[i]->Get_Dead())
+		{
+			dynamic_cast<CBomb*>(m_pBomb[i])->Set_Dead();
+		}
+	}
+}
+
+_bool CPhantom::Is_Bomb_Failed()
+{
+	for (_uint i = 0; i < 3; i++)
+	{
+		if (m_pBomb[i] != nullptr || !m_pBomb[i]->Get_Dead()) {
+			if (!dynamic_cast<CBomb*>(m_pBomb[i])->Is_Failed())
+			{
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void CPhantom::Create_TargetBullet()
+{
+	CTarget_Bullet::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.2f;
+	BulletDesc.fLifeTime = 0.9f;
+	BulletDesc.fSpeed = 10.f;
+	BulletDesc.pTarget = m_pPlayer;
+
+	// 손 뼈 정보 찾아서 위치 주기
+
+	CBone* pBone = m_pModelCom->Get_Bone(24);
+
+	_matrix matWorld = pBone->Get_CombinedTransformationMatrix() *
+		m_pTransformCom->Get_WorldMatrix_Matrix();
+
+	_vector vBonePos;
+
+	memcpy(&vBonePos, &matWorld.r[3], sizeof(_float4));
+
+	XMStoreFloat4(&BulletDesc.fStartPos, vBonePos);
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_TARGETBULLET_TAG, &BulletDesc)))
+		return;
+}
+
+void CPhantom::Add_Hit_Count()
+{
+	m_iHitCount += 1;
+}
+
+_bool CPhantom::Judge_Hit()
+{
+	if (m_iHitCount >= 2 && m_eCurrentPhase == PHASE::PAHSE1)
+		m_eCurrentPhase = PHASE::PAHSE2;
+	else if (m_iHitCount >= 4 && m_eCurrentPhase == PHASE::PAHSE2)
+		return true;
+
+	return false;
+}
+
+void CPhantom::Create_Meteor()
+{
+	CMeteor::BULLET_DESC BulletDesc = {};
+	BulletDesc.pOwner = this;
+	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
+	BulletDesc.fRadius = 0.2f;
+	BulletDesc.fLifeTime = 0.9f;
+	BulletDesc.fSpeed = 7.f;
+	BulletDesc.pTarget = m_pPlayer;
+
+	_float fX = Random({ -1.f,-0.7f,-0.5f,-0.3f,-0.2f,-0.1f,0.f,0.1f,0.2f,0.3f,0.5f,0.7f,1.f});
+	_float fZ = Random({ -1.f,-0.7f,-0.5f,-0.3f,-0.2f,-0.1f,0.f,0.1f,0.2f,0.3f,0.5f,0.7f,1.f });
+
+	_float4 vPos;
+	XMStoreFloat4(&vPos, m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+	vPos.x += fX;
+	vPos.y = 10.f;
+	vPos.z += fZ;
+	vPos.w = 1.f;
+
+	BulletDesc.fStartPos = vPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
+		GO_METEOR_TAG, &BulletDesc)))
+		return;
+}
+
 void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_TRIGGER_BULLET)
+	{
+		Delete_Bomb();
+	}
 }
 
 void CPhantom::OnCollisionStay(CCollider* pCollider, _uint iColID)

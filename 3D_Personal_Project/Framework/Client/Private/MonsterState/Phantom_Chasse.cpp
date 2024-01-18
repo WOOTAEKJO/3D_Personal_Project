@@ -38,7 +38,7 @@ _uint CPhantom_Chasse::State_Tick(_float fTimeDelta)
 
 	m_pOwner->TargetLook();
 	
-	Translate_Simple(CTransform::STATE::STATE_LOOK,1.f, fTimeDelta);
+	Translate_Simple(CTransform::STATE::STATE_LOOK,2.f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

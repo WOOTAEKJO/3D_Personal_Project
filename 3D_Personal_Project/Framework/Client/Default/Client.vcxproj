@@ -220,6 +220,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MainApp.h" />
     <ClInclude Include="..\Public\Mark.h" />
+    <ClInclude Include="..\Public\Meteor.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\MonsterState\Helico_Attack.h" />
     <ClInclude Include="..\Public\MonsterState\Helico_Attack_End.h" />
@@ -298,6 +299,7 @@
     <ClInclude Include="..\Public\Spooketon.h" />
     <ClInclude Include="..\Public\SubObject_Demo.h" />
     <ClInclude Include="..\Public\TargetCamera.h" />
+    <ClInclude Include="..\Public\Target_Bullet.h" />
     <ClInclude Include="..\Public\Terrain.h" />
     <ClInclude Include="..\Public\Terrain_Demo.h" />
     <ClInclude Include="..\Public\Terrain_Window.h" />
@@ -345,6 +347,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MainApp.cpp" />
     <ClCompile Include="..\Private\Mark.cpp" />
+    <ClCompile Include="..\Private\Meteor.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterState\Helico_Attack.cpp" />
     <ClCompile Include="..\Private\MonsterState\Helico_Attack_End.cpp" />
@@ -423,6 +426,7 @@
     <ClCompile Include="..\Private\Spooketon.cpp" />
     <ClCompile Include="..\Private\SubObject_Demo.cpp" />
     <ClCompile Include="..\Private\TargetCamera.cpp" />
+    <ClCompile Include="..\Private\Target_Bullet.cpp" />
     <ClCompile Include="..\Private\Terrain.cpp" />
     <ClCompile Include="..\Private\Terrain_Demo.cpp" />
     <ClCompile Include="..\Private\Terrain_Window.cpp" />

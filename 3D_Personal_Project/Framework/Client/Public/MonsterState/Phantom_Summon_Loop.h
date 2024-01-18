@@ -21,6 +21,9 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 
+private:
+	_uint	m_iCount = { 0 };
+
 public:
 	static	CPhantom_Summon_Loop* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;

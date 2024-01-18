@@ -32,6 +32,7 @@ HRESULT CBomb::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
 		return E_FAIL;
 
+	
 
 	return S_OK;
 }
@@ -56,7 +57,7 @@ void CBomb::Tick(_float fTimeDelta)
 	if (m_bFall && m_pTransformCom->Get_State(CTransform::STATE::STATE_POS).m128_f32[1] <= m_vTargetPos.y)
 	{
 		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-		vPos.m128_f32[1] = 7.2f;
+		vPos.m128_f32[1] = (m_bBite == true ? 0.f : m_vTargetPos.y + 0.2f);
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 		m_pTransformCom->Set_Ground(true);
 		m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_VELOCITY);
@@ -110,9 +111,10 @@ void CBomb::Start_Point_Toward(_float fTimeDelta)
 {
 	if (m_bForce)
 	{
+		m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetPos));
 		m_pTransformCom->Set_Ground(false);
 
-		m_pRigidBodyCom->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), 15.f, CRigidBody::TYPE_VELOCITY);
+		m_pRigidBodyCom->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), m_fPower, CRigidBody::TYPE_VELOCITY);
 		m_bForce = false;
 	}
 
@@ -123,12 +125,51 @@ void CBomb::Start_Point_Toward(_float fTimeDelta)
 	vPos = vPos + vDir * fTimeDelta * m_fSpeed;
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
-	m_pTransformCom->LookAt(XMLoadFloat4(&m_vTargetPos));
+	
 }
 
 void CBomb::Set_TartgetPos(_float4 vTargetPos)
 {
 	m_vTargetPos = vTargetPos;
+}
+
+void CBomb::Host_Bite()
+{
+	//XMStoreFloat4(&m_vTargetPos,m_pOwner->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
+	_vector vOwnerPos = m_pOwner->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	_vector vDir = vOwnerPos - vPos;
+	_float fLength = XMVectorGetX(XMVector3Length(vDir));
+
+	_vector vPlayerPos = m_pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+	_vector vLook = vPos - vPlayerPos;
+	vPos = vPos + XMVector3Normalize(vLook) * fLength;
+	//vPos.m128_f32[1] = 0.f;
+	XMStoreFloat4(&m_vTargetPos, vPos);
+
+	m_bStart = true;
+	m_bForce = true;
+	m_bBite = true;
+	m_fSpeed = 7.f;
+}
+
+void CBomb::OnCollisionEnter(CCollider* pCollider, _uint iColID)
+{
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET)
+	{
+		Host_Bite();
+
+		m_bFailed = true;
+	}
+
+}
+
+void CBomb::OnCollisionStay(CCollider* pCollider, _uint iColID)
+{
+}
+
+void CBomb::OnCollisionExit(CCollider* pCollider, _uint iColID)
+{
 }
 
 HRESULT CBomb::Bind_ShaderResources()

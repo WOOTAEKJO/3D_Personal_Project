@@ -23,6 +23,7 @@ public:
 
 private:
 	_bool	m_bTrans = { true };
+	_bool	m_bSummonMeteor = { false };
 
 public:
 	static	CPhantom_Appear* Create(CGameObject* pGameObject);

@@ -2,7 +2,7 @@
 #include "..\Public\MonsterState\Phantom_Summon_Loop.h"
 #include "StateMachine.h"
 
-#include "HelicoScarrow.h"
+#include "Phantom.h"
 
 CPhantom_Summon_Loop::CPhantom_Summon_Loop()
 {
@@ -18,17 +18,30 @@ HRESULT CPhantom_Summon_Loop::Initialize(CGameObject* pGameObject)
 
 void CPhantom_Summon_Loop::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::SUMMON_LOOP);
 
 }
 
 _uint CPhantom_Summon_Loop::State_Priority_Tick(_float fTimeDelta)
 {
+	if (m_iCount > 30)
+	{
+		return CPhantom::STATE::VANISH;
+	}
+
 	return m_iStateID;
 }
 
 _uint CPhantom_Summon_Loop::State_Tick(_float fTimeDelta)
 {
+	m_fTime += fTimeDelta;
+	if (m_fTime > 0.3f)
+	{
+		m_fTime = 0.f;
+		dynamic_cast<CPhantom*>(m_pOwner)->Create_Meteor();
+
+		m_iCount += 1;
+	}
 	
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -43,6 +56,8 @@ _uint CPhantom_Summon_Loop::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Summon_Loop::State_Exit()
 {
+	m_iCount = 0;
+	m_fTime = 0.f;
 }
 
 CPhantom_Summon_Loop* CPhantom_Summon_Loop::Create(CGameObject* pGameObject)

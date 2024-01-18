@@ -49,7 +49,7 @@ _uint CPhantom_Laser::State_Tick(_float fTimeDelta)
 		}
 	}
 
-	m_pOwner->TargetLook_Y();
+	m_pOwner->TargetLook();
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;

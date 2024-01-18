@@ -28,17 +28,10 @@ public:
 
 public:
 	PHASE	Get_CurrentPhase() { return m_eCurrentPhase; }
+	_uint	Get_PrevState();
 
 public:
 	virtual void Load_FromJson(const json& In_Json) override;
-
-private:
-	_float3 m_vRandomPos[20];
-	_uint m_iPrevRandomNum = { 0 };
-
-	_float4	m_vOriginPos;
-
-	PHASE m_eCurrentPhase = { PHASE::PAHSE_END };
 
 public:
 	void	Create_Shock_Wave();
@@ -56,6 +49,15 @@ public:
 
 	void	Create_Bomb();
 	void	Start_Point_Toward_Bomb();
+	void	Delete_Bomb();
+	_bool	Is_Bomb_Failed();
+
+	void	Create_TargetBullet();
+
+	void	Add_Hit_Count();
+	_bool	Judge_Hit();
+
+	void	Create_Meteor();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
@@ -65,6 +67,16 @@ public:
 private:
 	CGameObject*		m_pLaser = { nullptr };
 	CGameObject*		m_pBomb[3] = {};
+
+private:
+	_float3 m_vRandomPos[20];
+	_uint m_iPrevRandomNum = { 0 };
+
+	_float4	m_vOriginPos;
+
+	PHASE m_eCurrentPhase = { PHASE::PAHSE_END };
+
+	_uint				m_iHitCount = { 0 };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

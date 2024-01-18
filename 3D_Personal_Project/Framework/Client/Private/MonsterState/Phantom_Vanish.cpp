@@ -39,7 +39,10 @@ _uint CPhantom_Vanish::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
-		return CPhantom::STATE::DASH;
+		if(dynamic_cast<CPhantom*>(m_pOwner)->Get_PrevState() == (_uint)CPhantom::STATE::SUMMON_LOOP)
+			return CPhantom::STATE::APPEAR;
+		else
+			return CPhantom::STATE::DASH;
 	}
 
 	return m_iStateID;

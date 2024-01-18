@@ -2,7 +2,7 @@
 #include "..\Public\MonsterState\Phantom_Dead.h"
 #include "StateMachine.h"
 
-#include "HelicoScarrow.h"
+#include "Phantom.h"
 
 CPhantom_Dead::CPhantom_Dead()
 {
@@ -18,7 +18,7 @@ HRESULT CPhantom_Dead::Initialize(CGameObject* pGameObject)
 
 void CPhantom_Dead::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::DEAD);
 
 }
 
@@ -30,14 +30,13 @@ _uint CPhantom_Dead::State_Priority_Tick(_float fTimeDelta)
 _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 {
 	
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }
 
 _uint CPhantom_Dead::State_Late_Tick(_float fTimeDelta)
 {
-
 	return m_iStateID;
 }
 

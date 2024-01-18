@@ -445,6 +445,12 @@
     <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb">
       <UniqueIdentifier>{f38f3d23-851c-4b8c-91ce-acbcbd2cf7fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\04. Target">
+      <UniqueIdentifier>{2649bd89-d1ec-46f9-9620-28dc31cbb4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor">
+      <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -837,6 +843,12 @@
     <ClInclude Include="..\Public\Bomb.h">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Target_Bullet.h">
+      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1201,6 +1213,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bomb.cpp">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Target_Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

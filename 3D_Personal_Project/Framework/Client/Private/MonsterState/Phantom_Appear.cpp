@@ -38,7 +38,16 @@ _uint CPhantom_Appear::State_Tick(_float fTimeDelta)
 			dynamic_cast<CPhantom*>(m_pOwner)->Appear_OriginPos();
 		}
 		else
-			dynamic_cast<CPhantom*>(m_pOwner)->Appear_PlayerPos();
+		{
+			if (m_bSummonMeteor)
+			{
+				dynamic_cast<CPhantom*>(m_pOwner)->Appear_OriginPos();
+			}
+			else
+			{
+				dynamic_cast<CPhantom*>(m_pOwner)->Appear_PlayerPos();
+			}
+		}
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
@@ -50,7 +59,22 @@ _uint CPhantom_Appear::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
-		return CPhantom::STATE::SUMMON_BOMB;
+		if (dynamic_cast<CPhantom*>(m_pOwner)->Get_CurrentPhase() == CPhantom::PAHSE1)
+			return CPhantom::STATE::SUMMON_BOMB;
+		else
+		{
+			if (m_bSummonMeteor)
+			{
+				m_bSummonMeteor = false;
+				return CPhantom::STATE::SUMMON_BOMB;
+			}
+			else
+			{
+				m_bSummonMeteor = true;
+				return CPhantom::STATE::SUMMON;
+			}
+
+		}
 	}
 
 	return m_iStateID;

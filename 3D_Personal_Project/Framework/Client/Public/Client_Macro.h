@@ -306,6 +306,8 @@
 #define GO_LASER_TAG			TEXT("Prototype_GameObject_Laser")
 #define GO_MULTIPLY_TAG			TEXT("Prototype_GameObject_Mutiply")
 #define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
+#define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
+#define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
 
 #pragma region Ä³¸¯ÅÍ
 

@@ -21,6 +21,9 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 
+private:
+	_bool	m_bAttack = { true };
+
 public:
 	static	CPhantom_Shoot* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;
