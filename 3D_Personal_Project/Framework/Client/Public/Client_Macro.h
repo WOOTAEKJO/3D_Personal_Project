@@ -235,6 +235,8 @@
 
 #define	MODEL_HELICOBULLET_TAG	TEXT("Prototype_Component_Model_HelicoBullet")
 
+#define	MODEL_BOMB_TAG			TEXT("Prototype_Component_Model_Bomb")
+
 #pragma endregion
 
 #pragma endregion
@@ -302,6 +304,8 @@
 #define GO_RANGE_BULLET_TAG			TEXT("Prototype_GameObject_RangeBullet")
 #define GO_SHOCK_WAVE_TAG			TEXT("Prototype_GameObject_ShockWave")
 #define GO_LASER_TAG			TEXT("Prototype_GameObject_Laser")
+#define GO_MULTIPLY_TAG			TEXT("Prototype_GameObject_Mutiply")
+#define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
 
 #pragma region Ä³¸¯ÅÍ
 

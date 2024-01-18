@@ -19,17 +19,36 @@ HRESULT CPhantom_Laser::Initialize(CGameObject* pGameObject)
 void CPhantom_Laser::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::LASER);
-	dynamic_cast<CPhantom*>(m_pOwner)->Create_Laser();
+	
 
 }
 
 _uint CPhantom_Laser::State_Priority_Tick(_float fTimeDelta)
 {
+	
+
 	return m_iStateID;
 }
 
 _uint CPhantom_Laser::State_Tick(_float fTimeDelta)
 {
+	_float fDuration = m_pOwnerModel->CurAnim_Get_Duration(CPhantom::STATE::LASER);
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::LASER, 40.f))
+	{
+
+		if (m_bAttack)
+		{
+			dynamic_cast<CPhantom*>(m_pOwner)->Create_Laser();
+			m_bAttack = false;
+		}
+		else {
+			if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::LASER, 250.f))
+			{
+				dynamic_cast<CPhantom*>(m_pOwner)->Delete_Laser();
+			}
+		}
+	}
+
 	m_pOwner->TargetLook_Y();
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -48,7 +67,7 @@ _uint CPhantom_Laser::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Laser::State_Exit()
 {
-	dynamic_cast<CPhantom*>(m_pOwner)->Delete_Laser();
+	m_bAttack = true;
 }
 
 CPhantom_Laser* CPhantom_Laser::Create(CGameObject* pGameObject)

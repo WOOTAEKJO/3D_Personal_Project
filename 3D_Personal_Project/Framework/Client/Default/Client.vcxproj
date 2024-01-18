@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\Animation_Window.h" />
     <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
@@ -244,6 +245,7 @@
     <ClInclude Include="..\Public\MonsterState\Phantom_Attaque_Chasse.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Bouh.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Chasse.h" />
+    <ClInclude Include="..\Public\MonsterState\Phantom_Dash.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Dead.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Hit.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Hit_Chasse.h" />
@@ -258,6 +260,7 @@
     <ClInclude Include="..\Public\MonsterState\Phantom_Vanish.h" />
     <ClInclude Include="..\Public\Mouse_Window.h" />
     <ClInclude Include="..\Public\AI_Normal_Monster_IDLE.h" />
+    <ClInclude Include="..\Public\Multiply.h" />
     <ClInclude Include="..\Public\Normal_Bullet.h" />
     <ClInclude Include="..\Public\NPC.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h" />
@@ -319,6 +322,7 @@
     <ClCompile Include="..\Private\Animation_Window.cpp" />
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
+    <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
@@ -366,6 +370,7 @@
     <ClCompile Include="..\Private\MonsterState\Phantom_Attaque_Chasse.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Bouh.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Chasse.cpp" />
+    <ClCompile Include="..\Private\MonsterState\Phantom_Dash.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Dead.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Hit.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Hit_Chasse.cpp" />
@@ -380,6 +385,7 @@
     <ClCompile Include="..\Private\MonsterState\Phantom_Vanish.cpp" />
     <ClCompile Include="..\Private\Mouse_Window.cpp" />
     <ClCompile Include="..\Private\AI_Normal_Monster_IDLE.cpp" />
+    <ClCompile Include="..\Private\Multiply.cpp" />
     <ClCompile Include="..\Private\Normal_Bullet.cpp" />
     <ClCompile Include="..\Private\NPC.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp" />

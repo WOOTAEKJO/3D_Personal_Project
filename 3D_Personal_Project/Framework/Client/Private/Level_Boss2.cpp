@@ -87,11 +87,11 @@ HRESULT CLevel_Boss2::Ready_Layer_Plateform(const wstring& strLayerTag)
 
 HRESULT CLevel_Boss2::Ready_Layer_Camera(const wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_TARGETCAMERA_TAG)))
-		return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, G0_DCAMERA_TAG)))
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_TARGETCAMERA_TAG)))
 		return E_FAIL;*/
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, G0_DCAMERA_TAG)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -30,13 +30,17 @@ _uint CPhantom_Vanish::State_Priority_Tick(_float fTimeDelta)
 _uint CPhantom_Vanish::State_Tick(_float fTimeDelta)
 {
 	
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
 }
 
 _uint CPhantom_Vanish::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_Animation_Finished())
+	{
+		return CPhantom::STATE::DASH;
+	}
 
 	return m_iStateID;
 }

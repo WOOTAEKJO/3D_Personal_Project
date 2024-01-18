@@ -41,6 +41,8 @@
 
 #include "Phantom.h"
 #include "Laser.h"
+#include "Multiply.h"
+#include "Bomb.h"
 
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
@@ -439,7 +441,12 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;*/
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CLaser>(GO_LASER_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CMultiply>(GO_MULTIPLY_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CBomb>(GO_BOMB_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPhantom>(ANIMMODEL_PHANTOM_TAG))) return E_FAIL;
+
+	
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -471,7 +478,7 @@ HRESULT CLoader::Item()
 
 	matPivot = XMMatrixScaling(0.0015f, 0.0015f, 0.0015f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_HELICOBULLET_TAG, matPivot))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BOMB_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
 

@@ -9,7 +9,9 @@ class CPhantom final : public CMonster
 {
 public:
 	enum STATE {ATTAQUE_CHASSE,CHASSE,HIT_CHASSE,IDLE,APPEAR,BOUH,HIT,INTRO,
-	LASER,MARTEAU,DEAD,SHOOT,SUMMON,SUMMON_BOMB,SUMMON_LOOP,VANISH,STATE_END};
+	LASER,MARTEAU,DEAD,SHOOT,SUMMON,SUMMON_BOMB,SUMMON_LOOP,VANISH,DASH,STATE_END};
+	
+	enum PHASE { PAHSE1, PAHSE2, PAHSE_END };
 
 private:
 	CPhantom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -25,13 +27,35 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	PHASE	Get_CurrentPhase() { return m_eCurrentPhase; }
+
+public:
 	virtual void Load_FromJson(const json& In_Json) override;
+
+private:
+	_float3 m_vRandomPos[20];
+	_uint m_iPrevRandomNum = { 0 };
+
+	_float4	m_vOriginPos;
+
+	PHASE m_eCurrentPhase = { PHASE::PAHSE_END };
 
 public:
 	void	Create_Shock_Wave();
 	void	Create_Laser();
 	void	Adjust_Pos(_float3 vAdjust);
 	void	Delete_Laser();
+
+	void	Create_Multiply();
+	void	SetUp_Random_Pos();
+
+	void	Appear_OriginPos();
+	void	SetUp_OriginPos(_float4 vPos);
+	void	Modify_Pos(_float3 vPos);
+	void	Appear_PlayerPos();
+
+	void	Create_Bomb();
+	void	Start_Point_Toward_Bomb();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
@@ -40,6 +64,7 @@ public:
 
 private:
 	CGameObject*		m_pLaser = { nullptr };
+	CGameObject*		m_pBomb[3] = {};
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

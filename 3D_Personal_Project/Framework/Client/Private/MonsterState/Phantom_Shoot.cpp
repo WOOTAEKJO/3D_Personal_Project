@@ -2,7 +2,7 @@
 #include "..\Public\MonsterState\Phantom_Shoot.h"
 #include "StateMachine.h"
 
-#include "HelicoScarrow.h"
+#include "Phantom.h"
 
 CPhantom_Shoot::CPhantom_Shoot()
 {
@@ -18,7 +18,7 @@ HRESULT CPhantom_Shoot::Initialize(CGameObject* pGameObject)
 
 void CPhantom_Shoot::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::IDLE);
+	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::SHOOT);
 
 }
 

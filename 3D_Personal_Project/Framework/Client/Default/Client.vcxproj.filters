@@ -436,6 +436,15 @@
     <Filter Include="02.GameObjects\07. Bullet\03. Laser">
       <UniqueIdentifier>{77c319c4-0f7e-41ac-9c7a-4f83cf7b126e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash">
+      <UniqueIdentifier>{9fd59666-1e7e-4d3c-b723-5a4981913164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply">
+      <UniqueIdentifier>{4b386c19-ddf6-4a93-b761-c09cbbfa89de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb">
+      <UniqueIdentifier>{f38f3d23-851c-4b8c-91ce-acbcbd2cf7fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -819,6 +828,15 @@
     <ClInclude Include="..\Public\Laser.h">
       <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Dash.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Multiply.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1174,6 +1192,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Laser.cpp">
       <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Dash.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Multiply.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bomb.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

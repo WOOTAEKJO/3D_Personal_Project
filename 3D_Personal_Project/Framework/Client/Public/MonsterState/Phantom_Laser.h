@@ -22,6 +22,9 @@ public:
 	virtual void	State_Exit() override;
 
 public:
+	_bool	m_bAttack = { true };
+
+public:
 	static	CPhantom_Laser* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;
 };

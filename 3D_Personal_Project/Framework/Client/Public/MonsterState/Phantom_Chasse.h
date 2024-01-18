@@ -23,6 +23,7 @@ public:
 
 private:
 	_float	m_fTimeAcc = { 0.f };
+	
 
 public:
 	static	CPhantom_Chasse* Create(CGameObject* pGameObject);
