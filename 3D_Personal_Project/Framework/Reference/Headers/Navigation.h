@@ -38,6 +38,11 @@ public:
 	void	Add_Neighbor(_uint iSourCellIndx,_float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);
 
 public:
+	_bool	Is_Alone_Neighbor_Cell(_uint iCellIdnx,_int* iAloneNeighborIndx );
+	HRESULT	Init_Neighbor();
+	HRESULT	Init_Neighbor_XZ();
+
+public:
 	_bool	Compute_MousePos(_uint* iCellIndex);
 	_float	Get_Cell_Height(_float3 vPos);
 	void	Set_CurrentIndex(_int iCurrentInd) { m_iCurrentCellIndex = iCurrentInd; }
@@ -70,8 +75,6 @@ private:
 	NAVITYPE				m_eNaviType = { NAVITYPE::TYPE_END };
 
 private:
-	HRESULT	Init_Neighbor();
-	HRESULT	Init_Neighbor_XZ();
 	HRESULT	Init_Neighbor_Cell(CCell* pCell);
 
 public:

@@ -11,7 +11,7 @@ class ENGINE_DLL CCell final : public CBase
 public:
 	enum POINTS {POINT_A,POINT_B,POINT_C,POINT_END};
 	enum LINES {LINE_AB,LINE_BC,LINE_CA,LINE_END};
-	enum CELLTYPE {TYPE_NORMAL,TYPE_JUMP,TYPE_END};
+	enum CELLTYPE {TYPE_NORMAL,TYPE_JUMP,TYPE_UNABLE,TYPE_END};
 
 private:
 	CCell(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

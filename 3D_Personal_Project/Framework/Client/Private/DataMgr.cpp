@@ -100,6 +100,12 @@ HRESULT CDataMgr::Level_Object_Load(const _char* strFilePath)
 			{
 				pObject_Demo->Get_Component<CNavigation>()->Set_CurrentIndex(iNaviIndex);
 			}
+			else if (iNaviIndex == -3 || iNaviIndex == -4)
+			{
+				dynamic_cast<CPlateform*>(pObject_Demo)->Set_TriggerNum(iNaviIndex);
+				// 임시니깐 다음부터 이렇게 만들지 말자
+				// 시간 없다
+			}
 		}
 	}
 	else

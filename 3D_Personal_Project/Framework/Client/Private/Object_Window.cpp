@@ -624,6 +624,11 @@ void CObject_Window::ObjectMesh()
 	ImGui::RadioButton("NonFunction", &m_iNaviIndxRadiButton, -1);
 	ImGui::SameLine();
 	ImGui::RadioButton("Trap", &m_iNaviIndxRadiButton, -2);
+	ImGui::SameLine();
+	ImGui::RadioButton("Floor", &m_iNaviIndxRadiButton, -3);
+	ImGui::SameLine();
+	ImGui::RadioButton("Floor2", &m_iNaviIndxRadiButton, -4);
+	// 담부터 이렇게 만들지 말자 시간 없으니 이렇게 사용하지만
 
 	if (ImGui::Button("Apply Function"))
 	{

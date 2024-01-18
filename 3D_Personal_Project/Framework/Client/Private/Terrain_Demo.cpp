@@ -350,6 +350,14 @@ void CTerrain_Demo::Set_Add(_bool bCheck)
 	m_pVIBufferCom->Set_Add(bCheck);
 }
 
+void CTerrain_Demo::Init_Neighbor()
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Init_Neighbor();
+}
+
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CTerrain_Demo* pInstance = new CTerrain_Demo(pDevice, pContext);

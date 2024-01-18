@@ -335,10 +335,18 @@ void CTerrain_Window::Navigation()
 		ImGui::RadioButton("Normal", &m_iCellType, 0);
 		ImGui::SameLine();
 		ImGui::RadioButton("Jump", &m_iCellType, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Unable", &m_iCellType, 2);
+
 
 		if (m_iCellType == 1)
 		{
 			Arrow_Button("Interval", 0.1f, &m_fJumpCellHeight);
+		}
+
+		if (ImGui::Button("Init_Neighbor"))
+		{
+			m_pTerrain->Init_Neighbor();
 		}
 	}
 

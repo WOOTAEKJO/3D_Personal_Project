@@ -313,9 +313,6 @@
     <Filter Include="02.GameObjects\07. Bullet">
       <UniqueIdentifier>{b94d8bd2-28d4-45c9-8ea4-a05fb810445f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03. Platform\02. Trap\00. Col">
-      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07. Bullet\01. Normal">
       <UniqueIdentifier>{746c6ea4-61de-43f2-9f80-4ad4e2801f12}</UniqueIdentifier>
     </Filter>
@@ -450,6 +447,9 @@
     </Filter>
     <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor">
       <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03. Platform\00. Col">
+      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

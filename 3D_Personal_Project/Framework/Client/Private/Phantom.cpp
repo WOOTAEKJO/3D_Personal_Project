@@ -27,7 +27,8 @@
 #include "Phantom_Vanish.h"
 #include "Phantom_Dash.h"
 
-
+#include "Plateform.h"
+#include "Cell.h"
 
 CPhantom::CPhantom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -77,7 +78,7 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 	//m_eCurrentPhase = PHASE::PAHSE1;
 	m_eCurrentPhase = PHASE::PAHSE2;
-	m_iHitCount = 3;
+	m_iHitCount = 2;
 	
 
 	return S_OK;
@@ -353,7 +354,7 @@ void CPhantom::Appear_PlayerPos()
 	_vector vPlayerLook = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_LOOK);
 
 	vPlayerPos += XMVector3Normalize(vPlayerLook) * 2.f;
-	vPlayerPos.m128_f32[1] = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS).m128_f32[1];
+	vPlayerPos.m128_f32[1] = m_vOriginPos.y;
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPlayerPos);
 	TargetLook();
 }
@@ -492,6 +493,74 @@ void CPhantom::Create_Meteor()
 		return;
 }
 
+void CPhantom::Drop_Floor(_uint iFloorType)
+{
+	if (iFloorType >= 2)
+		return;
+
+	list<CGameObject*> Plateform = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_PLATEFORM]);
+
+	for (auto& iter : Plateform)
+	{
+		wstring strTag = CUtility_String::Get_LastName(dynamic_cast<CPlateform*>(iter)->Get_ModelTag());
+
+		if (!wcscmp(strTag.c_str(),
+			CUtility_String::Get_LastName(MODEL_TREE_PLATEFORME01X01_TAG).c_str()))
+		{
+			if (iFloorType == 0)
+			{
+				if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -3)
+				{
+					dynamic_cast<CPlateform*>(iter)->Set_Fall();
+				}
+			}
+			else if(iFloorType == 1) {
+				if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -4)
+				{
+					dynamic_cast<CPlateform*>(iter)->Set_Fall();
+				}
+			}
+		}
+	}
+}
+
+void CPhantom::Navi_Filter()
+{
+	vector<CCell*> pNaviCells = m_pNavigationCom->Get_Navigation_Cells();
+
+	_uint iSize = pNaviCells.size();
+
+	for (_uint i = 0; i < iSize; i++)
+	{
+		_int iAloneIndx = -1;
+
+		if (m_pNavigationCom->Is_Alone_Neighbor_Cell(i, &iAloneIndx))
+		{
+			if (iAloneIndx != -1)
+			{
+				m_pNavigationCom->Set_Cell_Type(CCell::CELLTYPE::TYPE_UNABLE, i);
+				m_pNavigationCom->Set_Cell_Type(CCell::CELLTYPE::TYPE_UNABLE, iAloneIndx);
+				/*m_pNavigationCom->Delete_Cell(i);
+				m_pNavigationCom->Delete_Cell(iAloneIndx);*/
+			}
+		}
+	}
+
+	m_pNavigationCom->Init_Neighbor_XZ();
+}
+
+_bool CPhantom::Is_Target_Near()
+{
+	_vector vPlayerPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	if (XMVector3NearEqual(vPlayerPos, vPos, XMVectorSet(0.1f, 1000.f, 0.1f, 0.f)))
+		return true;
+
+	return false;
+}
+
 void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
 	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_TRIGGER_BULLET)
@@ -521,6 +590,11 @@ HRESULT CPhantom::Ready_Component()
 {
 	/*if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;*/
+
+	CNavigation::NAVIGATION_DESC NavigationDesc = {};
+	NavigationDesc.iCurrentIndex = 0;
+	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
+
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;

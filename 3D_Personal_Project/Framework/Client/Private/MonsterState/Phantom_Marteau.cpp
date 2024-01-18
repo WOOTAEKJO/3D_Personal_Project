@@ -46,6 +46,14 @@ _uint CPhantom_Marteau::State_Late_Tick(_float fTimeDelta)
 	{
 		if (m_bAttack)
 		{
+			if (m_iCount == 1 && dynamic_cast<CPhantom*>(m_pOwner)->Get_CurrentPhase() == CPhantom::PHASE::PAHSE2)
+			{
+				_uint iNum = 0;
+				if (dynamic_cast<CPhantom*>(m_pOwner)->Get_Hit_Count() == 3)
+					iNum = 1;
+				dynamic_cast<CPhantom*>(m_pOwner)->Drop_Floor(iNum);
+				dynamic_cast<CPhantom*>(m_pOwner)->Navi_Filter();
+			}
 			dynamic_cast<CPhantom*>(m_pOwner)->Create_Shock_Wave();
 			m_bAttack = false;
 		}

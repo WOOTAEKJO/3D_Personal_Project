@@ -30,10 +30,14 @@ _uint CPhantom_Chasse::State_Priority_Tick(_float fTimeDelta)
 _uint CPhantom_Chasse::State_Tick(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
-
-	if (m_fTimeAcc > 1.5f)
-	{
+;
+	if(dynamic_cast<CPhantom*>(m_pOwner)->Is_Target_Near())
 		return CPhantom::STATE::MARTEAU;
+	else {
+		if (m_fTimeAcc > 1.5f)
+		{
+			return CPhantom::STATE::MARTEAU;
+		}
 	}
 
 	m_pOwner->TargetLook();

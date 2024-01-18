@@ -35,6 +35,8 @@ HRESULT CPlateform::Initialize(void* pArg)
 		if (FAILED(Ready_Component()))
 			return E_FAIL;
 	}
+
+	m_RandomNumber = mt19937_64(m_RandomDevice());
 	
 	return S_OK;
 }
@@ -45,7 +47,18 @@ void CPlateform::Priority_Tick(_float fTimeDelta)
 
 void CPlateform::Tick(_float fTimeDelta)
 {
-	
+	if (m_bFall)
+	{
+		Fall(fTimeDelta);
+
+		if (m_pTransformCom->Get_State(CTransform::STATE::STATE_POS).m128_u8[1] <= 0.f)
+			Set_Dead();
+	}
+	else if(!m_bFall && (m_iTriggerNum < 0)) {
+		uniform_real_distribution<float>	RandomAngle(10.f, 30.f);
+		m_fAngle.x = RandomAngle(m_RandomNumber);
+		m_fAngle.z = RandomAngle(m_RandomNumber);
+	}
 }
 
 void CPlateform::Late_Tick(_float fTimeDelta)
@@ -121,6 +134,37 @@ HRESULT CPlateform::Ready_Component()
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 
 	return S_OK;
+}
+
+void CPlateform::Fall(_float fTimeDelta)
+{
+	m_fTimeAcc += fTimeDelta;
+
+	_float fGravity = 9.81f;
+	_float fLength = 1.f;
+
+	_float fAccelerationZ = -(fGravity / fLength) * sin(m_fAngle.z);
+	_float fAccelerationX = -(fGravity / fLength) * sin(m_fAngle.x);
+
+	m_fAngularVelocity.z += fAccelerationZ * fTimeDelta * 3.f;
+	m_fAngularVelocity.x += fAccelerationX * fTimeDelta * 3.f;
+	m_fAngle.z += m_fAngularVelocity.z * fTimeDelta * 3.f;
+	m_fAngle.x += m_fAngularVelocity.x * fTimeDelta * 3.f;
+
+	m_fAngle.z = m_fAmplitude * sin(m_fAngle.z);
+	m_fAngle.x = m_fAmplitude * cos(m_fAngle.x);
+
+	m_pTransformCom->Rotation_Quaternio(m_fAngle.x, m_fAngle.y, m_fAngle.z);
+	
+	if (m_fTimeAcc > 1.5f)
+	{
+		_vector vUp = m_pTransformCom->Get_State(CTransform::STATE::STATE_UP);
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+		vPos += XMVector3Normalize(-vUp) * fTimeDelta * 2.f;
+
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
+	}
 }
 
 CPlateform* CPlateform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -56,8 +56,14 @@ public:
 
 	void	Add_Hit_Count();
 	_bool	Judge_Hit();
+	_uint	Get_Hit_Count() { return m_iHitCount; }
 
 	void	Create_Meteor();
+
+	void	Drop_Floor(_uint iFloorType);
+	void	Navi_Filter();
+
+	_bool	Is_Target_Near();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;

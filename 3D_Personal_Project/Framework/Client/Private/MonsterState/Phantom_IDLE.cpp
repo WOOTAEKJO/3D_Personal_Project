@@ -32,8 +32,8 @@ _uint CPhantom_IDLE::State_Tick(_float fTimeDelta)
 	
 	if (!m_pOwner->Open_Status_Desc()->bTalk)
 	{
-		//return CPhantom::STATE::CHASSE;
-		return CPhantom::STATE::APPEAR;
+		return CPhantom::STATE::CHASSE;
+		//return CPhantom::STATE::APPEAR;
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
