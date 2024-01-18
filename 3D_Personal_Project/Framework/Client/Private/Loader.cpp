@@ -441,7 +441,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	/*if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelicoScarrow>(ANIMMODEL_HELICOSCARROW_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelico_Bullet>(MODEL_HELICOBULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;*/
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CLaser>(GO_LASER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CMultiply>(GO_MULTIPLY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CBomb>(GO_BOMB_TAG))) return E_FAIL;

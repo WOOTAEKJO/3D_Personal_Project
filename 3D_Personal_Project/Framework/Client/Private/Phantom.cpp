@@ -76,9 +76,9 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 	SetUp_Random_Pos();
 
-	//m_eCurrentPhase = PHASE::PAHSE1;
-	m_eCurrentPhase = PHASE::PAHSE2;
-	m_iHitCount = 2;
+	m_eCurrentPhase = PHASE::PAHSE1;
+	/*m_eCurrentPhase = PHASE::PAHSE2;
+	m_iHitCount = 2;*/
 	
 
 	return S_OK;
