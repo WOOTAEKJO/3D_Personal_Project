@@ -282,10 +282,10 @@ HRESULT CRenderer::Render_Debug()
 	}
 	m_listComponent.clear();
 
-	/*if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObject"), m_pShader, m_pBufferCom)))
+	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_GameObject"), m_pShader, m_pBufferCom)))
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pBufferCom)))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
