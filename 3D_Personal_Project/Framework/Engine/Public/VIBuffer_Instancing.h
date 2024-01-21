@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CVIBuffer_Instancing abstract : public CVIBuffer
+class ENGINE_DLL CVIBuffer_Instancing abstract : public CVIBuffer
 {
 public:
 	enum INSTANCING_TYPE {TYPE_PARTICLE, TYPE_MESH,TYPE_END};
@@ -17,7 +17,12 @@ public:
 		_float2		fScale;
 		_float2		fLifeTime;
 
+		_float4		vColor;
 
+		_float3		vDir; // 생성할 때 사용하는 방향
+		_float3		vRotation;
+
+		_float3		vRunDir; // Runtime 방향
 
 	}INSTANCING_DESC;
 
@@ -58,9 +63,14 @@ protected:
 protected:
 	INSTANCING_TYPE	m_eInstanceType = { TYPE_END };
 
-private:
+protected:
 	HRESULT		Init_Particle(VTXINSTANCING* pVerpostex);
 	HRESULT		Init_Mesh(VTXINSTANCING* pVerpostex);
+
+	HRESULT		Init_InstanceBuffer();
+
+protected:
+	_vector		CenterToPos(_float4 vPos);
 
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;

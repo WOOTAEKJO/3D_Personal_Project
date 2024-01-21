@@ -205,6 +205,7 @@
     <ClInclude Include="..\Public\DataMgr.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
+    <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
     <ClInclude Include="..\Public\Helico_Bullet.h" />
@@ -272,6 +273,7 @@
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Owl.h" />
+    <ClInclude Include="..\Public\Particle_Demo.h" />
     <ClInclude Include="..\Public\Phantom.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Plateform_Instancing.h" />
@@ -332,6 +334,7 @@
     <ClCompile Include="..\Private\DataMgr.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
+    <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />
     <ClCompile Include="..\Private\Helico_Bullet.cpp" />
@@ -399,6 +402,7 @@
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Owl.cpp" />
+    <ClCompile Include="..\Private\Particle_Demo.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Plateform_Instancing.cpp" />
@@ -454,6 +458,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCube.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMeshInstancing.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticlePoint.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticleRect.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTerrain.hlsl" />

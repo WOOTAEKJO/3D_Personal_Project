@@ -274,6 +274,9 @@
     <Filter Include="01.Utility\03. Component\06. Collider\00.Bounding\03. Ray">
       <UniqueIdentifier>{8329ae8d-66f2-4ffe-af38-302a0601030e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.GameObjects\02. AlphaObject">
+      <UniqueIdentifier>{ee64b1e9-f70f-49bb-af0f-726aaeb29b2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="..\Public\Bounding_Ray.h">
       <Filter>01.Utility\03. Component\06. Collider\00.Bounding\03. Ray</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AlphaObject.h">
+      <Filter>01.Utility\02.GameObjects\02. AlphaObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -778,6 +784,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Bounding_Ray.cpp">
       <Filter>01.Utility\03. Component\06. Collider\00.Bounding\03. Ray</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AlphaObject.cpp">
+      <Filter>01.Utility\02.GameObjects\02. AlphaObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

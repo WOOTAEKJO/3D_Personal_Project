@@ -3,6 +3,10 @@
 matrix		g_matWorld, g_matView, g_matProj;
 texture2D	g_Texture;
 
+vector      g_vCameraPos;
+
+uint        g_iTextureType;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -26,7 +30,7 @@ VS_OUT VS_MAIN(VS_IN In)
     float4 vPosition = mul(float4(In.vPosition, 1.f), In.matWorld);
 	
     Out.vPosition = mul(vPosition, g_matWorld);
-	Out.vPSize = In.vPSize;
+    Out.vPSize = float2(In.vPSize.x * In.matWorld._11, In.vPSize.y * In.matWorld._22);
     Out.vColor = In.vColor;
 
 	return Out;
@@ -42,27 +46,52 @@ struct GS_IN
 struct GS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float2 vPSize : PSIZE;
+    float2 vTexcoord : TEXCOORD0;
     float4 vColor : COLOR0;
 };
 
+[maxvertexcount(6)]
 void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 {
     GS_OUT Out[4];
+    
+    float4 vLook = g_vCameraPos - In[0].vPosition;
+    float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook.xyz)) * In[0].vPSize.x * 0.5f;    
+    float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
 
-    //matrix matTranslation = matrix(In.vRight, In.vUp, In.vLook, In.vPos);
-    //float4 vPosition = mul(float4(In.vPosition, 1.f), matTranslation);
-	
-    //Out.vPosition = mul(vPosition, g_matWorld);
-    //Out.vTexCoord = In.vTexCoord;
-    //Out.vColor = In.vColor;
-
+    matrix matVP = mul(g_matView, g_matProj);
+    
+    Out[0].vPosition = mul(float4(In[0].vPosition + vUp + vRight, 1.f), matVP);
+    Out[0].vTexcoord = float2(0.f, 0.f);
+    Out[0].vColor = In[0].vColor;
+    
+    Out[1].vPosition = mul(float4(In[0].vPosition + vUp - vRight, 1.f), matVP);
+    Out[1].vTexcoord = float2(1.f, 0.f);
+    Out[1].vColor = In[0].vColor;
+    
+    Out[2].vPosition = mul(float4(In[0].vPosition - vUp - vRight, 1.f), matVP);
+    Out[2].vTexcoord = float2(1.f, 1.f);
+    Out[2].vColor = In[0].vColor;
+    
+    Out[3].vPosition = mul(float4(In[0].vPosition - vUp + vRight, 1.f), matVP);
+    Out[3].vTexcoord = float2(0.f, 1.f);
+    Out[3].vColor = In[0].vColor;
+    
+    OutStream.Append(Out[0]);
+    OutStream.Append(Out[1]);
+    OutStream.Append(Out[2]);
+    OutStream.RestartStrip();
+    
+    OutStream.Append(Out[0]);
+    OutStream.Append(Out[2]);
+    OutStream.Append(Out[3]);
+    OutStream.RestartStrip();
 }
 
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float2 vPSize : PSIZE;
+    float2 vTexcoord : TEXCOORD0;
     float4 vColor : COLOR0;
 };
 
@@ -76,14 +105,28 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-   // Out.vColor = g_Texture.Sample(PointSampler, In.vTexCoord);
-	
-    if (In.vColor.a <0.8f)
-        discard;
-	
-    Out.vColor.a = In.vColor.a;
-	
-     return Out;
+    vector vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
+    
+    if (g_iTextureType == 0)
+    {
+        if (vColor.a < 0.8f)
+            discard;
+    
+        //Out.vColor.a = In.vColor.a;
+        Out.vColor = vColor;
+        // 색을 섞으면 내가 원하는 색이 나오지 않음
+        
+    }
+    else if (g_iTextureType == 1)
+    {
+        // 완전히 단색을 위함
+        if (vColor.a < 0.2f)
+            discard;
+        
+        Out.vColor = In.vColor;
+    }
+   
+        return Out;
 }
 
 technique11 DefaultTechnique

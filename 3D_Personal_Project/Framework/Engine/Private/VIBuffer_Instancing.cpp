@@ -22,37 +22,6 @@ HRESULT CVIBuffer_Instancing::Initialize_ProtoType()
 
 HRESULT CVIBuffer_Instancing::Initialize(void* pArg) 
 {
-	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
-
-	m_Buffer_Desc.ByteWidth = m_iInstanceStride * m_iInstanceNum;	// 동적배열의 크기
-	m_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;					// 정적버퍼인지 동적버퍼인지 설정/ 지금은 정적
-	m_Buffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			// 버퍼 종류 설정
-	m_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// 동적만 해당
-	m_Buffer_Desc.MiscFlags = 0;								// 동적만 해당
-	m_Buffer_Desc.StructureByteStride = m_iInstanceStride;		// 정점 하나의 크기를 집어 넣음
-
-	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
-
-	VTXINSTANCING* pVerpostex = new VTXINSTANCING[m_iInstanceNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
-
-	switch (m_eInstanceType)
-	{
-	case Engine::CVIBuffer_Instancing::TYPE_PARTICLE:
-		if (FAILED(Init_Particle(pVerpostex)))
-			return E_FAIL;
-		break;
-	case Engine::CVIBuffer_Instancing::TYPE_MESH:
-		if (FAILED(Init_Mesh(pVerpostex)))
-			return E_FAIL;
-		break;
-	}
-
-	m_SubResource_Data.pSysMem = pVerpostex;
-
-	if (FAILED(Create_Buffer(&m_pInstanceBuffer)))		// 내가 할당한 값들을 버퍼가 할당한 공간에 복사하여 생성
-		return E_FAIL;
-
-	Safe_Delete_Array(pVerpostex);			// 내가 할당한 것은 버퍼가 이미 사용했기에 필요 없으니 해제
 
 	return S_OK;
 }
@@ -100,15 +69,24 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 
 	VTXINSTANCING* Instancing = ((VTXINSTANCING*)Subresource.pData);
 
+	_vector vDir;
+	_bool bRuntimeDir = { false };
+	if (!XMVector3Equal(XMLoadFloat3(&m_Instancing_Desc.vRunDir), XMVectorZero()))
+	{
+		bRuntimeDir = true;
+		vDir = XMLoadFloat3(&m_Instancing_Desc.vRunDir);
+	} // 정해진 방향이 0이 아니면 정해진 방향대로 위치 값을 변경
+		
 	for (_uint i = 0; i < m_iInstanceNum; i++)
 	{
 		_float fLifeTime = max( m_pLifeTime[i] - m_fTimeAcc,0.f);
 		
 		Instancing[i].vColor.w = fLifeTime;
+		
+		vDir = bRuntimeDir == false ? 
+			CenterToPos(Instancing[i].vPos) : vDir;
 
-		_vector vDir = XMLoadFloat4(&Instancing[i].vPos) - XMLoadFloat3(&m_Instancing_Desc.vCenter);
-
-		XMStoreFloat4(&Instancing[i].vPos,XMLoadFloat4(&Instancing[i].vPos) + XMVector3Normalize(vDir) * m_pSpeeds[i]);
+		XMStoreFloat4(&Instancing[i].vPos,XMLoadFloat4(&Instancing[i].vPos) + XMVector3Normalize(vDir) * m_pSpeeds[i] * fTimeDelta);
 	}
 
 	m_pContext->Unmap(m_pInstanceBuffer, 0);
@@ -123,11 +101,12 @@ HRESULT CVIBuffer_Instancing::Render()
 
 HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 {
-	_vector vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	//_vector vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	_vector vDir =  XMVectorSetW(XMLoadFloat3(&m_Instancing_Desc.vDir),0.f);
 
 	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);
-	uniform_real_distribution<float>	RandomAngle(0.f, XMConvertToRadians(360.f));
-	uniform_real_distribution<float>	RandomSpeed(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
+	//uniform_real_distribution<float>	RandomAngle(0.f, XMConvertToRadians(360.f));
+	uniform_real_distribution<float>	RandomSpeed(m_Instancing_Desc.fSpeed.x, m_Instancing_Desc.fSpeed.y);
 	uniform_real_distribution<float>	RandomLifeTime(m_Instancing_Desc.fLifeTime.x, m_Instancing_Desc.fLifeTime.y);
 	uniform_real_distribution<float>	RandomScale(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
 
@@ -140,7 +119,9 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 
 		vDir = XMVector3Normalize(vDir) * RandomRange(m_RandomNumber);
 
-		_vector vRot = XMQuaternionRotationRollPitchYaw(RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber));
+		//_vector vRot = XMQuaternionRotationRollPitchYaw(RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber), RandomAngle(m_RandomNumber));
+		_vector vRot = XMQuaternionRotationRollPitchYaw(m_Instancing_Desc.vRotation.x,
+			m_Instancing_Desc.vRotation.y, m_Instancing_Desc.vRotation.z);
 
 		_matrix matRot = XMMatrixRotationQuaternion(vRot);
 
@@ -151,6 +132,7 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 		pVerpostex[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
 		XMStoreFloat4(&pVerpostex[i].vPos, XMLoadFloat3(&m_Instancing_Desc.vCenter) + vDir);
 		pVerpostex[i].vPos.w = 1.f;
+		pVerpostex[i].vColor = m_Instancing_Desc.vColor;
 	}
 
 	return S_OK;
@@ -170,15 +152,62 @@ HRESULT CVIBuffer_Instancing::Init_Mesh(VTXINSTANCING* pVerpostex)
 	return S_OK;
 }
 
+HRESULT CVIBuffer_Instancing::Init_InstanceBuffer()
+{
+	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
+
+	m_Buffer_Desc.ByteWidth = m_iInstanceStride * m_iInstanceNum;	// 동적배열의 크기
+	m_Buffer_Desc.Usage = D3D11_USAGE_DYNAMIC;					// 정적버퍼인지 동적버퍼인지 설정/ 지금은 정적
+	m_Buffer_Desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			// 버퍼 종류 설정
+	m_Buffer_Desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// 동적만 해당
+	m_Buffer_Desc.MiscFlags = 0;								// 동적만 해당
+	m_Buffer_Desc.StructureByteStride = m_iInstanceStride;		// 정점 하나의 크기를 집어 넣음
+
+	ZeroMemory(&m_SubResource_Data, sizeof(m_SubResource_Data));
+
+	VTXINSTANCING* pVerpostex = new VTXINSTANCING[m_iInstanceNum];		// 버텍스 버퍼 안에 들어 갈 값들을 설정해줌
+
+	switch (m_eInstanceType)
+	{
+	case Engine::CVIBuffer_Instancing::TYPE_PARTICLE:
+		if (FAILED(Init_Particle(pVerpostex)))
+			return E_FAIL;
+		break;
+	case Engine::CVIBuffer_Instancing::TYPE_MESH:
+		if (FAILED(Init_Mesh(pVerpostex)))
+			return E_FAIL;
+		break;
+	}
+
+	m_SubResource_Data.pSysMem = pVerpostex;
+
+	if (FAILED(Create_Buffer(&m_pInstanceBuffer)))		// 내가 할당한 값들을 버퍼가 할당한 공간에 복사하여 생성
+		return E_FAIL;
+
+	Safe_Delete_Array(pVerpostex);			// 내가 할당한 것은 버퍼가 이미 사용했기에 필요 없으니 해제
+
+	return S_OK;
+}
+
+_vector CVIBuffer_Instancing::CenterToPos(_float4 vPos)
+{
+	_vector vDir = XMLoadFloat4(&vPos) - XMLoadFloat3(&m_Instancing_Desc.vCenter);
+	vDir = XMVectorSetW(vDir, 0.f);
+
+	return vDir;
+}
+
 void CVIBuffer_Instancing::Free()
 {
 	__super::Free();
 
-	if (m_bClone == false)
+	/*if (m_bClone == false)
 	{
 		Safe_Delete_Array(m_pSpeeds);
 		Safe_Delete_Array(m_pLifeTime);
-	}
+	}*/
+	Safe_Delete_Array(m_pSpeeds);
+	Safe_Delete_Array(m_pLifeTime);
 
 	Safe_Release(m_pInstanceBuffer);
 }

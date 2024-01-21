@@ -67,7 +67,10 @@ HRESULT CModel_Instancing::Initialize(void* pArg)
 		m_iIndexCountPerInstance += iter->Get_IndexInfo().size();
 	}*/
 
-	if (FAILED(__super::Initialize(pArg)))
+	/*if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;*/
+	
+	if (FAILED(__super::Init_InstanceBuffer()))
 		return E_FAIL;
 
 	return S_OK;

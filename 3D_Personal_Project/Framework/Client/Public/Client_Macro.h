@@ -26,6 +26,8 @@
 
 #define BUFFER_CUBE_TAG				TEXT("Prototype_Component_VIBuffer_Cube")
 
+#define BUFFER_PARTICLEPOINT_TAG	TEXT("Prototype_Component_VIBuffer_ParticlePoint")
+
 #pragma endregion
 
 #pragma region ½¦ÀÌ´õ
@@ -35,6 +37,7 @@
 //#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
 #define	SHADER_MESH_TAG						TEXT("Prototype_Component_Shader_VtxMesh")
 #define	SHADER_MESHINSTANCING_TAG			TEXT("Prototype_Component_Shader_VtxMeshInstancing")
+#define	SHADER_PARTICLEPOINT_TAG			TEXT("Prototype_Component_Shader_VtxParticlePoint")
 #define	SHADER_ANIMMESH_TAG					TEXT("Prototype_Component_Shader_VtxAnimMesh")
 #define	SHADER_CUBE_TAG						TEXT("Prototype_Component_Shader_VtxCube")
 #define	SHADER_TERRAIN_TAG						TEXT("Prototype_Component_Shader_VtxTerrain")
@@ -273,6 +276,19 @@
 
 #define TEX_LANDSCAPE_TAG		TEXT("Prototype_Component_Texture_groundCrackedDirt")
 
+#pragma region ÀÌÆåÆ® ÅØ½ºÃÄ
+
+#define TEX_BUBLE_TAG		TEXT("Prototype_Component_Texture_Buble")
+
+#define TEX_CONFETTIS_TAG		TEXT("Prototype_Component_Texture_Confettis")
+
+#define TEX_SMOKEPUFF_TAG		TEXT("Prototype_Component_Texture_SmokePuff")
+#define TEX_SMOKEPUFFMUSH_TAG	TEXT("Prototype_Component_Texture_SmokePuffMush")
+
+#define TEX_SNOW_TAG		TEXT("Prototype_Component_Texture_Snow")
+
+#pragma endregion
+
 #pragma endregion
 
 #pragma region ¿øÇü°´Ã¼
@@ -291,6 +307,7 @@
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
 #define G0_SUBMESH_DEMO_TAG		TEXT("Prototype_GameObject_Submesh_Demo")
+#define G0_PARTICLE_DEMO_TAG		TEXT("Prototype_GameObject_Particle_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 #define GO_PLATEFORM_INSTANCING_TAG		TEXT("Prototype_GameObject_PlateformInstancing")

@@ -17,6 +17,7 @@
 #include "Camera_Window.h"
 #include "Object_Window.h"
 #include "Animation_Window.h"
+#include "Effect_Window.h"
 
 #include "Terrain_Demo.h"
 
@@ -52,6 +53,7 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
    Set_Terrain_Edit();
    Set_Camera_Edit();
    Set_Animation_Edit();
+   Set_Effect_Edit();
 
 	return S_OK;
 }
@@ -147,6 +149,7 @@ HRESULT CImGuiMgr::Render()
 
             if (ImGui::MenuItem("Effect"))
             {
+                M_eCurentMode = MODE_EFFECT;
             }
 
             ImGui::EndMenu();
@@ -251,6 +254,18 @@ void CImGuiMgr::Set_Animation_Edit()
     ImguiMrgWinDesc.vWinSize = _float2(500.f, 700.f);
 
     m_mapWindow[MODE_ANIMATION].emplace(WS_MAIN, CAnimation_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
+}
+
+void CImGuiMgr::Set_Effect_Edit()
+{
+    CImGui_Window::IMGUIWINDESC ImguiMrgWinDesc;
+
+    ImguiMrgWinDesc.strName = "Effect";
+    ImguiMrgWinDesc.window_flags = CImGui_Window::WINDOWFLAGS::HorizontalScrollbar
+        | CImGui_Window::WINDOWFLAGS::NoMove | CImGui_Window::WINDOWFLAGS::NoResize;
+    ImguiMrgWinDesc.vWinSize = _float2(500.f, 700.f);
+
+    m_mapWindow[MODE_EFFECT].emplace(WS_MAIN, CEffect_Window::Create(m_pDevice, m_pContext, &ImguiMrgWinDesc));
 }
 
 void CImGuiMgr::Update_Terrain_Pick()

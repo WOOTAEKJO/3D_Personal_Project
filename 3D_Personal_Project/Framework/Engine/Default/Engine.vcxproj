@@ -190,6 +190,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\AICom.h" />
+    <ClInclude Include="..\Public\AlphaObject.h" />
     <ClInclude Include="..\Public\Animation.h" />
     <ClInclude Include="..\public\Base.h" />
     <ClInclude Include="..\Public\BehaviorTree.h" />
@@ -279,6 +280,7 @@ xcopy "$(SolutionDir)Engine\Bin\ShaderFiles\*.*" "$(SolutionDir)Client\Bin\Shade
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\AICom.cpp" />
+    <ClCompile Include="..\Private\AlphaObject.cpp" />
     <ClCompile Include="..\Private\Animation.cpp" />
     <ClCompile Include="..\private\Base.cpp" />
     <ClCompile Include="..\Private\BehaviorTree.cpp" />

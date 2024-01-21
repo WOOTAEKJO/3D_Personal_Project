@@ -10,7 +10,43 @@ CVIBuffer_Particle_Point::CVIBuffer_Particle_Point(const CVIBuffer_Particle_Poin
 {
 }
 
-HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType(_uint iInstanceNum)
+HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType()
+{
+
+
+	/*if (FAILED(Init_Buffer()))
+		return E_FAIL;*/
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
+{
+	if (pArg == nullptr)
+		return E_FAIL;
+
+	INSTANCING_PARTICLEPOINT_DESC* pPoint_Desc = (INSTANCING_PARTICLEPOINT_DESC*)pArg;
+
+	m_Instancing_Desc.vCenter = pPoint_Desc->vCenter;
+	m_Instancing_Desc.fLifeTime = pPoint_Desc->fLifeTime;
+	m_Instancing_Desc.fRange = pPoint_Desc->fRange;
+	m_Instancing_Desc.fSpeed = pPoint_Desc->fSpeed;
+	m_Instancing_Desc.fScale = pPoint_Desc->fScale;
+	m_Instancing_Desc.vColor = pPoint_Desc->vColor;
+	m_Instancing_Desc.vDir = pPoint_Desc->vDir;
+	m_Instancing_Desc.vRotation = pPoint_Desc->vRotation;
+
+	m_Instancing_Desc.vRunDir = pPoint_Desc->vRunDir;
+
+	m_ePointDesc.iInstanceNum = pPoint_Desc->iInstanceNum;
+		
+	if (FAILED(Init_Buffer())) return E_FAIL;
+	if (FAILED(__super::Init_InstanceBuffer())) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Particle_Point::Init_Buffer()
 {
 	m_eInstanceType = INSTANCING_TYPE::TYPE_PARTICLE;
 
@@ -18,7 +54,8 @@ HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType(_uint iInstanceNum)
 	m_iVertexNum = 1;
 	m_iVertexStride = sizeof(VTXPOINT);
 
-	m_iInstanceNum = iInstanceNum;
+	//m_iInstanceNum = iInstanceNum;
+	m_iInstanceNum =  m_ePointDesc.iInstanceNum;
 	m_iInstanceStride = sizeof(VTXINSTANCING);
 	m_iIndexCountPerInstance = 1;
 
@@ -78,19 +115,11 @@ HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType(_uint iInstanceNum)
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
-{
-	if (FAILED(__super::Initialize(pArg)))
-		return E_FAIL;
-		
-	return S_OK;
-}
-
-CVIBuffer_Particle_Point* CVIBuffer_Particle_Point::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iInstanceNum)
+CVIBuffer_Particle_Point* CVIBuffer_Particle_Point::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CVIBuffer_Particle_Point* pInstance = new CVIBuffer_Particle_Point(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_ProtoType(iInstanceNum))) {
+	if (FAILED(pInstance->Initialize_ProtoType())) {
 		MSG_BOX("Failed to Created : CVIBuffer_Particle_Point");
 		Safe_Release(pInstance);
 	}

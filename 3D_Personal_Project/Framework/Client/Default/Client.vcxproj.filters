@@ -451,6 +451,12 @@
     <Filter Include="02.GameObjects\03. Platform\00. Col">
       <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window">
+      <UniqueIdentifier>{5564a11d-35d7-4bd2-bf83-4cfa9e6b9421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\04. Particle">
+      <UniqueIdentifier>{9dfa84aa-4c9e-4d28-8cd3-17f27df4215e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -849,6 +855,12 @@
     <ClInclude Include="..\Public\Meteor.h">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Demo.h">
+      <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1220,6 +1232,12 @@
     <ClCompile Include="..\Private\Meteor.cpp">
       <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Effect_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1259,6 +1277,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTerrain.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticlePoint.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

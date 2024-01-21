@@ -6,6 +6,7 @@
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_DTerrain.h"
 #include "VIBuffer_Particle_Rect.h"
+#include "VIBuffer_Particle_Point.h"
 #include "Model_Instancing.h"
 #include "Model.h"
 #include "Shader.h"
