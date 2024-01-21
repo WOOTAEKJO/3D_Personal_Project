@@ -79,6 +79,29 @@ string CEffect_Window::Get_Path()
 	return string();
 }
 
+HRESULT CEffect_Window::Save_Data(const _char* strFilePath)
+{
+	ofstream fout;
+
+	fout.open(strFilePath, std::ofstream::binary);
+
+	if (fout.is_open())
+	{
+		
+	}
+	else
+		return E_FAIL;
+
+	fout.close();
+
+	return S_OK;
+}
+
+HRESULT CEffect_Window::Load_Data(const _char* strFilePath)
+{
+	return S_OK;
+}
+
 void CEffect_Window::Particle()
 {
 	ImGui::Text("Texture_List");
@@ -103,25 +126,25 @@ void CEffect_Window::Particle()
 
 	Arrow_Button("Range", m_fInterval,&m_eParticleInfo.fRange);
 
-	Arrow_Button("MinLife", m_fInterval, &m_eParticleInfo.fLifeTime.x);
-	Arrow_Button("MaxLife", m_fInterval, &m_eParticleInfo.fLifeTime.y);
+	ImGui::InputFloat2("Life", &(_float&)m_eParticleInfo.fLifeTime);
 
-	Arrow_Button("MinScale", m_fInterval, &m_eParticleInfo.fScale.x);
-	Arrow_Button("MaxScale", m_fInterval, &m_eParticleInfo.fScale.y);
+	ImGui::InputFloat2("Scale", &(_float&)m_eParticleInfo.fScale);
+	Arrow_Button("ScaleControl", m_fInterval, &m_eParticleInfo.fScaleControl);
 
-	Arrow_Button("MinSpeed", m_fInterval, &m_eParticleInfo.fSpeed.x);
-	Arrow_Button("MaxSpeed", m_fInterval, &m_eParticleInfo.fSpeed.y);
+	ImGui::InputFloat2("SpeedX", &(_float&)m_eParticleInfo.fSpeed[0]);
+	ImGui::InputFloat2("SpeedY", &(_float&)m_eParticleInfo.fSpeed[1]);
+	ImGui::InputFloat2("SpeedZ", &(_float&)m_eParticleInfo.fSpeed[2]);
+
+	ImGui::InputFloat3("PowerSpeed", &(_float&)(m_eParticleInfo.fPowerSpeed));
 
 	ImGui::InputFloat4("Color", &(_float&)(m_eParticleInfo.vColor));
 
-	ImGui::RadioButton("Texture_Color", &m_eParticleInfo.iTextureType, 0);
-	ImGui::SameLine();
-	ImGui::RadioButton("Solid_Color", &m_eParticleInfo.iTextureType, 1);
-
 	ImGui::InputFloat3("Dir", &(_float&)(m_eParticleInfo.vDir));
-
 	ImGui::InputFloat3("RunDir", &(_float&)(m_eParticleInfo.vRunDir));
-	ImGui::InputFloat2("RunRot", &(_float&)(m_eParticleInfo.vRunRotation));
+
+	ImGui::InputFloat2("RunRotX", &(_float&)(m_eParticleInfo.fRunRotation[0]));
+	ImGui::InputFloat2("RunRotY", &(_float&)(m_eParticleInfo.fRunRotation[1]));
+	ImGui::InputFloat2("RunRotZ", &(_float&)(m_eParticleInfo.fRunRotation[2]));
 
 	ImGui::Checkbox("X", &m_bRandomRotation[0]);
 	ImGui::SameLine();
@@ -131,13 +154,12 @@ void CEffect_Window::Particle()
 
 	Particle_Rotation();
 
+	ImGui::Checkbox("Loop", &m_eParticleInfo.bLoop);
+
 	if (m_pParticle != nullptr)
 	{
 		if(ImGui::Checkbox("Update", &m_bUpdate))
 			m_pParticle->Set_Update(m_bUpdate);	
-
-		if (ImGui::Button("Change_Color_Type"))
-			m_pParticle->TextureType((CParticle_Demo::COLORTYPE)m_eParticleInfo.iTextureType);
 	}
 
 	if (ImGui::Button("Create Particle"))
@@ -154,26 +176,38 @@ void CEffect_Window::Create_Particle()
 		m_pParticle = nullptr;
 	}
 
-	CParticle_Demo::PARTICLEDEMO_DESC Particle_Info = {};
+	INSTANCING_DESC Particle_Info = {};
 
-	Particle_Info.strModelTag = m_strPickTextureTag;
+	Particle_Info.strTextureTag = m_strPickTextureTag;
 
 	Particle_Info.fRange = m_eParticleInfo.fRange;
-	//Particle_Info.vCenter = m_eParticleInfo.vCenter;
 	Particle_Info.vCenter = _float3(0.f,0.f,0.f);
 	Particle_Info.fLifeTime = m_eParticleInfo.fLifeTime;
+
 	Particle_Info.fScale = m_eParticleInfo.fScale;
-	Particle_Info.fSpeed = m_eParticleInfo.fSpeed;
+	Particle_Info.fScaleControl = m_eParticleInfo.fScaleControl;
+
+	Particle_Info.fSpeed[0] = m_eParticleInfo.fSpeed[0];
+	Particle_Info.fSpeed[1] = m_eParticleInfo.fSpeed[1];
+	Particle_Info.fSpeed[2] = m_eParticleInfo.fSpeed[2];
+	Particle_Info.fPowerSpeed = m_eParticleInfo.fPowerSpeed;
+
 	Particle_Info.iInstanceNum = m_eParticleInfo.iInstanceNum; // 인스턴스 갯수
 
 	Particle_Info.vColor = m_eParticleInfo.vColor; // 생성 색
-	Particle_Info.eTextureType = (CParticle_Demo::COLORTYPE)m_eParticleInfo.iTextureType; // 생성 컬러 타입
 
 	Particle_Info.vDir = m_eParticleInfo.vDir;	// 생성 방향
-	Particle_Info.vRotation = m_eParticleInfo.vRotation; // 생성 각도
-
 	Particle_Info.vRunDir = m_eParticleInfo.vRunDir; // 실시간 방향
-	Particle_Info.fRunRotation = m_eParticleInfo.vRunRotation; // 실시간 회전 각도
+
+	Particle_Info.fRotation[0] = m_eParticleInfo.fRotation[0]; // 생성 각도
+	Particle_Info.fRotation[1] = m_eParticleInfo.fRotation[1];
+	Particle_Info.fRotation[2] = m_eParticleInfo.fRotation[2];
+
+	Particle_Info.fRunRotation[0] = m_eParticleInfo.fRunRotation[0]; // 실시간 각도
+	Particle_Info.fRunRotation[1] = m_eParticleInfo.fRunRotation[1];
+	Particle_Info.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
+
+	Particle_Info.bLoop = m_eParticleInfo.bLoop;
 
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[LAYER::LAYER_EFFECT], G0_PARTICLE_DEMO_TAG,
 		&Particle_Info, reinterpret_cast<CGameObject**>(&m_pParticle))))
@@ -186,26 +220,38 @@ void CEffect_Window::Particle_Rotation()
 {
 	uniform_real_distribution<float>	RandomAngle(0.f, 360.f);
 
-	_float3 vRot = { 0.f,0.f,0.f };
-
 	if (m_bRandomRotation[0])
 	{
-		m_eParticleInfo.vRotation.x = RandomAngle(m_RandomNumber);
+		do {
+			m_eParticleInfo.fRotation[0].x = RandomAngle(m_RandomNumber);
+			m_eParticleInfo.fRotation[0].y = RandomAngle(m_RandomNumber);
+		} while (m_eParticleInfo.fRotation[0].x > m_eParticleInfo.fRotation[0].y);
 	}
 	else
-		ImGui::InputFloat("RotationX", &m_eParticleInfo.vRotation.x);
+		ImGui::InputFloat2("RotX", &(_float&)(m_eParticleInfo.fRotation[0]));
 
 	if (m_bRandomRotation[1])
 	{
-		m_eParticleInfo.vRotation.y = RandomAngle(m_RandomNumber);
+		/*m_eParticleInfo.fRotation[1].x = RandomAngle(m_RandomNumber);
+		m_eParticleInfo.fRotation[1].y = RandomAngle(m_RandomNumber);*/
+		do {
+			m_eParticleInfo.fRotation[1].x = RandomAngle(m_RandomNumber);
+			m_eParticleInfo.fRotation[1].y = RandomAngle(m_RandomNumber);
+		} while (m_eParticleInfo.fRotation[1].x > m_eParticleInfo.fRotation[1].y);
 	}else
-		ImGui::InputFloat("RotationY", &m_eParticleInfo.vRotation.y);
+		ImGui::InputFloat2("RotY", &(_float&)(m_eParticleInfo.fRotation[1]));
 
 	if (m_bRandomRotation[2])
 	{
-		m_eParticleInfo.vRotation.z = RandomAngle(m_RandomNumber);
+		/*m_eParticleInfo.fRotation[2].x = RandomAngle(m_RandomNumber);
+		m_eParticleInfo.fRotation[2].y = RandomAngle(m_RandomNumber);*/
+		do {
+			m_eParticleInfo.fRotation[2].x = RandomAngle(m_RandomNumber);
+			m_eParticleInfo.fRotation[2].y = RandomAngle(m_RandomNumber);
+		} while (m_eParticleInfo.fRotation[2].x > m_eParticleInfo.fRotation[2].y);
+
 	}else
-		ImGui::InputFloat("RotationZ", &m_eParticleInfo.vRotation.z);
+		ImGui::InputFloat2("RotZ", &(_float&)(m_eParticleInfo.fRotation[2]));
 }
 
 CEffect_Window* CEffect_Window::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg)

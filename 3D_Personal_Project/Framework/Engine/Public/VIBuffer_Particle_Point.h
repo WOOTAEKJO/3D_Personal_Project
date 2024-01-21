@@ -6,11 +6,11 @@ BEGIN(Engine)
 class ENGINE_DLL CVIBuffer_Particle_Point final : public CVIBuffer_Instancing
 {
 public:
-	typedef struct tagParticle_Point_Desc : public CVIBuffer_Instancing::INSTANCING_DESC
+	/*typedef struct tagParticle_Point_Desc : public CVIBuffer_Instancing::INSTANCING_DESC
 	{
-		_uint	iInstanceNum;
+		
 
-	}INSTANCING_PARTICLEPOINT_DESC;
+	}INSTANCING_PARTICLEPOINT_DESC;*/
 
 private:
 	CVIBuffer_Particle_Point(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -21,8 +21,8 @@ public:
 	virtual	HRESULT	Initialize_ProtoType();
 	virtual	HRESULT	Initialize(void* pArg) override;
 
-private:
-	INSTANCING_PARTICLEPOINT_DESC	m_ePointDesc;
+public:
+	HRESULT	Save_Particle(const _char* strFilePath);	
 
 private:
 	HRESULT	Init_Buffer();

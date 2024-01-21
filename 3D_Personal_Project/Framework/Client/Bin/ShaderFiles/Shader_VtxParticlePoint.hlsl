@@ -109,24 +109,11 @@ PS_OUT PS_MAIN(PS_IN In)
 
     vector vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
     
-    if (g_iTextureType == 0)
-    {
-        if (vColor.a < 0.8f)
-            discard;
     
-        //Out.vColor.a = In.vColor.a;
-        Out.vColor = vColor;
-        // 색을 섞으면 내가 원하는 색이 나오지 않음
+    if (vColor.a < 0.3f)
+        discard;
         
-    }
-    else if (g_iTextureType == 1)
-    {
-        // 완전히 단색을 위함
-        if (vColor.a < 0.2f)
-            discard;
-        
-        Out.vColor = In.vColor;
-    }
+    Out.vColor = vColor * In.vColor;
    
         return Out;
 }

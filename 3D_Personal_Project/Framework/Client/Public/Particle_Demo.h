@@ -12,27 +12,35 @@ BEGIN(Client)
 class CParticle_Demo final : public CDemo
 {
 public:
-	enum COLORTYPE { TEXTURE_COLOR, SOLID_COLOR, TYPE_END };
+	//typedef struct tagParticleObject_Demo_Desc : public DEMO_DESC
+	//{
+	//	_float3		vCenter;
 
-	typedef struct tagParticleObject_Demo_Desc : public DEMO_DESC
-	{
-		_float3		vCenter;
-		_float		fRange;
-		_float2		fSpeed;
-		_float2		fScale;
-		_float2		fLifeTime;
-		_uint		iInstanceNum;
+	//	_float		fRange;
 
-		_float4		vColor;
-		COLORTYPE	eTextureType;
+	//	_float2		fSpeed[3];
+	//	_float3		fPowerSpeed;
 
-		_float3		vDir;
-		_float3		vRotation;
+	//	_float2		fScale;
+	//	_float		fScaleControl;
 
-		_float3		vRunDir;
-		_float2		fRunRotation;
+	//	_float2		fLifeTime;
 
-	}PARTICLEDEMO_DESC;
+	//	_float4		vColor;
+
+	//	_float3		vDir; // 생성할 때 사용하는 방향
+	//	_float3		vRunDir; // 실시간 방향
+
+	//	_float2		fRotation[3]; // 생성 각도 최소 최댓값 xyz
+	//	_float2		fRunRotation[3]; // 실시간 회전 최소 최댓값 xyz
+
+	//	_uint		iTextureType; // 텍스쳐 타입
+
+	//	_uint		iInstanceNum; // 인스턴스 갯수
+
+	//	_bool		bLoop; // 무한 루프
+
+	//}PARTICLEDEMO_DESC;
 
 private:
 	CParticle_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -57,7 +65,6 @@ public:
 
 public:
 	void	Set_Update(_bool bCheck) { m_bUpdate = bCheck; }
-	void	TextureType(COLORTYPE eType);
 
 private:
 	CShader*		m_pShaderCom = { nullptr };
@@ -68,7 +75,7 @@ private:
 	_bool			m_bUpdate = { false };
 
 private:
-	PARTICLEDEMO_DESC	m_eParticleInfo;
+	INSTANCING_DESC	m_eParticleInfo;
 	
 private:
 	virtual HRESULT Bind_ShaderResources() override;

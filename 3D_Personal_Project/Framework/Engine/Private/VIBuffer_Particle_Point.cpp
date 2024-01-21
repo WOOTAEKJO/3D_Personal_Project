@@ -13,7 +13,6 @@ CVIBuffer_Particle_Point::CVIBuffer_Particle_Point(const CVIBuffer_Particle_Poin
 HRESULT CVIBuffer_Particle_Point::Initialize_ProtoType()
 {
 
-
 	/*if (FAILED(Init_Buffer()))
 		return E_FAIL;*/
 
@@ -25,25 +24,92 @@ HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
 	if (pArg == nullptr)
 		return E_FAIL;
 
-	INSTANCING_PARTICLEPOINT_DESC* pPoint_Desc = (INSTANCING_PARTICLEPOINT_DESC*)pArg;
+	INSTANCING_DESC* pPoint_Desc = (INSTANCING_DESC*)pArg;
 
 	m_Instancing_Desc.vCenter = pPoint_Desc->vCenter;
 	m_Instancing_Desc.fLifeTime = pPoint_Desc->fLifeTime;
 	m_Instancing_Desc.fRange = pPoint_Desc->fRange;
-	m_Instancing_Desc.fSpeed = pPoint_Desc->fSpeed;
+
+	m_Instancing_Desc.fSpeed[0] = pPoint_Desc->fSpeed[0];
+	m_Instancing_Desc.fSpeed[1] = pPoint_Desc->fSpeed[1];
+	m_Instancing_Desc.fSpeed[2] = pPoint_Desc->fSpeed[2];
+	m_Instancing_Desc.fPowerSpeed = pPoint_Desc->fPowerSpeed;
+
 	m_Instancing_Desc.fScale = pPoint_Desc->fScale;
+	m_Instancing_Desc.fScaleControl = pPoint_Desc->fScaleControl;
+
 	m_Instancing_Desc.vColor = pPoint_Desc->vColor;
-	m_Instancing_Desc.vDir = pPoint_Desc->vDir;
-	m_Instancing_Desc.vRotation = pPoint_Desc->vRotation;
 
-	m_Instancing_Desc.vRunDir = pPoint_Desc->vRunDir;
-	m_Instancing_Desc.vRunRotation = pPoint_Desc->vRunRotation;
+	m_Instancing_Desc.vDir = pPoint_Desc->vDir; // 생성할 때 사용하는 방향 벡터
+	m_Instancing_Desc.vRunDir = pPoint_Desc->vRunDir; // 실시간으로 움직일 때 사용하는 방향 벡터
 
-	m_ePointDesc.iInstanceNum = pPoint_Desc->iInstanceNum;
+	m_Instancing_Desc.fRotation[0] = pPoint_Desc->fRotation[0];
+	m_Instancing_Desc.fRotation[1] = pPoint_Desc->fRotation[1];
+	m_Instancing_Desc.fRotation[2] = pPoint_Desc->fRotation[2];
+	// 생성 회전 xyz 랜덤 값
+
+	m_Instancing_Desc.fRunRotation[0] = pPoint_Desc->fRunRotation[0];
+	m_Instancing_Desc.fRunRotation[1] = pPoint_Desc->fRunRotation[1];
+	m_Instancing_Desc.fRunRotation[2] = pPoint_Desc->fRunRotation[2];
+	// 실시간 회전 xyz 랜덤 값
+
+	m_Instancing_Desc.bLoop = pPoint_Desc->bLoop;
+	// 무한 루프를 돌것인지
+
+	m_Instancing_Desc.iInstanceNum = pPoint_Desc->iInstanceNum;
+	// 인스턴스 갯수
 	
-		
 	if (FAILED(Init_Buffer())) return E_FAIL;
 	if (FAILED(__super::Init_InstanceBuffer())) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Particle_Point::Save_Particle(const _char* strFilePath)
+{
+	ofstream fout;
+
+	fout.open(strFilePath, std::ofstream::binary);
+
+	if (fout.is_open())
+	{
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.iInstanceNum), sizeof(_float3));
+		// 인스턴스 갯수
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.vCenter), sizeof(_float3));
+		// 센터 값
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fRange), sizeof(_float));
+		// 범위 값
+
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+		{
+			fout.write(reinterpret_cast<const char*>(&m_pSpeeds[i]), sizeof(_float));
+		}
+		// 각각 스피드 값
+
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+		{
+			fout.write(reinterpret_cast<const char*>(&m_pScale[i]), sizeof(_float));
+		}
+		// 각각 크기 값
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fScaleControl), sizeof(_float));
+		// 크기 컨트롤 값
+
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+		{
+			fout.write(reinterpret_cast<const char*>(&m_pLifeTime[i]), sizeof(_float));
+		}
+		// 각각 라이프타임 값
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fScaleControl), sizeof(_float));
+		// 크기 컨트롤 값
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fRange), sizeof(_float));
+	}
+	else
+		return E_FAIL;
+
+	fout.close();
 
 	return S_OK;
 }
@@ -57,17 +123,26 @@ HRESULT CVIBuffer_Particle_Point::Init_Buffer()
 	m_iVertexStride = sizeof(VTXPOINT);
 
 	//m_iInstanceNum = iInstanceNum;
-	m_iInstanceNum =  m_ePointDesc.iInstanceNum;
+	m_iInstanceNum = m_Instancing_Desc.iInstanceNum;
 	m_iInstanceStride = sizeof(VTXINSTANCING);
 	m_iIndexCountPerInstance = 1;
 
-	m_pSpeeds = new _float[m_iInstanceNum];
+	m_pSpeeds = new _float3[m_iInstanceNum];
+	m_pSpeedAcc = new _float3[m_iInstanceNum];
+	ZeroMemory(m_pSpeedAcc, sizeof(_float3) * m_iInstanceNum);
+
 	m_pLifeTime = new _float[m_iInstanceNum];
-	m_pRunRotation = new _float[m_iInstanceNum];
-	m_pScale = new _float[m_iInstanceNum];
 	m_pTimeAcc = new _float[m_iInstanceNum];
+	ZeroMemory(m_pTimeAcc, sizeof(_float) * m_iInstanceNum);
+	
+	m_pScale = new _float[m_iInstanceNum];
+	m_pScaleAcc = new _float[m_iInstanceNum];
+	ZeroMemory(m_pScaleAcc, sizeof(_float) * m_iInstanceNum);
+
 	m_pPos = new _float4[m_iInstanceNum];
-	m_pRotation = new _float[m_iInstanceNum];
+
+	m_pRotation = new _float3[m_iInstanceNum];
+	m_pRunRotation = new _float3[m_iInstanceNum];
 
 	m_iIndexNum = m_iInstanceNum;
 	m_iIndexStride = 2;

@@ -26,9 +26,8 @@ HRESULT CParticle_Demo::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 	
-	m_eParticleInfo = *(PARTICLEDEMO_DESC*)pArg;
+	m_eParticleInfo = *(INSTANCING_DESC*)pArg;
 	
-
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
@@ -86,14 +85,6 @@ void CParticle_Demo::Load_FromJson(const json& In_Json)
 {
 }
 
-void CParticle_Demo::TextureType(COLORTYPE eType)
-{
-	if (eType >= COLORTYPE::TYPE_END || (_int)eType<0)
-		return;
-
-	m_eParticleInfo.eTextureType = eType;
-}
-
 HRESULT CParticle_Demo::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
@@ -109,9 +100,6 @@ HRESULT CParticle_Demo::Bind_ShaderResources()
 		sizeof(_float4))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_iTextureType", &m_eParticleInfo.eTextureType, sizeof(_uint))))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -119,23 +107,38 @@ HRESULT CParticle_Demo::Ready_Component()
 {
 
 	if (FAILED(Add_Component<CShader>(SHADER_PARTICLEPOINT_TAG, &m_pShaderCom))) return E_FAIL;
-	if (FAILED(Add_Component<CTexture>(m_eParticleInfo.strModelTag, &m_pTextureCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(m_eParticleInfo.strTextureTag, &m_pTextureCom))) return E_FAIL;
 
-	CVIBuffer_Particle_Point::INSTANCING_PARTICLEPOINT_DESC Instancing_Desc = {};
+	INSTANCING_DESC Instancing_Desc = {};
 	Instancing_Desc.vCenter = m_eParticleInfo.vCenter;
 	Instancing_Desc.fLifeTime = m_eParticleInfo.fLifeTime;
 	Instancing_Desc.fRange = m_eParticleInfo.fRange;
+
 	Instancing_Desc.fScale = m_eParticleInfo.fScale;
-	Instancing_Desc.fSpeed = m_eParticleInfo.fSpeed;
+	Instancing_Desc.fScaleControl = m_eParticleInfo.fScaleControl;
+
+	Instancing_Desc.fSpeed[0] = m_eParticleInfo.fSpeed[0];
+	Instancing_Desc.fSpeed[1] = m_eParticleInfo.fSpeed[1];
+	Instancing_Desc.fSpeed[2] = m_eParticleInfo.fSpeed[2];
+	Instancing_Desc.fPowerSpeed = m_eParticleInfo.fPowerSpeed;
+
 	Instancing_Desc.iInstanceNum = m_eParticleInfo.iInstanceNum;
 
 	Instancing_Desc.vColor = m_eParticleInfo.vColor;
 
 	Instancing_Desc.vDir = m_eParticleInfo.vDir;
-	Instancing_Desc.vRotation = m_eParticleInfo.vRotation;
-
 	Instancing_Desc.vRunDir = m_eParticleInfo.vRunDir;
-	Instancing_Desc.vRunRotation = m_eParticleInfo.fRunRotation;
+
+
+	Instancing_Desc.fRotation[0] = m_eParticleInfo.fRotation[0];
+	Instancing_Desc.fRotation[1] = m_eParticleInfo.fRotation[1];
+	Instancing_Desc.fRotation[2] = m_eParticleInfo.fRotation[2];
+
+	Instancing_Desc.fRunRotation[0] = m_eParticleInfo.fRunRotation[0];
+	Instancing_Desc.fRunRotation[1] = m_eParticleInfo.fRunRotation[1];
+	Instancing_Desc.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
+
+	Instancing_Desc.bLoop = m_eParticleInfo.bLoop;
 
 	if (FAILED(Add_Component<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG, &m_pBufferCom,
 		&Instancing_Desc))) return E_FAIL;
