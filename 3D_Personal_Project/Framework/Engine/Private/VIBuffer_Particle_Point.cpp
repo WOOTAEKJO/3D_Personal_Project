@@ -37,8 +37,10 @@ HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
 	m_Instancing_Desc.vRotation = pPoint_Desc->vRotation;
 
 	m_Instancing_Desc.vRunDir = pPoint_Desc->vRunDir;
+	m_Instancing_Desc.vRunRotation = pPoint_Desc->vRunRotation;
 
 	m_ePointDesc.iInstanceNum = pPoint_Desc->iInstanceNum;
+	
 		
 	if (FAILED(Init_Buffer())) return E_FAIL;
 	if (FAILED(__super::Init_InstanceBuffer())) return E_FAIL;
@@ -61,6 +63,11 @@ HRESULT CVIBuffer_Particle_Point::Init_Buffer()
 
 	m_pSpeeds = new _float[m_iInstanceNum];
 	m_pLifeTime = new _float[m_iInstanceNum];
+	m_pRunRotation = new _float[m_iInstanceNum];
+	m_pScale = new _float[m_iInstanceNum];
+	m_pTimeAcc = new _float[m_iInstanceNum];
+	m_pPos = new _float4[m_iInstanceNum];
+	m_pRotation = new _float[m_iInstanceNum];
 
 	m_iIndexNum = m_iInstanceNum;
 	m_iIndexStride = 2;

@@ -22,8 +22,9 @@ public:
 		_float3		vDir; // 생성할 때 사용하는 방향
 		_float3		vRotation;
 
-		_float3		vRunDir; // Runtime 방향
-
+		_float3		vRunDir; // 실시간 방향
+		_float2		vRunRotation; // 실시간 회전 각도 최소 최댓 값
+		
 	}INSTANCING_DESC;
 
 protected:
@@ -54,8 +55,13 @@ protected:
 protected:
 	_float*			m_pSpeeds = { nullptr };
 	_float*			m_pLifeTime = { nullptr };
+	_float*			m_pTimeAcc = { nullptr };
+	_float*			m_pRunRotation = { nullptr };
+	_float*			m_pScale = { nullptr };
+	_float4*		m_pPos = { nullptr };
+
 	INSTANCING_DESC	m_Instancing_Desc;
-	_float			m_fTimeAcc = { 0.f };
+	//_float			m_fTimeAcc = { 0.f };
 
 protected:
 	vector<_float4x4>		m_vecInstanceVertex;
@@ -71,6 +77,9 @@ protected:
 
 protected:
 	_vector		CenterToPos(_float4 vPos);
+
+protected:
+	void		Reset();
 
 public:
 	virtual	CComponent* Clone(void* pArg) = 0;

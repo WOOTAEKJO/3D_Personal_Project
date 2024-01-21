@@ -30,6 +30,7 @@ public:
 		_float3		vRotation;
 
 		_float3		vRunDir;
+		_float2		fRunRotation;
 
 	}PARTICLEDEMO_DESC;
 

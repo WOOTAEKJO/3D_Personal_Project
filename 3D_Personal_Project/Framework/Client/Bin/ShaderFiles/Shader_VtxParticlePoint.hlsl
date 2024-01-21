@@ -27,7 +27,7 @@ VS_OUT VS_MAIN(VS_IN In)
 {
 	VS_OUT Out = (VS_OUT)0;
     
-    float4 vPosition = mul(float4(In.vPosition, 1.f), In.matWorld);
+    vector vPosition = mul(float4(In.vPosition, 1.f), In.matWorld);
 	
     Out.vPosition = mul(vPosition, g_matWorld);
     Out.vPSize = float2(In.vPSize.x * In.matWorld._11, In.vPSize.y * In.matWorld._22);
@@ -56,24 +56,25 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     GS_OUT Out[4];
     
     float4 vLook = g_vCameraPos - In[0].vPosition;
-    float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook.xyz)) * In[0].vPSize.x * 0.5f;    
+    vLook = normalize(vLook);
+    float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook.xyz)) * In[0].vPSize.x * 0.5f;
     float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
 
     matrix matVP = mul(g_matView, g_matProj);
     
-    Out[0].vPosition = mul(float4(In[0].vPosition + vUp + vRight, 1.f), matVP);
+    Out[0].vPosition = mul(float4(In[0].vPosition.xyz + vRight + vUp, 1.f), matVP);
     Out[0].vTexcoord = float2(0.f, 0.f);
     Out[0].vColor = In[0].vColor;
     
-    Out[1].vPosition = mul(float4(In[0].vPosition + vUp - vRight, 1.f), matVP);
+    Out[1].vPosition = mul(float4(In[0].vPosition.xyz - vRight + vUp, 1.f), matVP);
     Out[1].vTexcoord = float2(1.f, 0.f);
     Out[1].vColor = In[0].vColor;
     
-    Out[2].vPosition = mul(float4(In[0].vPosition - vUp - vRight, 1.f), matVP);
+    Out[2].vPosition = mul(float4(In[0].vPosition.xyz - vRight - vUp, 1.f), matVP);
     Out[2].vTexcoord = float2(1.f, 1.f);
     Out[2].vColor = In[0].vColor;
     
-    Out[3].vPosition = mul(float4(In[0].vPosition - vUp + vRight, 1.f), matVP);
+    Out[3].vPosition = mul(float4(In[0].vPosition.xyz + vRight - vUp, 1.f), matVP);
     Out[3].vTexcoord = float2(0.f, 1.f);
     Out[3].vColor = In[0].vColor;
     
@@ -86,6 +87,7 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     OutStream.Append(Out[2]);
     OutStream.Append(Out[3]);
     OutStream.RestartStrip();
+    
 }
 
 struct PS_IN

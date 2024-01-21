@@ -23,6 +23,7 @@ public:
 		_float3		vRotation = _float3(0.f, 0.f, 0.f);
 
 		_float3		vRunDir = _float3(0.f,0.f,0.f); // Runtime 방향
+		_float2		vRunRotation = _float2(0.f, 0.f); // 실시간 회전 각도;
 
 	}PARTICLE_INFO;
 

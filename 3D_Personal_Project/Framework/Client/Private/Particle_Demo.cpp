@@ -135,6 +135,7 @@ HRESULT CParticle_Demo::Ready_Component()
 	Instancing_Desc.vRotation = m_eParticleInfo.vRotation;
 
 	Instancing_Desc.vRunDir = m_eParticleInfo.vRunDir;
+	Instancing_Desc.vRunRotation = m_eParticleInfo.fRunRotation;
 
 	if (FAILED(Add_Component<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG, &m_pBufferCom,
 		&Instancing_Desc))) return E_FAIL;

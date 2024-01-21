@@ -121,6 +121,7 @@ void CEffect_Window::Particle()
 	ImGui::InputFloat3("Dir", &(_float&)(m_eParticleInfo.vDir));
 
 	ImGui::InputFloat3("RunDir", &(_float&)(m_eParticleInfo.vRunDir));
+	ImGui::InputFloat2("RunRot", &(_float&)(m_eParticleInfo.vRunRotation));
 
 	ImGui::Checkbox("X", &m_bRandomRotation[0]);
 	ImGui::SameLine();
@@ -172,6 +173,7 @@ void CEffect_Window::Create_Particle()
 	Particle_Info.vRotation = m_eParticleInfo.vRotation; // 생성 각도
 
 	Particle_Info.vRunDir = m_eParticleInfo.vRunDir; // 실시간 방향
+	Particle_Info.fRunRotation = m_eParticleInfo.vRunRotation; // 실시간 회전 각도
 
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[LAYER::LAYER_EFFECT], G0_PARTICLE_DEMO_TAG,
 		&Particle_Info, reinterpret_cast<CGameObject**>(&m_pParticle))))

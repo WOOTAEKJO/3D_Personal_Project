@@ -61,7 +61,7 @@ HRESULT CVIBuffer_Instancing::Bind_Buffer()
 
 void CVIBuffer_Instancing::Update(_float fTimeDelta)
 {
-	m_fTimeAcc += fTimeDelta;
+	
 
 	D3D11_MAPPED_SUBRESOURCE Subresource = {};
 
@@ -79,14 +79,43 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 		
 	for (_uint i = 0; i < m_iInstanceNum; i++)
 	{
-		_float fLifeTime = max( m_pLifeTime[i] - m_fTimeAcc,0.f);
+		if (m_pLifeTime[i] != 0.f)
+		{
+			m_pTimeAcc[i] += fTimeDelta;
+
+			_float fLifeTime = max(m_pLifeTime[i] - m_pTimeAcc[i], 0.f);
+
+			Instancing[i].vColor.w = fLifeTime;
+			// 라이프타임이 있을 경우
+		}
+		else
+		{
+
+		}
+
+		Instancing[i].vRight = _float4(m_pScale[i], 0.f, 0.f, 0.f);
+		Instancing[i].vUp = _float4(0.f, m_pScale[i], 0.f, 0.f);
+		Instancing[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+		// 크기
+
+		if (m_pRunRotation[i] != 0.f) {
+			//_matrix matRot = XMMatrixRotationZ(m_pRunRotation[i] * fTimeDelta);
+
+			_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i] * fTimeDelta,
+				m_pRunRotation[i] * fTimeDelta, m_pRunRotation[i] * fTimeDelta);
+
+			_matrix matRot = XMMatrixRotationQuaternion(vRot);
+
+			XMStoreFloat4(&Instancing[i].vRight,XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vRight), matRot));
+			XMStoreFloat4(&Instancing[i].vUp, XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vUp), matRot));
+			XMStoreFloat4(&Instancing[i].vLook, XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vLook), matRot));
+		} // 회전
 		
-		Instancing[i].vColor.w = fLifeTime;
-		
-		vDir = bRuntimeDir == false ? 
+		vDir = bRuntimeDir == false ?
 			CenterToPos(Instancing[i].vPos) : vDir;
 
 		XMStoreFloat4(&Instancing[i].vPos,XMLoadFloat4(&Instancing[i].vPos) + XMVector3Normalize(vDir) * m_pSpeeds[i] * fTimeDelta);
+		// 위치
 	}
 
 	m_pContext->Unmap(m_pInstanceBuffer, 0);
@@ -105,17 +134,24 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 	_vector vDir =  XMVectorSetW(XMLoadFloat3(&m_Instancing_Desc.vDir),0.f);
 
 	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);
-	//uniform_real_distribution<float>	RandomAngle(0.f, XMConvertToRadians(360.f));
+	uniform_real_distribution<float>	RandomRunAngle(m_Instancing_Desc.vRunRotation.x,
+		m_Instancing_Desc.vRunRotation.y);
 	uniform_real_distribution<float>	RandomSpeed(m_Instancing_Desc.fSpeed.x, m_Instancing_Desc.fSpeed.y);
 	uniform_real_distribution<float>	RandomLifeTime(m_Instancing_Desc.fLifeTime.x, m_Instancing_Desc.fLifeTime.y);
 	uniform_real_distribution<float>	RandomScale(m_Instancing_Desc.fScale.x, m_Instancing_Desc.fScale.y);
+	uniform_real_distribution<float>	RandomRotation(m_Instancing_Desc.vRotation.x, m_Instancing_Desc.vRotation.y);
+
 
 	for (_uint i = 0; i < m_iInstanceNum; i++)
 	{
 		m_pSpeeds[i] = RandomSpeed(m_RandomNumber);
 		m_pLifeTime[i] = RandomLifeTime(m_RandomNumber);
 
-		_float fScale = RandomScale(m_RandomNumber);
+		m_pRunRotation[i] = XMConvertToRadians(RandomRunAngle(m_RandomNumber));
+
+		m_pScale[i] = RandomScale(m_RandomNumber);
+
+		m_pRotation[i] = 
 
 		vDir = XMVector3Normalize(vDir) * RandomRange(m_RandomNumber);
 
@@ -127,11 +163,12 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 
 		vDir = XMVector3TransformNormal(vDir, matRot);
 
-		pVerpostex[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
-		pVerpostex[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
+		pVerpostex[i].vRight = _float4(m_pScale[i], 0.f, 0.f, 0.f);
+		pVerpostex[i].vUp = _float4(0.f, m_pScale[i], 0.f, 0.f);
 		pVerpostex[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
 		XMStoreFloat4(&pVerpostex[i].vPos, XMLoadFloat3(&m_Instancing_Desc.vCenter) + vDir);
 		pVerpostex[i].vPos.w = 1.f;
+		m_pPos[i] = pVerpostex[i].vPos;
 		pVerpostex[i].vColor = m_Instancing_Desc.vColor;
 	}
 
@@ -197,6 +234,36 @@ _vector CVIBuffer_Instancing::CenterToPos(_float4 vPos)
 	return vDir;
 }
 
+void CVIBuffer_Instancing::Reset(VTXINSTANCING* pInstancing,_uint iIndx)
+{
+	m_pTimeAcc[iIndx] = 0.f; // 누적 시간 값
+	pInstancing[iIndx].vColor.w = m_Instancing_Desc.vColor.w; // 알파 값
+
+	pInstancing[iIndx].vRight = _float4(m_pScale[iIndx], 0.f, 0.f, 0.f);
+	pInstancing[iIndx].vUp = _float4(0.f, m_pScale[iIndx], 0.f, 0.f);
+	pInstancing[iIndx].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+	// 크기
+
+	//if (m_pRunRotation[i] != 0.f) {
+	//	//_matrix matRot = XMMatrixRotationZ(m_pRunRotation[i] * fTimeDelta);
+
+	//	_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i] * fTimeDelta,
+	//		m_pRunRotation[i] * fTimeDelta, m_pRunRotation[i] * fTimeDelta);
+
+	//	_matrix matRot = XMMatrixRotationQuaternion(vRot);
+
+	//	XMStoreFloat4(&Instancing[i].vRight, XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vRight), matRot));
+	//	XMStoreFloat4(&Instancing[i].vUp, XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vUp), matRot));
+	//	XMStoreFloat4(&Instancing[i].vLook, XMVector3TransformNormal(XMLoadFloat4(&Instancing[i].vLook), matRot));
+	//} // 회전
+
+	//vDir = bRuntimeDir == false ?
+	//	CenterToPos(Instancing[i].vPos) : vDir;
+
+	//XMStoreFloat4(&Instancing[i].vPos, XMLoadFloat4(&Instancing[i].vPos) + XMVector3Normalize(vDir) * m_pSpeeds[i] * fTimeDelta);
+	// 위치
+}
+
 void CVIBuffer_Instancing::Free()
 {
 	__super::Free();
@@ -208,6 +275,11 @@ void CVIBuffer_Instancing::Free()
 	}*/
 	Safe_Delete_Array(m_pSpeeds);
 	Safe_Delete_Array(m_pLifeTime);
+	Safe_Delete_Array(m_pRunRotation);
+	Safe_Delete_Array(m_pScale);
+	Safe_Delete_Array(m_pTimeAcc);
+	Safe_Delete_Array(m_pPos);
+	Safe_Delete_Array(m_pRotation);
 
 	Safe_Release(m_pInstanceBuffer);
 }

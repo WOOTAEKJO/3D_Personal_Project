@@ -125,10 +125,10 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 
 	m_pObject_Manager->Tick(fTimeDelta);
-	m_pPipeLine->Tick();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 	m_pCollider_Manager->Update();
+	m_pPipeLine->Tick();
 	
 	m_pLevel_Manager->Tick(fTimeDelta);
 
