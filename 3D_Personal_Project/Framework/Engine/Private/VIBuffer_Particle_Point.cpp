@@ -1,4 +1,5 @@
 #include "..\Public\VIBuffer_Particle_Point.h"
+#include "GameInstance.h"
 
 CVIBuffer_Particle_Point::CVIBuffer_Particle_Point(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CVIBuffer_Instancing(pDevice, pContext)
@@ -78,7 +79,7 @@ HRESULT CVIBuffer_Particle_Point::Save_Particle(const _char* strFilePath)
 
 	if (fout.is_open())
 	{
-		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.iInstanceNum), sizeof(_float3));
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.iInstanceNum), sizeof(_int));
 		// 인스턴스 갯수
 		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.vCenter), sizeof(_float3));
 		// 센터 값
@@ -87,9 +88,12 @@ HRESULT CVIBuffer_Particle_Point::Save_Particle(const _char* strFilePath)
 
 		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
 		{
-			fout.write(reinterpret_cast<const char*>(&m_pSpeeds[i]), sizeof(_float));
+			fout.write(reinterpret_cast<const char*>(&m_pSpeeds[i]), sizeof(_float3));
 		}
 		// 각각 스피드 값
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fPowerSpeed), sizeof(_float3));
+		// 스피드 파워 값
 
 		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
 		{
@@ -106,15 +110,98 @@ HRESULT CVIBuffer_Particle_Point::Save_Particle(const _char* strFilePath)
 		}
 		// 각각 라이프타임 값
 
-		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fScaleControl), sizeof(_float));
-		// 크기 컨트롤 값
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.vColor), sizeof(_float4));
+		// 색상
 
-		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.fRange), sizeof(_float));
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.vRunDir), sizeof(_float3));
+		// 실시간 방향 값
+
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+		{
+			fout.write(reinterpret_cast<const char*>(&m_pRunRotation[i]), sizeof(_float3));
+		}
+		// 실시간 회전 값
+
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+		{
+			fout.write(reinterpret_cast<const char*>(&m_pPos[i]), sizeof(_float4));
+		}
+		// 처음 위치 값
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.bLoop), sizeof(_bool));
+		// 무한루프 판단
+
+		string strTag = CUtility_String::WString_To_string(m_Instancing_Desc.strTextureTag);
+		size_t istrSize = strTag.size();
+		fout.write(reinterpret_cast<const char*>(&istrSize), sizeof(size_t));
+		fout.write(strTag.c_str(), istrSize);
+		// 텍스쳐 테그
+
+		fout.write(reinterpret_cast<const char*>(&m_Instancing_Desc.eColorType), sizeof(m_Instancing_Desc.eColorType));
+		// 텍스쳐 컬러 타입
+
 	}
 	else
 		return E_FAIL;
 
 	fout.close();
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Particle_Point::Load_Particle(const _char* strFilePath)
+{
+	ifstream fIn;
+
+	fIn.open(strFilePath, std::ios::binary);
+
+	if (fIn.is_open())
+	{
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.iInstanceNum), sizeof(_int));
+		// 인스턴스 갯수
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.vCenter), sizeof(_float3));
+		//센터
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.fRange), sizeof(_float));
+		//범위
+		for(_uint i = 0;i< m_Instancing_Desc.iInstanceNum;i++)
+			fIn.read(reinterpret_cast<char*>(&m_pSpeeds[i]), sizeof(_float3));
+		// 각각의 스피드
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.fPowerSpeed), sizeof(_float3));
+		// 스피드 파워
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+			fIn.read(reinterpret_cast<char*>(&m_pScale[i]), sizeof(_float));
+		// 각각의 크기
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.fScaleControl), sizeof(_float));
+		// 크기 컨트롤 값
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+			fIn.read(reinterpret_cast<char*>(&m_pLifeTime[i]), sizeof(_float));
+		// 각각의 라이프 타임
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.vColor), sizeof(_float4));
+		// 색상
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.vRunDir), sizeof(_float3));
+		// 실시간 방향
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+			fIn.read(reinterpret_cast<char*>(&m_pRunRotation[i]), sizeof(_float3));
+		// 각각의 실시간 회전 각도
+		for (_uint i = 0; i < m_Instancing_Desc.iInstanceNum; i++)
+			fIn.read(reinterpret_cast<char*>(&m_pPos[i]), sizeof(_float4));
+		// 각각의 처음 위치 값
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.bLoop), sizeof(_bool));
+		// 무한루프 판단
+		size_t TagSize;
+		fIn.read(reinterpret_cast<char*>(&TagSize), sizeof(size_t));
+		string strTag;
+		strTag.resize(TagSize);
+		fIn.read(&strTag[0], TagSize);
+		m_Instancing_Desc.strTextureTag = CUtility_String::string_To_Wstring(strTag);
+		// 텍스쳐 테그 값
+		fIn.read(reinterpret_cast<char*>(&m_Instancing_Desc.eColorType), sizeof(m_Instancing_Desc.eColorType));
+		// 텍스쳐 컬러 타입
+	}
+	else
+		return E_FAIL;
+
+	fIn.close();
 
 	return S_OK;
 }

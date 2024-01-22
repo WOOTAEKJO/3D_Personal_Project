@@ -22,7 +22,8 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 
 public:
-	HRESULT	Save_Particle(const _char* strFilePath);	
+	HRESULT	Save_Particle(const _char* strFilePath);
+	HRESULT	Load_Particle(const _char * strFilePath);
 
 private:
 	HRESULT	Init_Buffer();

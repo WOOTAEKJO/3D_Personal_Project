@@ -76,25 +76,15 @@ void CEffect_Window::Demo_Picked()
 
 string CEffect_Window::Get_Path()
 {
-	return string();
+	return "../Bin/Data/Particle/";
 }
 
 HRESULT CEffect_Window::Save_Data(const _char* strFilePath)
-{
-	ofstream fout;
-
-	fout.open(strFilePath, std::ofstream::binary);
-
-	if (fout.is_open())
-	{
-		
-	}
-	else
+{	
+	if (m_pParticle == nullptr)
 		return E_FAIL;
 
-	fout.close();
-
-	return S_OK;
+	return m_pParticle->Save_Particle(strFilePath);
 }
 
 HRESULT CEffect_Window::Load_Data(const _char* strFilePath)

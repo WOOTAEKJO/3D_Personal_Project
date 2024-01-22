@@ -83,6 +83,14 @@ _bool CParticle_Demo::Get_Picked()
 	return false;
 }
 
+HRESULT CParticle_Demo::Save_Particle(const _char* strFilePath)
+{
+	if (m_pBufferCom == nullptr)
+		return E_FAIL;
+
+	return m_pBufferCom->Save_Particle(strFilePath);
+}
+
 void CParticle_Demo::Write_Json(json& Out_Json)
 {
 }

@@ -27,6 +27,7 @@ public:
 
 public:
 	_bool	Get_Picked();
+	HRESULT	Save_Particle(const _char* strFilePath);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;

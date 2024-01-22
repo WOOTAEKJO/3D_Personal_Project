@@ -104,17 +104,25 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.f);
 		}
 
-		_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i].x * fTimeDelta,
-			m_pRunRotation[i].y * fTimeDelta, m_pRunRotation[i].z * fTimeDelta);
-		_matrix matRot = XMMatrixRotationQuaternion(vRot);
-		XMStoreFloat4(&Instancing[i].vRight,
-			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vRight) * fScale), matRot));
-		XMStoreFloat4(&Instancing[i].vUp,
-			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vUp) * fScale), matRot));
-		XMStoreFloat4(&Instancing[i].vLook,
-			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vLook) * fScale), matRot));
-		// 크기 및 회전
-	
+		if (m_pRunRotation[i].x != 0 || m_pRunRotation[i].y != 0 || m_pRunRotation[i].z != 0)
+		{
+			_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i].x * fTimeDelta,
+				m_pRunRotation[i].y * fTimeDelta, m_pRunRotation[i].z * fTimeDelta);
+			_matrix matRot = XMMatrixRotationQuaternion(vRot);
+			XMStoreFloat4(&Instancing[i].vRight,
+				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vRight) * fScale), matRot));
+			XMStoreFloat4(&Instancing[i].vUp,
+				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vUp) * fScale), matRot));
+			XMStoreFloat4(&Instancing[i].vLook,
+				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vLook) * fScale), matRot));
+			// 크기 및 회전
+		}
+		else {
+			Instancing[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
+			Instancing[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
+			Instancing[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+		}
+
 		vDir = bRuntimeDir == false ?
 			CenterToPos(Instancing[i].vPos) : vDir;
 
@@ -136,7 +144,6 @@ HRESULT CVIBuffer_Instancing::Render()
 
 HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 {
-	//_vector vDir = XMVectorSet(1.f, 0.f, 0.f, 0.f);
 	_vector vDir =  XMVectorSetW(XMLoadFloat3(&m_Instancing_Desc.vDir),0.f);
 
 	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);

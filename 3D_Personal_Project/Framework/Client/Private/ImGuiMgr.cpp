@@ -365,6 +365,9 @@ void CImGuiMgr::File_Render()
         break;
     case Client::CImGuiMgr::MODE_CAMERA:
         break;
+    case Client::CImGuiMgr::MODE_EFFECT:
+        Filter = ".bin";
+        break;
     }
 
     ImGuiFileDialog::Instance()->OpenDialog("FileDialog", "Choose File", Filter, strPath.c_str());
