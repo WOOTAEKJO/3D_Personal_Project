@@ -154,6 +154,13 @@ public: /* For.Component_Manager*/
 			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_DEMO, nullptr));
 	}
 
+	HRESULT	Add_Particle_ProtoType(const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CVIBuffer_Particle_Point::Create(m_pDevice, m_pContext,
+				Load_Data_Path(strProtoTypeTag).c_str()));
+	}
+
 	template <typename T>
 	HRESULT	Add_Buffer_ProtoType(const wstring& strProtoTypeTag)
 	{
@@ -192,6 +199,8 @@ public: /* For. SaveLoad_Manager*/
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
 	HRESULT	Save_Data_Json(const _char* strFilePath, CGameObject* pObject);
 	HRESULT	Load_Data_Json(const wstring& strTag, CGameObject* pObject);
+	HRESULT	Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest);
+	HRESULT	Load_Data_Particle(const _char* strFilePath, INSTANCING_DESC* pOut);
 
 public: /* For. File_Manager*/
 	string	Load_Data_Path(wstring strTag);

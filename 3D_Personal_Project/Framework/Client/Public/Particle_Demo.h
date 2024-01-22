@@ -35,6 +35,8 @@ public:
 
 public:
 	void	Set_Update(_bool bCheck) { m_bUpdate = bCheck; }
+	void	Set_SocketBone(CBone* pBone);
+	void	Set_ParentsTransform(CTransform* pTransform) { m_pParentsTransform = pTransform; }
 
 private:
 	CShader*		m_pShaderCom = { nullptr };
@@ -46,6 +48,11 @@ private:
 
 private:
 	INSTANCING_DESC	m_eParticleInfo;
+
+private:
+	CTransform* m_pParentsTransform = { nullptr };
+	CBone*		m_pSocketBone = { nullptr };
+	_float4x4	m_matWorldMat;
 	
 private:
 	virtual HRESULT Bind_ShaderResources() override;

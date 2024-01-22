@@ -75,7 +75,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	Mouse_Fix();
+	//Mouse_Fix();
 	StateTrans(fTimeDelta);
 	Mouse_Input(fTimeDelta);
 }

@@ -22,6 +22,8 @@
 #include "Plateform_Trap.h"
 #include "SkyBox.h"
 
+#include "Particle_Normal.h"
+
 #include "Player.h"
 #include "Player_Body.h"
 #include "Player_Weapon_Spear.h"
@@ -169,6 +171,9 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	//if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LANDSCAPE_TAG,1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SKYBOX_TAG, 3))) return E_FAIL;
 	
+	if (FAILED(Effect_Tex()))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
 	//if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Height(BUFFER_TERRAIN_TAG, BUFFER_TERRAIN_HEIGHT_PATH))) return E_FAIL;
@@ -197,6 +202,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
+	if (FAILED(Particle())) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION_TAG))) return E_FAIL;
@@ -209,6 +215,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_TERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<PARTICLE_POINT>(SHADER_PARTICLEPOINT_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 	
@@ -237,6 +244,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTrigger>(GO_TRIGGER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CNormal_Bullet>(GO_NORMAL_BULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CRange_Bullet>(GO_RANGE_BULLET_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Normal>(GO_PARTICLENORMAL_TAG))) return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -261,7 +270,8 @@ HRESULT CLoader::Loading_For_Tool_Level()
 
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG))) return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(BUFFER_PARTICLEPOINT_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 
@@ -274,8 +284,10 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
+	if (FAILED(Particle())) return E_FAIL;
 
-	matPivot = XMMatrixScaling(0.001f, 0.001f, 0.001f);
+	matPivot = XMMatrixScaling(0.0005f, 0.0005f, 0.0005f) *
+		XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_JACK_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_CROW_TAG, matPivot))) return E_FAIL;
 
@@ -688,6 +700,15 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SMOKEPUFF_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SMOKEPUFFMUSH_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SNOW_TAG, 1))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Particle()
+{
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKRUN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKJUMP_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKLANDING_TAG))) return E_FAIL;
 
 	return S_OK;
 }

@@ -44,6 +44,7 @@ private:
 private:
 	void	Particle();
 	void	Create_Particle();
+	void	Delete_Particle();
 	void	Particle_Rotation();
 
 public:

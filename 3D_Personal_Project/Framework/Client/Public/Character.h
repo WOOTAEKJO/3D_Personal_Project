@@ -114,6 +114,7 @@ protected:
 	void	Pushed();
 	void	Pushed_Reset();
 
+
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual	void	Free() override;

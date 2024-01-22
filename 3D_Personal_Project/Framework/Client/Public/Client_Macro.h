@@ -229,6 +229,15 @@
 #define	MODELINSTANCING_SMALLROCK_TAG			TEXT("Prototype_Component_ModelInstancing_SmallRock")
 #define	MODELINSTANCING_PURPLESCHROOMS_TAG		TEXT("Prototype_Component_ModelInstancing_PurpleSchrooms")
 
+#pragma region 파티클
+
+#define	PARTICLE_TEST_TAG		TEXT("Prototype_Component_Particle_Test1")
+#define	PARTICLE_JACKRUN_TAG		TEXT("Prototype_Component_Particle_JackRun")
+#define	PARTICLE_JACKJUMP_TAG		TEXT("Prototype_Component_Particle_JackJump")
+#define	PARTICLE_JACKLANDING_TAG		TEXT("Prototype_Component_Particle_JackLanding")
+
+#pragma endregion
+
 #pragma endregion
 
 #pragma region 아이템
@@ -313,6 +322,8 @@
 #define GO_PLATEFORM_INSTANCING_TAG		TEXT("Prototype_GameObject_PlateformInstancing")
 #define GO_PLATEFORM_TRAP_TAG		TEXT("Prototype_GameObject_PlateformTrap")
 
+#define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
+
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
 #define GO_TRIGGER_TAG			TEXT("Prototype_GameObject_Trigger")
@@ -325,6 +336,8 @@
 #define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
 #define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
 #define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
+
+
 
 #pragma region 캐릭터
 

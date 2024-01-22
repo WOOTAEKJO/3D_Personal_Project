@@ -89,6 +89,15 @@ HRESULT CEffect_Window::Save_Data(const _char* strFilePath)
 
 HRESULT CEffect_Window::Load_Data(const _char* strFilePath)
 {
+	INSTANCING_DESC Particle_Info = {};
+
+	if (FAILED(m_pGameInstance->Load_Data_Particle(strFilePath, &Particle_Info)))
+		return E_FAIL;
+
+	m_eParticleInfo = Particle_Info;
+
+	Create_Particle();
+
 	return S_OK;
 }
 
@@ -105,6 +114,7 @@ void CEffect_Window::Particle()
 		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
 		if (ImGui::Selectable(str.c_str(), iter == m_strPickTextureTag))
 			m_strPickTextureTag = iter;
+		m_eParticleInfo.strTextureTag = m_strPickTextureTag;
 	}
 	ImGui::EndListBox();
 
@@ -162,6 +172,11 @@ void CEffect_Window::Particle()
 	{
 		Create_Particle();
 	}
+
+	if (ImGui::Button("Delete Particle"))
+	{
+		Delete_Particle();
+	}
 }
 
 void CEffect_Window::Create_Particle()
@@ -172,46 +187,20 @@ void CEffect_Window::Create_Particle()
 		m_pParticle = nullptr;
 	}
 
-	INSTANCING_DESC Particle_Info = {};
-
-	Particle_Info.strTextureTag = m_strPickTextureTag;
-
-	Particle_Info.fRange = m_eParticleInfo.fRange;
-	Particle_Info.vCenter = _float3(0.f,0.f,0.f);
-	Particle_Info.fLifeTime = m_eParticleInfo.fLifeTime;
-
-	Particle_Info.fScale = m_eParticleInfo.fScale;
-	Particle_Info.fScaleControl = m_eParticleInfo.fScaleControl;
-
-	Particle_Info.fSpeed[0] = m_eParticleInfo.fSpeed[0];
-	Particle_Info.fSpeed[1] = m_eParticleInfo.fSpeed[1];
-	Particle_Info.fSpeed[2] = m_eParticleInfo.fSpeed[2];
-	Particle_Info.fPowerSpeed = m_eParticleInfo.fPowerSpeed;
-
-	Particle_Info.iInstanceNum = m_eParticleInfo.iInstanceNum; // 인스턴스 갯수
-
-	Particle_Info.vColor = m_eParticleInfo.vColor; // 생성 색
-
-	Particle_Info.vDir = m_eParticleInfo.vDir;	// 생성 방향
-	Particle_Info.vRunDir = m_eParticleInfo.vRunDir; // 실시간 방향
-
-	Particle_Info.fRotation[0] = m_eParticleInfo.fRotation[0]; // 생성 각도
-	Particle_Info.fRotation[1] = m_eParticleInfo.fRotation[1];
-	Particle_Info.fRotation[2] = m_eParticleInfo.fRotation[2];
-
-	Particle_Info.fRunRotation[0] = m_eParticleInfo.fRunRotation[0]; // 실시간 각도
-	Particle_Info.fRunRotation[1] = m_eParticleInfo.fRunRotation[1];
-	Particle_Info.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
-
-	Particle_Info.bLoop = m_eParticleInfo.bLoop;
-
-	Particle_Info.eColorType = m_eParticleInfo.eColorType;
-
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[LAYER::LAYER_EFFECT], G0_PARTICLE_DEMO_TAG,
-		&Particle_Info, reinterpret_cast<CGameObject**>(&m_pParticle))))
+		&m_eParticleInfo, reinterpret_cast<CGameObject**>(&m_pParticle))))
 		return;
 
 	m_bUpdate = false;
+}
+
+void CEffect_Window::Delete_Particle()
+{
+	if (m_pParticle == nullptr)
+		return;
+
+	m_pParticle->Set_Dead();
+	m_pParticle = nullptr;
 }
 
 void CEffect_Window::Particle_Rotation()

@@ -97,6 +97,40 @@ HRESULT CSaveLoad_Manager::Load_Data_Level(const _char* strFilePath)
 	return S_OK;
 }
 
+HRESULT CSaveLoad_Manager::Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest)
+{
+	CParticleData* pParticle = CParticleData::Create();
+
+	pParticle->Set_Data(Dest);
+
+	if (FAILED(pParticle->Save_Data(strFilePath)))
+	{
+		Safe_Release(pParticle);
+		return E_FAIL;
+	}
+		
+	Safe_Release(pParticle);
+
+	return S_OK;
+}
+
+HRESULT CSaveLoad_Manager::Load_Data_Particle(const _char* strFilePath, INSTANCING_DESC* pOut)
+{
+	CParticleData* pParticle = CParticleData::Create();
+
+	if (FAILED(pParticle->Load_Data(strFilePath)))
+	{
+		Safe_Release(pParticle);
+		return E_FAIL;
+	}
+		
+	*pOut = pParticle->Get_Data();
+
+	Safe_Release(pParticle);
+
+	return S_OK;
+}
+
 CSaveLoad_Manager* CSaveLoad_Manager::Create()
 {
 	CSaveLoad_Manager* pInstance = new CSaveLoad_Manager();

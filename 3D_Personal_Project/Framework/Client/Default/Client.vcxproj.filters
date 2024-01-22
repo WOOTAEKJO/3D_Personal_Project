@@ -283,12 +283,6 @@
     <Filter Include="02.GameObjects\06. Particle">
       <UniqueIdentifier>{0a574403-3a13-4576-9d8f-341db9079438}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06. Particle\00. Rect">
-      <UniqueIdentifier>{a2de197f-11c3-47d6-80b9-80701a452302}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06. Particle\01. Point">
-      <UniqueIdentifier>{350ef919-b34a-49dd-a5b2-a0bf9e6c44da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03. Platform">
       <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
     </Filter>
@@ -456,6 +450,9 @@
     </Filter>
     <Filter Include="02.GameObjects\98. Demo\04. Particle">
       <UniqueIdentifier>{9dfa84aa-4c9e-4d28-8cd3-17f27df4215e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\00. Normal_Particle">
+      <UniqueIdentifier>{ab5812fb-49a0-4c42-b239-880ba570bf84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -861,6 +858,12 @@
     <ClInclude Include="..\Public\Particle_Demo.h">
       <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Particle.h">
+      <Filter>02.GameObjects\06. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Normal.h">
+      <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1237,6 +1240,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Demo.cpp">
       <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle.cpp">
+      <Filter>02.GameObjects\06. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Normal.cpp">
+      <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

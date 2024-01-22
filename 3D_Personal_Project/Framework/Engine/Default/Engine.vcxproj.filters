@@ -277,6 +277,9 @@
     <Filter Include="01.Utility\02.GameObjects\02. AlphaObject">
       <UniqueIdentifier>{ee64b1e9-f70f-49bb-af0f-726aaeb29b2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData">
+      <UniqueIdentifier>{a7489911-cbf7-4ec9-826c-c6f9c209e8c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -543,6 +546,9 @@
     <ClInclude Include="..\Public\AlphaObject.h">
       <Filter>01.Utility\02.GameObjects\02. AlphaObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ParticleData.h">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -787,6 +793,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\AlphaObject.cpp">
       <Filter>01.Utility\02.GameObjects\02. AlphaObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ParticleData.cpp">
+      <Filter>01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

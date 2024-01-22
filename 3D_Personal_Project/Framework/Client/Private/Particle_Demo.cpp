@@ -2,6 +2,8 @@
 #include "..\Public\Particle_Demo.h"
 
 #include "VIBuffer_Particle_Point.h"
+#include "GameInstance.h"
+#include "Bone.h"
 
 CParticle_Demo::CParticle_Demo(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CDemo(pDevice, pContext)
@@ -20,14 +22,15 @@ HRESULT CParticle_Demo::Initialize_Prototype()
 
 HRESULT CParticle_Demo::Initialize(void* pArg)
 {
-	if (pArg == nullptr)
-		return E_FAIL;
+	
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
-	
-	m_eParticleInfo = *(INSTANCING_DESC*)pArg;
-	
+	if (pArg != nullptr)
+	{
+		m_eParticleInfo = *(INSTANCING_DESC*)pArg;
+	}
+
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
@@ -36,6 +39,13 @@ HRESULT CParticle_Demo::Initialize(void* pArg)
 
 void CParticle_Demo::Priority_Tick(_float fTimeDelta)
 {
+	if (m_pSocketBone != nullptr)
+	{
+		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
+			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
+		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2],1.f);
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);*/
+	}
 }
 
 void CParticle_Demo::Tick(_float fTimeDelta)
@@ -46,6 +56,7 @@ void CParticle_Demo::Tick(_float fTimeDelta)
 
 void CParticle_Demo::Late_Tick(_float fTimeDelta)
 {
+	
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
 		return;
@@ -93,16 +104,43 @@ HRESULT CParticle_Demo::Save_Particle(const _char* strFilePath)
 
 void CParticle_Demo::Write_Json(json& Out_Json)
 {
+	string strTag;
+
+	strTag.assign(m_strModelTag.begin(), m_strModelTag.end());
+
+	Out_Json.emplace("ModelTag", strTag);
+
+	CGameObject::Write_Json(Out_Json);
 }
 
 void CParticle_Demo::Load_FromJson(const json& In_Json)
 {
+	if (In_Json.find("ModelTag") == In_Json.end())
+		return;
+
+	string strTag = In_Json["ModelTag"];
+
+	m_strModelTag.assign(strTag.begin(), strTag.end());
+
+	CGameObject::Load_FromJson(In_Json);
+}
+
+void CParticle_Demo::Set_SocketBone(CBone* pBone)
+{
+	if (pBone == nullptr)
+		return;
+
+	m_pSocketBone = pBone;
 }
 
 HRESULT CParticle_Demo::Bind_ShaderResources()
 {
+	
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
+
+	
+
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
@@ -127,41 +165,8 @@ HRESULT CParticle_Demo::Ready_Component()
 	if (FAILED(Add_Component<CShader>(SHADER_PARTICLEPOINT_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CTexture>(m_eParticleInfo.strTextureTag, &m_pTextureCom))) return E_FAIL;
 
-	INSTANCING_DESC Instancing_Desc = {};
-	Instancing_Desc.vCenter = m_eParticleInfo.vCenter;
-	Instancing_Desc.fLifeTime = m_eParticleInfo.fLifeTime;
-	Instancing_Desc.fRange = m_eParticleInfo.fRange;
-
-	Instancing_Desc.fScale = m_eParticleInfo.fScale;
-	Instancing_Desc.fScaleControl = m_eParticleInfo.fScaleControl;
-
-	Instancing_Desc.fSpeed[0] = m_eParticleInfo.fSpeed[0];
-	Instancing_Desc.fSpeed[1] = m_eParticleInfo.fSpeed[1];
-	Instancing_Desc.fSpeed[2] = m_eParticleInfo.fSpeed[2];
-	Instancing_Desc.fPowerSpeed = m_eParticleInfo.fPowerSpeed;
-
-	Instancing_Desc.iInstanceNum = m_eParticleInfo.iInstanceNum;
-
-	Instancing_Desc.vColor = m_eParticleInfo.vColor;
-
-	Instancing_Desc.vDir = m_eParticleInfo.vDir;
-	Instancing_Desc.vRunDir = m_eParticleInfo.vRunDir;
-
-
-	Instancing_Desc.fRotation[0] = m_eParticleInfo.fRotation[0];
-	Instancing_Desc.fRotation[1] = m_eParticleInfo.fRotation[1];
-	Instancing_Desc.fRotation[2] = m_eParticleInfo.fRotation[2];
-
-	Instancing_Desc.fRunRotation[0] = m_eParticleInfo.fRunRotation[0];
-	Instancing_Desc.fRunRotation[1] = m_eParticleInfo.fRunRotation[1];
-	Instancing_Desc.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
-
-	Instancing_Desc.bLoop = m_eParticleInfo.bLoop;
-
-	Instancing_Desc.eColorType = m_eParticleInfo.eColorType;
-
 	if (FAILED(Add_Component<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG, &m_pBufferCom,
-		&Instancing_Desc))) return E_FAIL;
+		&m_eParticleInfo))) return E_FAIL;
 
 	return S_OK;
 }

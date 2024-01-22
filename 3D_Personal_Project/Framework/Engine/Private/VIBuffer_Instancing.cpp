@@ -9,8 +9,25 @@ CVIBuffer_Instancing::CVIBuffer_Instancing(const CVIBuffer_Instancing& rhs)
 	:CVIBuffer(rhs),m_iInstanceNum(rhs.m_iInstanceNum),m_iInstanceStride(rhs.m_iInstanceStride)
 	,m_iIndexCountPerInstance(rhs.m_iIndexCountPerInstance),m_RandomNumber(rhs.m_RandomNumber),
 	m_pSpeeds(rhs.m_pSpeeds),m_pLifeTime(rhs.m_pLifeTime), m_Instancing_Desc(rhs.m_Instancing_Desc),
-	m_eInstanceType(rhs.m_eInstanceType)
+	m_eInstanceType(rhs.m_eInstanceType), m_bLoad(rhs.m_bLoad),
+	m_pScale(rhs.m_pScale),m_pPos(rhs.m_pPos),m_pRunRotation(rhs.m_pRunRotation),m_pSpeedAcc(rhs.m_pSpeedAcc),
+	m_pTimeAcc(rhs.m_pTimeAcc), m_pScaleTimeAcc(rhs.m_pTimeAcc), m_pRotation(rhs.m_pRotation),
+	m_pRunRotationAcc(rhs.m_pRunRotationAcc)
 {
+
+	/*_float3* m_pSpeeds = { nullptr };
+	_float3* m_pSpeedAcc = { nullptr };
+
+	_float* m_pLifeTime = { nullptr };
+	_float* m_pTimeAcc = { nullptr };
+
+	_float* m_pScale = { nullptr };
+	_float* m_pScaleTimeAcc = { nullptr };
+
+	_float4* m_pPos = { nullptr };
+
+	_float3* m_pRotation = { nullptr };
+	_float3* m_pRunRotation = { nullptr };*/
 }
 
 HRESULT CVIBuffer_Instancing::Initialize_ProtoType()
@@ -93,7 +110,7 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 			//fScale = min(m_pScale[i] * fLifeTime, m_pScale[i]);
 
 			m_pScaleTimeAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
-			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.f);
+			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.0001f);
 		}
 		else
 		{
@@ -101,20 +118,32 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 				Reset(Instancing, i);
 
 			m_pScaleTimeAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
-			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.f);
+			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.0001f);
 		}
+
+		if (fScale < 0.f)
+			int a = 0;
 
 		if (m_pRunRotation[i].x != 0 || m_pRunRotation[i].y != 0 || m_pRunRotation[i].z != 0)
 		{
-			_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i].x * fTimeDelta,
-				m_pRunRotation[i].y * fTimeDelta, m_pRunRotation[i].z * fTimeDelta);
+			Instancing[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
+			Instancing[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
+			Instancing[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+
+			m_pRunRotationAcc[i].x += m_pRunRotation[i].x * fTimeDelta;
+			m_pRunRotationAcc[i].y += m_pRunRotation[i].y * fTimeDelta;
+			m_pRunRotationAcc[i].z += m_pRunRotation[i].z * fTimeDelta;
+
+			_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotationAcc[i].x,
+				m_pRunRotationAcc[i].y, m_pRunRotationAcc[i].z);
 			_matrix matRot = XMMatrixRotationQuaternion(vRot);
 			XMStoreFloat4(&Instancing[i].vRight,
-				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vRight) * fScale), matRot));
+				XMVector3TransformNormal((XMLoadFloat4(&Instancing[i].vRight)), matRot));
 			XMStoreFloat4(&Instancing[i].vUp,
-				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vUp) * fScale), matRot));
+				XMVector3TransformNormal((XMLoadFloat4(&Instancing[i].vUp)), matRot));
 			XMStoreFloat4(&Instancing[i].vLook,
-				XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vLook) * fScale), matRot));
+				XMVector3TransformNormal((XMLoadFloat4(&Instancing[i].vLook)), matRot));
+
 			// 크기 및 회전
 		}
 		else {
@@ -146,7 +175,7 @@ HRESULT CVIBuffer_Instancing::Init_Particle(VTXINSTANCING* pVerpostex)
 {
 	_vector vDir =  XMVectorSetW(XMLoadFloat3(&m_Instancing_Desc.vDir),0.f);
 
-	uniform_real_distribution<float>	RandomRange(0.1f, m_Instancing_Desc.fRange);
+	uniform_real_distribution<float>	RandomRange(0.001f, m_Instancing_Desc.fRange);
 
 	uniform_real_distribution<float>	RandomSpeedX(m_Instancing_Desc.fSpeed[0].x, m_Instancing_Desc.fSpeed[0].y);
 	uniform_real_distribution<float>	RandomSpeedY(m_Instancing_Desc.fSpeed[1].x, m_Instancing_Desc.fSpeed[1].y);
@@ -221,6 +250,25 @@ HRESULT CVIBuffer_Instancing::Init_Mesh(VTXINSTANCING* pVerpostex)
 
 HRESULT CVIBuffer_Instancing::Init_InstanceBuffer()
 {
+	m_pSpeeds = new _float3[m_iInstanceNum];
+	m_pSpeedAcc = new _float3[m_iInstanceNum];
+	ZeroMemory(m_pSpeedAcc, sizeof(_float3) * m_iInstanceNum);
+
+	m_pLifeTime = new _float[m_iInstanceNum];
+	m_pTimeAcc = new _float[m_iInstanceNum];
+	ZeroMemory(m_pTimeAcc, sizeof(_float) * m_iInstanceNum);
+
+	m_pScale = new _float[m_iInstanceNum];
+	m_pScaleTimeAcc = new _float[m_iInstanceNum];
+	ZeroMemory(m_pScaleTimeAcc, sizeof(_float) * m_iInstanceNum);
+
+	m_pPos = new _float4[m_iInstanceNum];
+
+	m_pRotation = new _float3[m_iInstanceNum];
+	m_pRunRotation = new _float3[m_iInstanceNum];
+	m_pRunRotationAcc = new _float3[m_iInstanceNum];
+	ZeroMemory(m_pRunRotationAcc, sizeof(_float3)* m_iInstanceNum);
+
 	ZeroMemory(&m_Buffer_Desc, sizeof(m_Buffer_Desc));
 
 	m_Buffer_Desc.ByteWidth = m_iInstanceStride * m_iInstanceNum;	// 동적배열의 크기
@@ -286,6 +334,8 @@ void CVIBuffer_Instancing::Reset(VTXINSTANCING* pInstancing,_uint iIndx)
 	XMStoreFloat4(&pInstancing[iIndx].vLook, XMVector3TransformNormal(XMLoadFloat4(&pInstancing[iIndx].vLook), matRot));
 	// 회전
 
+	m_pRunRotationAcc[iIndx] = _float3(0.f, 0.f, 0.f);
+
 	pInstancing[iIndx].vPos = m_pPos[iIndx];
 	//위치
 }
@@ -294,11 +344,6 @@ void CVIBuffer_Instancing::Free()
 {
 	__super::Free();
 
-	/*if (m_bClone == false)
-	{
-		Safe_Delete_Array(m_pSpeeds);
-		Safe_Delete_Array(m_pLifeTime);
-	}*/
 	Safe_Delete_Array(m_pSpeeds);
 	Safe_Delete_Array(m_pLifeTime);
 	Safe_Delete_Array(m_pRunRotation);
@@ -309,5 +354,7 @@ void CVIBuffer_Instancing::Free()
 	Safe_Delete_Array(m_pScaleTimeAcc);
 	Safe_Delete_Array(m_pSpeedAcc);
 	
+	Safe_Delete_Array(m_pRunRotationAcc);
+
 	Safe_Release(m_pInstanceBuffer);
 }

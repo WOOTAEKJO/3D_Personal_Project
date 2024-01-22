@@ -134,10 +134,10 @@ void GS_MAIN_SOLID(point GS_IN_SOLID In[1], inout TriangleStream<GS_OUT> OutStre
     
     float4 vLook = -g_vCameraLook;
     vLook = normalize(vLook);
-    float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * In[0].vPSize.x * 0.5f;
-    float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
-    //float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * length(In[0].vRigh);
-    //float3 vUp = normalize(cross(vLook.xyz, vRight)) * length(In[0].vUp);
+    //float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * In[0].vPSize.x * 0.5f;
+    //float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
+    float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * length(In[0].vRigh) * 0.5f;
+    float3 vUp = normalize(cross(vLook.xyz, vRight)) * length(In[0].vUp) * 0.5f;
 
     matrix matVP = mul(g_matView, g_matProj);
     
@@ -227,7 +227,7 @@ technique11 DefaultTechnique
 
     pass Solid_Color
     {
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 

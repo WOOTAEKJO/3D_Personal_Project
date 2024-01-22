@@ -569,6 +569,22 @@ HRESULT CGameInstance::Load_Data_Json(const wstring& strTag, CGameObject* pObjec
 	return m_pSaveLoad_Manager->Load_Data_Json(strTag, pObject);
 }
 
+HRESULT CGameInstance::Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Save_Data_Particle(strFilePath, Dest);
+}
+
+HRESULT CGameInstance::Load_Data_Particle(const _char* strFilePath, INSTANCING_DESC* pOut)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Load_Data_Particle(strFilePath, pOut);
+}
+
 string CGameInstance::Load_Data_Path(wstring strTag)
 {
 	if (nullptr == m_pFile_Manager)
