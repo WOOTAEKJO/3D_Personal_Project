@@ -139,6 +139,12 @@ void CEffect_Window::Particle()
 
 	ImGui::InputFloat4("Color", &(_float&)(m_eParticleInfo.vColor));
 
+	if (ImGui::RadioButton("Normal", &m_iTypeRadio, 0))
+		m_eParticleInfo.eColorType = (INSTANCING_DESC::COLORTYPE)m_iTypeRadio;
+	ImGui::SameLine();
+	if(ImGui::RadioButton("Solid", &m_iTypeRadio, 1))
+		m_eParticleInfo.eColorType = (INSTANCING_DESC::COLORTYPE)m_iTypeRadio;
+
 	ImGui::InputFloat3("Dir", &(_float&)(m_eParticleInfo.vDir));
 	ImGui::InputFloat3("RunDir", &(_float&)(m_eParticleInfo.vRunDir));
 
@@ -146,11 +152,11 @@ void CEffect_Window::Particle()
 	ImGui::InputFloat2("RunRotY", &(_float&)(m_eParticleInfo.fRunRotation[1]));
 	ImGui::InputFloat2("RunRotZ", &(_float&)(m_eParticleInfo.fRunRotation[2]));
 
-	ImGui::Checkbox("X", &m_bRandomRotation[0]);
+	ImGui::Checkbox("RandomX", &m_bRandomRotation[0]);
 	ImGui::SameLine();
-	ImGui::Checkbox("Y", &m_bRandomRotation[1]);
+	ImGui::Checkbox("RandomY", &m_bRandomRotation[1]);
 	ImGui::SameLine();
-	ImGui::Checkbox("Z", &m_bRandomRotation[2]);
+	ImGui::Checkbox("RandomZ", &m_bRandomRotation[2]);
 
 	Particle_Rotation();
 
@@ -208,6 +214,8 @@ void CEffect_Window::Create_Particle()
 	Particle_Info.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
 
 	Particle_Info.bLoop = m_eParticleInfo.bLoop;
+
+	Particle_Info.eColorType = m_eParticleInfo.eColorType;
 
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_TOOL, g_strLayerName[LAYER::LAYER_EFFECT], G0_PARTICLE_DEMO_TAG,
 		&Particle_Info, reinterpret_cast<CGameObject**>(&m_pParticle))))

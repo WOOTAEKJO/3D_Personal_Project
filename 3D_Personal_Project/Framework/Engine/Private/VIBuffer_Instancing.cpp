@@ -61,7 +61,6 @@ HRESULT CVIBuffer_Instancing::Bind_Buffer()
 
 void CVIBuffer_Instancing::Update(_float fTimeDelta)
 {
-	
 
 	D3D11_MAPPED_SUBRESOURCE Subresource = {};
 
@@ -93,25 +92,19 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 
 			//fScale = min(m_pScale[i] * fLifeTime, m_pScale[i]);
 
-			m_pScaleAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
-			fScale = max(m_pScale[i] - m_pScaleAcc[i], 0.f);
+			m_pScaleTimeAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
+			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.f);
 		}
 		else
 		{
-			if (m_pScale[i] <= m_pScaleAcc[i] && m_Instancing_Desc.bLoop)
+			if (m_pScale[i] <= m_pScaleTimeAcc[i] && m_Instancing_Desc.bLoop)
 				Reset(Instancing, i);
 
-			m_pScaleAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
-			fScale = max(m_pScale[i] - m_pScaleAcc[i], 0.f);
+			m_pScaleTimeAcc[i] += fTimeDelta * m_Instancing_Desc.fScaleControl;
+			fScale = max(m_pScale[i] - m_pScaleTimeAcc[i], 0.f);
 		}
 
-		
-		Instancing[i].vRight = _float4(fScale, 0.f, 0.f, 0.f);
-		Instancing[i].vUp = _float4(0.f, fScale, 0.f, 0.f);
-		Instancing[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		// 크기
-
-		/*_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i].x * fTimeDelta,
+		_vector vRot = XMQuaternionRotationRollPitchYaw(m_pRunRotation[i].x * fTimeDelta,
 			m_pRunRotation[i].y * fTimeDelta, m_pRunRotation[i].z * fTimeDelta);
 		_matrix matRot = XMMatrixRotationQuaternion(vRot);
 		XMStoreFloat4(&Instancing[i].vRight,
@@ -119,15 +112,14 @@ void CVIBuffer_Instancing::Update(_float fTimeDelta)
 		XMStoreFloat4(&Instancing[i].vUp,
 			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vUp) * fScale), matRot));
 		XMStoreFloat4(&Instancing[i].vLook,
-			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vLook) * fScale), matRot));*/
-		// 회전
-		
+			XMVector3TransformNormal(XMVector3Normalize(XMLoadFloat4(&Instancing[i].vLook) * fScale), matRot));
+		// 크기 및 회전
+	
 		vDir = bRuntimeDir == false ?
 			CenterToPos(Instancing[i].vPos) : vDir;
-		
-		//_float3 vSpeed = m_pSpeeds[i];
-		XMStoreFloat3(&m_pSpeedAcc[i], XMLoadFloat3 (&m_pSpeedAcc[i]) + XMLoadFloat3(&m_Instancing_Desc.fPowerSpeed) * fTimeDelta);
-		XMStoreFloat4(&Instancing[i].vPos,XMLoadFloat4(&Instancing[i].vPos) +
+
+		XMStoreFloat3(&m_pSpeedAcc[i], XMLoadFloat3(&m_pSpeedAcc[i]) + XMLoadFloat3(&m_Instancing_Desc.fPowerSpeed) * fTimeDelta);
+		XMStoreFloat4(&Instancing[i].vPos, XMLoadFloat4(&Instancing[i].vPos) +
 			XMVector3Normalize(vDir) * XMLoadFloat3(&m_pSpeedAcc[i]) * fTimeDelta);
 		// 위치 -> 한 방향으로만 또는 원래 방향으로만
 	}
@@ -270,7 +262,7 @@ void CVIBuffer_Instancing::Reset(VTXINSTANCING* pInstancing,_uint iIndx)
 	m_pTimeAcc[iIndx] = 0.f; // 누적 시간 값
 	pInstancing[iIndx].vColor.w = m_Instancing_Desc.vColor.w; // 알파 값
 
-	m_pScaleAcc[iIndx] = 0.f; // 누적 크기 값
+	m_pScaleTimeAcc[iIndx] = 0.f; // 누적 크기 값
 	pInstancing[iIndx].vRight = _float4(m_pScale[iIndx], 0.f, 0.f, 0.f);
 	pInstancing[iIndx].vUp = _float4(0.f, m_pScale[iIndx], 0.f, 0.f);
 	pInstancing[iIndx].vLook = _float4(0.f, 0.f, 1.f, 0.f);
@@ -307,7 +299,7 @@ void CVIBuffer_Instancing::Free()
 	Safe_Delete_Array(m_pTimeAcc);
 	Safe_Delete_Array(m_pPos);
 	Safe_Delete_Array(m_pRotation);
-	Safe_Delete_Array(m_pScaleAcc);
+	Safe_Delete_Array(m_pScaleTimeAcc);
 	Safe_Delete_Array(m_pSpeedAcc);
 	
 	Safe_Release(m_pInstanceBuffer);

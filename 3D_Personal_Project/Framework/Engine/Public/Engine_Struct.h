@@ -273,6 +273,8 @@ namespace Engine
 
 	typedef struct tagInstancing_Desc
 	{
+		enum COLORTYPE {NORMAL_COLOR,SOLID_COLOR,COLORTYPE_END};
+
 		_float3		vCenter = _float3(0.f,0.f,0.f);
 
 		_float		fRange = {1.f};
@@ -298,6 +300,8 @@ namespace Engine
 		_int		iInstanceNum = {1}; // 인스턴스 갯수
 
 		wstring		strTextureTag; // 텍스쳐 테그
+
+		COLORTYPE	eColorType = { NORMAL_COLOR };
 
 	}INSTANCING_DESC;
 }

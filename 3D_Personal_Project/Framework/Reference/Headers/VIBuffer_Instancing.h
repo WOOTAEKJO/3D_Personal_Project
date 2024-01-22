@@ -55,6 +55,7 @@ public:
 
 public:
 	vector<_float4x4>	Get_InstanceVertex() { return m_vecInstanceVertex; }
+	INSTANCING_DESC* Open_InstancingDesc() { return &m_Instancing_Desc; }
 
 protected:
 	ID3D11Buffer*	m_pInstanceBuffer = { nullptr };
@@ -74,7 +75,7 @@ protected:
 	_float*			m_pTimeAcc = { nullptr };
 	
 	_float*			m_pScale = { nullptr };
-	_float*			m_pScaleAcc = { nullptr };
+	_float*			m_pScaleTimeAcc = { nullptr };
 
 	_float4*		m_pPos = { nullptr };
 
@@ -87,7 +88,7 @@ protected:
 	vector<_float4x4>		m_vecInstanceVertex;
 
 protected:
-	INSTANCING_TYPE	m_eInstanceType = { TYPE_END };
+	INSTANCING_TYPE		m_eInstanceType = { TYPE_END };
 
 protected:
 	HRESULT		Init_Particle(VTXINSTANCING* pVerpostex);

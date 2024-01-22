@@ -34,11 +34,14 @@ HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
 	m_Instancing_Desc.fSpeed[1] = pPoint_Desc->fSpeed[1];
 	m_Instancing_Desc.fSpeed[2] = pPoint_Desc->fSpeed[2];
 	m_Instancing_Desc.fPowerSpeed = pPoint_Desc->fPowerSpeed;
+	// 스피드와 스피드 가속도 파워
 
 	m_Instancing_Desc.fScale = pPoint_Desc->fScale;
 	m_Instancing_Desc.fScaleControl = pPoint_Desc->fScaleControl;
+	// 크기 값과 크기 속도 컨트롤 값
 
 	m_Instancing_Desc.vColor = pPoint_Desc->vColor;
+	// 색깔
 
 	m_Instancing_Desc.vDir = pPoint_Desc->vDir; // 생성할 때 사용하는 방향 벡터
 	m_Instancing_Desc.vRunDir = pPoint_Desc->vRunDir; // 실시간으로 움직일 때 사용하는 방향 벡터
@@ -58,6 +61,8 @@ HRESULT CVIBuffer_Particle_Point::Initialize(void* pArg)
 
 	m_Instancing_Desc.iInstanceNum = pPoint_Desc->iInstanceNum;
 	// 인스턴스 갯수
+
+	m_Instancing_Desc.eColorType = pPoint_Desc->eColorType;
 	
 	if (FAILED(Init_Buffer())) return E_FAIL;
 	if (FAILED(__super::Init_InstanceBuffer())) return E_FAIL;
@@ -136,8 +141,8 @@ HRESULT CVIBuffer_Particle_Point::Init_Buffer()
 	ZeroMemory(m_pTimeAcc, sizeof(_float) * m_iInstanceNum);
 	
 	m_pScale = new _float[m_iInstanceNum];
-	m_pScaleAcc = new _float[m_iInstanceNum];
-	ZeroMemory(m_pScaleAcc, sizeof(_float) * m_iInstanceNum);
+	m_pScaleTimeAcc = new _float[m_iInstanceNum];
+	ZeroMemory(m_pScaleTimeAcc, sizeof(_float) * m_iInstanceNum);
 
 	m_pPos = new _float4[m_iInstanceNum];
 

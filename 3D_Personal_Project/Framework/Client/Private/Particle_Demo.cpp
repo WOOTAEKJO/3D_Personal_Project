@@ -56,7 +56,13 @@ HRESULT CParticle_Demo::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(0);
+	_uint iIndx = 0;
+	if (m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::NORMAL_COLOR)
+		iIndx = 0;
+	else if(m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::SOLID_COLOR)
+		iIndx = 1;
+
+	m_pShaderCom->Begin(iIndx);
 
 	m_pBufferCom->Bind_Buffer();
 
@@ -100,6 +106,10 @@ HRESULT CParticle_Demo::Bind_ShaderResources()
 		sizeof(_float4))))
 		return E_FAIL;
 
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCameraLook", &m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_LOOK),
+		sizeof(_float4))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -139,6 +149,8 @@ HRESULT CParticle_Demo::Ready_Component()
 	Instancing_Desc.fRunRotation[2] = m_eParticleInfo.fRunRotation[2];
 
 	Instancing_Desc.bLoop = m_eParticleInfo.bLoop;
+
+	Instancing_Desc.eColorType = m_eParticleInfo.eColorType;
 
 	if (FAILED(Add_Component<CVIBuffer_Particle_Point>(BUFFER_PARTICLEPOINT_TAG, &m_pBufferCom,
 		&Instancing_Desc))) return E_FAIL;
