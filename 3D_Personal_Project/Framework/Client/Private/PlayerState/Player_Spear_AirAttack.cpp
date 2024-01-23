@@ -39,6 +39,13 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 	if (m_pOnwerRigidBody->Is_Land())
 	{
 		m_pOwner->Create_Range_Bullet();
+		if (m_bLand)
+		{
+			Create_Particle(PARTICLE_JACKLANDING_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f);
+			Particle_Loop_SetUp(m_pParticle, false);
+			m_bLand = false;
+		}
+		
 
 		if (m_pOwnerModel->Is_Animation_Finished()) {
 
@@ -59,6 +66,7 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_AirAttack::State_Exit()
 {
+	m_bLand = true;
 	Trans_Attack(false);
 }
 

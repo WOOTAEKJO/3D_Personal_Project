@@ -1,1 +1,1 @@
-{"BoneIndex":0,"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.008734650909900665,0.0,-0.037281401455402374,1.0]]},"ModelTag":"Prototype_Component_Particle_JackRun"}
+{"BoneIndex":0,"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[-0.007257480174303055,0.0,0.1048719510436058,1.0]]},"ModelTag":"Prototype_Component_Particle_JackRun"}

@@ -218,12 +218,28 @@ _bool CModel::Is_Animation_Finished()
 	return false;
 }
 
+void CModel::Animation_ReStart(_uint iIndx)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return;
+
+	m_vecAnimation[iIndx]->Set_ReStart();
+}
+
 _bool CModel::Is_CurAnim_Arrival_TrackPosition(_uint iIndx, _float fTime)
 {
 	if (iIndx >= m_vecAnimation.size())
 		return false;
 
 	return m_vecAnimation[iIndx]->Is_Arrival_TrackPosition(fTime);
+}
+
+_bool CModel::Is_CurAnim_Current_TrackPosition(_uint iIndx, _float fTime)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Is_Current_TrackPosition(fTime);
 }
 
 _float CModel::CurAnim_Get_Duration(_uint iIndx)

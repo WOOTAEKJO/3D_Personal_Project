@@ -17,6 +17,9 @@ public:
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
 
+private:
+	_bool		m_bLand = true;
+
 public:
 	static	CPlayer_Spear_AirAttack* Create(CGameObject * pGameObject);
 	virtual	void			Free();

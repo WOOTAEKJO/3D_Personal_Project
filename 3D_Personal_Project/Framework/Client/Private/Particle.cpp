@@ -75,6 +75,8 @@ HRESULT CParticle::Render()
 		iIndx = 0;
 	else if (m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::SOLID_COLOR)
 		iIndx = 1;
+	else if (m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::BLEND_COLOR)
+		iIndx = 2;
 
 	m_pShaderCom->Begin(iIndx);
 

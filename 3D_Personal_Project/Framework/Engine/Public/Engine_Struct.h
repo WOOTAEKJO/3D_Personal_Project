@@ -273,7 +273,7 @@ namespace Engine
 
 	typedef struct tagInstancing_Desc
 	{
-		enum COLORTYPE {NORMAL_COLOR,SOLID_COLOR,COLORTYPE_END};
+		enum COLORTYPE {NORMAL_COLOR,SOLID_COLOR,BLEND_COLOR,COLORTYPE_END};
 
 		_float3		vCenter = _float3(0.f,0.f,0.f);
 

@@ -34,6 +34,7 @@ public:
 	//_float*		Get_InterverExtraSpeed() { return &m_fInterverExtraSpeed; }
 
 	_bool		Is_Arrival_TrackPosition(_float fTime);
+	_bool		Is_Current_TrackPosition(_float fTime);
 	_float		Get_Duration() { return m_fDuration; }
 
 public:

@@ -18,8 +18,6 @@ HRESULT CPlayer_Run::Initialize(CGameObject* pGameObject)
 void CPlayer_Run::State_Enter()
 {
 	m_pOwner->Animation_By_Type(CPlayer::STATE::RUN);
-	Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle,1.f);
-	Particle_Loop_SetUp(m_pParticle, false);
 }
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
@@ -30,13 +28,21 @@ _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 {
-	m_fTime += fTimeDelta;
-
-	if (m_fTime > 0.06f)
+	if (m_pOwnerModel->Is_CurAnim_Current_TrackPosition(55, 0) || m_pOwnerModel->Is_CurAnim_Current_TrackPosition(55, 15) ||
+		m_pOwnerModel->Is_CurAnim_Current_TrackPosition(55, 35))
 	{
-		m_fTime = 0.f;
-		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 0.1f);
+		m_bCheck = true;
+	}
+	else {
+		m_bCheck = false;
+		m_bRun = true;
+	}
+
+	if (m_bCheck && m_bRun)
+	{
+		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f);
 		Particle_Loop_SetUp(m_pParticle, false);
+		m_bRun = false;
 	}
 
 	if (m_pOnwerController->Key_Down(CPlayer::KEY_STATE::KEY_ROLL))

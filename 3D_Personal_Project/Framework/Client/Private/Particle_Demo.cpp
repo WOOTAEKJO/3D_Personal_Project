@@ -58,7 +58,7 @@ void CParticle_Demo::Late_Tick(_float fTimeDelta)
 {
 	
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;
 }
 
@@ -72,6 +72,8 @@ HRESULT CParticle_Demo::Render()
 		iIndx = 0;
 	else if(m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::SOLID_COLOR)
 		iIndx = 1;
+	else if (m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::BLEND_COLOR)
+		iIndx = 2;
 
 	m_pShaderCom->Begin(iIndx);
 

@@ -144,6 +144,9 @@ void CEffect_Window::Particle()
 	ImGui::SameLine();
 	if(ImGui::RadioButton("Solid", &m_iTypeRadio, 1))
 		m_eParticleInfo.eColorType = (INSTANCING_DESC::COLORTYPE)m_iTypeRadio;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Blend", &m_iTypeRadio, 2))
+		m_eParticleInfo.eColorType = (INSTANCING_DESC::COLORTYPE)m_iTypeRadio;
 
 	ImGui::InputFloat3("Dir", &(_float&)(m_eParticleInfo.vDir));
 	ImGui::InputFloat3("RunDir", &(_float&)(m_eParticleInfo.vRunDir));

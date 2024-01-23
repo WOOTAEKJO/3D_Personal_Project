@@ -129,6 +129,21 @@ _bool CAnimation::Is_Arrival_TrackPosition(_float fTime)
 	return false;
 }
 
+_bool CAnimation::Is_Current_TrackPosition(_float fTime)
+{
+	
+	_float fMin = fTime - 0.5f;
+	if (fMin < 0.f)
+		fMin = 0.f;
+
+	_float fMax = fTime + 0.5f;
+
+	if (  m_fTrackPosition < fMax && m_fTrackPosition > fMin)
+		return true;
+
+	return false;
+}
+
 void CAnimation::Write_Json(json& Out_Json)
 {
 	Out_Json.emplace("Animation_ExtraSpeed", m_fExtraSpeed[TYPE_EXTRASPEED]);

@@ -189,12 +189,12 @@ PS_OUT PS_MAIN(PS_IN In)
     vector vColor = g_Texture.Sample(PointSampler, In.vTexcoord);
     
     
-    if (vColor.a < 0.3f)
+    if (vColor.a < 0.6f)
         discard;
         
     Out.vColor = vColor * In.vColor;
-   
-        return Out;
+  
+    return Out;
 }
 
 PS_OUT PS_MAIN_SOLID(PS_IN In)
@@ -207,6 +207,21 @@ PS_OUT PS_MAIN_SOLID(PS_IN In)
         discard;
         
     Out.vColor = In.vColor;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_BLEND(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vColor = g_Texture.Sample(PointSampler, In.vTexcoord) * In.vColor;
+    
+    
+    if (vColor.a < 0.1f)
+        discard;
+        
+    Out.vColor = vColor;
    
     return Out;
 }
@@ -234,6 +249,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_SOLID();
         GeometryShader = compile gs_5_0 GS_MAIN_SOLID();
         PixelShader = compile ps_5_0 PS_MAIN_SOLID();
+    }
+
+    pass Blend_Color
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_SOLID();
+        GeometryShader = compile gs_5_0 GS_MAIN_SOLID();
+        PixelShader = compile ps_5_0 PS_MAIN_BLEND();
     }
 
 }

@@ -474,7 +474,6 @@ void CAnimation_Window::Particle()
 			m_pCurrentAnimModel->Set_NonBlendIndx(-1);
 	}
 
-
 	if (!m_vecParticleDemo.empty() && m_vecParticleDemo[m_iCurrentParticleIndex] != nullptr) {
 
 		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
