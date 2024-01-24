@@ -54,6 +54,10 @@ private:
 	vector<CParticle_Demo*>		m_vecParticleDemo;
 	_uint						m_iCurrentParticleIndex = { 0 };
 
+	_bool			m_bUpdate = { false };
+	_bool			m_bTrans = { false };
+
+
 private:
 	vector<wstring>					m_vecAnimPrototypeTag;
 	wstring							m_strPickModelTag;

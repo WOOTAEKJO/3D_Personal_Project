@@ -23,6 +23,9 @@
 #include "SkyBox.h"
 
 #include "Particle_Normal.h"
+#include "Particle_Sprite.h"
+
+#include "Effect_Damage.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -246,7 +249,10 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CRange_Bullet>(GO_RANGE_BULLET_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Normal>(GO_PARTICLENORMAL_TAG))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sprite>(GO_PARTICLESPRITE_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -700,6 +706,9 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SMOKEPUFF_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SMOKEPUFFMUSH_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SNOW_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_ELEC_TAG, 9))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_STRAW_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_DAMAGEIMPACT_TAG, 1))) return E_FAIL;
 
 	return S_OK;
 }
@@ -709,6 +718,18 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKRUN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKJUMP_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKLANDING_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKELEC1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKELEC2_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKELEC3_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK2_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK3_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK4_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK5_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKHITTAG))) return E_FAIL;
 
 	return S_OK;
 }

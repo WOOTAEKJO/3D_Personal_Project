@@ -21,6 +21,11 @@ public:
 public:
 	void Compute_CamDistance();
 
+public:
+	_float Get_CamDinstance() const {
+		return m_fCamDistance;
+	}
+
 protected:
 	_float		m_fCamDistance = { 0.f };
 

@@ -18,6 +18,9 @@ public:
 	virtual void	State_Exit() override;
 
 private:
+	CGameObject* m_pElec[3] = { nullptr,nullptr ,nullptr };
+
+private:
 	_bool		m_bLand = true;
 
 public:

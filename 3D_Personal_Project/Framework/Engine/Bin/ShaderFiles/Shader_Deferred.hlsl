@@ -126,7 +126,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT(PS_IN In)
     // นÝป็บคลอ
     
     Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) *
-    pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f);
+    pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 60.f);
 	
     return Out;
 }

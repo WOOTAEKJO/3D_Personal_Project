@@ -87,12 +87,16 @@ void CCharacter_State::Reset_Attack_Time(CCollider* pOwnerCol)
 }
 
 void CCharacter_State::Create_Particle(const wstring& strParticleTag,const wstring& strObjTag, CGameObject* pOwner,
-	CGameObject** pOut, _float fLifeTime)
+	CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone)
 {
 	CParticle::PARTICLEINFO Info = {};
 	Info.pOwner = pOwner;
 	Info.strParticleTag = strParticleTag;
 	Info.fLifeTime = fLifeTime;
+	if (vecBone == nullptr)
+		Info.pBones = Info.pOwner->Get_Component<CModel>()->Get_Bones();
+	else
+		Info.pBones = *vecBone;
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Info, reinterpret_cast<CGameObject**>(pOut))))

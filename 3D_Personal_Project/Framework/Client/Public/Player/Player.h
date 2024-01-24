@@ -65,6 +65,8 @@ private:
 private:
 	_uint				m_iAttackID = { CPlayer::STATE::ATTACK1 };
 
+
+
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;

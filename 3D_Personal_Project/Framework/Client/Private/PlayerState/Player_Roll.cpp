@@ -23,6 +23,13 @@ void CPlayer_Roll::State_Enter()
 
 _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_CurAnim_Current_TrackPosition(114, 10) ||
+		m_pOwnerModel->Is_CurAnim_Current_TrackPosition(114, 130))
+	{
+		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+			&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+		Particle_Loop_SetUp(m_pParticle, false);
+	}
 
 	return m_iStateID;
 }
@@ -82,6 +89,7 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 
 	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(114, 5))
 	{
+		
 		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 1.5f, fTimeDelta);
 	}
 

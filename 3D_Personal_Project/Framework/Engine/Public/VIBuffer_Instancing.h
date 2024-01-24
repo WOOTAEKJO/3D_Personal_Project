@@ -50,6 +50,8 @@ protected:
 	_float3*		m_pRunRotation = { nullptr };
 	_float3*		m_pRunRotationAcc = { nullptr };
 
+	_float3*		m_pDir = { nullptr };
+
 	INSTANCING_DESC	m_Instancing_Desc;
 
 protected:

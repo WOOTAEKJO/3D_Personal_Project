@@ -9,6 +9,8 @@ texture2D	g_DiffuseTexture;
 int2		g_iDiscardIndx; // 특정 뼈의 메쉬를 투명하게 하기 위함
 // 일단 사용하고 수정하자 너무 비효율적이다. 특정 한 메쉬만 생각해서 만들어서
 
+bool        g_bHited;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -110,7 +112,11 @@ PS_OUT PS_MODEL(PS_IN In)
 	if (vDiffuse.a < 0.3f)
 		discard;
 	
-    Out.vDiffuse = vDiffuse;
+    if (!g_bHited)
+        Out.vDiffuse = vDiffuse;
+    else
+        Out.vDiffuse = vDiffuse * float4(1.f,0.f,0.f,1.f);
+    
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.f, 0.f, 0.f);
 

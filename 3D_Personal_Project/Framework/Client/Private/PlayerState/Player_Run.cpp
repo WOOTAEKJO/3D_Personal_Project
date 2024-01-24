@@ -18,6 +18,10 @@ HRESULT CPlayer_Run::Initialize(CGameObject* pGameObject)
 void CPlayer_Run::State_Enter()
 {
 	m_pOwner->Animation_By_Type(CPlayer::STATE::RUN);
+
+	Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+		&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+	Particle_Loop_SetUp(m_pParticle, false);
 }
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
@@ -40,7 +44,8 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 
 	if (m_bCheck && m_bRun)
 	{
-		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f);
+		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+			&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 		Particle_Loop_SetUp(m_pParticle, false);
 		m_bRun = false;
 	}

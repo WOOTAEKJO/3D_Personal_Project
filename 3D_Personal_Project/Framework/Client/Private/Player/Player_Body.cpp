@@ -123,6 +123,8 @@ HRESULT CPlayer_Body::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 

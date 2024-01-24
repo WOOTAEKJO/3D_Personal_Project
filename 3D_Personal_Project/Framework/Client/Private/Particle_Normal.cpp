@@ -35,7 +35,7 @@ HRESULT CParticle_Normal::Initialize(void* pArg)
 
 	m_pOwnerTransform = m_pOwner->Get_Component<CTransform>();
 	Safe_AddRef(m_pOwnerTransform);
-	m_pSocketBone = dynamic_cast<CPlayer*>(m_pOwner)->Get_BodyModel()->Get_Bone(m_iSocketBoneIndex);
+	m_pSocketBone = pInfo->pBones[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
 	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
@@ -46,12 +46,12 @@ HRESULT CParticle_Normal::Initialize(void* pArg)
 	XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
 
-		_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
+		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 
 		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
 
-		m_pTransformCom->LookAt_Dir(vLook);
+		m_pTransformCom->LookAt_Dir(vLook);*/
 
 	if (FAILED(Ready_Component()))
 		return E_FAIL;

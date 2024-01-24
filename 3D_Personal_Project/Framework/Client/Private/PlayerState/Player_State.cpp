@@ -162,6 +162,18 @@ _bool CPlayer_State::Falling()
 	return !m_pOnwerTransform->Is_Ground() && m_pOnwerRigidBody->Is_Power_Zero(CRigidBody::TYPE::TYPE_VELOCITY);
 }
 
+void CPlayer_State::Attack_Particle(_float fTime)
+{
+	_uint iNum = rand() % 5 + 1;
+
+	wstring strTag = TEXT("Prototype_Component_Particle_JackAttack") + to_wstring(iNum);
+
+
+	Create_Particle(strTag, GO_PARTICLENORMAL_TAG, m_pOwner,
+		&m_pParticle, fTime, &m_pOwner->Get_BodyModel()->Get_Bones());
+	Particle_Loop_SetUp(m_pParticle, false);
+}
+
 void CPlayer_State::Free()
 {
 	__super::Free();

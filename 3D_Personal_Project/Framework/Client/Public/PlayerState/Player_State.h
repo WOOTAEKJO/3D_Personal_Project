@@ -34,6 +34,8 @@ protected:
 	void	Move(_float fTimeDelta);
 	_bool	Falling();
 
+	void	Attack_Particle(_float fTime);
+
 public:
 	virtual	void			Free() override;
 };

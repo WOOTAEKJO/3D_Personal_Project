@@ -454,6 +454,18 @@
     <Filter Include="02.GameObjects\06. Particle\00. Normal_Particle">
       <UniqueIdentifier>{ab5812fb-49a0-4c42-b239-880ba570bf84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06. Particle\01. Sprite_Particle">
+      <UniqueIdentifier>{615b033c-f770-41b6-988a-6a333fad477f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\05. Effect">
+      <UniqueIdentifier>{9bfeed48-c378-4ff4-9d59-2eb8cfefd25c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect">
+      <UniqueIdentifier>{bf12d004-eefe-40b8-b706-5ead260ae014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\00. Damage">
+      <UniqueIdentifier>{bc016737-058b-4fdf-9835-955f51fa13a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -864,6 +876,18 @@
     <ClInclude Include="..\Public\Particle_Normal.h">
       <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Particle_Sprite.h">
+      <Filter>02.GameObjects\06. Particle\01. Sprite_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Demo.h">
+      <Filter>02.GameObjects\98. Demo\05. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>02.GameObjects\08. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Damage.h">
+      <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1246,6 +1270,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Particle_Normal.cpp">
       <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Sprite.cpp">
+      <Filter>02.GameObjects\06. Particle\01. Sprite_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\05. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>02.GameObjects\08. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Damage.cpp">
+      <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

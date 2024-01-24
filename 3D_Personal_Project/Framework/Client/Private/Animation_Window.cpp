@@ -465,6 +465,12 @@ void CAnimation_Window::Particle()
 					Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
 				//m_vecSubObjectDemo[m_iCurrentDemoIndex]->Set_SocketBoneIndex(m_iCurrentAnimModelBoneIndex);
 			}
+
+			if (ImGui::Checkbox("Update", &m_bUpdate))
+				m_vecParticleDemo[m_iCurrentParticleIndex]->Set_Update(m_bUpdate);
+
+			if (ImGui::Checkbox("Trans", &m_bTrans))
+				m_vecParticleDemo[m_iCurrentParticleIndex]->Set_Trans(m_bTrans);
 		}
 
 		ImGui::Checkbox("NonBlend", &m_bNonBlend);
@@ -578,7 +584,8 @@ void CAnimation_Window::Create_Particle(const wstring& strParticleTag)
 	m_vecParticleDemo.push_back(dynamic_cast<CParticle_Demo*>(pParticle));
 	m_vecParticleDemo.back()->Set_ParentsTransform(m_pCurrentAnimModel->Get_Component<CTransform>());
 	m_vecParticleDemo.back()->Set_ModelTag(strParticleTag);
-	m_vecParticleDemo.back()->Set_Update(true);
+	m_vecParticleDemo.back()->Set_Update(false);
+	m_vecParticleDemo.back()->Get_Component<CVIBuffer_Particle_Point>()->Open_InstancingDesc()->bLoop = true;
 }
 
 void CAnimation_Window::Delete_Particle()

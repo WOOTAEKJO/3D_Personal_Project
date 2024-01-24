@@ -19,6 +19,8 @@ void CPlayer_Spear_AirAttack::State_Enter()
 {
 	Trans_Attack(true);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::AIR_ATTACK);
+
+	Attack_Particle(1.f);
 }
 
 _uint CPlayer_Spear_AirAttack::State_Priority_Tick(_float fTimeDelta)
@@ -41,12 +43,23 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 		m_pOwner->Create_Range_Bullet();
 		if (m_bLand)
 		{
-			Create_Particle(PARTICLE_JACKLANDING_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f);
+			Create_Particle(PARTICLE_JACKLANDING_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+				&m_pParticle, 0.6f, & m_pOwner->Get_BodyModel()->Get_Bones());
 			Particle_Loop_SetUp(m_pParticle, false);
 			m_bLand = false;
+
+			Create_Particle(PARTICLE_JACKELEC1_TAG, GO_PARTICLESPRITE_TAG, m_pOwner, &m_pElec[0], 3.f,
+				&m_pOwner->Get_BodyModel()->Get_Bones());
+			Particle_Loop_SetUp(m_pElec[0], false);
+			Create_Particle(PARTICLE_JACKELEC2_TAG, GO_PARTICLESPRITE_TAG,
+				m_pOwner, &m_pElec[1], 3.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+			Particle_Loop_SetUp(m_pElec[1], false);
+			Create_Particle(PARTICLE_JACKELEC3_TAG, GO_PARTICLESPRITE_TAG,
+				m_pOwner, &m_pElec[2], 3.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+			Particle_Loop_SetUp(m_pElec[2], false);
+
 		}
 		
-
 		if (m_pOwnerModel->Is_Animation_Finished()) {
 
 			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
@@ -85,4 +98,9 @@ CPlayer_Spear_AirAttack* CPlayer_Spear_AirAttack::Create(CGameObject* pGameObjec
 void CPlayer_Spear_AirAttack::Free()
 {
 	__super::Free();
+
+	for (_uint i = 0; i < 3; i++)
+	{
+		Safe_Release(m_pElec[i]);
+	}
 }

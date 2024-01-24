@@ -35,6 +35,7 @@ public:
 
 public:
 	void	Set_Update(_bool bCheck) { m_bUpdate = bCheck; }
+	void	Set_Trans(_bool bCheck) { m_bTrans = bCheck; }
 	void	Set_SocketBone(CBone* pBone);
 	void	Set_ParentsTransform(CTransform* pTransform) { m_pParentsTransform = pTransform; }
 
@@ -45,6 +46,7 @@ private:
 
 private:
 	_bool			m_bUpdate = { false };
+	_bool			m_bTrans = { false };
 
 private:
 	INSTANCING_DESC	m_eParticleInfo;
@@ -53,6 +55,11 @@ private:
 	CTransform* m_pParentsTransform = { nullptr };
 	CBone*		m_pSocketBone = { nullptr };
 	_float4x4	m_matWorldMat;
+
+private:
+	_bool		m_bSprite = { false };
+	_float		m_fFrame = { 0.f };
+	_float		m_fMaxFrame = { 0.f };
 	
 private:
 	virtual HRESULT Bind_ShaderResources() override;

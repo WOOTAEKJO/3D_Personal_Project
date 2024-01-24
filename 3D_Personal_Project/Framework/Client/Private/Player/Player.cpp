@@ -21,6 +21,8 @@
 
 #include "Range_Bullet.h"
 
+#include "Particle.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -102,16 +104,15 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
+	NextAttackID();
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
 
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Late_Tick(fTimeDelta);
 	}
-
-	NextAttackID();
-
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
-		return;
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
@@ -181,7 +182,7 @@ void CPlayer::Create_Range_Bullet()
 	CRange_Bullet::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_PLAYER_BULLET;
-	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fRadius = 0.25f;
 	BulletDesc.fLifeTime = 0.03f;
 	BulletDesc.fSpeed = 0.f;
 	BulletDesc.pTarget = nullptr;
@@ -200,7 +201,30 @@ void CPlayer::Create_Range_Bullet()
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	
+	if (iColID == m_pColliderCom->Get_Collider_ID())
+	{
+		if ((pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER_BULLET || 
+			pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_TRAP)
+			&& !m_Status_Desc.bHited)
+		{
+			m_bHit_Effect = true;
+			//m_Status_Desc.bHited = true;
+			if(m_Status_Desc.iCurHP > 1)
+				m_Status_Desc.iCurHP -= 1;
+
+			CParticle::PARTICLEINFO Info = {};
+			Info.pOwner = this;
+			Info.strParticleTag = PARTICLE_JACKHITTAG;
+			Info.fLifeTime = 1.f;
+			Info.pBones = Get_BodyModel()->Get_Bones();
+
+			if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+				GO_PARTICLENORMAL_TAG, &Info)))
+				return;
+
+			Create_Damage_Effect(0.3f,TEX_DAMAGEIMPACT_TAG);
+		}
+	}
 }
 
 void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -218,8 +242,9 @@ void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
 
 HRESULT CPlayer::Bind_ShaderResources()
 {
-	/*if (FAILED(CCharacter::Bind_ShaderResources()))
-		return E_FAIL;*/
+	if (FAILED(m_mapParts[PARTS_TYPE::PARTS_BODY]->Get_Component<CShader>()->Bind_RawValue("g_bHited", &m_bHit_Effect,
+		sizeof(_bool)))) return E_FAIL;
+
 
 	return S_OK;
 }

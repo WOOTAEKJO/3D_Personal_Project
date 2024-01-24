@@ -20,6 +20,7 @@ public:
 		wstring			strParticleTag;
 		CGameObject*	pOwner = nullptr;
 		_float			fLifeTime = 0.f;
+		vector<CBone*>		pBones;
 	}PARTICLEINFO;
 
 protected:

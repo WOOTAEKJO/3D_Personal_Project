@@ -50,7 +50,8 @@ _uint CPlayer_Fall::State_Late_Tick(_float fTimeDelta)
 			m_pOwner->Open_Physics_Desc()->bDoubleJump = false;
 			m_pOwner->Open_Physics_Desc()->bJump = false;
 
-			Create_Particle(PARTICLE_JACKLANDING_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f);
+			Create_Particle(PARTICLE_JACKLANDING_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 0.6f
+				, &m_pOwner->Get_BodyModel()->Get_Bones());
 			Particle_Loop_SetUp(m_pParticle, false);
 			return CPlayer::STATE::LAND;
 		}

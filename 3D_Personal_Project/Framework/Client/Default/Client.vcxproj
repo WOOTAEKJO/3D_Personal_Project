@@ -205,6 +205,9 @@
     <ClInclude Include="..\Public\DataMgr.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
+    <ClInclude Include="..\Public\Effect.h" />
+    <ClInclude Include="..\Public\Effect_Damage.h" />
+    <ClInclude Include="..\Public\Effect_Demo.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
@@ -276,6 +279,7 @@
     <ClInclude Include="..\Public\Particle.h" />
     <ClInclude Include="..\Public\Particle_Demo.h" />
     <ClInclude Include="..\Public\Particle_Normal.h" />
+    <ClInclude Include="..\Public\Particle_Sprite.h" />
     <ClInclude Include="..\Public\Phantom.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Plateform_Instancing.h" />
@@ -336,6 +340,9 @@
     <ClCompile Include="..\Private\DataMgr.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
+    <ClCompile Include="..\Private\Effect.cpp" />
+    <ClCompile Include="..\Private\Effect_Damage.cpp" />
+    <ClCompile Include="..\Private\Effect_Demo.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />
@@ -407,6 +414,7 @@
     <ClCompile Include="..\Private\Particle.cpp" />
     <ClCompile Include="..\Private\Particle_Demo.cpp" />
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
+    <ClCompile Include="..\Private\Particle_Sprite.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Plateform_Instancing.cpp" />

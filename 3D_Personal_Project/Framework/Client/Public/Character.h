@@ -102,6 +102,10 @@ protected:
 	_int				m_eCurrentTypeAnimIndex = { -1 };
 
 protected:
+	_float				m_fHitCount = { 0.f };
+	_bool				m_bHit_Effect = { false };
+
+protected:
 	virtual HRESULT Bind_ShaderResources();
 	virtual HRESULT Ready_Component();
 	virtual HRESULT	Ready_Animation();
@@ -114,6 +118,8 @@ protected:
 	void	Pushed();
 	void	Pushed_Reset();
 
+	void	Reset_Hit(_float fTimeDelta);
+	void	Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag);
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

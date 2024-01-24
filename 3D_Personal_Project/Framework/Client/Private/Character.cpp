@@ -4,6 +4,7 @@
 #include "TargetCamera.h"
 
 #include "GameInstance.h"
+#include "Effect.h"
 
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
@@ -53,6 +54,8 @@ void CCharacter::Late_Tick(_float fTimeDelta)
 	CGameObject::Late_Tick(fTimeDelta);
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
+
+	Reset_Hit(fTimeDelta);
 }
 
 HRESULT CCharacter::Render()
@@ -120,6 +123,9 @@ HRESULT CCharacter::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bHited", &m_bHit_Effect, sizeof(_bool))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -177,6 +183,43 @@ void CCharacter::Pushed()
 void CCharacter::Pushed_Reset()
 {
 	m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_ACCEL);
+}
+
+void CCharacter::Reset_Hit(_float fTimeDelta)
+{
+	if (!m_bHit_Effect)
+		return;
+
+	m_fHitCount += fTimeDelta;
+
+	if (m_fHitCount > 0.5f)
+	{
+		m_fHitCount = 0.f;
+		m_bHit_Effect = false;
+	}
+}
+
+void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag)
+{
+	CEffect::EFFECTINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = fLifeTime;
+	Info.strEffectTextureTag = strTextureTag;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAM_POS);
+
+	_vector vDir = XMVector3Normalize(vCamPos - vPos);
+	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
+	
+
+	XMStoreFloat4(&Info.vPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTDAMAGE_TAG, &Info)))
+		return;
 }
 
 void CCharacter::Free()

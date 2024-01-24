@@ -120,17 +120,19 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
 		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET 
-			&&!m_Status_Desc.bHited)
+			&&!m_bHit_Effect)
 		{
 			if (m_pStateMachineCom->Get_StateID() != (_uint)STATE::ATTACK)
 			{
 				m_Status_Desc.bHited = true;
 			}
+			m_bHit_Effect = true;
 			m_Status_Desc.iCurHP -= 1;
+
+			Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
 		}
 	}
 
-	
 }
 
 void CSpooketon::OnCollisionStay(CCollider* pCollider, _uint iColID)

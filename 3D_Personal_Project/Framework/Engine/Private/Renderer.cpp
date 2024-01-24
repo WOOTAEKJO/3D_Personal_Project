@@ -5,6 +5,8 @@
 #include "VIBuffer_Rect.h"
 #include "Shader.h"
 
+#include "AlphaObject.h"
+
 CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:m_pDevice(pDevice),m_pContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -238,6 +240,13 @@ HRESULT CRenderer::Render_Deferred()
 
 HRESULT CRenderer::Render_Blend()
 {
+	m_listRenderObject[RENDER_BLEND].sort([](CGameObject* pSour, CGameObject* pDest) {
+
+		return (dynamic_cast<CAlphaObject*>(pSour)->Get_CamDinstance() >
+			dynamic_cast<CAlphaObject*>(pDest)->Get_CamDinstance());
+
+		});
+
 	for (auto& pGameObject : m_listRenderObject[RENDERGROUP::RENDER_BLEND]) {
 
 		if (pGameObject != nullptr)

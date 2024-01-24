@@ -33,7 +33,7 @@ private:
 	INSTANCING_DESC		m_eParticleInfo = {};
 
 private:
-	_bool				m_bUpdate = { false };
+	_bool			m_bUpdate = { false };
 	
 	random_device	m_RandomDevice;
 	mt19937_64		m_RandomNumber;
@@ -43,6 +43,8 @@ private:
 
 private:
 	void	Particle();
+	void	Effect();
+
 	void	Create_Particle();
 	void	Delete_Particle();
 	void	Particle_Rotation();

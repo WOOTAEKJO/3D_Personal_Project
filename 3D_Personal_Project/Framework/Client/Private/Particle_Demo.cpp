@@ -34,22 +34,33 @@ HRESULT CParticle_Demo::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	m_fMaxFrame = m_pTextureCom->Get_TextureNum();
+	if (m_fMaxFrame > 1)
+	{
+		m_bSprite = true;
+		m_fFrame = (_float)(rand() % (_uint)m_fMaxFrame);
+
+	}
+	// 스프라이트 파티클을 위함
+
 	return S_OK;
 }
 
 void CParticle_Demo::Priority_Tick(_float fTimeDelta)
 {
-	if (m_pSocketBone != nullptr)
-	{
-		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
-			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
-		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2],1.f);
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);*/
-	}
+	
 }
 
 void CParticle_Demo::Tick(_float fTimeDelta)
 {
+	if (m_bSprite)
+	{
+		m_fFrame += m_fMaxFrame * fTimeDelta;
+
+		if (m_fMaxFrame <= m_fFrame)
+			m_fFrame = 0.f;
+	}
+
 	if(m_bUpdate)
 		m_pBufferCom->Update(fTimeDelta);
 }
@@ -57,9 +68,15 @@ void CParticle_Demo::Tick(_float fTimeDelta)
 void CParticle_Demo::Late_Tick(_float fTimeDelta)
 {
 	
-
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;
+
+	if (m_pSocketBone != nullptr)
+	{
+		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
+			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
+		
+	}
 }
 
 HRESULT CParticle_Demo::Render()
@@ -137,17 +154,25 @@ void CParticle_Demo::Set_SocketBone(CBone* pBone)
 
 HRESULT CParticle_Demo::Bind_ShaderResources()
 {
-	
-	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
-		return E_FAIL;
 
-	
+	if (m_pSocketBone != nullptr)
+	{
+		
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat)))
+			return E_FAIL;
+	}
+	else {
+		if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
+			return E_FAIL;
+	}
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
-	if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
+	/*if (FAILED(m_pTextureCom->Bind_ShaderResources(m_pShaderCom, "g_Texture")))
+		return E_FAIL;*/
+	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture",m_fFrame)))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCameraPos", &m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS),

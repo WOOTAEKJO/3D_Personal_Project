@@ -20,6 +20,7 @@ void CPlayer_Spear_Attack1::State_Enter()
 	
 	Trans_Attack(true);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK1);
+	Attack_Particle(1.f);
 }
 
 _uint CPlayer_Spear_Attack1::State_Priority_Tick(_float fTimeDelta)

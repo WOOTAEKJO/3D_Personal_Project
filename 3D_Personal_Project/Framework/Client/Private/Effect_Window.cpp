@@ -169,6 +169,7 @@ void CEffect_Window::Particle()
 	{
 		if(ImGui::Checkbox("Update", &m_bUpdate))
 			m_pParticle->Set_Update(m_bUpdate);	
+
 	}
 
 	if (ImGui::Button("Create Particle"))
@@ -180,6 +181,10 @@ void CEffect_Window::Particle()
 	{
 		Delete_Particle();
 	}
+}
+
+void CEffect_Window::Effect()
+{
 }
 
 void CEffect_Window::Create_Particle()

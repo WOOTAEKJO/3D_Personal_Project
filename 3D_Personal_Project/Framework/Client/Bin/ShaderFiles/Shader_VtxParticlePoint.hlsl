@@ -22,6 +22,8 @@ struct VS_OUT
 	float4	vPosition : POSITION;
     float2 vPSize : PSIZE;
     float4	vColor : COLOR0;
+    float3 vUp : TEXCOORD0;
+    float3 vRigh : TEXCOORD1;
 };
 
 
@@ -34,32 +36,10 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = mul(vPosition, g_matWorld);
     Out.vPSize = float2(In.vPSize.x * In.matWorld._11, In.vPSize.y * In.matWorld._22);
     Out.vColor = In.vColor;
-
-	return Out;
-}
-
-struct VS_OUT_SOLID
-{
-    float4 vPosition : POSITION;
-    float2 vPSize : PSIZE;
-    float4 vColor : COLOR0;
-    float3 vUp : TEXCOORD0;
-    float3 vRigh : TEXCOORD1;
-};
-
-VS_OUT_SOLID VS_MAIN_SOLID(VS_IN In)
-{
-    VS_OUT_SOLID Out = (VS_OUT_SOLID) 0;
-    
-    vector vPosition = mul(float4(In.vPosition, 1.f), In.matWorld);
-	
-    Out.vPosition = mul(vPosition, g_matWorld);
-    Out.vPSize = float2(In.vPSize.x * In.matWorld._11, In.vPSize.y * In.matWorld._22);
-    Out.vColor = In.vColor;
     Out.vUp = float3(In.matWorld._21, In.matWorld._22, In.matWorld._23);
     Out.vRigh = float3(In.matWorld._11, In.matWorld._12, In.matWorld._13);
 
-    return Out;
+	return Out;
 }
 
 struct GS_IN
@@ -67,16 +47,9 @@ struct GS_IN
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
     float4 vColor : COLOR0;
-
-};
-
-struct GS_IN_SOLID
-{
-    float4 vPosition : POSITION;
-    float2 vPSize : PSIZE;
-    float4 vColor : COLOR0;
     float3 vUp : TEXCOORD0;
     float3 vRigh : TEXCOORD1;
+
 };
 
 struct GS_OUT
@@ -91,12 +64,16 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 {
     GS_OUT Out[4];
     
-    float4 vLook = g_vCameraPos - In[0].vPosition;
-    //float4 vLook = -g_vCameraLook;
+    //float4 vLook = g_vCameraPos - In[0].vPosition;
+    ////float4 vLook = -g_vCameraLook;
+    //vLook = normalize(vLook);
+    //float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook.xyz)) * In[0].vPSize.x * 0.5f;
+    //float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
+    float4 vLook = -g_vCameraLook;
     vLook = normalize(vLook);
-    float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook.xyz)) * In[0].vPSize.x * 0.5f;
-    float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
-
+    float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * length(In[0].vRigh) * 0.5f;
+    float3 vUp = normalize(cross(vLook.xyz, vRight)) * length(In[0].vUp) * 0.5f;
+ 
     matrix matVP = mul(g_matView, g_matProj);
     
     Out[0].vPosition = mul(float4(In[0].vPosition.xyz + vRight + vUp, 1.f), matVP);
@@ -128,7 +105,7 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 }
 
 [maxvertexcount(6)]
-void GS_MAIN_SOLID(point GS_IN_SOLID In[1], inout TriangleStream<GS_OUT> OutStream)
+void GS_MAIN_SOLID(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
 {
     GS_OUT Out[4];
     
@@ -138,6 +115,8 @@ void GS_MAIN_SOLID(point GS_IN_SOLID In[1], inout TriangleStream<GS_OUT> OutStre
     //float3 vUp = normalize(cross(vLook.xyz, vRight)) * In[0].vPSize.y * 0.5f;
     float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * length(In[0].vRigh) * 0.5f;
     float3 vUp = normalize(cross(vLook.xyz, vRight)) * length(In[0].vUp) * 0.5f;
+    //float3 vRight = normalize(cross(In[0].vUp, vLook.xyz)) * length(In[0].vRigh);
+    //float3 vUp = normalize(cross(vLook.xyz, vRight)) * length(In[0].vUp);
 
     matrix matVP = mul(g_matView, g_matProj);
     
@@ -246,7 +225,7 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN_SOLID();
+        VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN_SOLID();
         PixelShader = compile ps_5_0 PS_MAIN_SOLID();
     }
@@ -257,7 +236,7 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
 
-        VertexShader = compile vs_5_0 VS_MAIN_SOLID();
+        VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = compile gs_5_0 GS_MAIN_SOLID();
         PixelShader = compile ps_5_0 PS_MAIN_BLEND();
     }

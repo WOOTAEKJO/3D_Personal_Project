@@ -236,6 +236,18 @@
 #define	PARTICLE_JACKJUMP_TAG		TEXT("Prototype_Component_Particle_JackJump")
 #define	PARTICLE_JACKLANDING_TAG		TEXT("Prototype_Component_Particle_JackLanding")
 
+#define	PARTICLE_JACKELEC1_TAG		TEXT("Prototype_Component_Particle_JackElec1")
+#define	PARTICLE_JACKELEC2_TAG		TEXT("Prototype_Component_Particle_JackElec2")
+#define	PARTICLE_JACKELEC3_TAG		TEXT("Prototype_Component_Particle_JackElec3")
+
+#define	PARTICLE_JACKATTACK1_TAG		TEXT("Prototype_Component_Particle_JackAttack1")
+#define	PARTICLE_JACKATTACK2_TAG		TEXT("Prototype_Component_Particle_JackAttack2")
+#define	PARTICLE_JACKATTACK3_TAG		TEXT("Prototype_Component_Particle_JackAttack3")
+#define	PARTICLE_JACKATTACK4_TAG		TEXT("Prototype_Component_Particle_JackAttack4")
+#define	PARTICLE_JACKATTACK5_TAG		TEXT("Prototype_Component_Particle_JackAttack5")
+
+#define	PARTICLE_JACKHITTAG		TEXT("Prototype_Component_Particle_JackHit")
+
 #pragma endregion
 
 #pragma endregion
@@ -296,6 +308,12 @@
 
 #define TEX_SNOW_TAG		TEXT("Prototype_Component_Texture_Snow")
 
+#define TEX_ELEC_TAG		TEXT("Prototype_Component_Texture_ElecParts")
+
+#define TEX_STRAW_TAG		TEXT("Prototype_Component_Texture_Straw")
+
+#define TEX_DAMAGEIMPACT_TAG		TEXT("Prototype_Component_Texture_DamageImpact")
+
 #pragma endregion
 
 #pragma endregion
@@ -323,6 +341,9 @@
 #define GO_PLATEFORM_TRAP_TAG		TEXT("Prototype_GameObject_PlateformTrap")
 
 #define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
+#define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
+
+#define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

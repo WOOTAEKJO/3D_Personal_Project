@@ -100,23 +100,6 @@ HRESULT CVIBuffer_Particle_Point::Init_Buffer()
 	m_iInstanceStride = sizeof(VTXINSTANCING);
 	m_iIndexCountPerInstance = 1;
 
-	/*m_pSpeeds = new _float3[m_iInstanceNum];
-	m_pSpeedAcc = new _float3[m_iInstanceNum];
-	ZeroMemory(m_pSpeedAcc, sizeof(_float3) * m_iInstanceNum);
-
-	m_pLifeTime = new _float[m_iInstanceNum];
-	m_pTimeAcc = new _float[m_iInstanceNum];
-	ZeroMemory(m_pTimeAcc, sizeof(_float) * m_iInstanceNum);
-
-	m_pScale = new _float[m_iInstanceNum];
-	m_pScaleTimeAcc = new _float[m_iInstanceNum];
-	ZeroMemory(m_pScaleTimeAcc, sizeof(_float) * m_iInstanceNum);
-
-	m_pPos = new _float4[m_iInstanceNum];
-
-	m_pRotation = new _float3[m_iInstanceNum];
-	m_pRunRotation = new _float3[m_iInstanceNum];*/
-
 	m_iIndexNum = m_iInstanceNum;
 	m_iIndexStride = 2;
 	m_eIndexForMat = m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT;

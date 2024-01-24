@@ -46,7 +46,8 @@ protected:
 	void	Reset_Attack_Time(CCollider* pOwnerCol);
 
 protected:
-	void	Create_Particle(const wstring& strParticleTag, const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f);
+	void	Create_Particle(const wstring& strParticleTag, const wstring& strObjTag,
+		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr);
 	void	Particle_Loop_SetUp(CGameObject* pParticle,_bool bCheck);
 
 public:

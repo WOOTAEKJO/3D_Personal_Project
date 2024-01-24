@@ -53,12 +53,12 @@ void CParticle::Late_Tick(_float fTimeDelta)
 	{
 		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
-		_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
+		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 		
 		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
 		vLook.m128_f32[1] = 0.f;
-		m_pTransformCom->LookAt(vLook);
+		m_pTransformCom->LookAt(vLook);*/
 	}
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
@@ -102,9 +102,10 @@ void CParticle::Load_FromJson(const json& In_Json)
 
 HRESULT CParticle::Bind_ShaderResources()
 {
-	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
+	/*if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
+		return E_FAIL;*/
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat)))
 		return E_FAIL;
-
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::VIEW))))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
