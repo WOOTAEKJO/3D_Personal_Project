@@ -77,12 +77,14 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
-
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
@@ -116,6 +118,8 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
+
+	Update_Light();
 
 	CCharacter::Late_Tick(fTimeDelta);
 }
@@ -275,6 +279,27 @@ HRESULT CPlayer::Ready_Component()
 
 	if (FAILED(Add_Component<CController>(COM_CONTROLLER_TAG, &m_pControllerCom))) return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CPlayer::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.6f;
+	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
+
 	return S_OK;
 }
 

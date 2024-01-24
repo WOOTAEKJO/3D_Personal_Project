@@ -233,7 +233,7 @@ public: /* For. CRednerTarget_Manager*/
 #endif
 
 public: /* For. CLight_Manager*/
-	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc);
+	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ class CLight** ppLight = nullptr);
 	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 public: /* For. Camera_Manager*/

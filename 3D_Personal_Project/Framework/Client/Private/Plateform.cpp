@@ -37,6 +37,11 @@ HRESULT CPlateform::Initialize(void* pArg)
 	}
 
 	m_RandomNumber = mt19937_64(m_RandomDevice());
+
+	if (!wcscmp(m_strModelTag.c_str(), MODEL_FLOORLAMP_TAG))
+	{
+		m_bLight = true;
+	}
 	
 	return S_OK;
 }
@@ -165,6 +170,12 @@ void CPlateform::Fall(_float fTimeDelta)
 
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 	}
+}
+
+void CPlateform::Point_Light()
+{
+	if (!m_bLight)
+		return;
 }
 
 CPlateform* CPlateform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

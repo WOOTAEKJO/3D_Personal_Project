@@ -12,11 +12,15 @@ HRESULT CLight_Manager::Initialize()
 	return S_OK;
 }
 
-HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& eLightDesc)
+HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 {
 	CLight* pLight = CLight::Create(eLightDesc);
 	if (pLight == nullptr)
 		return E_FAIL;
+
+	if (ppLight != nullptr) {
+		*ppLight = pLight;
+	}
 
 	m_listLight.push_back(pLight);
 

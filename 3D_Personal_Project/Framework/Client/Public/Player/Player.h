@@ -70,6 +70,7 @@ private:
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
+	virtual HRESULT	Init_Point_Light() override;
 
 private:
 	HRESULT	Ready_State();

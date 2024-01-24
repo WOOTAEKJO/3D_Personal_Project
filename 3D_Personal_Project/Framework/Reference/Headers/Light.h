@@ -6,7 +6,7 @@ BEGIN(Engine)
 class CShader;
 class CVIBuffer_Rect;
 
-class CLight final : public CBase
+class ENGINE_DLL CLight final : public CBase
 {
 private:
 	CLight();
@@ -15,6 +15,9 @@ private:
 public:
 	HRESULT  Initialize(const LIGHT_DESC& eLightDesc);
 	HRESULT  Render(CShader* pShader, CVIBuffer_Rect* pBuffer);
+
+public:
+	LIGHT_DESC* Open_Light_Desc() { return &m_eLight_Desc; }
 
 private:
 	LIGHT_DESC m_eLight_Desc;

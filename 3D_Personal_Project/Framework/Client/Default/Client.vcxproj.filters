@@ -442,9 +442,6 @@
     <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor">
       <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03. Platform\00. Col">
-      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window">
       <UniqueIdentifier>{5564a11d-35d7-4bd2-bf83-4cfa9e6b9421}</UniqueIdentifier>
     </Filter>

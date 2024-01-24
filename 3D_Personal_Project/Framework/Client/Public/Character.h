@@ -83,6 +83,9 @@ public:
 	void	Camera_Zoom(_float3 vOffset = _float3(0.f,0.f,0.f));
 	void	Camera_SetUp_LookAt_Hegith(_float fHeight = 0.f);
 
+	virtual HRESULT	Init_Point_Light();
+	void	Update_Light();
+
 protected:
 	CShader*		m_pShaderCom = { nullptr };
 	CModel*			m_pModelCom = { nullptr };
@@ -104,6 +107,9 @@ protected:
 protected:
 	_float				m_fHitCount = { 0.f };
 	_bool				m_bHit_Effect = { false };
+
+protected:
+	CLight*				m_pLight = { nullptr };
 
 protected:
 	virtual HRESULT Bind_ShaderResources();

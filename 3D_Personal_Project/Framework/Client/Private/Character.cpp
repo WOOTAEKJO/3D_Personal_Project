@@ -6,6 +6,8 @@
 #include "GameInstance.h"
 #include "Effect.h"
 
+#include "Light.h"
+
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -110,6 +112,21 @@ void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
 		pCamera->Reset_LookAt_Height();
 	else
 		pCamera->SetUp_LookAt_Height(fHeight);
+}
+
+HRESULT CCharacter::Init_Point_Light()
+{
+	return S_OK;
+}
+
+void CCharacter::Update_Light()
+{
+	if (m_pLight == nullptr)
+		return;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+	XMStoreFloat4(&m_pLight->Open_Light_Desc()->vPos, vPos);
 }
 
 HRESULT CCharacter::Bind_ShaderResources()
@@ -232,4 +249,7 @@ void CCharacter::Free()
 	Safe_Release(m_pRigidBodyCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pStateMachineCom);
+
+	Safe_Release(m_pLight);
+	
 }

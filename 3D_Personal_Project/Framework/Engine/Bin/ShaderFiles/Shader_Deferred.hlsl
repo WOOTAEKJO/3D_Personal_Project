@@ -17,7 +17,7 @@ vector		g_vLightAmbient;
 vector      g_vLightSpecular;
 
 vector		g_vMtrlAmbient = vector(1.f,1.f,1.f,1.f);
-vector      g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
+vector      g_vMtrlSpecular = vector(0.1f, 0.1f, 0.1f, 1.f);
 // 객체마다 ambient를 만들지 말고 다 공유해서 사용
 
 vector		g_vCameraPos;
@@ -84,7 +84,7 @@ struct PS_OUT_LIGHT
     float4 vSpecular : SV_TARGET1;
 };
 
-PS_OUT_LIGHT PS_MAIN_LIGHT(PS_IN In)
+PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
 {
     PS_OUT_LIGHT Out = (PS_OUT_LIGHT) 0;
 
@@ -131,6 +131,52 @@ PS_OUT_LIGHT PS_MAIN_LIGHT(PS_IN In)
     return Out;
 }
 
+PS_OUT_LIGHT PS_MAIN_POINT(PS_IN In)
+{
+    PS_OUT_LIGHT Out = (PS_OUT_LIGHT) 0;
+
+    vector vNormalDesc = g_NormalTexture.Sample(PointSampler, In.vTexCoord);
+    
+    float4 vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+    
+    vector vDepth = g_DepthTexture.Sample(PointSampler, In.vTexCoord);
+   
+    float fViewZ = vDepth.y * g_fFar;
+    
+    vector vWorldPos;
+    // 투영행렬
+    vWorldPos.x = In.vTexCoord.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexCoord.y * -2.f + 1.f;
+    vWorldPos.z = vDepth.x;
+    vWorldPos.w = 1.f;
+    
+    // 뷰행렬
+    vWorldPos = vWorldPos * fViewZ;
+    vWorldPos = mul(vWorldPos, g_matProjInv);
+    
+    // 월드행렬
+    vWorldPos = mul(vWorldPos, g_matViewInv);
+    
+    float4 vLightDir = vWorldPos - g_vLightPos;
+    float fDistance = length(vLightDir);
+    
+    float fAtt = max((g_fLightRange - fDistance) / g_fLightRange, 0.f);
+    
+    Out.vShade = g_vLightDiffuse * min((max(dot(normalize(g_vLightDir) * -1.f, vNormal), 0.f)
+    + (g_vLightAmbient * g_vMtrlAmbient)), 1.f) * fAtt;
+   
+    vector vLook = vWorldPos - g_vCameraPos;
+    // 시선 벡터
+    
+    vector vReflect = reflect(normalize(g_vLightDir), normalize(vNormal));
+    // 반사벡터
+    
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) *
+    pow(max(dot(normalize(vLook) * -1.f, normalize(vReflect)), 0.f), 30.f) * fAtt;
+	
+    return Out;
+}
+
 PS_OUT PS_MAIN_FINAL(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -172,7 +218,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         HullShader = NULL;
         DomainShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHT();
+        PixelShader = compile ps_5_0 PS_MAIN_DIRECTIONAL();
     }
 
     pass Light_Point
@@ -185,7 +231,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         HullShader = NULL;
         DomainShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_LIGHT();
+        PixelShader = compile ps_5_0 PS_MAIN_POINT();
     }
 
     pass Final

@@ -67,6 +67,8 @@ private: // 보스 바닥 떨구기를 구현하기 위한 임시 코드
 	_float  m_fAmplitude = { 1.07f };
 	_float3	m_fAngularVelocity = {};
 
+	_bool			m_bLight = { false };
+
 private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Component() ;
@@ -74,6 +76,7 @@ private:
 private:
 	void	Fall(_float fTimeDelta);
 
+	void	Point_Light();
 
 public:
 	static CPlateform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

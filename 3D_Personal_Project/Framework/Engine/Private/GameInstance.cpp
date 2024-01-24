@@ -713,12 +713,12 @@ HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShad
 	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
 
-HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc)
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 {
 	if (nullptr == m_pLight_Manager)
 		return E_FAIL;
 
-	return m_pLight_Manager->Add_Light(eLightDesc);
+	return m_pLight_Manager->Add_Light(eLightDesc, ppLight);
 }
 
 HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
