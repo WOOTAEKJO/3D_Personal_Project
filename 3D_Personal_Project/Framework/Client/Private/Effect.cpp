@@ -61,7 +61,7 @@ void CEffect::Tick(_float fTimeDelta)
 
 void CEffect::Late_Tick(_float fTimeDelta)
 {
-	Judge_Dead(fTimeDelta);
+	
 
 	__super::Late_Tick(fTimeDelta);
 
@@ -96,6 +96,9 @@ HRESULT CEffect::Bind_ShaderResources()
 	if (FAILED(m_pGameInstance->Bind_RenderTarget_ShaderResource(RTV_TYPE::RT_DEPTH, m_pShaderCom, "g_DepthTexture")))
 		return E_FAIL;
 
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fAlpha", &m_fAlpha, sizeof(_float))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -114,6 +117,22 @@ void CEffect::Judge_Dead(_float fTimeDelta)
 
 	if (m_fTimeAcc > m_fLifeTime)
 		Set_Dead();
+}
+
+void CEffect::Size_Up(_float fTimeDelta)
+{
+	_float3 fSize = m_pTransformCom->Get_Scaled();
+
+	fSize.x += fTimeDelta;
+	fSize.y += fTimeDelta;
+	fSize.z += fTimeDelta;
+
+	m_pTransformCom->Set_Scaling(fSize.x, fSize.y, fSize.z);
+}
+
+void CEffect::Invisibility(_float fTimeDelta)
+{
+	m_fAlpha += fTimeDelta;
 }
 
 void CEffect::Free()

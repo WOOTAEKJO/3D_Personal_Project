@@ -8,6 +8,8 @@ texture2D g_DepthTexture;
 
 vector g_vSolid_Color;
 
+float g_fAlpha;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -99,14 +101,14 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    //float2 vDepthTexcoord;
+    //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
+    //vDepthTexcoord.y = (In.vPosition.y / In.vPosition.w) * -0.5f + 0.5f;
 	
-    float2 vDepthTexcoord;
-    vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
-    vDepthTexcoord.y = (In.vPosition.y / In.vPosition.w) * -0.5f + 0.5f;
+    //float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, vDepthTexcoord);
 	
-    float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, vDepthTexcoord);
-	
-    Out.vColor.a = Out.vColor.a * (vDepthDesc.y * 1000.f - In.vProjPos.w) * 2.f;
+    //Out.vColor.a = Out.vColor.a * (vDepthDesc.y * 1000.f - In.vProjPos.w) * 2.f;
 	// 화면에 그려진 픽셀들의 깊이 값과 비교해서 깊이 값이 크면 알파가 크게 작으면 알파가 점점 작아져서 투명해진다.
 	
     return Out;
@@ -128,6 +130,22 @@ PS_OUT PS_MAIN_EFFECT_SOLID(PS_IN_EFFECT In)
 	
     Out.vColor = vColor;
     
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_INVISIBILITY(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.a < 0.8f)
+        discard;
+    
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    Out.vColor = vColor;
+
     return Out;
 }
 
@@ -171,6 +189,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_SOLID();
+    }
+
+    pass Effect_Invisibility
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
     }
 
 }

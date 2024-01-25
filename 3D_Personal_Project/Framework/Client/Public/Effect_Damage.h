@@ -26,7 +26,7 @@ private:
 	virtual HRESULT	Ready_Component() override;
 
 private:
-	void	Size_Up(_float fTimeDelta);
+	
 
 public:
 	static CEffect_Damage* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

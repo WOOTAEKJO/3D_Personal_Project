@@ -25,6 +25,12 @@ public:
 	virtual HRESULT	Render(_uint iMeshIndx);
 
 public:
+	_bool	IsIn_World_FrustumPlanes(_uint iMeshIndx);
+	_bool	IsIn_Local_FrustumPlanes(_uint iMeshIndx);
+
+	void	Culling();
+
+public:
 	HRESULT	Bind_ShaderResources(class CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType);
 
 public:

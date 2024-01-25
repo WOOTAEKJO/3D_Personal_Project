@@ -215,7 +215,7 @@ public: /* For. Collider_Manager*/
 
 public: /* For. Font_Manager*/
 	HRESULT	Add_Font(_uint iFontTag, const wstring& strFontFilePath);
-	HRESULT	Render(_uint iFontTag, const wstring& strText, _float2 vPosition, 
+	HRESULT	Render_Font(_uint iFontTag, const wstring& strText, _float2 vPosition, 
 		_fvector vColor = XMVectorSet(1.f,1.f,1.f,1.f),
 		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
 
@@ -234,11 +234,18 @@ public: /* For. CRednerTarget_Manager*/
 
 public: /* For. CLight_Manager*/
 	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ class CLight** ppLight = nullptr);
+	void Delete_Light(CLight* ppLight);
 	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 public: /* For. Camera_Manager*/
 	HRESULT	Add_Camera(const wstring& strCameraTag, class CCamera* pCamera);
 	void	SetUp_Camera_Offset(_float3 vOffset);
+
+public: /* For. Frustum*/
+	void	Transform_ToLocalSpace_Frustum(_fmatrix matWorld);
+	_bool	IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius);
+	_bool	IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius);
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -258,6 +265,7 @@ private:
 	class CRenderTarget_Manager*	m_pRenderTarget_Manager = { nullptr };
 	class CLight_Manager*			m_pLight_Manager = { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager = { nullptr };
+	class CFrustum*					m_pFrustum = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

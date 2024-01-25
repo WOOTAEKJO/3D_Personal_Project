@@ -12,6 +12,7 @@
 #include "RenderTarget_Manager.h"
 #include "Light_Manager.h"
 #include "Camera_Manager.h"
+#include "Frustum.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -107,6 +108,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pCamera_Manager)
 		return E_FAIL;
 
+	/* 카메라 매니저 사용 준비*/
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
+
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
@@ -129,6 +135,7 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 	m_pCollider_Manager->Update();
 	m_pPipeLine->Tick();
+	m_pFrustum->Tick();
 	
 	m_pLevel_Manager->Tick(fTimeDelta);
 
@@ -649,7 +656,7 @@ HRESULT CGameInstance::Add_Font(_uint iFontTag, const wstring& strFontFilePath)
 	return m_pFont_Manager->Add_Font(iFontTag, strFontFilePath);
 }
 
-HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vPosition, _fvector vColor, _float fScale, _float2 vOrigin, _float fRotation)
+HRESULT CGameInstance::Render_Font(_uint iFontTag, const wstring& strText, _float2 vPosition, _fvector vColor, _float fScale, _float2 vOrigin, _float fRotation)
 {
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
@@ -721,6 +728,14 @@ HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 	return m_pLight_Manager->Add_Light(eLightDesc, ppLight);
 }
 
+void CGameInstance::Delete_Light(CLight* ppLight)
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	m_pLight_Manager->Delete_Light(ppLight);
+}
+
 HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
 {
 	if (nullptr == m_pLight_Manager)
@@ -745,11 +760,37 @@ void CGameInstance::SetUp_Camera_Offset(_float3 vOffset)
 	m_pCamera_Manager->SetUp_Offset(vOffset);
 }
 
+void CGameInstance::Transform_ToLocalSpace_Frustum(_fmatrix matWorld)
+{
+	if (nullptr == m_pFrustum)
+		return;
+
+	m_pFrustum->Transform_ToLocalSpace(matWorld);
+}
+
+_bool CGameInstance::IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius)
+{
+	if (nullptr == m_pFrustum)
+		return false;
+
+	return m_pFrustum->IsIn_LocalPlanes(vPoint, fRadius);
+}
+
+_bool CGameInstance::IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius)
+{
+	if (nullptr == m_pFrustum)
+		return false;
+
+
+	return m_pFrustum->IsIn_World_FrustumPlanes(vPoint, fRadius);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pFrustum);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFile_Manager);
 	Safe_Release(m_pPipeLine);

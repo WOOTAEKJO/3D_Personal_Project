@@ -26,6 +26,8 @@ HRESULT CComponent::Initialize_ProtoType()
 
 HRESULT CComponent::Initialize(void* pArg)
 {
+	
+
 	return S_OK;
 }
 

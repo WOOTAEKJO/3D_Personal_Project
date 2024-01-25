@@ -58,6 +58,8 @@ void CPlateform_Trap::Tick(_float fTimeDelta)
 
 void CPlateform_Trap::Late_Tick(_float fTimeDelta)
 {
+	__super::Late_Tick(fTimeDelta);
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))

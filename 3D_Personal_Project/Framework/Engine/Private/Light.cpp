@@ -3,8 +3,12 @@
 #include "Shader.h"
 #include "VIBuffer_Rect.h"
 
+#include "GameInstance.h"
+
 CLight::CLight()
+	:m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CLight::Initialize(const LIGHT_DESC& eLightDesc)
@@ -16,6 +20,16 @@ HRESULT CLight::Initialize(const LIGHT_DESC& eLightDesc)
 
 HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 {
+	if (!m_bActive)
+		return S_OK;
+
+	/*if (!m_pGameInstance->IsIn_World_FrustumPlanes(XMLoadFloat4(&m_eLight_Desc.vPos), m_eLight_Desc.fRange) &&
+		m_eLight_Desc.eType == LIGHT_DESC::LIGHT_TYPE::TYPE_POINT)
+		return S_OK;*/
+	if (!m_pGameInstance->IsIn_World_FrustumPlanes(XMLoadFloat4(&m_eLight_Desc.vPos), 0.f) &&
+		m_eLight_Desc.eType == LIGHT_DESC::LIGHT_TYPE::TYPE_POINT)
+		return S_OK;
+
 	_uint iPassIndx = 0;
 
 	if (m_eLight_Desc.eType == LIGHT_DESC::LIGHT_TYPE::TYPE_DIRECTION)
@@ -49,6 +63,11 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 	return pBuffer->Render();
 }
 
+void CLight::Update_Pos(_fvector vPos)
+{
+	XMStoreFloat4(&m_eLight_Desc.vPos, vPos);
+}
+
 CLight* CLight::Create(const LIGHT_DESC& eLightDesc)
 {
 	CLight* pInstance = new CLight();
@@ -64,4 +83,6 @@ CLight* CLight::Create(const LIGHT_DESC& eLightDesc)
 void CLight::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pGameInstance);
 }

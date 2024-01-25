@@ -34,6 +34,10 @@ public:
 	// 업데이트를 먼저, 중간, 나중으로 나누어 사용한다.
 
 	virtual HRESULT Render();
+
+public:
+	void	In_WorldPlanes();
+
 public:
 	template<typename T>
 	T* Get_Component(_uint iNum = 0)
@@ -58,6 +62,8 @@ public:
 public:
 	void	Set_Dead() { m_bDead = true; }
 	_bool	Get_Dead() { return m_bDead; }
+
+	_bool	Get_In_WorldPlanes() { return m_bIn_WorldPlanes; }
 
 public:
 	virtual void Write_Json(json& Out_Json) override;
@@ -96,6 +102,9 @@ protected:
 	wstring						m_strLayerName;
 
 protected:
+	_bool						m_bIn_WorldPlanes = { true };
+
+protected:
 	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,
 		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
 
@@ -115,6 +124,7 @@ protected:
 
 		*pCom = dynamic_cast<T*>(Clone);
 		Clone->Set_ClassName(strTag);
+		Clone->Set_Owner(this);
 
 		m_mapComponent.emplace(strTag, Clone);
 

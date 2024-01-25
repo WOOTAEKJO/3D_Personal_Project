@@ -34,6 +34,9 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	void	Update_Light();
+
+public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
 
@@ -67,16 +70,19 @@ private: // 보스 바닥 떨구기를 구현하기 위한 임시 코드
 	_float  m_fAmplitude = { 1.07f };
 	_float3	m_fAngularVelocity = {};
 
+protected:
+	CLight* m_pLight = { nullptr };
 	_bool			m_bLight = { false };
+	_float4			m_vLightPos;
 
 private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Component() ;
+	HRESULT	Init_Point_Light() ;
+	void	Create_Halo();
 
 private:
 	void	Fall(_float fTimeDelta);
-
-	void	Point_Light();
 
 public:
 	static CPlateform* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

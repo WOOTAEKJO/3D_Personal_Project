@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "..\Public\Plateform.h"
 
+#include "Light.h"
+#include "Effect.h"
+
 CPlateform::CPlateform(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -38,16 +41,14 @@ HRESULT CPlateform::Initialize(void* pArg)
 
 	m_RandomNumber = mt19937_64(m_RandomDevice());
 
-	if (!wcscmp(m_strModelTag.c_str(), MODEL_FLOORLAMP_TAG))
-	{
-		m_bLight = true;
-	}
+	
 	
 	return S_OK;
 }
 
 void CPlateform::Priority_Tick(_float fTimeDelta)
 {
+	Update_Light();
 }
 
 void CPlateform::Tick(_float fTimeDelta)
@@ -68,8 +69,12 @@ void CPlateform::Tick(_float fTimeDelta)
 
 void CPlateform::Late_Tick(_float fTimeDelta)
 {
+	__super::Late_Tick(fTimeDelta);
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	
 }
 
 HRESULT CPlateform::Render()
@@ -92,6 +97,34 @@ HRESULT CPlateform::Render()
 	}
 
 	return S_OK;
+}
+
+void CPlateform::Update_Light()
+{
+	if (!m_bLight)
+	{
+		if (!wcscmp(m_strModelTag.c_str(), MODEL_FLOORLAMP_TAG))
+		{
+			m_bLight = true;
+
+			_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+			_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK);
+			vPos.m128_f32[1] += 0.520f;
+			vPos -= XMVector3Normalize(vLook) * 0.265f;
+
+			XMStoreFloat4(&m_vLightPos, vPos);
+
+			/*if (FAILED(Init_Point_Light()))
+				return;*/
+
+			Create_Halo();
+		}
+	}
+
+	/*if (m_pLight == nullptr)
+		return;
+
+	m_pLight->Open_Light_Desc()->vPos = m_vLightPos;*/
 }
 
 void CPlateform::Write_Json(json& Out_Json)
@@ -141,6 +174,38 @@ HRESULT CPlateform::Ready_Component()
 	return S_OK;
 }
 
+HRESULT CPlateform::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	LightDesc.vPos = m_vLightPos;
+	LightDesc.fRange = 0.6f;
+	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
+
+	return S_OK;
+}
+
+void CPlateform::Create_Halo()
+{
+	CEffect::EFFECTINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = 0.f;
+	Info.strEffectTextureTag = TEX_LANTERNHALO_TAG;
+	Info.vPos = m_vLightPos;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTHALO_TAG, &Info)))
+		return;
+}
+
 void CPlateform::Fall(_float fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta;
@@ -172,11 +237,6 @@ void CPlateform::Fall(_float fTimeDelta)
 	}
 }
 
-void CPlateform::Point_Light()
-{
-	if (!m_bLight)
-		return;
-}
 
 CPlateform* CPlateform::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -210,4 +270,6 @@ void CPlateform::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+
+	Safe_Release(m_pLight);
 }

@@ -5,6 +5,8 @@
 
 #include "Character.h"
 
+#include "Light.h"
+
 CBullet::CBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -71,12 +73,29 @@ void CBullet::Late_Tick(_float fTimeDelta)
 		return;
 
 	CGameObject::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CBullet::Render()
 {
 
 	return S_OK;
+}
+
+HRESULT CBullet::Init_Point_Light()
+{
+	return E_NOTIMPL;
+}
+
+void CBullet::Update_Light()
+{
+	if (m_pLight == nullptr)
+		return;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+	XMStoreFloat4(&m_pLight->Open_Light_Desc()->vPos, vPos);
 }
 
 HRESULT CBullet::Bind_ShaderResources()
@@ -123,4 +142,7 @@ void CBullet::Free()
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidBodyCom);
+
+	Safe_Release(m_pLight);
+
 }

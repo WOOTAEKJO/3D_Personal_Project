@@ -208,6 +208,8 @@
     <ClInclude Include="..\Public\Effect.h" />
     <ClInclude Include="..\Public\Effect_Damage.h" />
     <ClInclude Include="..\Public\Effect_Demo.h" />
+    <ClInclude Include="..\Public\Effect_Halo.h" />
+    <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
@@ -343,6 +345,8 @@
     <ClCompile Include="..\Private\Effect.cpp" />
     <ClCompile Include="..\Private\Effect_Damage.cpp" />
     <ClCompile Include="..\Private\Effect_Demo.cpp" />
+    <ClCompile Include="..\Private\Effect_Halo.cpp" />
+    <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />

@@ -73,6 +73,9 @@ HRESULT CRenderer::Initialize()
 
 HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject* pGameObject)
 {
+	if (!pGameObject->Get_In_WorldPlanes())
+		return S_OK;
+
 	if (pGameObject == nullptr ||
 		eRenderID >= RENDERGROUP::RENDER_END)
 		return E_FAIL;

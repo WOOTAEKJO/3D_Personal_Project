@@ -231,11 +231,27 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 	_vector vDir = XMVector3Normalize(vCamPos - vPos);
 	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
 	
-
 	XMStoreFloat4(&Info.vPos, vPos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		GO_EFFECTDAMAGE_TAG, &Info)))
+		return;
+}
+
+void CCharacter::Create_Soul_Effect(_float fLifeTime)
+{
+	CEffect::EFFECTINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = fLifeTime;
+	Info.strEffectTextureTag = TEX_SOUL_TAG;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y * 2.f;
+
+	XMStoreFloat4(&Info.vPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTSOUL_TAG, &Info)))
 		return;
 }
 

@@ -57,6 +57,8 @@ void CEffect_Damage::Tick(_float fTimeDelta)
 
 void CEffect_Damage::Late_Tick(_float fTimeDelta)
 {
+	Judge_Dead(fTimeDelta);
+
 	__super::Late_Tick(fTimeDelta);
 
 }
@@ -92,17 +94,6 @@ HRESULT CEffect_Damage::Ready_Component()
 		return E_FAIL;
 
 	return S_OK;
-}
-
-void CEffect_Damage::Size_Up(_float fTimeDelta)
-{
-	_float3 fSize = m_pTransformCom->Get_Scaled();
-
-	fSize.x += fTimeDelta;
-	fSize.y += fTimeDelta;
-	fSize.z += fTimeDelta;
-
-	m_pTransformCom->Set_Scaling(fSize.x, fSize.y, fSize.z);
 }
 
 CEffect_Damage* CEffect_Damage::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

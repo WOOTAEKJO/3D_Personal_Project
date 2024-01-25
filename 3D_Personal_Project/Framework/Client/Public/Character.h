@@ -126,6 +126,7 @@ protected:
 
 	void	Reset_Hit(_float fTimeDelta);
 	void	Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag);
+	void	Create_Soul_Effect(_float fLifeTime);
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

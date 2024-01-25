@@ -314,6 +314,10 @@
 
 #define TEX_DAMAGEIMPACT_TAG		TEXT("Prototype_Component_Texture_DamageImpact")
 
+#define TEX_LANTERNHALO_TAG		TEXT("Prototype_Component_Texture_LanternHalo")
+
+#define TEX_SOUL_TAG		TEXT("Prototype_Component_Texture_SoulTex")
+
 #pragma endregion
 
 #pragma endregion
@@ -344,6 +348,8 @@
 #define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
+#define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
+#define GO_EFFECTSOUL_TAG			TEXT("Prototype_GameObject_EffectSoul")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
@@ -375,5 +381,11 @@
 
 
 #pragma endregion
+
+#pragma endregion
+
+#pragma region ÆùÆ®
+
+#define FONT_139EX_TAG	TEXT("../Bin/Resources/Fonts/139ex.spritefont")
 
 #pragma endregion

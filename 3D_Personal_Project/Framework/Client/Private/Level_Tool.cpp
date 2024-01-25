@@ -84,6 +84,21 @@ HRESULT CLevel_Tool::Ready_LightDesc()
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
 
+	/*for (_uint i = 0; i < 10; i++)
+	{
+		LIGHT_DESC LightDesc = {};
+	
+		LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+		LightDesc.vPos = _float4(10.f + (i * 5.f),0.f,10.f + (i * 5.f),1.f);
+		LightDesc.fRange = 0.6f;
+		LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.f, 1.f);
+		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vSpecular = LightDesc.vDiffuse;
+
+		if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+			return E_FAIL;
+	}*/
+
 	return S_OK;
 }
 

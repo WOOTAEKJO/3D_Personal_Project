@@ -26,6 +26,8 @@
 #include "Particle_Sprite.h"
 
 #include "Effect_Damage.h"
+#include "Effect_Halo.h"
+#include "Effect_Soul.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -252,6 +254,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sprite>(GO_PARTICLESPRITE_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Soul>(GO_EFFECTSOUL_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -709,6 +713,8 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_ELEC_TAG, 9))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_STRAW_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_DAMAGEIMPACT_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LANTERNHALO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SOUL_TAG, 1))) return E_FAIL;
 
 	return S_OK;
 }

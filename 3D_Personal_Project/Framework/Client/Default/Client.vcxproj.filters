@@ -463,6 +463,12 @@
     <Filter Include="02.GameObjects\08. Effect\00. Damage">
       <UniqueIdentifier>{bc016737-058b-4fdf-9835-955f51fa13a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Effect\01. LaternHalo">
+      <UniqueIdentifier>{e4bd8978-7478-4d53-848d-9a611cc963de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\02. Soul">
+      <UniqueIdentifier>{16b8326f-db11-4889-9643-c49fefa382b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -885,6 +891,12 @@
     <ClInclude Include="..\Public\Effect_Damage.h">
       <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Halo.h">
+      <Filter>02.GameObjects\08. Effect\01. LaternHalo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Soul.h">
+      <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1279,6 +1291,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Damage.cpp">
       <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Halo.cpp">
+      <Filter>02.GameObjects\08. Effect\01. LaternHalo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Soul.cpp">
+      <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

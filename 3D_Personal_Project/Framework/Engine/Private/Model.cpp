@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Animation.h"
 
+#include "GameObject.h"
+
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
@@ -93,6 +95,10 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 {
+
+	if (!m_pOwner->Get_In_WorldPlanes())
+		return;
+
 	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
 		return;
 

@@ -31,7 +31,10 @@ public:
 	size_t	Get_ClassHashCode() { return m_Class_HashCode; }
 	_bool	Get_UseJson() { return m_bUseJson; }
 
-	void	Set_Owner(class CGameObject* pOwner) { m_pOwner = pOwner; }
+	void	Set_Owner(class CGameObject* pOwner) { 
+		if (m_pOwner != nullptr)
+			return;
+		m_pOwner = pOwner; }
 	class CGameObject* Get_Owner() { return m_pOwner; }
 
 protected:

@@ -59,12 +59,17 @@ protected:
 
 protected:
 	_float4		m_vSolid_Color = { 1.f,1.f,1.f,1.f };
+	_float		m_fAlpha = { 0.f };
 
 protected:
 	virtual HRESULT	Bind_ShaderResources();
 	virtual HRESULT	Ready_Component();
 
 	void	Judge_Dead(_float fTimeDelta);
+
+	void	Size_Up(_float fTimeDelta);
+
+	void	Invisibility(_float fTimeDelta);
 
 public:
 	virtual	CGameObject*	Clone(void* pArg) = 0;

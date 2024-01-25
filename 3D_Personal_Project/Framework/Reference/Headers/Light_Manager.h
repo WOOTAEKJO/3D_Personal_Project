@@ -16,6 +16,7 @@ private:
 public:
 	HRESULT Initialize();
 	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ CLight** ppLight);
+	void Delete_Light(CLight* ppLight);
 	HRESULT	Render(CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 private:

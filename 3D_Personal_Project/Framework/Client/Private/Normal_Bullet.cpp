@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Light.h"
+
 CNormal_Bullet::CNormal_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -38,6 +40,9 @@ HRESULT CNormal_Bullet::Initialize(void* pArg)
 	
 	m_pRigidBodyCom->Force(XMVectorSet(0.f, 1.f, 0.f, 0.f), 1.f, CRigidBody::TYPE_VELOCITY);
 
+	/*if (FAILED(Init_Point_Light()))
+		return E_FAIL;*/
+
 	return S_OK;
 }
 
@@ -66,7 +71,11 @@ void CNormal_Bullet::Late_Tick(_float fTimeDelta)
 	m_fTimeAcc += fTimeDelta;
 
 	if (m_fTimeAcc > m_fLifeTime)
+	{
+		if(m_pLight != nullptr)
+			m_pLight->Set_Active(false);
 		Set_Dead();
+	}
 
 	__super::Late_Tick(fTimeDelta);
 
@@ -112,6 +121,27 @@ HRESULT CNormal_Bullet::Ready_Component()
 {
 	if (FAILED(CBullet::Ready_Component()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNormal_Bullet::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.1f;
+	LightDesc.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
+	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

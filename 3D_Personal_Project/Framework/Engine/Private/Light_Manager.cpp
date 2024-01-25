@@ -27,11 +27,33 @@ HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 	return S_OK;
 }
 
+void CLight_Manager::Delete_Light(CLight* ppLight)
+{
+	if (ppLight == nullptr)
+		return;
+
+	Safe_Release(ppLight);
+	ppLight = nullptr;
+
+	/*for (auto& iter = m_listLight.begin(); iter != m_listLight.end();)
+	{
+		if (*iter == nullptr)
+		{
+			iter = m_listLight.erase(iter);
+		}
+		else {
+			iter++;
+		}
+	}*/
+}
+
 HRESULT CLight_Manager::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 {
 	for (auto& iter : m_listLight)
 	{
-		iter->Render(pShader,pBuffer);
+		//if(iter != nullptr)
+		iter->Render(pShader, pBuffer);
+			
 	}
 
 	return S_OK;

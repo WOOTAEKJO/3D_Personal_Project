@@ -280,6 +280,9 @@
     <Filter Include="01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData">
       <UniqueIdentifier>{a7489911-cbf7-4ec9-826c-c6f9c209e8c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\08. Frustum">
+      <UniqueIdentifier>{c205144b-f9b6-4097-8bb0-ac69fbf8e7c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -549,6 +552,9 @@
     <ClInclude Include="..\Public\ParticleData.h">
       <Filter>01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Frustum.h">
+      <Filter>01.Utility\08. Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -796,6 +802,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ParticleData.cpp">
       <Filter>01.Utility\97. Manager\02. SaveLoadManager\02. ParticleData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Frustum.cpp">
+      <Filter>01.Utility\08. Frustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

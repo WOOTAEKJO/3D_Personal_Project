@@ -12,6 +12,8 @@
 #include "NorMonster_Hited.h"
 #include "NorMonster_Appear.h"
 
+#include "Light.h"
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -67,6 +69,8 @@ void CMonster::Late_Tick(_float fTimeDelta)
 		return;
 
 	CCharacter::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CMonster::Render()
@@ -127,6 +131,18 @@ _float4x4 CMonster::Get_Col_WorldMat()
 		return _float4x4();
 
 	return m_pColliderCom->Get_Collider_WorldMat();
+}
+
+void CMonster::Monster_Dead()
+{
+	if (m_Status_Desc.iCurHP <= 0)
+	{
+		Create_Soul_Effect(1.f);
+
+		if (m_pLight != nullptr)
+			m_pLight->Set_Active(false);
+		Set_Dead();
+	}
 }
 
 HRESULT CMonster::Bind_ShaderResources()

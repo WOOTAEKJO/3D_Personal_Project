@@ -61,6 +61,7 @@ protected:
 	_bool				m_bActivate = { true };
 
 protected:
+	void	Monster_Dead();
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;

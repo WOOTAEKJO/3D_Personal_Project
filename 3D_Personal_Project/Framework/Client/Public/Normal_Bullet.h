@@ -27,6 +27,7 @@ public:
 private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
+	virtual HRESULT	Init_Point_Light() override;
 
 public:
 	static CNormal_Bullet* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
