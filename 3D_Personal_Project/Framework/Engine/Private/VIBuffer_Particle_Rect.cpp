@@ -22,7 +22,7 @@ HRESULT CVIBuffer_Particle_Rect::Initialize_ProtoType(_uint iInstanceNum)
 	m_iInstanceStride = sizeof(VTXINSTANCING);
 	m_iIndexCountPerInstance = 6;
 
-	m_pSpeeds = new _float[m_iInstanceNum];
+	m_pSpeeds = new _float3[m_iInstanceNum];
 	m_pLifeTime = new _float[m_iInstanceNum];
 
 	m_iIndexNum = 6 * m_iInstanceNum;

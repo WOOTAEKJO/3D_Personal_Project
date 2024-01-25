@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Mesh.h"
 
+#include "GameObject.h"
+
 CModel_Instancing::CModel_Instancing(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CVIBuffer_Instancing(pDevice, pContext)
 {
@@ -67,7 +69,10 @@ HRESULT CModel_Instancing::Initialize(void* pArg)
 		m_iIndexCountPerInstance += iter->Get_IndexInfo().size();
 	}*/
 
-	if (FAILED(__super::Initialize(pArg)))
+	/*if (FAILED(__super::Initialize(pArg)))
+		return E_FAIL;*/
+	
+	if (FAILED(__super::Init_InstanceBuffer()))
 		return E_FAIL;
 
 	return S_OK;
@@ -81,6 +86,8 @@ HRESULT CModel_Instancing::Render(_uint iMeshIndx)
 
 	if (iMeshIndx >= m_vecMesh.size())
 		return E_FAIL;
+
+	//Culling();
 
 	ID3D11Buffer* pVerTexBuffers[] = {
 		m_vecMesh[iMeshIndx]->Get_VertexBuffer(),
@@ -113,6 +120,63 @@ HRESULT CModel_Instancing::Render(_uint iMeshIndx)
 		m_iInstanceNum, 0, 0, 0);
 
 	return S_OK;
+}
+
+_bool CModel_Instancing::IsIn_World_FrustumPlanes(_uint iMeshIndx)
+{
+	_vector vPos = XMVectorSet(m_vecInstanceVertex[iMeshIndx].m[3][0], m_vecInstanceVertex[iMeshIndx].m[3][1],
+		m_vecInstanceVertex[iMeshIndx].m[3][2], 1.f);
+	
+	//_float fSizeX = 
+
+	return m_pGameInstance->IsIn_World_FrustumPlanes(vPos, 0.1f);
+}
+
+_bool CModel_Instancing::IsIn_Local_FrustumPlanes(_uint iMeshIndx)
+{
+	_vector vPos = XMVectorSet(m_vecInstanceVertex[iMeshIndx].m[3][0], m_vecInstanceVertex[iMeshIndx].m[3][1],
+		m_vecInstanceVertex[iMeshIndx].m[3][2], 1.f);
+
+	//_float fSizeX = 
+
+	return m_pGameInstance->IsIn_Local_FrustumPlanes(vPos, 1.f);
+}
+
+void CModel_Instancing::Culling()
+{
+	m_pGameInstance->Transform_ToLocalSpace_Frustum(m_pOwner->Get_Component<CTransform>()
+	->Get_WorldMatrix_Matrix());
+
+	D3D11_MAPPED_SUBRESOURCE		MappedSubResource{};
+
+	m_pContext->Map(m_pInstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubResource);
+
+	_uint iInstanceNum = 0;
+
+	_uint iSize = m_vecInstanceVertex.size();
+
+	for (_uint i = 0; i < iSize; i++)
+	{
+		_vector vPos = XMVectorSet(m_vecInstanceVertex[i].m[3][0], m_vecInstanceVertex[i].m[3][1],
+			m_vecInstanceVertex[i].m[3][2], 1.f);
+
+		if (!m_pGameInstance->IsIn_Local_FrustumPlanes(vPos, 0.1f))
+			continue;
+		/*if (!m_pGameInstance->IsIn_World_FrustumPlanes(vPos, 1.f))
+			continue; */
+
+		memcpy(&((VTXINSTANCING*)MappedSubResource.pData)[i].vRight, &m_vecInstanceVertex[i].m[0], sizeof(_float4));
+		memcpy(&((VTXINSTANCING*)MappedSubResource.pData)[i].vUp, &m_vecInstanceVertex[i].m[1], sizeof(_float4));
+		memcpy(&((VTXINSTANCING*)MappedSubResource.pData)[i].vLook, &m_vecInstanceVertex[i].m[2], sizeof(_float4));
+		memcpy(&((VTXINSTANCING*)MappedSubResource.pData)[i].vPos, &m_vecInstanceVertex[i].m[3], sizeof(_float4));
+		// 초기화 당시 받은 상태 행렬을 인스턴스 정점에 저장한다.
+
+		++iInstanceNum;
+	}
+
+	m_pContext->Unmap(m_pInstanceBuffer, 0);
+
+	m_iInstanceNum = iInstanceNum;
 }
 
 HRESULT CModel_Instancing::Bind_ShaderResources(CShader* pShader, const _char* pName, _uint iMeshIndex, TEXTURETYPE eType)

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Public\Level_Boss1.h"
 
+#include "Level_Loading.h"
+
 #include "DynamicCamera.h"
 #include "TargetCamera.h"
 
@@ -11,6 +13,7 @@
 #include "AnimMesh_Demo.h"
 
 #include "Monster.h"
+#include "Trigger.h"
 
 CLevel_Boss1::CLevel_Boss1(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -39,15 +42,24 @@ HRESULT CLevel_Boss1::Initialize()
 	if (FAILED(Ready_Layer_Monster(g_strLayerName[LAYER_MONSTER])))
 		return E_FAIL;
 
-	/*if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(Ready_Trigger()))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER_BULLET))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;*/
-	
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
+
 	return S_OK; 
 }
 
 void CLevel_Boss1::Tick(_float fTimeDelta)
 {
+	if (m_bNextLevel)
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
+			return;
+	}
 }
 
 HRESULT CLevel_Boss1::Render()
@@ -90,11 +102,33 @@ HRESULT CLevel_Boss1::Ready_Layer_Camera(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, GO_TARGETCAMERA_TAG)))
 		return E_FAIL;
 
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, G0_DCAMERA_TAG)))
+		return E_FAIL;*/
+
 	return S_OK;
 }
 
 HRESULT CLevel_Boss1::Ready_Layer_Monster(const wstring& strLayerTag)
 {
+
+	return S_OK;
+}
+
+HRESULT CLevel_Boss1::Ready_Trigger()
+{
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Portal_Boss2"), [this]() {
+		this->Set_NextLevel();
+		})))
+		return E_FAIL;
+
+		CTrigger::TRIGGER_DESC TriggerDesc = {};
+		TriggerDesc.strEventName = TEXT("Portal_Boss2");
+		TriggerDesc.vPosition = _float4(26.3f, 2.f, 28.4f, 1.f);
+		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+			, GO_TRIGGER_TAG, &TriggerDesc)))
+			return E_FAIL;
 
 	return S_OK;
 }

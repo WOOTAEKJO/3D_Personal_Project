@@ -19,6 +19,7 @@ public:
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
 	HRESULT	Begin_MRT(const wstring& strMRTTag);
 	HRESULT	End_MRT();
+	HRESULT Bind_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 
 #ifdef _DEBUG
 	HRESULT	Ready_Debug(RTV_TYPE eType,_float fX, _float fY, _float fSizeX, _float fSizeY);

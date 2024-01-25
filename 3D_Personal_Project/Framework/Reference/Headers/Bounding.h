@@ -6,7 +6,7 @@ BEGIN(Engine)
 class CBounding abstract : public CBase
 {
 public:
-	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE, TYPE_END };
+	enum TYPE { TYPE_AABB, TYPE_OBB, TYPE_SPHERE,TYPE_RAY, TYPE_END };
 
 	typedef struct tagBounding_Desc
 	{
@@ -32,12 +32,15 @@ public:
 
 public:
 	TYPE	Get_ColisionType() { return m_eType; }
+	_float4x4	Get_CollsionWorldMat() { return m_matWorld; }
 
 protected:
 	ID3D11Device*			m_pDevice = { nullptr };
 	ID3D11DeviceContext*	m_pContext = { nullptr };
 
 	TYPE					m_eType = { TYPE_END };
+
+	_float4x4				m_matWorld;
 
 public:
 	virtual	void	Free() override;

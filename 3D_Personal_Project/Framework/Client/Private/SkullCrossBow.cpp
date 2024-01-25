@@ -12,6 +12,8 @@
 
 #include "Normal_Bullet.h"
 
+#include "Light.h"
+
 CSkullCrossBow::CSkullCrossBow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -63,6 +65,10 @@ HRESULT CSkullCrossBow::Initialize(void* pArg)
 
 	m_bActivate = false;
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -84,8 +90,7 @@ void CSkullCrossBow::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	if (m_Status_Desc.iCurHP <= 0)
-		Set_Dead();
+	Monster_Dead();
 }
 
 HRESULT CSkullCrossBow::Render()
@@ -137,13 +142,16 @@ void CSkullCrossBow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
 		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET 
-			&&!m_Status_Desc.bHited)
+			&&!m_bHit_Effect)
 		{
 			if (m_pStateMachineCom->Get_StateID() != (_uint)STATE::ATTACK)
 			{
 				m_Status_Desc.bHited = true;
 			}
+			m_bHit_Effect = true;
 			m_Status_Desc.iCurHP -= 1;
+
+			Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
 		}
 	}
 }
@@ -198,6 +206,27 @@ HRESULT CSkullCrossBow::Ready_State()
 
 	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSkullCrossBow::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.3f;
+	LightDesc.vDiffuse = _float4(0.8f, 0.2f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

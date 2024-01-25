@@ -21,6 +21,7 @@ public:
 	void	Set_TransformationMatrix(_fmatrix matTransformation) {
 		XMStoreFloat4x4(&m_matTransformation, matTransformation);
 	}
+	_float4x4	Get_TransformationMatrix() { return m_matTransformation; }
 
 	_float4x4 Get_OffsetMatrixt() { return m_matOffset; }
 

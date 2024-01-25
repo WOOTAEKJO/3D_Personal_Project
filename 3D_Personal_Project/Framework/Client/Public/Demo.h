@@ -38,6 +38,7 @@ public:
 
 public:
 	wstring	Get_ModelTag() { return m_strModelTag; }
+	void	Set_ModelTag(const wstring& strTag) { m_strModelTag = strTag; }
 
 	void	Set_NaviCellIndex(_int iIndex) { m_iNaviCellIndex = iIndex; }
 	_int	Get_NaviCellIndex() { return m_iNaviCellIndex; }

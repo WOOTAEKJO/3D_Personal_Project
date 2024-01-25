@@ -24,6 +24,10 @@ void CPlayer_Jump::State_Enter()
 
 	m_pOwner->Open_Physics_Desc()->bJump = true;
 	Jump();
+
+	Create_Particle(PARTICLE_JACKJUMP_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+		&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+	Particle_Loop_SetUp(m_pParticle, false);
 }
 
 _uint CPlayer_Jump::State_Priority_Tick(_float fTimeDelta)
@@ -54,6 +58,9 @@ _uint CPlayer_Jump::State_Late_Tick(_float fTimeDelta)
 			m_pOwner->Animation_By_Type(CPlayer::STATE::DOUBLEJUMP);
 			m_pOwner->Open_Physics_Desc()->bDoubleJump = true;
 			Jump();
+			Create_Particle(PARTICLE_JACKJUMP_TAG, GO_PARTICLENORMAL_TAG, m_pOwner, &m_pParticle, 1.f,
+				&m_pOwner->Get_BodyModel()->Get_Bones());
+			Particle_Loop_SetUp(m_pParticle, false);
 		}
 	}
 

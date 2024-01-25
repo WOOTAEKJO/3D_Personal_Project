@@ -18,8 +18,8 @@ HRESULT CPlayer_Spear_Attack3::Initialize(CGameObject* pGameObject)
 void CPlayer_Spear_Attack3::State_Enter()
 {
 	Trans_Attack(true);
-	//m_pOwnerModel->Set_AnimationIndex(81);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK3);
+	Attack_Particle(1.f);
 }
 
 _uint CPlayer_Spear_Attack3::State_Priority_Tick(_float fTimeDelta)

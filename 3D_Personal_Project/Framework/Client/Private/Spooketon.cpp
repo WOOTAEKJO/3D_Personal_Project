@@ -9,6 +9,7 @@
 #include "NorMonster_Hited.h"
 
 #include "Bone.h"
+#include "Light.h"
 
 CSpooketon::CSpooketon(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -27,10 +28,6 @@ HRESULT CSpooketon::Initialize_Prototype()
 
 HRESULT CSpooketon::Initialize(void* pArg)
 {
-	//m_strModelTag = ANIMMODEL_SPOOKETON_TAG;
-
-	//MONSTER_DESC* MonsterDesc = (MONSTER_DESC*)pArg;
-
 	if (FAILED(CMonster::Initialize(pArg)))
 		return E_FAIL;
 
@@ -41,9 +38,6 @@ HRESULT CSpooketon::Initialize(void* pArg)
 
 	if (FAILED(Ready_State()))
 		return E_FAIL;
-
-	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,XMLoadFloat4(&MonsterDesc->vPos));
-	m_pNavigationCom->Find_CurrentCell(XMLoadFloat4(&MonsterDesc->vPos));*/
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
 		return E_FAIL;
@@ -67,6 +61,9 @@ HRESULT CSpooketon::Initialize(void* pArg)
 
 	m_bActivate = false;
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -88,9 +85,10 @@ void CSpooketon::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pWeaponColliderCom)))
+		return;
 
-	if (m_Status_Desc.iCurHP <= 0)
-		Set_Dead();
+	Monster_Dead();
 }
 
 HRESULT CSpooketon::Render()
@@ -100,11 +98,6 @@ HRESULT CSpooketon::Render()
 
 	if (FAILED(CMonster::Render()))
 		return E_FAIL;
-
-#ifdef _DEBUG
-	m_pWeaponColliderCom->Render();
-#endif
-
 
 	return S_OK;
 }
@@ -123,17 +116,19 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
 		if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET 
-			&&!m_Status_Desc.bHited)
+			&&!m_bHit_Effect)
 		{
 			if (m_pStateMachineCom->Get_StateID() != (_uint)STATE::ATTACK)
 			{
 				m_Status_Desc.bHited = true;
 			}
+			m_bHit_Effect = true;
 			m_Status_Desc.iCurHP -= 1;
+
+			Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
 		}
 	}
 
-	
 }
 
 void CSpooketon::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -163,13 +158,6 @@ HRESULT CSpooketon::Ready_Component()
 	if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;
 
-	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
-	AABB_Desc.pOnwer = this;
-	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
-	AABB_Desc.bUseCol = true;
-	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
-	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
@@ -190,18 +178,29 @@ HRESULT CSpooketon::Ready_Component()
 
 HRESULT CSpooketon::Ready_State()
 {
-	/*if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CNorMonster_Dead::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::DELAY, CNorMonster_Delay::Create(this)))) return E_FAIL;
-	if (FAILED(m_pStateMachineCom->Add_State(STATE::HITED, CNorMonster_Hited::Create(this)))) return E_FAIL;
-
-	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
-		return E_FAIL;*/
-
 	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSpooketon::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.3f;
+	LightDesc.vDiffuse = _float4(0.f, 1.f, 0.3f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

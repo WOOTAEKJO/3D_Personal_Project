@@ -21,6 +21,8 @@
 
 #include "Range_Bullet.h"
 
+#include "Particle.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -68,17 +70,21 @@ HRESULT CPlayer::Initialize(void* pArg)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
 	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(10.f, 2.f, 13.f, 1.f));
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(16.5f, 7.f, 18.5f, 1.f));
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
 	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
 
 	return S_OK;
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
-
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
@@ -100,16 +106,20 @@ void CPlayer::Tick(_float fTimeDelta)
 
 void CPlayer::Late_Tick(_float fTimeDelta)
 {
+	NextAttackID();
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
 
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Late_Tick(fTimeDelta);
 	}
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
-		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom))) return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
 
-	NextAttackID();
+	Update_Light();
 
 	CCharacter::Late_Tick(fTimeDelta);
 }
@@ -118,11 +128,6 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-	
-#ifdef _DEBUG
-	m_pNavigationCom->Render();
-	m_pColliderCom->Render();
-#endif
 
 	return S_OK;
 }
@@ -181,7 +186,7 @@ void CPlayer::Create_Range_Bullet()
 	CRange_Bullet::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_PLAYER_BULLET;
-	BulletDesc.fRadius = 0.3f;
+	BulletDesc.fRadius = 0.25f;
 	BulletDesc.fLifeTime = 0.03f;
 	BulletDesc.fSpeed = 0.f;
 	BulletDesc.pTarget = nullptr;
@@ -200,7 +205,30 @@ void CPlayer::Create_Range_Bullet()
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	
+	if (iColID == m_pColliderCom->Get_Collider_ID())
+	{
+		if ((pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER_BULLET || 
+			pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_TRAP)
+			&& !m_Status_Desc.bHited)
+		{
+			m_bHit_Effect = true;
+			//m_Status_Desc.bHited = true;
+			if(m_Status_Desc.iCurHP > 1)
+				m_Status_Desc.iCurHP -= 1;
+
+			CParticle::PARTICLEINFO Info = {};
+			Info.pOwner = this;
+			Info.strParticleTag = PARTICLE_JACKHITTAG;
+			Info.fLifeTime = 1.f;
+			Info.pBones = Get_BodyModel()->Get_Bones();
+
+			if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+				GO_PARTICLENORMAL_TAG, &Info)))
+				return;
+
+			Create_Damage_Effect(0.3f,TEX_DAMAGEIMPACT_TAG);
+		}
+	}
 }
 
 void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -218,8 +246,9 @@ void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
 
 HRESULT CPlayer::Bind_ShaderResources()
 {
-	/*if (FAILED(CCharacter::Bind_ShaderResources()))
-		return E_FAIL;*/
+	if (FAILED(m_mapParts[PARTS_TYPE::PARTS_BODY]->Get_Component<CShader>()->Bind_RawValue("g_bHited", &m_bHit_Effect,
+		sizeof(_bool)))) return E_FAIL;
+
 
 	return S_OK;
 }
@@ -250,6 +279,27 @@ HRESULT CPlayer::Ready_Component()
 
 	if (FAILED(Add_Component<CController>(COM_CONTROLLER_TAG, &m_pControllerCom))) return E_FAIL;
 	
+	return S_OK;
+}
+
+HRESULT CPlayer::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.6f;
+	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
+
 	return S_OK;
 }
 

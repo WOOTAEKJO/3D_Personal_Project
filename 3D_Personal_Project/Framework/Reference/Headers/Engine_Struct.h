@@ -51,6 +51,22 @@ namespace Engine
 
 	}RAY;
 
+	typedef struct tagLight
+	{
+		enum LIGHT_TYPE {TYPE_DIRECTION,TYPE_POINT,TYPE_END};
+
+		LIGHT_TYPE eType;
+
+		_float4 vDirection;
+
+		_float4 vPos;
+		_float fRange;
+
+		_float4 vDiffuse;
+		_float4 vAmbient;
+		_float4 vSpecular;
+	}LIGHT_DESC;
+
 	typedef	struct tagKeyFrame
 	{
 		_float3 vScale;
@@ -254,4 +270,38 @@ namespace Engine
 		_float4x4	matWorld;
 		
 	}LEVELOBJECT_DESC;
+
+	typedef struct tagInstancing_Desc
+	{
+		enum COLORTYPE {NORMAL_COLOR,SOLID_COLOR,BLEND_COLOR,COLORTYPE_END};
+
+		_float3		vCenter = _float3(0.f,0.f,0.f);
+
+		_float		fRange = {1.f};
+
+		_float2		fSpeed[3] = {};
+		_float3		fPowerSpeed = {};
+
+		_float2		fScale = _float2(1.f,1.f);
+		_float		fScaleControl = {0.1f};
+
+		_float2		fLifeTime = {};
+
+		_float4		vColor = _float4(1.f,1.f,1.f,1.f);
+
+		_float3		vDir; // 생성할 때 사용하는 방향
+		_float3		vRunDir; // 실시간 방향
+
+		_float2		fRotation[3]; // 생성 각도 최소 최댓값 xyz
+		_float2		fRunRotation[3]; // 실시간 회전 최소 최댓값 xyz
+
+		_bool		bLoop = { false };
+
+		_int		iInstanceNum = {1}; // 인스턴스 갯수
+
+		wstring		strTextureTag; // 텍스쳐 테그
+
+		COLORTYPE	eColorType = { NORMAL_COLOR };
+
+	}INSTANCING_DESC;
 }

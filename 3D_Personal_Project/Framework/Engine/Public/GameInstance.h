@@ -78,6 +78,7 @@ public: /* For.Object_Manager */
 
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
+	HRESULT	Add_DebugRender(CComponent* pComponent);
 
 public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
@@ -153,6 +154,13 @@ public: /* For.Component_Manager*/
 			CNavigation::Create(m_pDevice, m_pContext, CNavigation::NAVITYPE::TYPE_DEMO, nullptr));
 	}
 
+	HRESULT	Add_Particle_ProtoType(const wstring& strProtoTypeTag)
+	{
+		return Add_Component_ProtoType(Get_Current_Level(), strProtoTypeTag,
+			CVIBuffer_Particle_Point::Create(m_pDevice, m_pContext,
+				Load_Data_Path(strProtoTypeTag).c_str()));
+	}
+
 	template <typename T>
 	HRESULT	Add_Buffer_ProtoType(const wstring& strProtoTypeTag)
 	{
@@ -191,6 +199,8 @@ public: /* For. SaveLoad_Manager*/
 	HRESULT	Load_Data_Mesh(CVIBuffer* pBuffer, const _char* strFileName);
 	HRESULT	Save_Data_Json(const _char* strFilePath, CGameObject* pObject);
 	HRESULT	Load_Data_Json(const wstring& strTag, CGameObject* pObject);
+	HRESULT	Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest);
+	HRESULT	Load_Data_Particle(const _char* strFilePath, INSTANCING_DESC* pOut);
 
 public: /* For. File_Manager*/
 	string	Load_Data_Path(wstring strTag);
@@ -205,7 +215,7 @@ public: /* For. Collider_Manager*/
 
 public: /* For. Font_Manager*/
 	HRESULT	Add_Font(_uint iFontTag, const wstring& strFontFilePath);
-	HRESULT	Render(_uint iFontTag, const wstring& strText, _float2 vPosition, 
+	HRESULT	Render_Font(_uint iFontTag, const wstring& strText, _float2 vPosition, 
 		_fvector vColor = XMVectorSet(1.f,1.f,1.f,1.f),
 		_float fScale = 1.f, _float2 vOrigin = _float2(0.f,0.f), _float fRotation = 0.f);
 
@@ -214,12 +224,28 @@ public: /* For. CRednerTarget_Manager*/
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
 	HRESULT	Begin_MRT(const wstring& strMRTTag);
 	HRESULT	End_MRT();
+	HRESULT Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 
 #ifdef _DEBUG
 	HRESULT	Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT	Render_MRT_Debug(const wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pBuffer);
 
 #endif
+
+public: /* For. CLight_Manager*/
+	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ class CLight** ppLight = nullptr);
+	void Delete_Light(CLight* ppLight);
+	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
+
+public: /* For. Camera_Manager*/
+	HRESULT	Add_Camera(const wstring& strCameraTag, class CCamera* pCamera);
+	void	SetUp_Camera_Offset(_float3 vOffset);
+
+public: /* For. Frustum*/
+	void	Transform_ToLocalSpace_Frustum(_fmatrix matWorld);
+	_bool	IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius);
+	_bool	IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius);
+
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -237,6 +263,9 @@ private:
 	class CCollider_Manager*		m_pCollider_Manager = { nullptr };
 	class CFont_Manager*			m_pFont_Manager = { nullptr };
 	class CRenderTarget_Manager*	m_pRenderTarget_Manager = { nullptr };
+	class CLight_Manager*			m_pLight_Manager = { nullptr };
+	class CCamera_Manager*			m_pCamera_Manager = { nullptr };
+	class CFrustum*					m_pFrustum = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

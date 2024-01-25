@@ -2,6 +2,8 @@
 #include "..\Public\Character_State.h"
 #include "StateMachine.h"
 
+#include "Particle.h"
+
 CCharacter_State::CCharacter_State()
 {
 }
@@ -48,6 +50,18 @@ void CCharacter_State::Translate(CTransform::STATE eType,_float fSpeed, _float f
 	m_pOnwerTransform->Translate(vPos, m_pOnwerNavigation, fTimeDelta);
 }
 
+void CCharacter_State::Translate_Simple(CTransform::STATE eType, _float fSpeed, _float fTimeDelta, _bool bTurn)
+{
+	_vector vDir = m_pOnwerTransform->Get_State(eType);
+	_vector vPos = XMVector3Normalize(vDir) * fSpeed * fTimeDelta
+		* (bTurn == false ? 1.f : -1.f);
+
+	if (std::isnan(vPos.m128_f32[0]))
+		return;
+
+	m_pOnwerTransform->Translate_Simple(vPos);
+}
+
 _bool CCharacter_State::Is_Attack_Time(_float fTimeDelta, _float fTime, CCollider* pOwnerCol)
 {
 	if (m_bAttack)
@@ -72,6 +86,31 @@ void CCharacter_State::Reset_Attack_Time(CCollider* pOwnerCol)
 	m_bAttack = true;
 }
 
+void CCharacter_State::Create_Particle(const wstring& strParticleTag,const wstring& strObjTag, CGameObject* pOwner,
+	CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone)
+{
+	CParticle::PARTICLEINFO Info = {};
+	Info.pOwner = pOwner;
+	Info.strParticleTag = strParticleTag;
+	Info.fLifeTime = fLifeTime;
+	if (vecBone == nullptr)
+		Info.pBones = Info.pOwner->Get_Component<CModel>()->Get_Bones();
+	else
+		Info.pBones = *vecBone;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		strObjTag, &Info, reinterpret_cast<CGameObject**>(pOut))))
+		return;
+}
+
+void CCharacter_State::Particle_Loop_SetUp(CGameObject* pParticle, _bool bCheck)
+{
+	if (pParticle == nullptr)
+		return;
+
+	dynamic_cast<CParticle*>(pParticle)->Get_Component<CVIBuffer_Particle_Point>()->Open_InstancingDesc()->bLoop = bCheck;
+}
+
 void CCharacter_State::Free()
 {
 	__super::Free();
@@ -81,4 +120,7 @@ void CCharacter_State::Free()
 	Safe_Release(m_pOnwerNavigation);
 	Safe_Release(m_pOnwerRigidBody);
 	Safe_Release(m_pOnwerController);
+	Safe_Release(m_pOwnerCollider);
+
+	Safe_Release(m_pParticle);
 }

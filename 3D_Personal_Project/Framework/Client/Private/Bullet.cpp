@@ -5,6 +5,8 @@
 
 #include "Character.h"
 
+#include "Light.h"
+
 CBullet::CBullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -35,17 +37,14 @@ HRESULT CBullet::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(BulletDesc)))
 		return E_FAIL;
 
-	if (FAILED(CBullet::Ready_Component()))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
-		return E_FAIL;
-
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, BulletDesc->fStartPos);
 
 	if (BulletDesc->pTarget != nullptr)
 	{
+		m_pTarget = BulletDesc->pTarget;
+
 		_vector vTargetPos = BulletDesc->pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
+		XMStoreFloat4(&m_vTargetPos, vTargetPos);
 
 		_vector vLook = XMVector3Normalize(vTargetPos - m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 
@@ -69,24 +68,34 @@ void CBullet::Tick(_float fTimeDelta)
 
 void CBullet::Late_Tick(_float fTimeDelta)
 {
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
 		return;
 
-	m_fTimeAcc += fTimeDelta;
-
-	if (m_fTimeAcc > m_fLifeTime)
-		Set_Dead();
 	CGameObject::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CBullet::Render()
 {
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-
-#endif
 
 	return S_OK;
+}
+
+HRESULT CBullet::Init_Point_Light()
+{
+	return E_NOTIMPL;
+}
+
+void CBullet::Update_Light()
+{
+	if (m_pLight == nullptr)
+		return;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+	XMStoreFloat4(&m_pLight->Open_Light_Desc()->vPos, vPos);
 }
 
 HRESULT CBullet::Bind_ShaderResources()
@@ -133,4 +142,7 @@ void CBullet::Free()
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidBodyCom);
+
+	Safe_Release(m_pLight);
+
 }

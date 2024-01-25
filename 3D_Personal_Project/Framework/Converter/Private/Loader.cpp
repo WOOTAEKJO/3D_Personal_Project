@@ -105,6 +105,7 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		return E_FAIL;*/
 
 	
+
 #pragma region Level1 Moster
 
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_HELICOSCARROW_TAG,
@@ -121,6 +122,10 @@ HRESULT CLoader::Loading_For_Converter_Level()
 
 	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_BAT_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_BAT_PATH))))
+		return E_FAIL;*/
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_PHANTOM_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_PHANTOM_PATH))))
 		return E_FAIL;*/
 #pragma endregion
 
@@ -310,9 +315,9 @@ HRESULT CLoader::Loading_For_Converter_Level()
 //	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ROCKPACK7_PATH))))
 //	return E_FAIL;
 
-if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMALLROCK_TAG,
-	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMALLROCK_PATH))))
-	return E_FAIL;
+//if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SMALLROCK_TAG,
+//	CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SMALLROCK_PATH))))
+//	return E_FAIL;
 
 #pragma endregion
 
@@ -481,6 +486,14 @@ if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SHOVEL_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SHOVEL_PATH))))
 		return E_FAIL;*/
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_HELICOBULLET_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_HELICOBULLET_PATH))))
+		return E_FAIL;*/
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_BOMB_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_BOMB_PATH))))
+		return E_FAIL;
 
 #pragma endregion 
 

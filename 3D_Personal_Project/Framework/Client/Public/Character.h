@@ -27,7 +27,6 @@ public:
 	typedef struct tagPhysicsDesc
 	{
 		_float	fForwardSpeed = 1.5f;
-		//_float	fForwardSpeed = 5.5f;
 
 		_float	fJumpPower = 2.f;
 		_float	fJumpGravity = -9.8f * 0.2f;
@@ -48,8 +47,11 @@ public:
 		_float  fDetection_Range = 0.f;
 		_float  fAttack_Range = 0.f;
 
-		_bool	bHited = false;
-		_bool	bDead = false;
+		_bool	bHited = false; // 맞았는 지를 판단
+		_bool	bDead = false; // 죽었는 지를 판단
+
+		_bool  bAttack_able = true; // 공격을 받을 수 있는 지를 판단
+		_bool  bTalk = false; // Npc 모드인지를 판단
 
 	}STATUS_DESC;
 
@@ -77,6 +79,13 @@ public:
 public:
 	void		Set_TypeAnimIndex(_uint iAnimTag);
 
+public:
+	void	Camera_Zoom(_float3 vOffset = _float3(0.f,0.f,0.f));
+	void	Camera_SetUp_LookAt_Hegith(_float fHeight = 0.f);
+
+	virtual HRESULT	Init_Point_Light();
+	void	Update_Light();
+
 protected:
 	CShader*		m_pShaderCom = { nullptr };
 	CModel*			m_pModelCom = { nullptr };
@@ -96,6 +105,13 @@ protected:
 	_int				m_eCurrentTypeAnimIndex = { -1 };
 
 protected:
+	_float				m_fHitCount = { 0.f };
+	_bool				m_bHit_Effect = { false };
+
+protected:
+	CLight*				m_pLight = { nullptr };
+
+protected:
 	virtual HRESULT Bind_ShaderResources();
 	virtual HRESULT Ready_Component();
 	virtual HRESULT	Ready_Animation();
@@ -107,6 +123,10 @@ protected:
 protected:
 	void	Pushed();
 	void	Pushed_Reset();
+
+	void	Reset_Hit(_float fTimeDelta);
+	void	Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag);
+	void	Create_Soul_Effect(_float fLifeTime);
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

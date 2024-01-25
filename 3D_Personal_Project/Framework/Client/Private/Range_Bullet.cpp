@@ -24,6 +24,14 @@ HRESULT CRange_Bullet::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Component()))
+		return E_FAIL;
+
+	BULLET_DESC* BulletDesc = (BULLET_DESC*)pArg;
+
+	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -39,6 +47,11 @@ void CRange_Bullet::Tick(_float fTimeDelta)
 
 void CRange_Bullet::Late_Tick(_float fTimeDelta)
 {
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc > m_fLifeTime)
+		Set_Dead();
+
 	__super::Late_Tick(fTimeDelta);
 }
 
@@ -93,8 +106,4 @@ CGameObject* CRange_Bullet::Clone(void* pArg)
 void CRange_Bullet::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pShaderCom);
 }

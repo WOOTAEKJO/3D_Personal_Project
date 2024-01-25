@@ -4,6 +4,7 @@
 #include "Bounding_AABB.h"
 #include "Bounding_OBB.h"
 #include "Bounding_Sphere.h"
+#include "Bounding_Ray.h"
 
 BEGIN(Engine)
 
@@ -19,8 +20,9 @@ public:
 	virtual	HRESULT	Initialize(void* pArg) override;
 
 	void	Update(_fmatrix	matWorld);
+	void	Update_Each(_uint iBoundingIdx,_fmatrix	matWorld);
 #ifdef _DEBUG
-	HRESULT	Render();
+	virtual HRESULT	Render() override;
 #endif
 
 	_bool	Collision(class CCollider* pTargetCollider);
@@ -47,6 +49,7 @@ public:
 	_float		Get_PushedDist() { return m_fPushedDist; }
 	void		Set_PushedDist(_float fDist) { m_fPushedDist = fDist; }
 
+	_float4x4	Get_Collider_WorldMat(_uint iCollIdnx = 0);
 public:
 	void	OnCollisionEnter(CCollider* pOtherCollider);
 	void	OnCollisionStay(CCollider* pOtherCollider);

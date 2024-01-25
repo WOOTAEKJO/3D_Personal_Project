@@ -12,6 +12,8 @@
 #include "NorMonster_Hited.h"
 #include "NorMonster_Appear.h"
 
+#include "Light.h"
+
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -33,7 +35,7 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
 
-	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(LEVEL_GAMEPLAY,
+	m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;
@@ -49,8 +51,6 @@ void CMonster::Priority_Tick(_float fTimeDelta)
 {
 	if (!m_bActivate)
 		return;
-
-	
 
 	CCharacter::Priority_Tick(fTimeDelta);
 }
@@ -69,6 +69,8 @@ void CMonster::Late_Tick(_float fTimeDelta)
 		return;
 
 	CCharacter::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CMonster::Render()
@@ -87,14 +89,19 @@ void CMonster::TargetLook()
 	m_pTransformCom->LookAt_OnLand(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 }
 
-_bool CMonster::Turn(_float fTimeDelta)
+void CMonster::TargetLook_Y()
+{
+	m_pTransformCom->LookAt(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+}
+
+_bool CMonster::Turn(_float fTimeDelta, _bool bCheck)
 {
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
 
 	_vector vDir = XMVector3Normalize(vTargetPos - vPos);
 
-	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f);
+	return m_pTransformCom->Turn_Dir_Yaxis(vDir, fTimeDelta * 4.f, bCheck);
 
 	//return m_pTransformCom->Turn_Target_Yaxis(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 5.f);
 }
@@ -118,6 +125,26 @@ CCollider* CMonster::Get_WeaponCollider()
 	return m_pWeaponColliderCom;
 }
 
+_float4x4 CMonster::Get_Col_WorldMat()
+{
+	if(m_pColliderCom == nullptr)
+		return _float4x4();
+
+	return m_pColliderCom->Get_Collider_WorldMat();
+}
+
+void CMonster::Monster_Dead()
+{
+	if (m_Status_Desc.iCurHP <= 0)
+	{
+		Create_Soul_Effect(1.f);
+
+		if (m_pLight != nullptr)
+			m_pLight->Set_Active(false);
+		Set_Dead();
+	}
+}
+
 HRESULT CMonster::Bind_ShaderResources()
 {
 	if (FAILED(CCharacter::Bind_ShaderResources()))
@@ -130,8 +157,6 @@ HRESULT CMonster::Ready_Component()
 {
 	if (FAILED(CCharacter::Ready_Component()))
 		return E_FAIL;
-
-	
 
 	return S_OK;
 }

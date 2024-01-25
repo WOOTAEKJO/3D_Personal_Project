@@ -21,8 +21,6 @@ HRESULT CTargetCamera::Initialize_Prototype()
 
 HRESULT CTargetCamera::Initialize(void* pArg)
 {
-	/*if (pArg == nullptr)
-		return E_FAIL;*/
 
 	m_pTarget = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_PLAYER]).front();
@@ -44,12 +42,18 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	_float4 vPos,vDir;
-	XMStoreFloat4(&vPos, m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS));
-	XMStoreFloat4(&vDir, XMVector4Normalize(m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK)));
+	m_vOffset = m_vOriginOffset;
+	m_fLookAt_Height = m_fOriginLookAt_Height;
 
-	XMStoreFloat4(&CameraDesc.vEye, XMLoadFloat4(&vPos) - XMLoadFloat3(&m_vOffset));
-	CameraDesc.vAte = vPos;
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		m_vOffset = _float3(-1.5f, -0.5f, -1.5f);
+
+	_vector vPos,vDir;
+	vPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
+	vDir = XMVector4Normalize(m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK));
+
+	XMStoreFloat4(&CameraDesc.vEye, vPos - XMLoadFloat3(&m_vOffset));
+	XMStoreFloat4(&CameraDesc.vAte, vPos);
 	CameraDesc.fFovy = XMConvertToRadians(60.f);
 	CameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
 	CameraDesc.fNear = 0.1f;
@@ -57,7 +61,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	CameraDesc.fSpeedPerSec = 30.f;
 	CameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	m_vPrevTargetPos = vPos;
+	XMStoreFloat4(&m_vPrevTargetPos, vPos);
 
 	if (FAILED(__super::Initialize(&CameraDesc)))
 		return E_FAIL;
@@ -131,11 +135,8 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
 		{
 			m_fAngleAccY += MouseMove * fTimeDelta * 0.5f;
-			
-			_float ff1 = XMConvertToRadians(-50.f);
-			_float ff2 = XMConvertToRadians(30.f);
 
-			m_fAngleAccY = Clamp(ff1, ff2, m_fAngleAccY);
+			m_fAngleAccY = Clamp(XMConvertToRadians(-30.f), XMConvertToRadians(30.f), m_fAngleAccY);
 		}
 	}
 
@@ -147,8 +148,11 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	_vector vRot = XMQuaternionRotationRollPitchYaw(m_fAngleAccY, m_fAngleAccX, 0.f);
 	matRot = XMMatrixRotationQuaternion(vRot);
 
-	vDir = (XMVector3TransformNormal(m_bStateTrans == true ? XMLoadFloat3(&m_vOffset) : XMVectorSet(0.5f, -0.7f, 0.5f, 0.f)
-		, matRot));
+	/*vDir = (XMVector3TransformNormal(m_bStateTrans == true ? XMLoadFloat3(&m_vOffset) : XMVectorSet(0.5f, -0.7f, 0.5f, 0.f)
+		, matRot));*/
+	vDir = (XMVector3TransformNormal(XMLoadFloat3(&m_vOffset), matRot));
+
+	
 
 	vEye = vTargetPos - vDir;
 
@@ -158,7 +162,12 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	//Camera_Sliding(Camera_Spring(vEye, vPos, fTimeDelta), m_pNavigationCom, fTimeDelta);
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta));
 
+	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y * m_fLookAt_Height;
+	m_vPrevTargetPos.y = vTargetPos.m128_f32[1];
+
+	//m_pTransformCom->LookAt(XMVectorLerp(vTargetPos, Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta), 0.5f));
 	m_pTransformCom->LookAt(Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta));
+
 	XMStoreFloat4(&m_vPrevTargetPos, vTargetPos);
 }
 

@@ -42,6 +42,10 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual HRESULT	Init_Point_Light();
+	void	Update_Light();
+
 protected:
 	CShader*	m_pShaderCom = { nullptr };
 	CTexture*	m_pTextureCom = { nullptr };
@@ -50,7 +54,7 @@ protected:
 
 protected:
 	CCharacter*		m_pOwner = { nullptr };
-
+	CCharacter*		m_pTarget = { nullptr };
 protected:
 	_float			m_fTimeAcc = { 0.f };
 	_float			m_fLifeTime = { 0.f };
@@ -59,6 +63,10 @@ protected:
 
 protected:
 	_float3			m_vLook;
+	_float4			m_vTargetPos;
+
+protected:
+	CLight* m_pLight = { nullptr };
 
 protected:
 	HRESULT	Bind_ShaderResources();

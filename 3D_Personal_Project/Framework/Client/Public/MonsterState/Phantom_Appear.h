@@ -1,0 +1,34 @@
+#pragma once
+#include "Monster_State.h"
+
+#include "Monster.h"
+
+BEGIN(Client)
+
+class CPhantom_Appear final : public CMonster_State
+{
+public:
+	
+private:
+	CPhantom_Appear();
+	virtual	~CPhantom_Appear() = default;
+
+public:
+	virtual HRESULT	Initialize(CGameObject* pGameObject) override;
+	virtual void	State_Enter() override;
+	virtual _uint	State_Priority_Tick(_float fTimeDelta) override;
+	virtual _uint	State_Tick(_float fTimeDelta) override;
+	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
+	virtual void	State_Exit() override;
+
+private:
+	_bool	m_bTrans = { true };
+	_bool	m_bSummonMeteor = { false };
+
+public:
+	static	CPhantom_Appear* Create(CGameObject* pGameObject);
+	virtual	void			Free() override;
+};
+
+END
+

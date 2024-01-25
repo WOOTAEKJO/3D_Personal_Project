@@ -33,6 +33,9 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(CDataMgr::GetInstance()->Initialize()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Font()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -40,6 +43,11 @@ void CMainApp::Tick(_float fTimeDelta)
 {
 	
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+
+#ifdef _DEBUG
+	m_fTimeAcc += fTimeDelta;
+
+#endif
 }
 
 HRESULT CMainApp::Render()
@@ -51,6 +59,16 @@ HRESULT CMainApp::Render()
 	/* 그려야할 모델들을 그리낟.*/	
 	m_pGameInstance->Render_Engine();
 
+	++m_iNumRender;
+
+	if (1.f <= m_fTimeAcc)
+	{
+		wsprintf(m_szFPS, TEXT("FPS:%d"), m_iNumRender);
+		m_iNumRender = 0;
+		m_fTimeAcc = 0.f;
+	}
+
+	m_pGameInstance->Render_Font(FONT_139EX, m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 0.f, 0.f, 1.f));
 	m_pGameInstance->Present();
 
 	return S_OK;
@@ -81,6 +99,14 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CRigidBody>(COM_RIGIDBODY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CCollider>(COM_COLLIDER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CController>(COM_CONTROLLER_TAG))) return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Font()
+{
+	if (FAILED(m_pGameInstance->Add_Font(FONT_139EX, FONT_139EX_TAG)))
+		return E_FAIL;
 
 	return S_OK;
 }

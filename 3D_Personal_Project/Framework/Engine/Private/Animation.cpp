@@ -92,7 +92,7 @@ _bool CAnimation::Invalidate_Interval_TransformationMatrix(_float fTimeDelta, _f
 void	CAnimation::Set_ReStart()
 {
 	//m_bFinished = false;
-	//m_fTrackPosition = 0.f;
+	m_fTrackPosition = 0.f;
 	m_bFinished = false;
 	/*if (m_fTrackPosition >= m_fDuration)
 	{
@@ -119,6 +119,29 @@ wstring CAnimation::Get_Name()
 	MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullName, MAX_PATH);
 
 	return szFullName;
+}
+
+_bool CAnimation::Is_Arrival_TrackPosition(_float fTime)
+{
+	if (m_fTrackPosition >= fTime)
+		return true;
+
+	return false;
+}
+
+_bool CAnimation::Is_Current_TrackPosition(_float fTime)
+{
+	
+	_float fMin = fTime - 0.5f;
+	if (fMin < 0.f)
+		fMin = 0.f;
+
+	_float fMax = fTime + 0.5f;
+
+	if (  m_fTrackPosition < fMax && m_fTrackPosition > fMin)
+		return true;
+
+	return false;
 }
 
 void CAnimation::Write_Json(json& Out_Json)

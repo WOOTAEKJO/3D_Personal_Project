@@ -59,6 +59,8 @@ private:
 	HRESULT					Deco();
 	HRESULT					Wood();
 	HRESULT					Instancing();
+	HRESULT					Effect_Tex();
+	HRESULT					Particle();
 
 public:
 	static CLoader * Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, LEVEL eNextLevelID);

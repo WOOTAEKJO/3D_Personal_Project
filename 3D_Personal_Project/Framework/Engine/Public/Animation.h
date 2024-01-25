@@ -33,6 +33,10 @@ public:
 	_float*		Get_ExtraSpeed() { return m_fExtraSpeed; }
 	//_float*		Get_InterverExtraSpeed() { return &m_fInterverExtraSpeed; }
 
+	_bool		Is_Arrival_TrackPosition(_float fTime);
+	_bool		Is_Current_TrackPosition(_float fTime);
+	_float		Get_Duration() { return m_fDuration; }
+
 public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;

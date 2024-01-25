@@ -61,6 +61,8 @@ public:
 	vector<CCell*>	Get_Navigation_Cells();
 	void	Set_Add(_bool bCheck);
 
+	void	Init_Neighbor();
+
 private:
 	CVIBuffer_DTerrain*		m_pVIBufferCom = { nullptr };
 	CShader*				m_pShaderCom = { nullptr };

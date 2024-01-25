@@ -49,6 +49,11 @@ public:
 	HRESULT	Bind_Blend(class CShader* pShader, const _char* pName, _uint iMeshIndex, _int iNonBindInd = -1);
 
 	_bool	Is_Animation_Finished();
+	void	Animation_ReStart(_uint iIndx);
+
+	_bool	Is_CurAnim_Arrival_TrackPosition(_uint iIndx,_float fTime);
+	_bool	Is_CurAnim_Current_TrackPosition(_uint iIndx, _float fTime);
+	_float  CurAnim_Get_Duration(_uint iIndx);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;

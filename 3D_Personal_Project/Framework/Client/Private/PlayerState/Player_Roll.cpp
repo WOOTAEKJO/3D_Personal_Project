@@ -23,6 +23,13 @@ void CPlayer_Roll::State_Enter()
 
 _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_CurAnim_Current_TrackPosition(114, 10) ||
+		m_pOwnerModel->Is_CurAnim_Current_TrackPosition(114, 130))
+	{
+		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
+			&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
+		Particle_Loop_SetUp(m_pParticle, false);
+	}
 
 	return m_iStateID;
 }
@@ -34,32 +41,57 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 	if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_FRONT))
 	{
 		if (m_pOwnerModel->Is_Animation_Finished())
-			return CPlayer::STATE::RUN;
+		{
+			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			else
+				return CPlayer::STATE::RUN;
+		}
+
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_BACK))
 	{
 		if (m_pOwnerModel->Is_Animation_Finished())
-			return CPlayer::STATE::RUN;
+		{
+			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			else
+				return CPlayer::STATE::RUN;
+		}
+		
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_RIGHT))
 	{
 		if (m_pOwnerModel->Is_Animation_Finished())
-			return CPlayer::STATE::RUN;
+		{
+			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			else
+				return CPlayer::STATE::RUN;
+		}
 	}
 	else if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_LEFT))
 	{
 		if (m_pOwnerModel->Is_Animation_Finished())
-			return CPlayer::STATE::RUN;
+		{
+			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			else
+				return CPlayer::STATE::RUN;
+		}
+	}
+	else {
+		if (m_pOwnerModel->Is_Animation_Finished())
+		{
+			return CPlayer::STATE::IDLE;
+		}
 	}
 
-	
-
-	if (m_pOwnerModel->Is_Animation_Finished())
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(114, 5))
 	{
-		return CPlayer::STATE::IDLE;	
+		
+		Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 1.5f, fTimeDelta);
 	}
-
-	Translate(CTransform::STATE::STATE_LOOK, m_pOwner->Open_Physics_Desc()->fForwardSpeed * 1.5f, fTimeDelta);
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 

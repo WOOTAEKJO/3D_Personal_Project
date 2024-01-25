@@ -21,20 +21,7 @@ HRESULT CDemo::Initialize(void* pArg)
 
 HRESULT CDemo::Render()
 {
-	/*if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
-
-	m_pShaderCom->Begin(1);
-
-	m_pVIBufferCom->Bind_Buffer();
-
-	if (m_bWireFrame)
-		m_pShaderCom->Set_RenderState(CShader::RENDERSTATE::RS_WIREFRAME);
-	else
-		m_pShaderCom->Set_RenderState(CShader::RENDERSTATE::RS_SOLID);
-
-	m_pVIBufferCom->Render();*/
-
+	
     return S_OK;
 }
 

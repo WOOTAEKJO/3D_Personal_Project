@@ -108,7 +108,7 @@ HRESULT CShader::Bind_Matrix(const _char* pMatrixName, const _float4x4* pMatrix)
 	if (pMatrixVariable == nullptr)
 		return E_FAIL;
 
-	pMatrixVariable->SetMatrix((_float*)pMatrix);
+	HRESULT dd = pMatrixVariable->SetMatrix((_float*)pMatrix);
 
 	return S_OK;
 }

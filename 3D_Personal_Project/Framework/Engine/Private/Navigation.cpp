@@ -104,6 +104,8 @@ HRESULT CNavigation::Render()
 					vColor = { 0.f,1.f,0.f,1.f };
 				else if(iter->Get_CellType() == CCell::CELLTYPE::TYPE_JUMP)
 					vColor = { 0.f,0.f,1.f,1.f };
+				else if(iter->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					vColor = { 1.f,0.f,1.f,1.f };
 
 				iter->Render(m_pShaderCom, vColor);
 			}
@@ -136,6 +138,8 @@ _bool CNavigation::IsMove(_fvector vPosition, _Out_ _float3* vLine)
 				if (iNeighborIndex == -1)
 					return false;
 
+				if (m_vecCell[iNeighborIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					return false;
 				
 				if (m_vecCell[m_iCurrentCellIndex]->Get_CellType() == CCell::CELLTYPE::TYPE_NORMAL)
 				{
@@ -340,6 +344,26 @@ void CNavigation::Add_Neighbor(_uint iSourCellIndx, _float3* vSourPoints, _uint 
 	}
 }
 
+_bool CNavigation::Is_Alone_Neighbor_Cell(_uint iCellIdnx,_int* iAloneNeighborIndx)
+{
+	if (iCellIdnx >= m_vecCell.size())
+		return false;
+
+	_uint iCount = 0;
+	_int  iNeighborIdnx = 0;
+
+	for (_uint i = 0; i < 3; i++)
+	{
+		iNeighborIdnx = m_vecCell[iCellIdnx]->Get_NeighborIndex(CCell::LINES(i));
+		if (iNeighborIdnx == -1)
+			++iCount;
+		else
+			*iAloneNeighborIndx = iNeighborIdnx;
+	} 
+	
+	return iCount >= 2 ? true : false;
+}
+
 _bool CNavigation::Compute_MousePos(_uint* iCellIndex)
 {
 	_float fDist = 0.f;
@@ -417,15 +441,33 @@ HRESULT CNavigation::Init_Neighbor()
 
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_A), SourCell->Get_Point(CCell::POINTS::POINT_B)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, iIdnx);
 			}
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_B), SourCell->Get_Point(CCell::POINTS::POINT_C)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, iIdnx);
 			}
 			if (DestCell->Compare_Points(SourCell->Get_Point(CCell::POINTS::POINT_C), SourCell->Get_Point(CCell::POINTS::POINT_A)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, iIdnx);
 			}
 		}
 	}
@@ -444,15 +486,33 @@ HRESULT CNavigation::Init_Neighbor_XZ()
 
 			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_A), SourCell->Get_Point(CCell::POINTS::POINT_B)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_AB, iIdnx);
 			}
 			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_B), SourCell->Get_Point(CCell::POINTS::POINT_C)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_BC, iIdnx);
 			}
 			if (DestCell->Compare_Points_XZ(SourCell->Get_Point(CCell::POINTS::POINT_C), SourCell->Get_Point(CCell::POINTS::POINT_A)))
 			{
-				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, DestCell->Get_Index());
+				_int iIdnx = 0;
+				if (DestCell->Get_CellType() == CCell::CELLTYPE::TYPE_UNABLE)
+					iIdnx = -1;
+				else
+					iIdnx = DestCell->Get_Index();
+
+				SourCell->Set_NeighborIndex(CCell::LINES::LINE_CA, iIdnx);
 			}
 		}
 	}

@@ -30,6 +30,13 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 
+public:
+	void	SetUp_Offset(_float3 vOffset) { m_vOffset = vOffset; }
+	void	Reset_Offset() { m_vOffset = m_vOriginOffset; }
+
+	void	SetUp_LookAt_Height(_float fHeight) { m_fLookAt_Height = fHeight; }
+	void	Reset_LookAt_Height() { m_fLookAt_Height = m_fOriginLookAt_Height; }
+
 private:
 	CGameObject* m_pTarget = { nullptr };
 	CTransform* m_pTargetTransform = { nullptr };
@@ -41,8 +48,12 @@ private:
 private:
 	_float			m_fAngleAccY = { 0.f };
 	_float			m_fAngleAccX = { 0.f };
-	_float3			m_vOffset = { 1.f,-0.7f,1.f };
 
+	_float			m_fOriginLookAt_Height = { 1.3f };
+	_float			m_fLookAt_Height;
+
+	_float3			m_vOriginOffset = { 0.7f,-0.5f,0.7f };
+	_float3			m_vOffset;
 private:
 	wstring			m_strCurrentNaviTag;
 

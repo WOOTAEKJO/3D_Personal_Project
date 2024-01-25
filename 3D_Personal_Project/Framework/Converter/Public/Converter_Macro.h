@@ -74,6 +74,9 @@
 #define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
 #define	ANIMMODEL_OWL_PATH			"../Bin/Resources/Models/AnimModel/Owl/Owl.fbx"
 
+#define	ANIMMODEL_PHANTOM_TAG				TEXT("Prototype_Component_AnimModel_PhantomBoss")
+#define	ANIMMODEL_PHANTOM_PATH			"../Bin/Resources/Models/AnimModel/PhantomBoss/PhantomBoss.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨
@@ -349,6 +352,12 @@
 
 #define	MODEL_SHOVEL_TAG			TEXT("Prototype_Component_Model_Shovel")
 #define	MODEL_SHOVEL_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Shovel/Shovel.fbx"
+
+#define	MODEL_HELICOBULLET_TAG			TEXT("Prototype_Component_Model_HelicoBullet")
+#define	MODEL_HELICOBULLET_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/HelicoBullet/HelicoBullet.fbx"
+
+#define	MODEL_BOMB_TAG			TEXT("Prototype_Component_Model_Bomb")
+#define	MODEL_BOMB_PATH		"../Bin/Resources/Models/NonAnimModel/Weapon/Bomb/Bomb.fbx"
 
 #pragma endregion
 

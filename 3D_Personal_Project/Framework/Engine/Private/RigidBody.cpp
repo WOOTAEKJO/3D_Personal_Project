@@ -131,7 +131,6 @@ void CRigidBody::Update_Transform(TYPE eType, _float fTimeDelta)
 		m_pOwnerTransform->Translate(XMLoadFloat3(&m_vPower[TYPE::TYPE_ACCEL]) * fTimeDelta,
 			m_pOwnerNavigation);*/
 	}
-	
 }
 
 void CRigidBody::Resistance(TYPE eType,_float fTimeDelta)

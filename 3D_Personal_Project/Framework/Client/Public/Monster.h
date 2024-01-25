@@ -32,7 +32,8 @@ public:
 
 public:
 	void	TargetLook();
-	_bool	Turn(_float fTimeDelta);
+	void	TargetLook_Y();
+	_bool	Turn(_float fTimeDelta,_bool bCheck = true);
 	_bool	Is_Target_Range(_float fRange);
 
 public:
@@ -42,6 +43,8 @@ public:
 
 	void		Set_Activate() { m_bActivate = true; }
 	_bool		Is_Activate() { return m_bActivate; }
+
+	_float4x4	Get_Col_WorldMat(); // 콜라이더의 월드행렬을 가져옴
 
 protected:
 	CBone*		m_pSocketBone = { nullptr };
@@ -58,11 +61,13 @@ protected:
 	_bool				m_bActivate = { true };
 
 protected:
+	void	Monster_Dead();
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State();
+
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

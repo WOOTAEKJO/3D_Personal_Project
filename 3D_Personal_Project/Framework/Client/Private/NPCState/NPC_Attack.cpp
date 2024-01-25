@@ -38,8 +38,6 @@ _uint CNPC_Attack::State_Tick(_float fTimeDelta)
 	{
 		m_pOwner->Target_Follow(fTimeDelta * 20.f);
 	}
-	/*m_pOwner->Target_Follow_Look();
-	m_pOwner->Target_Follow(fTimeDelta * 30.f);*/
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
@@ -52,8 +50,11 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 	{
 		/*if (m_pOwner->Is_Target_Range(0.1f))
 			return CNPC::STATE::IDLE;*/
-		if (dynamic_cast<CCrow*>(m_pOwner)->Is_Col())
+		_bool b = dynamic_cast<CCrow*>(m_pOwner)->Is_Col();
+
+		if (b)
 			return CNPC::STATE::IDLE;
+
 	}
 
 	return m_iStateID;

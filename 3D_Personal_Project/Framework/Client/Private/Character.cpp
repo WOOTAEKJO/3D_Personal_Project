@@ -1,7 +1,12 @@
 #include "stdafx.h"
 #include "..\Public\Character.h"
 
+#include "TargetCamera.h"
+
 #include "GameInstance.h"
+#include "Effect.h"
+
+#include "Light.h"
 
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
@@ -49,6 +54,10 @@ void CCharacter::Tick(_float fTimeDelta)
 void CCharacter::Late_Tick(_float fTimeDelta)
 {	
 	CGameObject::Late_Tick(fTimeDelta);
+
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
+
+	Reset_Hit(fTimeDelta);
 }
 
 HRESULT CCharacter::Render()
@@ -62,15 +71,10 @@ HRESULT CCharacter::Render()
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
-
-#ifdef _DEBUG
-	//m_pNavigationCom->Render();
-	m_pColliderCom->Render();
-#endif
 
 	return S_OK;
 }
@@ -88,6 +92,43 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
 }
 
+void CCharacter::Camera_Zoom(_float3 vOffset)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	if (XMVector3Equal(XMLoadFloat3(&vOffset), XMVectorZero()))
+		pCamera->Reset_Offset();
+	else
+		pCamera->SetUp_Offset(vOffset);
+}
+
+void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	if (fHeight == 0.f)
+		pCamera->Reset_LookAt_Height();
+	else
+		pCamera->SetUp_LookAt_Height(fHeight);
+}
+
+HRESULT CCharacter::Init_Point_Light()
+{
+	return S_OK;
+}
+
+void CCharacter::Update_Light()
+{
+	if (m_pLight == nullptr)
+		return;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+	XMStoreFloat4(&m_pLight->Open_Light_Desc()->vPos, vPos);
+}
+
 HRESULT CCharacter::Bind_ShaderResources()
 {
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
@@ -99,8 +140,7 @@ HRESULT CCharacter::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
-		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bHited", &m_bHit_Effect, sizeof(_bool))))
 		return E_FAIL;
 
 	return S_OK;
@@ -120,13 +160,6 @@ HRESULT CCharacter::Ready_Component()
 	CRigidBody::RIGIDBODY_DESC RigidBody_Desc = {};
 	RigidBody_Desc.pOwner = this;
 	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom, &RigidBody_Desc))) return E_FAIL;
-
-	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
-	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
-	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
-	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);
-
-	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &AABB_Desc))) return E_FAIL;*/
 
 	return S_OK;
 }
@@ -169,6 +202,59 @@ void CCharacter::Pushed_Reset()
 	m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_ACCEL);
 }
 
+void CCharacter::Reset_Hit(_float fTimeDelta)
+{
+	if (!m_bHit_Effect)
+		return;
+
+	m_fHitCount += fTimeDelta;
+
+	if (m_fHitCount > 0.5f)
+	{
+		m_fHitCount = 0.f;
+		m_bHit_Effect = false;
+	}
+}
+
+void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag)
+{
+	CEffect::EFFECTINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = fLifeTime;
+	Info.strEffectTextureTag = strTextureTag;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAM_POS);
+
+	_vector vDir = XMVector3Normalize(vCamPos - vPos);
+	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
+	
+	XMStoreFloat4(&Info.vPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTDAMAGE_TAG, &Info)))
+		return;
+}
+
+void CCharacter::Create_Soul_Effect(_float fLifeTime)
+{
+	CEffect::EFFECTINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = fLifeTime;
+	Info.strEffectTextureTag = TEX_SOUL_TAG;
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y * 2.f;
+
+	XMStoreFloat4(&Info.vPos, vPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTSOUL_TAG, &Info)))
+		return;
+}
+
 void CCharacter::Free()
 {
 	__super::Free();
@@ -179,4 +265,7 @@ void CCharacter::Free()
 	Safe_Release(m_pRigidBodyCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pStateMachineCom);
+
+	Safe_Release(m_pLight);
+	
 }

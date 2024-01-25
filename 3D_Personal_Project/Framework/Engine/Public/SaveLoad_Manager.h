@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "MeshData.h"
-
+#include "ParticleData.h"
 
 BEGIN(Engine)
 
@@ -23,6 +23,10 @@ public:
 public:
 	HRESULT	Save_Data_Level(const _char* strFilePath, _uint iLevelIndex);
 	HRESULT	Load_Data_Level(const _char* strFilePath);
+
+public:
+	HRESULT	Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest);
+	HRESULT	Load_Data_Particle(const _char* strFilePath,INSTANCING_DESC* pOut);
 
 private:
 	class CGameInstance* m_pGameInstance = { nullptr };

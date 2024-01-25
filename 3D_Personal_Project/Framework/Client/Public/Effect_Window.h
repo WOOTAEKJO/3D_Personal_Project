@@ -1,0 +1,57 @@
+#pragma once
+#include "ImGui_Window.h"
+
+BEGIN(Client)
+
+class CParticle_Demo;
+
+class CEffect_Window final : public CImGui_Window
+{
+private:
+	CEffect_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	virtual	~CEffect_Window() = default;
+
+public:
+	virtual	HRESULT	Initialize(void* pArg) override;
+	virtual	void	Tick() override;
+	virtual	HRESULT	Render() override;
+	virtual	void	Set_Variable(void* pArg);
+	virtual	void	Terrain_Picked(_float4 vPickPoint) override;
+	virtual	void	Demo_Picked() override;
+	virtual	string	Get_Path() override;
+
+public:
+	virtual	HRESULT	Save_Data(const _char* strFilePath);
+	virtual	HRESULT	Load_Data(const _char* strFilePath);
+
+private:
+	vector<wstring>					m_vecTextureTag;
+	wstring							m_strPickTextureTag;
+
+private:
+	CParticle_Demo*		m_pParticle = { nullptr };
+	INSTANCING_DESC		m_eParticleInfo = {};
+
+private:
+	_bool			m_bUpdate = { false };
+	
+	random_device	m_RandomDevice;
+	mt19937_64		m_RandomNumber;
+
+	_bool			m_bRandomRotation[3] = { false,false,false };
+	_int			m_iTypeRadio = { 0 };
+
+private:
+	void	Particle();
+	void	Effect();
+
+	void	Create_Particle();
+	void	Delete_Particle();
+	void	Particle_Rotation();
+
+public:
+	static CEffect_Window* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,void* pArg);
+	virtual	void	Free() override;
+};
+
+END

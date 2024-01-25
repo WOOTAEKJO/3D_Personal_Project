@@ -13,6 +13,7 @@
 
 #include "AnimMesh_Demo.h"
 #include "SubObject_Demo.h"
+#include "Particle_Demo.h"
 
 CAnimation_Window::CAnimation_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CImGui_Window(pDevice, pContext)
@@ -45,9 +46,11 @@ HRESULT CAnimation_Window::Initialize(void* pArg)
 		{
 			m_vecSubPrototypeTag.push_back(iter.first);
 		}
-
+		else if (!wcscmp(wstr.c_str(), L"Particle"))
+		{
+			m_vecParticlePrototypeTag.push_back(iter.first);
+		}
 	}
-
 
 	return S_OK;
 }
@@ -81,6 +84,14 @@ HRESULT CAnimation_Window::Render()
 			ImGui::EndTabItem();
 		}
 
+		if (ImGui::BeginTabItem("Particle"))
+		{
+			m_eCurrentMode = MODE_PARTICLE;
+			Particle();
+
+			ImGui::EndTabItem();
+		}
+
 		ImGui::EndTabBar();
 	}
 
@@ -103,7 +114,18 @@ void CAnimation_Window::Demo_Picked()
 
 string CAnimation_Window::Get_Path()
 {
-	return "../Bin/Data/Animation/";
+	switch (m_eCurrentMode)
+	{
+	case Client::CAnimation_Window::MODE_ANIMATION:
+		return "../Bin/Data/Animation/";
+	case Client::CAnimation_Window::MODE_SUBOBJECT:
+		return "../Bin/Data/Animation/SubObject/";
+	case Client::CAnimation_Window::MODE_PARTICLE:
+		return "../Bin/Data/Particle/ParticleInfo/";
+	default:
+		return "../Bin/Data/";
+	}
+	
 }
 
 HRESULT CAnimation_Window::Save_Data(const _char* strFilePath)
@@ -150,6 +172,14 @@ void CAnimation_Window::Write_Json(json& Out_Json)
 		m_vecSubObjectDemo[m_iCurrentDemoIndex]->Write_Json(Out_Json);
 		
 		break;
+	case MODE_PARTICLE:
+
+		if (m_vecParticleDemo[m_iCurrentParticleIndex] == nullptr)
+			return;
+		Out_Json.emplace("BoneIndex", m_iCurrentAnimModelBoneIndex);
+		m_vecParticleDemo[m_iCurrentParticleIndex]->Write_Json(Out_Json);
+
+		break;
 	}
 }
 
@@ -168,6 +198,17 @@ void CAnimation_Window::Load_FromJson(const json& In_Json)
 		m_iCurrentAnimModelBoneIndex = In_Json["BoneIndex"];
 		m_vecSubObjectDemo[m_iCurrentDemoIndex]->Load_FromJson(In_Json);
 		m_vecSubObjectDemo[m_iCurrentDemoIndex]->
+			Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
+
+		break;
+	case MODE_PARTICLE:
+
+		if (m_vecParticleDemo[m_iCurrentParticleIndex] == nullptr)
+			return;
+
+		m_iCurrentAnimModelBoneIndex = In_Json["BoneIndex"];
+		m_vecParticleDemo[m_iCurrentParticleIndex]->Load_FromJson(In_Json);
+		m_vecParticleDemo[m_iCurrentParticleIndex]->
 			Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
 
 		break;
@@ -195,7 +236,8 @@ void CAnimation_Window::Animation()
 		Create_Animation_Model(m_strPickModelTag);
 	}
 	if (m_pCurrentAnimModel != nullptr) {
-		ImGui::BeginListBox("Animation", vSize);
+		ImVec2 vSize2 = ImVec2(450, 100);
+		ImGui::BeginListBox("Animation", vSize2);
 		_uint iSize = m_pCurrentAnimModel->Get_Animations().size();
 		for (_uint i = 0; i < iSize; i++)
 		{
@@ -365,6 +407,116 @@ void CAnimation_Window::SubObject()
 	}
 }
 
+void CAnimation_Window::Particle()
+{
+	ImGui::Text("Particle_List");
+	ImVec2 vSize = ImVec2(250, 100);
+	ImGui::BeginListBox("Particle_Proto", vSize);
+	for (auto& iter : m_vecParticlePrototypeTag) {
+
+		size_t pos = iter.rfind(L"_");
+		wstring wstr = iter.substr(pos + 1);
+		string str;
+		str.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable(str.c_str(), iter == m_strPickParticleTag))
+			m_strPickParticleTag = iter;
+	}
+	ImGui::EndListBox();
+
+	ImGui::BeginListBox("Particle", vSize);
+	_uint iSize = m_vecParticleDemo.size();
+	for (_uint i = 0; i < iSize; i++)
+	{
+		string str2;
+		size_t pos = m_vecParticleDemo[i]->Get_ModelTag().rfind(L"_");
+		wstring wstr = m_vecParticleDemo[i]->Get_ModelTag().substr(pos + 1);
+		str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+		if (ImGui::Selectable((str2).c_str(), i == m_iCurrentParticleIndex)) {
+			m_iCurrentParticleIndex = i;
+		}
+	}
+	ImGui::EndListBox();
+
+	if (ImGui::Button("Create_Particle"))
+	{
+		Create_Particle(m_strPickParticleTag);
+	}
+
+	if (m_pCurrentAnimModel != nullptr) {
+		ImGui::BeginListBox("Bone", vSize);
+		iSize = m_pCurrentAnimModel->Get_Bones().size();
+		for (_uint i = 0; i < iSize; i++)
+		{
+			string str = to_string(i);
+			string str2;
+			wstring wstr = m_pCurrentAnimModel->Get_Bone(i)->Get_BoneName_wstr();
+			str2.assign(wstr.begin(), wstr.end());// 무슨 오류가 남
+			if (ImGui::Selectable((str + "." + str2).c_str(), i == m_iCurrentAnimModelBoneIndex)) {
+				m_iCurrentAnimModelBoneIndex = i;
+			}
+		}
+		ImGui::EndListBox();
+
+		if (!m_vecParticleDemo.empty())
+		{
+			if (ImGui::Button("Apply"))
+			{
+				m_vecParticleDemo[m_iCurrentParticleIndex]->
+					Set_SocketBone(m_pCurrentAnimModel->Get_Bone(m_iCurrentAnimModelBoneIndex));
+				//m_vecSubObjectDemo[m_iCurrentDemoIndex]->Set_SocketBoneIndex(m_iCurrentAnimModelBoneIndex);
+			}
+
+			if (ImGui::Checkbox("Update", &m_bUpdate))
+				m_vecParticleDemo[m_iCurrentParticleIndex]->Set_Update(m_bUpdate);
+
+			if (ImGui::Checkbox("Trans", &m_bTrans))
+				m_vecParticleDemo[m_iCurrentParticleIndex]->Set_Trans(m_bTrans);
+		}
+
+		ImGui::Checkbox("NonBlend", &m_bNonBlend);
+		if (m_bNonBlend)
+			m_pCurrentAnimModel->Set_NonBlendIndx(m_iCurrentAnimModelBoneIndex);
+		else
+			m_pCurrentAnimModel->Set_NonBlendIndx(-1);
+	}
+
+	if (!m_vecParticleDemo.empty() && m_vecParticleDemo[m_iCurrentParticleIndex] != nullptr) {
+
+		ImGui::RadioButton("Pos", &m_iTransformRadioButton, 0);
+		ImGui::SameLine();
+		ImGui::RadioButton("Rot", &m_iTransformRadioButton, 1);
+		ImGui::SameLine();
+		ImGui::RadioButton("Scale", &m_iTransformRadioButton, 2);
+
+		switch (m_iTransformRadioButton)
+		{
+		case 0:
+			m_eOperationType = ImGuizmo::OPERATION::TRANSLATE;
+			break;
+		case 1:
+			m_eOperationType = ImGuizmo::OPERATION::ROTATE;
+			break;
+		case 2:
+			m_eOperationType = ImGuizmo::OPERATION::SCALE;
+			break;
+		default:
+			break;
+		}
+		__super::ImGuizmo(ImGuizmo::MODE::WORLD, m_vecParticleDemo[m_iCurrentParticleIndex]);
+	}
+
+	if (ImGui::Button("Delete Particle")) {
+		if (!m_vecParticleDemo.empty() && m_vecParticleDemo[m_iCurrentParticleIndex] != nullptr)
+		{
+			m_vecParticleDemo[m_iCurrentParticleIndex]->Set_Dead();
+			m_vecParticleDemo.erase(m_vecParticleDemo.begin() + m_iCurrentParticleIndex);
+
+			if (m_iCurrentParticleIndex != 0)
+				--m_iCurrentParticleIndex;
+		}
+	}
+}
+
 void CAnimation_Window::Create_Animation_Model(const wstring& strModelTag)
 {
 	if (m_pCurrentAnimModel == nullptr) {
@@ -411,6 +563,33 @@ void CAnimation_Window::Create_Sub_Model(const wstring& strSubModelTag)
 		return;
 
 	m_vecSubObjectDemo.push_back(dynamic_cast<CSubObject_Demo*>(pSubObject));
+}
+
+void CAnimation_Window::Create_Particle(const wstring& strParticleTag)
+{
+	if (m_pCurrentAnimModel == nullptr)
+		return;
+
+	CGameObject* pParticle = nullptr;
+	INSTANCING_DESC InstancingDesc = {};
+
+	if (FAILED(m_pGameInstance->Load_Data_Particle(m_pGameInstance->
+		Load_Data_Path(strParticleTag).c_str(), &InstancingDesc)))
+		return;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		G0_PARTICLE_DEMO_TAG,&InstancingDesc, reinterpret_cast<CGameObject**>(&pParticle))))
+		return;
+
+	m_vecParticleDemo.push_back(dynamic_cast<CParticle_Demo*>(pParticle));
+	m_vecParticleDemo.back()->Set_ParentsTransform(m_pCurrentAnimModel->Get_Component<CTransform>());
+	m_vecParticleDemo.back()->Set_ModelTag(strParticleTag);
+	m_vecParticleDemo.back()->Set_Update(false);
+	m_vecParticleDemo.back()->Get_Component<CVIBuffer_Particle_Point>()->Open_InstancingDesc()->bLoop = true;
+}
+
+void CAnimation_Window::Delete_Particle()
+{
 }
 
 _bool CAnimation_Window::Reserve_Animation()

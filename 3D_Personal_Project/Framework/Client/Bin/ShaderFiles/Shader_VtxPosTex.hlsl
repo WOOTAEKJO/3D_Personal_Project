@@ -3,6 +3,13 @@
 matrix		g_matWorld, g_matView, g_matProj;
 texture2D	g_Texture[2];
 
+texture2D g_DiffuseTexture;
+texture2D g_DepthTexture;
+
+vector g_vSolid_Color;
+
+float g_fAlpha;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -59,6 +66,89 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+struct VS_OUT_EFFECT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexCoord : TEXCOORD0;
+    float4 vProjPos : TEXCOORD1;
+};
+
+VS_OUT_EFFECT VS_MAIN_EFFECT(VS_IN In)
+{
+    VS_OUT_EFFECT Out = (VS_OUT_EFFECT) 0;
+
+    matrix matWV, matWVP;
+
+    matWV = mul(g_matWorld, g_matView);
+    matWVP = mul(matWV, g_matProj);
+
+    Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
+    Out.vTexCoord = In.vTexCoord;
+    Out.vProjPos = Out.vPosition;
+
+    return Out;
+}
+
+struct PS_IN_EFFECT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexCoord : TEXCOORD0;
+    float4 vProjPos : TEXCOORD1;
+};
+
+PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    //float2 vDepthTexcoord;
+    //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
+    //vDepthTexcoord.y = (In.vPosition.y / In.vPosition.w) * -0.5f + 0.5f;
+	
+    //float4 vDepthDesc = g_DepthTexture.Sample(PointSampler, vDepthTexcoord);
+	
+    //Out.vColor.a = Out.vColor.a * (vDepthDesc.y * 1000.f - In.vProjPos.w) * 2.f;
+	// 화면에 그려진 픽셀들의 깊이 값과 비교해서 깊이 값이 크면 알파가 크게 작으면 알파가 점점 작아져서 투명해진다.
+	
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_SOLID(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    //Out.vColor = g_vSolid_Color;
+   // Out.vColor.a = vColor.a;
+	
+    if (vColor.a < 0.3f)
+        discard;
+    
+    vColor = g_vSolid_Color;
+	
+    Out.vColor = vColor;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_INVISIBILITY(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.a < 0.8f)
+        discard;
+    
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    Out.vColor = vColor;
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -74,5 +164,44 @@ technique11 DefaultTechnique
         DomainShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+
+    pass Effect
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT();
+    }
+
+    pass Effect_Solid
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_SOLID();
+    }
+
+    pass Effect_Invisibility
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
+    }
 
 }

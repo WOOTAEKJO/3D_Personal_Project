@@ -36,6 +36,8 @@ HRESULT CAnimMesh_Demo::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
+	m_pModelCom->Set_AnimationIndex(3);
+
 	return S_OK;
 }
 
@@ -53,6 +55,8 @@ void CAnimMesh_Demo::Tick(_float fTimeDelta)
 void CAnimMesh_Demo::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom)))
 		return;
 }
 
@@ -73,12 +77,10 @@ HRESULT CAnimMesh_Demo::Render()
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
-
-	m_pNavigationCom->Render();
 
 	return S_OK;
 }
@@ -228,10 +230,6 @@ HRESULT CAnimMesh_Demo::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
-		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

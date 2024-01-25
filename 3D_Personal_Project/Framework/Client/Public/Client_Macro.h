@@ -19,21 +19,25 @@
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
 #define BUFFER_TERRAIN2_TAG			TEXT("Prototype_Component_VIBuffer_Terrain2")
+#define BUFFER_TERRAIN3_TAG			TEXT("Prototype_Component_VIBuffer_Terrain3")
 #define BUFFER_TERRAIN_HEIGHT_PATH	TEXT("../Bin/Resources/Textures/Terrain/Height1.bmp")
 
 #define BUFFER_DTERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_DTerrain")
 
 #define BUFFER_CUBE_TAG				TEXT("Prototype_Component_VIBuffer_Cube")
 
+#define BUFFER_PARTICLEPOINT_TAG	TEXT("Prototype_Component_VIBuffer_ParticlePoint")
+
 #pragma endregion
 
 #pragma region 쉐이더
 
 #define	SHADER_POS_TAG						TEXT("Prototype_Component_Shader_VtxPosTex")
-#define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
+//#define SHADER_NOR_TAG						TEXT("Prototype_Component_Shader_VtxNorTex")
 //#define	SHADER_BTN_TAG						TEXT("Prototype_Component_Shader_VtxTBN")
 #define	SHADER_MESH_TAG						TEXT("Prototype_Component_Shader_VtxMesh")
 #define	SHADER_MESHINSTANCING_TAG			TEXT("Prototype_Component_Shader_VtxMeshInstancing")
+#define	SHADER_PARTICLEPOINT_TAG			TEXT("Prototype_Component_Shader_VtxParticlePoint")
 #define	SHADER_ANIMMESH_TAG					TEXT("Prototype_Component_Shader_VtxAnimMesh")
 #define	SHADER_CUBE_TAG						TEXT("Prototype_Component_Shader_VtxCube")
 #define	SHADER_TERRAIN_TAG						TEXT("Prototype_Component_Shader_VtxTerrain")
@@ -61,6 +65,8 @@
 #define	ANIMMODEL_CROW_TAG				TEXT("Prototype_Component_AnimModel_Crow")
 
 #define	ANIMMODEL_OWL_TAG				TEXT("Prototype_Component_AnimModel_Owl")
+
+#define	ANIMMODEL_PHANTOM_TAG			TEXT("Prototype_Component_AnimModel_PhantomBoss")
 
 #pragma endregion
 
@@ -223,12 +229,37 @@
 #define	MODELINSTANCING_SMALLROCK_TAG			TEXT("Prototype_Component_ModelInstancing_SmallRock")
 #define	MODELINSTANCING_PURPLESCHROOMS_TAG		TEXT("Prototype_Component_ModelInstancing_PurpleSchrooms")
 
+#pragma region 파티클
+
+#define	PARTICLE_TEST_TAG		TEXT("Prototype_Component_Particle_Test1")
+#define	PARTICLE_JACKRUN_TAG		TEXT("Prototype_Component_Particle_JackRun")
+#define	PARTICLE_JACKJUMP_TAG		TEXT("Prototype_Component_Particle_JackJump")
+#define	PARTICLE_JACKLANDING_TAG		TEXT("Prototype_Component_Particle_JackLanding")
+
+#define	PARTICLE_JACKELEC1_TAG		TEXT("Prototype_Component_Particle_JackElec1")
+#define	PARTICLE_JACKELEC2_TAG		TEXT("Prototype_Component_Particle_JackElec2")
+#define	PARTICLE_JACKELEC3_TAG		TEXT("Prototype_Component_Particle_JackElec3")
+
+#define	PARTICLE_JACKATTACK1_TAG		TEXT("Prototype_Component_Particle_JackAttack1")
+#define	PARTICLE_JACKATTACK2_TAG		TEXT("Prototype_Component_Particle_JackAttack2")
+#define	PARTICLE_JACKATTACK3_TAG		TEXT("Prototype_Component_Particle_JackAttack3")
+#define	PARTICLE_JACKATTACK4_TAG		TEXT("Prototype_Component_Particle_JackAttack4")
+#define	PARTICLE_JACKATTACK5_TAG		TEXT("Prototype_Component_Particle_JackAttack5")
+
+#define	PARTICLE_JACKHITTAG		TEXT("Prototype_Component_Particle_JackHit")
+
+#pragma endregion
+
 #pragma endregion
 
 #pragma region 아이템
 
 #define	MODEL_SPEAR_TAG			TEXT("Prototype_Component_Sub_Spear")
 #define	MODEL_SHOVEL_TAG		TEXT("Prototype_Component_Sub_Shovel")
+
+#define	MODEL_HELICOBULLET_TAG	TEXT("Prototype_Component_Model_HelicoBullet")
+
+#define	MODEL_BOMB_TAG			TEXT("Prototype_Component_Model_Bomb")
 
 #pragma endregion
 
@@ -242,6 +273,7 @@
 #define	COM_NAVIGATION_DEMO_TAG		TEXT("Prototype_Component_Navigation_Demo")
 #define	COM_NAVIGATION_TAG			TEXT("Prototype_Component_Navi")
 #define	COM_NAVIGATION2_TAG			TEXT("Prototype_Component_Navi2")
+#define	COM_NAVIGATION3_TAG			TEXT("Prototype_Component_Navi3")
 
 #define	COM_RIGIDBODY_TAG			TEXT("Prototype_Component_RigidBody")
 
@@ -265,6 +297,29 @@
 
 #define TEX_LANDSCAPE_TAG		TEXT("Prototype_Component_Texture_groundCrackedDirt")
 
+#pragma region 이펙트 텍스쳐
+
+#define TEX_BUBLE_TAG		TEXT("Prototype_Component_Texture_Buble")
+
+#define TEX_CONFETTIS_TAG		TEXT("Prototype_Component_Texture_Confettis")
+
+#define TEX_SMOKEPUFF_TAG		TEXT("Prototype_Component_Texture_SmokePuff")
+#define TEX_SMOKEPUFFMUSH_TAG	TEXT("Prototype_Component_Texture_SmokePuffMush")
+
+#define TEX_SNOW_TAG		TEXT("Prototype_Component_Texture_Snow")
+
+#define TEX_ELEC_TAG		TEXT("Prototype_Component_Texture_ElecParts")
+
+#define TEX_STRAW_TAG		TEXT("Prototype_Component_Texture_Straw")
+
+#define TEX_DAMAGEIMPACT_TAG		TEXT("Prototype_Component_Texture_DamageImpact")
+
+#define TEX_LANTERNHALO_TAG		TEXT("Prototype_Component_Texture_LanternHalo")
+
+#define TEX_SOUL_TAG		TEXT("Prototype_Component_Texture_SoulTex")
+
+#pragma endregion
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -283,10 +338,18 @@
 #define G0_OBJECTMESH_DEMO_TAG	TEXT("Prototype_GameObject_ObjectMesh_Demo")
 #define G0_ANIMMESH_DEMO_TAG	TEXT("Prototype_GameObject_Animmesh_Demo")
 #define G0_SUBMESH_DEMO_TAG		TEXT("Prototype_GameObject_Submesh_Demo")
+#define G0_PARTICLE_DEMO_TAG		TEXT("Prototype_GameObject_Particle_Demo")
 
 #define GO_PLATEFORM_TAG		TEXT("Prototype_GameObject_Plateform")
 #define GO_PLATEFORM_INSTANCING_TAG		TEXT("Prototype_GameObject_PlateformInstancing")
 #define GO_PLATEFORM_TRAP_TAG		TEXT("Prototype_GameObject_PlateformTrap")
+
+#define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
+#define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
+
+#define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
+#define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
+#define GO_EFFECTSOUL_TAG			TEXT("Prototype_GameObject_EffectSoul")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
@@ -294,6 +357,14 @@
 
 #define GO_NORMAL_BULLET_TAG			TEXT("Prototype_GameObject_NormalBullet")
 #define GO_RANGE_BULLET_TAG			TEXT("Prototype_GameObject_RangeBullet")
+#define GO_SHOCK_WAVE_TAG			TEXT("Prototype_GameObject_ShockWave")
+#define GO_LASER_TAG			TEXT("Prototype_GameObject_Laser")
+#define GO_MULTIPLY_TAG			TEXT("Prototype_GameObject_Mutiply")
+#define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
+#define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
+#define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
+
+
 
 #pragma region 캐릭터
 
@@ -310,5 +381,11 @@
 
 
 #pragma endregion
+
+#pragma endregion
+
+#pragma region 폰트
+
+#define FONT_139EX_TAG	TEXT("../Bin/Resources/Fonts/139ex.spritefont")
 
 #pragma endregion

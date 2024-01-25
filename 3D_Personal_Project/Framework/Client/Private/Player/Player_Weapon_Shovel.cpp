@@ -64,6 +64,8 @@ void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
+		return;
 }
 
 HRESULT CPlayer_Weapon_Shovel::Render()
@@ -77,15 +79,10 @@ HRESULT CPlayer_Weapon_Shovel::Render()
 	{
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(SHADER_TBN::TBN_MODEL);
+		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(i);
 	}
-
-#ifdef _DEBUG
-	m_pColliderCom->Render();
-#endif
-
 
 	return S_OK;
 }
@@ -134,10 +131,6 @@ HRESULT CPlayer_Weapon_Shovel::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
-		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
-		return E_FAIL;
-
 	return S_OK;
 }
 
@@ -150,12 +143,12 @@ HRESULT CPlayer_Weapon_Shovel::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	Sphere_Desc.fRadius = 20.f;
-	Sphere_Desc.vCenter = _float3(0.f, 190.f, 0.f);
+	Sphere_Desc.fRadius = 30.f;
+	Sphere_Desc.vCenter = _float3(0.f, 200.f, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 	for (_uint i = 1; i < 4; i++)
 	{
-		Sphere_Desc.vCenter = _float3(0.f, 190.f - (40.f*i), 0.f);
+		Sphere_Desc.vCenter = _float3(0.f, 200.f - (60.f*i), 0.f);
 		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
 	

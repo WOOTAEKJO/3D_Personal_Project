@@ -13,7 +13,9 @@ private:
 	virtual ~CRenderTarget() = default;
 
 public:
-	HRESULT Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format);
+	HRESULT Initialize(_uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format,_float4 vColor);
+	HRESULT	Bind_ShaderResource(CShader* pShader, const _char* pConstantName);
+	HRESULT	Clear();
 
 #ifdef _DEBUG
 
@@ -37,8 +39,11 @@ private:
 private:
 	_float4x4					m_matWorld;
 
+	_float4						m_vColor;
+
 public:
-	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,_uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format);
+	static CRenderTarget* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext,
+		_uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, _float4 vColor);
 	virtual	 void	Free() override;
 };
 

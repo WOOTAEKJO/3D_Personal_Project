@@ -21,7 +21,12 @@ public:
 	HRESULT	Ready_Layer_Plateform(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Monster(const wstring& strLayerTag);
-	
+	HRESULT	Ready_Trigger();
+public:
+	void	Set_NextLevel() { m_bNextLevel = true; }
+
+private:
+	_bool		m_bNextLevel = { false };
 public:
 	static CLevel_Boss1* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

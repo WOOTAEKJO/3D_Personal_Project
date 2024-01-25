@@ -10,6 +10,9 @@
 #include "Collider_Manager.h"
 #include "Font_Manager.h"
 #include "RenderTarget_Manager.h"
+#include "Light_Manager.h"
+#include "Camera_Manager.h"
+#include "Frustum.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -95,6 +98,21 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
 
+	/* 라이트 매니저 사용 준비*/
+	m_pLight_Manager = CLight_Manager::Create();
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	/* 카메라 매니저 사용 준비*/
+	m_pCamera_Manager = CCamera_Manager::Create();
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	/* 카메라 매니저 사용 준비*/
+	m_pFrustum = CFrustum::Create();
+	if (nullptr == m_pFrustum)
+		return E_FAIL;
+
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
@@ -113,10 +131,11 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Tick(fTimeDelta);
 
 	m_pObject_Manager->Tick(fTimeDelta);
-	m_pPipeLine->Tick();
 
 	m_pObject_Manager->Late_Tick(fTimeDelta);
 	m_pCollider_Manager->Update();
+	m_pPipeLine->Tick();
+	m_pFrustum->Tick();
 	
 	m_pLevel_Manager->Tick(fTimeDelta);
 
@@ -357,6 +376,14 @@ HRESULT CGameInstance::Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, CGameOb
 	return m_pRenderer->Add_RenderGroup(eRenderID, pGameObject);
 }
 
+HRESULT CGameInstance::Add_DebugRender(CComponent* pComponent)
+{
+	if (nullptr == m_pRenderer)
+		return E_FAIL;
+
+	return m_pRenderer->Add_DebugRender(pComponent);
+}
+
 HRESULT CGameInstance::Add_Event(const wstring& strEventTag, function<void()> pFunction)
 {
 	if (nullptr == m_pEvent_Manager)
@@ -549,6 +576,22 @@ HRESULT CGameInstance::Load_Data_Json(const wstring& strTag, CGameObject* pObjec
 	return m_pSaveLoad_Manager->Load_Data_Json(strTag, pObject);
 }
 
+HRESULT CGameInstance::Save_Data_Particle(const _char* strFilePath, INSTANCING_DESC Dest)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Save_Data_Particle(strFilePath, Dest);
+}
+
+HRESULT CGameInstance::Load_Data_Particle(const _char* strFilePath, INSTANCING_DESC* pOut)
+{
+	if (nullptr == m_pSaveLoad_Manager)
+		return E_FAIL;
+
+	return m_pSaveLoad_Manager->Load_Data_Particle(strFilePath, pOut);
+}
+
 string CGameInstance::Load_Data_Path(wstring strTag)
 {
 	if (nullptr == m_pFile_Manager)
@@ -613,7 +656,7 @@ HRESULT CGameInstance::Add_Font(_uint iFontTag, const wstring& strFontFilePath)
 	return m_pFont_Manager->Add_Font(iFontTag, strFontFilePath);
 }
 
-HRESULT CGameInstance::Render(_uint iFontTag, const wstring& strText, _float2 vPosition, _fvector vColor, _float fScale, _float2 vOrigin, _float fRotation)
+HRESULT CGameInstance::Render_Font(_uint iFontTag, const wstring& strText, _float2 vPosition, _fvector vColor, _float fScale, _float2 vOrigin, _float fRotation)
 {
 	if (nullptr == m_pFont_Manager)
 		return E_FAIL;
@@ -653,6 +696,14 @@ HRESULT CGameInstance::End_MRT()
 	return m_pRenderTarget_Manager->End_MRT();
 }
 
+HRESULT CGameInstance::Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName)
+{
+	if (nullptr == m_pRenderTarget_Manager)
+		return E_FAIL;
+
+	return m_pRenderTarget_Manager->Bind_ShaderResource(eType, pShader, pConstantName);
+}
+
 HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	if (nullptr == m_pRenderTarget_Manager)
@@ -669,15 +720,83 @@ HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShad
 	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
 
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_Light(eLightDesc, ppLight);
+}
+
+void CGameInstance::Delete_Light(CLight* ppLight)
+{
+	if (nullptr == m_pLight_Manager)
+		return;
+
+	m_pLight_Manager->Delete_Light(ppLight);
+}
+
+HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Render(pShader, pBuffer);
+}
+
+HRESULT CGameInstance::Add_Camera(const wstring& strCameraTag, CCamera* pCamera)
+{
+	if (nullptr == m_pCamera_Manager)
+		return E_FAIL;
+
+	return m_pCamera_Manager->Add_Camera(strCameraTag, pCamera);
+}
+
+void CGameInstance::SetUp_Camera_Offset(_float3 vOffset)
+{
+	if (nullptr == m_pCamera_Manager)
+		return;
+
+	m_pCamera_Manager->SetUp_Offset(vOffset);
+}
+
+void CGameInstance::Transform_ToLocalSpace_Frustum(_fmatrix matWorld)
+{
+	if (nullptr == m_pFrustum)
+		return;
+
+	m_pFrustum->Transform_ToLocalSpace(matWorld);
+}
+
+_bool CGameInstance::IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius)
+{
+	if (nullptr == m_pFrustum)
+		return false;
+
+	return m_pFrustum->IsIn_LocalPlanes(vPoint, fRadius);
+}
+
+_bool CGameInstance::IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius)
+{
+	if (nullptr == m_pFrustum)
+		return false;
+
+
+	return m_pFrustum->IsIn_World_FrustumPlanes(vPoint, fRadius);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pFrustum);
+	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFile_Manager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pCollider_Manager);
 	Safe_Release(m_pObject_Manager);
+	Safe_Release(m_pCamera_Manager);
 	Safe_Release(m_pEvent_Manager);
 	Safe_Release(m_pMouse_Manager);
 	Safe_Release(m_pSaveLoad_Manager);

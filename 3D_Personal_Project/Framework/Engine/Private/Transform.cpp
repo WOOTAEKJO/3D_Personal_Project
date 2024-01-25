@@ -204,9 +204,9 @@ void CTransform::LookAt(_fvector fTargetPos)
 	_vector	vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook)) * fScale.x;
 	_vector vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight)) * fScale.y;
 
-	Set_State(STATE::STATE_RIGHT, vRight);
-	Set_State(STATE::STATE_UP, vUp);
-	Set_State(STATE::STATE_LOOK, vLook);
+	Set_State(STATE::STATE_RIGHT, XMVectorSetW( vRight,0.f));
+	Set_State(STATE::STATE_UP, XMVectorSetW(vUp, 0.f));
+	Set_State(STATE::STATE_LOOK, XMVectorSetW(vLook, 0.f));
 
 	if (isnan(m_matWorldMatrix.m[0][0]))
 	{

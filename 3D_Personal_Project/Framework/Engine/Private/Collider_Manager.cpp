@@ -67,8 +67,23 @@ HRESULT CCollider_Manager::Add_Pair_Collision(_uint iSourColLayer, _uint iDestCo
 	CCollider_Layer* pSourLayer = Find_Collider_Layer(iSourColLayer);
 	CCollider_Layer* pDestLayer = Find_Collider_Layer(iDestColLayer);
 
-	if (pSourLayer == nullptr || pDestLayer == nullptr)
-		return E_FAIL;
+	if (pSourLayer == nullptr)
+	{
+		pSourLayer = CCollider_Layer::Create();
+		if (pSourLayer == nullptr)
+			return E_FAIL;
+
+		m_mapColliderLayer.emplace(iSourColLayer, pSourLayer);
+	}
+
+	if (pDestLayer == nullptr)
+	{
+		pDestLayer = CCollider_Layer::Create();
+		if (pDestLayer == nullptr)
+			return E_FAIL;
+
+		m_mapColliderLayer.emplace(iDestColLayer, pDestLayer);
+	}
 
 	m_vecActiveCollider.push_back(make_pair(pSourLayer, pDestLayer));
 

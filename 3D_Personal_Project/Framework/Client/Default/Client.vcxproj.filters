@@ -283,12 +283,6 @@
     <Filter Include="02.GameObjects\06. Particle">
       <UniqueIdentifier>{0a574403-3a13-4576-9d8f-341db9079438}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06. Particle\00. Rect">
-      <UniqueIdentifier>{a2de197f-11c3-47d6-80b9-80701a452302}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06. Particle\01. Point">
-      <UniqueIdentifier>{350ef919-b34a-49dd-a5b2-a0bf9e6c44da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\03. Platform">
       <UniqueIdentifier>{bcf4ed14-aae4-40d8-8cf3-52b4c49d0be8}</UniqueIdentifier>
     </Filter>
@@ -313,23 +307,167 @@
     <Filter Include="02.GameObjects\07. Bullet">
       <UniqueIdentifier>{b94d8bd2-28d4-45c9-8ea4-a05fb810445f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03. Platform\02. Trap\00. Col">
-      <UniqueIdentifier>{4cb17ef6-aad7-472a-8587-f03718e7ffc5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\07. Bullet\01. Normal">
       <UniqueIdentifier>{746c6ea4-61de-43f2-9f80-4ad4e2801f12}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear">
       <UniqueIdentifier>{ced739ab-2448-4144-968a-7dfb15716e1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol">
-      <UniqueIdentifier>{1cdbf9ae-535e-4837-8851-0d8da367c688}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\05. Character\02. NPC\01. Owl">
       <UniqueIdentifier>{1c67b86b-36fd-4945-92b3-044e05401684}</UniqueIdentifier>
     </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk">
       <UniqueIdentifier>{1dc97220-1ed9-46d5-997a-e8929bb1bd92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico">
+      <UniqueIdentifier>{6153dd81-f417-4ceb-a153-5887fcfc1709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive">
+      <UniqueIdentifier>{ba603e41-e531-4519-82d9-d6fe8675f9c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE">
+      <UniqueIdentifier>{ac031cf5-879b-4ec6-9f47-dd8e6f5568a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead">
+      <UniqueIdentifier>{d473b827-a4cc-4dec-9a19-932e7f99b955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE">
+      <UniqueIdentifier>{956ea941-a904-4e2a-a782-b0202c8b5300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit">
+      <UniqueIdentifier>{3fa93064-01ea-40a3-9289-03c68495600e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake">
+      <UniqueIdentifier>{0a00592c-9547-4f3e-b702-50f14d718d2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE">
+      <UniqueIdentifier>{2ea52f9e-e818-4b00-821e-20e3b2bb5663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack">
+      <UniqueIdentifier>{a6de9365-a530-4bef-b23b-2454804176a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start">
+      <UniqueIdentifier>{ddf73abe-d389-4376-99af-3de1ba0f8b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End">
+      <UniqueIdentifier>{5e2b2563-8a02-47df-bc1a-78e2dd4486fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up">
+      <UniqueIdentifier>{2a5f98ef-4932-43b1-ab73-00c0d1e9fff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash">
+      <UniqueIdentifier>{d246c5b2-d18a-45da-94d0-74dcd28d5c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet">
+      <UniqueIdentifier>{60f78fc0-5836-4270-b936-5476ff4bb5f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\00.Common\00. Spear_AirAttack\00. RangeCol">
+      <UniqueIdentifier>{1cdbf9ae-535e-4837-8851-0d8da367c688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\02. Shock_Wave">
+      <UniqueIdentifier>{dfa29cbe-1849-44c6-baf7-c65f98eb9f02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02. Level_Boss2">
+      <UniqueIdentifier>{f13ce1c4-d854-4416-866e-24be5413129d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom">
+      <UniqueIdentifier>{ffc26f9f-4732-4752-a449-588dd3989793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom">
+      <UniqueIdentifier>{29083c34-7faa-4ecd-bb73-2680acbbd05a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse">
+      <UniqueIdentifier>{ae693966-6039-4729-99c7-9cac1a74084e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse">
+      <UniqueIdentifier>{0044740f-e849-48b0-a7f5-522beb6eb8a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse">
+      <UniqueIdentifier>{b235c38a-1e6f-4da2-94f8-7d27ee3a5138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE">
+      <UniqueIdentifier>{46bd25d2-3f46-4c48-9e1c-8c4780e07dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear">
+      <UniqueIdentifier>{6e9ebb98-3001-4598-95a7-2e9ace17fbf7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh">
+      <UniqueIdentifier>{e30b8c65-d974-4bbe-8c91-28e0a496c668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit">
+      <UniqueIdentifier>{dbb33ab7-7ed9-47f8-ac45-03c4f1d0ccb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro">
+      <UniqueIdentifier>{319d1be8-5c50-45a3-bdb9-f628f784b8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser">
+      <UniqueIdentifier>{cd083e68-fd5a-4fbb-8d3a-5f8278622773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau">
+      <UniqueIdentifier>{c2524db2-5ff1-48c5-bfb9-b8c345639b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead">
+      <UniqueIdentifier>{9e8d9394-1347-4642-a457-8547b51af6ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot">
+      <UniqueIdentifier>{491915c2-09f9-46bf-9628-85a01279234b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon">
+      <UniqueIdentifier>{e7bb1646-6401-4c4b-a396-3d8267b5ab78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb">
+      <UniqueIdentifier>{26a22c0c-ddda-4989-b1ca-965b36166f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop">
+      <UniqueIdentifier>{a5fb6b09-0a17-48a3-8483-340cbe4af8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish">
+      <UniqueIdentifier>{b83a98cc-8d22-4d01-9f39-618e5e4d69ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\03. Laser">
+      <UniqueIdentifier>{77c319c4-0f7e-41ac-9c7a-4f83cf7b126e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash">
+      <UniqueIdentifier>{9fd59666-1e7e-4d3c-b723-5a4981913164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply">
+      <UniqueIdentifier>{4b386c19-ddf6-4a93-b761-c09cbbfa89de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb">
+      <UniqueIdentifier>{f38f3d23-851c-4b8c-91ce-acbcbd2cf7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\04. Target">
+      <UniqueIdentifier>{2649bd89-d1ec-46f9-9620-28dc31cbb4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor">
+      <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window">
+      <UniqueIdentifier>{5564a11d-35d7-4bd2-bf83-4cfa9e6b9421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\04. Particle">
+      <UniqueIdentifier>{9dfa84aa-4c9e-4d28-8cd3-17f27df4215e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\00. Normal_Particle">
+      <UniqueIdentifier>{ab5812fb-49a0-4c42-b239-880ba570bf84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\01. Sprite_Particle">
+      <UniqueIdentifier>{615b033c-f770-41b6-988a-6a333fad477f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98. Demo\05. Effect">
+      <UniqueIdentifier>{9bfeed48-c378-4ff4-9d59-2eb8cfefd25c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect">
+      <UniqueIdentifier>{bf12d004-eefe-40b8-b706-5ead260ae014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\00. Damage">
+      <UniqueIdentifier>{bc016737-058b-4fdf-9835-955f51fa13a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\01. LaternHalo">
+      <UniqueIdentifier>{e4bd8978-7478-4d53-848d-9a611cc963de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\02. Soul">
+      <UniqueIdentifier>{16b8326f-db11-4889-9643-c49fefa382b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -604,13 +742,160 @@
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Range_Bullet.h">
-      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\00.Common\00. Spear_AirAttack\00. RangeCol</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Owl.h">
       <Filter>02.GameObjects\05. Character\02. NPC\01. Owl</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NPCState\NPC_Talk.h">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HelicoScarrow.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dead.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_Hit.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Exhausted_Wake.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack_End.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Attack_Start.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Dive_Up.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Helico_Ground_Smash.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Helico_Bullet.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Shock_Wave.h">
+      <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Boss2.h">
+      <Filter>01.Levels\02. Level_Boss2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Phantom.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_IDLE.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Attaque_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Hit_Chasse.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Appear.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Bouh.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Hit.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Intro.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Laser.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Marteau.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Dead.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Shoot.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon_Bomb.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Summon_Loop.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Vanish.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Laser.h">
+      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_Dash.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Multiply.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Bomb.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Target_Bullet.h">
+      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Meteor.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Window.h">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Demo.h">
+      <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle.h">
+      <Filter>02.GameObjects\06. Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Normal.h">
+      <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Sprite.h">
+      <Filter>02.GameObjects\06. Particle\01. Sprite_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Demo.h">
+      <Filter>02.GameObjects\98. Demo\05. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect.h">
+      <Filter>02.GameObjects\08. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Damage.h">
+      <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Halo.h">
+      <Filter>02.GameObjects\08. Effect\01. LaternHalo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Soul.h">
+      <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -858,13 +1143,160 @@
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\00. Normal_Monster\06. Appear</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Range_Bullet.cpp">
-      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\01. Linker\00. Common\02. Attack3\00. RangeCol</Filter>
+      <Filter>95. State\00. StatMachine_State\00. Character\00. Player\02. Attack\00.Common\00. Spear_AirAttack\00. RangeCol</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Owl.cpp">
       <Filter>02.GameObjects\05. Character\02. NPC\01. Owl</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NPCState\NPC_Talk.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\03. Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HelicoScarrow.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\09. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\00. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\01. Dive</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\02. Dive_IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_Hit.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\03. Exhausted_Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\04. Exhausted_IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Exhausted_Wake.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\05. Exhausted_Wake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\06. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack_End.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\07. Attack_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Attack_Start.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\08. Attack_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Dive_Up.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\10. Dive_Up</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Helico_Ground_Smash.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\00. Helico\11.Ground_Smash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Helico_Bullet.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Shock_Wave.cpp">
+      <Filter>02.GameObjects\07. Bullet\02. Shock_Wave</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Boss2.cpp">
+      <Filter>01.Levels\02. Level_Boss2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Phantom.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_IDLE.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\03. IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Attaque_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\00. Attaque_Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\01. Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Hit_Chasse.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\02. Hit_Chasse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Appear.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\04. Appear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Bouh.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\05. Bouh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Hit.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\06. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Intro.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\07. Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Laser.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\08. Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Marteau.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\09. Marteau</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Dead.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\10. Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Shoot.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\11. Shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\12. Summon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon_Bomb.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\13. Summon_Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Summon_Loop.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\14. Summon_Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Vanish.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Laser.cpp">
+      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_Dash.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Multiply.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Bomb.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Target_Bullet.cpp">
+      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Meteor.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Window.cpp">
+      <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\04. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle.cpp">
+      <Filter>02.GameObjects\06. Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Normal.cpp">
+      <Filter>02.GameObjects\06. Particle\00. Normal_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Sprite.cpp">
+      <Filter>02.GameObjects\06. Particle\01. Sprite_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Demo.cpp">
+      <Filter>02.GameObjects\98. Demo\05. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect.cpp">
+      <Filter>02.GameObjects\08. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Damage.cpp">
+      <Filter>02.GameObjects\08. Effect\00. Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Halo.cpp">
+      <Filter>02.GameObjects\08. Effect\01. LaternHalo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Soul.cpp">
+      <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -892,9 +1324,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxMesh.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
-      <Filter>94. Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxPosTex.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
@@ -908,6 +1337,9 @@
       <Filter>94. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxTerrain.hlsl">
+      <Filter>94. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxParticlePoint.hlsl">
       <Filter>94. Shader</Filter>
     </FxCompile>
   </ItemGroup>

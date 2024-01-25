@@ -16,8 +16,8 @@ HRESULT CLEVEL_Converter::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
 		return E_FAIL;
 
-	if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
-		return E_FAIL;
+	/*if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -31,8 +31,8 @@ HRESULT CLEVEL_Converter::Render()
 {
 	SetWindowText(g_hWnd, TEXT("Converter"));
 
-	if (FAILED(CImGuiMgr::GetInstance()->Render()))
-		return E_FAIL;
+	/*if (FAILED(CImGuiMgr::GetInstance()->Render()))
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -58,7 +58,7 @@ CLEVEL_Converter* CLEVEL_Converter::Create(ID3D11Device* pDevice, ID3D11DeviceCo
 
 void CLEVEL_Converter::Free()
 {
-	CImGuiMgr::GetInstance()->DestroyInstance();
+	//CImGuiMgr::GetInstance()->DestroyInstance();
 
 	__super::Free();
 

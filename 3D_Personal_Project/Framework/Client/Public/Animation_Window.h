@@ -5,11 +5,12 @@ BEGIN(Client)
 
 class CAnimMesh_Demo;
 class CSubObject_Demo;
+class CParticle_Demo;
 
 class CAnimation_Window final : public CImGui_Window
 {
 public:
-	enum ANIMATIONMODE { MODE_ANIMATION, MODE_SUBOBJECT, MODE_END };
+	enum ANIMATIONMODE { MODE_ANIMATION, MODE_SUBOBJECT,MODE_PARTICLE, MODE_END };
 
 private:
 	CAnimation_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
@@ -48,6 +49,16 @@ private:
 	_bool	m_bReserve = { false };
 
 private:
+	vector<wstring>				m_vecParticlePrototypeTag;
+	wstring						m_strPickParticleTag;
+	vector<CParticle_Demo*>		m_vecParticleDemo;
+	_uint						m_iCurrentParticleIndex = { 0 };
+
+	_bool			m_bUpdate = { false };
+	_bool			m_bTrans = { false };
+
+
+private:
 	vector<wstring>					m_vecAnimPrototypeTag;
 	wstring							m_strPickModelTag;
 	_uint							m_iCurrentAnimation = { 0 };
@@ -61,10 +72,13 @@ private:
 private:
 	void	Animation();
 	void	SubObject();
+	void	Particle();
 
 private:
 	void	Create_Animation_Model(const wstring& strModelTag);
 	void	Create_Sub_Model(const wstring& strSubModelTag);
+	void	Create_Particle(const wstring& strParticleTag);
+	void	Delete_Particle();
 
 	_bool	Reserve_Animation();
 

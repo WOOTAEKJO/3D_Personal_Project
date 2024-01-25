@@ -42,6 +42,9 @@ private:
 	MODELTYPE				m_eCurrentType = { TYPE_END };
 
 private:
+	_bool					m_bCheck = {false};
+
+private:
 	HRESULT		Binarization(const _char* strFilePath);
 
 	HRESULT		Init_Model();

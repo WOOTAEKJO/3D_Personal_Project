@@ -17,6 +17,7 @@ public:
 public:
 	HRESULT	Ready_Layer_BackGround(const wstring & strLayerTag);
 	HRESULT	Ready_Layer_Camera(const wstring & strLayerTag);
+	HRESULT	Ready_LightDesc();
 
 public:
 	static CLevel_Tool* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext);

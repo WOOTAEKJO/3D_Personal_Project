@@ -19,6 +19,9 @@ HRESULT CLevel_Tool::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_LightDesc()))
+		return E_FAIL;
+
 	if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
@@ -64,6 +67,37 @@ HRESULT CLevel_Tool::Ready_Layer_Camera(const wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_GAMEPLAY, strLayerTag, TEXT("Prototype_GameObject_DynamicCamera"), &DynamicCameraDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Tool::Ready_LightDesc()
+{
+	LIGHT_DESC LightDesc = {};
+
+	LightDesc.eType = LIGHT_DESC::LIGHT_TYPE::TYPE_DIRECTION;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+		return E_FAIL;
+
+	/*for (_uint i = 0; i < 10; i++)
+	{
+		LIGHT_DESC LightDesc = {};
+	
+		LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+		LightDesc.vPos = _float4(10.f + (i * 5.f),0.f,10.f + (i * 5.f),1.f);
+		LightDesc.fRange = 0.6f;
+		LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.f, 1.f);
+		LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+		LightDesc.vSpecular = LightDesc.vDiffuse;
+
+		if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+			return E_FAIL;
+	}*/
 
 	return S_OK;
 }

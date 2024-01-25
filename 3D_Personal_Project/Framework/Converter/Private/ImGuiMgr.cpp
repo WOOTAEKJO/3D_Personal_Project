@@ -42,14 +42,21 @@ HRESULT CImGuiMgr::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pConte
     ImGui_ImplWin32_Init(g_hWnd);
     ImGui_ImplDX11_Init(m_pDevice, m_pContext);
 
-    if (FAILED(Init_Model()))
-        return E_FAIL;
+    /*if (FAILED(Init_Model()))
+        return E_FAIL;*/
 
 	return S_OK;
 }
 
 void CImGuiMgr::Tick()
 {
+    if (!m_bCheck && m_pGameInstance->Key_Pressing(DIK_SPACE))
+    {
+           if (FAILED(Init_Model()))
+            return;
+
+        m_bCheck = true;
+    }
     
 }
 

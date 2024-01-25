@@ -49,6 +49,8 @@ void CTerrain_Demo::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_DebugRender(m_pNavigationCom)))
+		return;
 
 }
 
@@ -70,8 +72,6 @@ HRESULT CTerrain_Demo::Render()
 			m_pShaderCom->Set_RenderState(CShader::RENDERSTATE::RS_SOLID);
 
 		m_pVIBufferCom->Render();
-
-		m_pNavigationCom->Render();
 	}
 
 	return S_OK;
@@ -140,10 +140,7 @@ HRESULT CTerrain_Demo::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pTextureCom[TYPE_BRUSH]->Bind_ShaderResource(m_pShaderCom, "g_BrushTexture")))
 		return E_FAIL;
-	
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_CamWorldPos",
-		&m_pGameInstance->Get_CameraState(CPipeLine::CAMERASTATE::CAM_POS), sizeof(_float4))))
-		return E_FAIL;
+
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_bWireFrame", &m_bWireFrame, sizeof(bool))))
 		return E_FAIL;
 
@@ -351,6 +348,14 @@ void CTerrain_Demo::Set_Add(_bool bCheck)
 		return;
 
 	m_pVIBufferCom->Set_Add(bCheck);
+}
+
+void CTerrain_Demo::Init_Neighbor()
+{
+	if (m_pNavigationCom == nullptr)
+		return;
+
+	m_pNavigationCom->Init_Neighbor();
 }
 
 CTerrain_Demo* CTerrain_Demo::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Animation.h"
 
+#include "GameObject.h"
+
 CModel::CModel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CComponent(pDevice, pContext)
 {
@@ -93,6 +95,10 @@ HRESULT CModel::Render(_uint iMeshIndex)
 
 void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 {
+
+	if (!m_pOwner->Get_In_WorldPlanes())
+		return;
+
 	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
 		return;
 
@@ -216,6 +222,38 @@ _bool CModel::Is_Animation_Finished()
 	}
 
 	return false;
+}
+
+void CModel::Animation_ReStart(_uint iIndx)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return;
+
+	m_vecAnimation[iIndx]->Set_ReStart();
+}
+
+_bool CModel::Is_CurAnim_Arrival_TrackPosition(_uint iIndx, _float fTime)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Is_Arrival_TrackPosition(fTime);
+}
+
+_bool CModel::Is_CurAnim_Current_TrackPosition(_uint iIndx, _float fTime)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Is_Current_TrackPosition(fTime);
+}
+
+_float CModel::CurAnim_Get_Duration(_uint iIndx)
+{
+	if (iIndx >= m_vecAnimation.size())
+		return false;
+
+	return m_vecAnimation[iIndx]->Get_Duration();
 }
 
 void CModel::Write_Json(json& Out_Json)

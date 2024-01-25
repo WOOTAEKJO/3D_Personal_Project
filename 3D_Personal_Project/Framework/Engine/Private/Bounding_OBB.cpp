@@ -31,6 +31,7 @@ HRESULT CBounding_OBB::Initialize(BOUNDING_DESC* Bounding_Desc)
 
 void CBounding_OBB::Update(_fmatrix matWorld)
 {
+	XMStoreFloat4x4(&m_matWorld, matWorld);
 	m_pOriOBB->Transform(*m_pOBB, matWorld);
 }
 
@@ -61,6 +62,14 @@ _bool CBounding_OBB::Collision(CCollider* pTargetCollider, _float3* vCollisionDi
 			break;
 		case TYPE::TYPE_SPHERE:
 			return m_pOBB->Intersects(*dynamic_cast<CBounding_Sphere*>(iter)->Get_BoundingSphere());
+			break;
+		case TYPE::TYPE_RAY:
+			{
+				_float fDist = 0;
+
+				CBounding_Ray::BOUNDING_RAY_DESC Ray = dynamic_cast<CBounding_Ray*>(iter)->Get_BoundingRay();
+				return m_pOBB->Intersects(XMLoadFloat3(&Ray.vCenter), XMLoadFloat3(&Ray.vDir), fDist);
+			}
 			break;
 		}
 	}

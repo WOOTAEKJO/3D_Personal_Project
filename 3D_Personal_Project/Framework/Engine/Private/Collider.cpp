@@ -69,6 +69,9 @@ HRESULT CCollider::Initialize(void* pArg)
 	case CBounding::TYPE_SPHERE:
 		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
+	case CBounding::TYPE_RAY:
+		pBounding = CBounding_Ray::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
 	}
 	if (pBounding == nullptr)
 		return E_FAIL;
@@ -90,6 +93,18 @@ void CCollider::Update(_fmatrix matWorld)
 	//m_pBounding->Update(matWorld);
 	for (auto& iter : m_vecBounding)
 		iter->Update(matWorld);
+}
+
+void CCollider::Update_Each(_uint iBoundingIdx, _fmatrix matWorld)
+{
+	if (m_vecBounding.empty())
+		return;
+
+	if (iBoundingIdx >= m_vecBounding.size())
+		return;
+
+	m_vecBounding[iBoundingIdx]->Update(matWorld);
+	
 }
 
 #ifdef _DEBUG
@@ -155,6 +170,9 @@ HRESULT CCollider::Add_Bounding(void* pArg)
 	case CBounding::TYPE_SPHERE:
 		pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pBounding_Desc);
 		break;
+	case CBounding::TYPE_RAY:
+		pBounding = CBounding_Ray::Create(m_pDevice, m_pContext, pBounding_Desc);
+		break;
 	}
 	if (pBounding == nullptr)
 		return E_FAIL;
@@ -162,6 +180,14 @@ HRESULT CCollider::Add_Bounding(void* pArg)
 	m_vecBounding.push_back(pBounding);
 
 	return S_OK;
+}
+
+_float4x4 CCollider::Get_Collider_WorldMat(_uint iCollIdnx)
+{
+	if(iCollIdnx >= m_vecBounding.size())
+		return _float4x4();
+
+	return m_vecBounding[iCollIdnx]->Get_CollsionWorldMat();
 }
 
 void CCollider::OnCollisionEnter(CCollider* pOtherCollider)
