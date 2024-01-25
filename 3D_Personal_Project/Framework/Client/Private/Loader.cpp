@@ -24,10 +24,12 @@
 
 #include "Particle_Normal.h"
 #include "Particle_Sprite.h"
+#include "Particle_Sub.h"
 
 #include "Effect_Damage.h"
 #include "Effect_Halo.h"
 #include "Effect_Soul.h"
+#include "Effect_Reaper.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -252,10 +254,12 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Normal>(GO_PARTICLENORMAL_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sprite>(GO_PARTICLESPRITE_TAG))) return E_FAIL;
-
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sub>(GO_PARTICLESUB_TAG))) return E_FAIL;
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Soul>(GO_EFFECTSOUL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Reaper>(GO_EFFECTREAPER_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -343,6 +347,9 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	//if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LANDSCAPE_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SKYBOX_TAG, 3))) return E_FAIL;
 
+	if (FAILED(Effect_Tex()))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN2_TAG))) return E_FAIL;
@@ -367,6 +374,7 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
+	if (FAILED(Particle())) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION2_TAG))) return E_FAIL;
@@ -379,6 +387,7 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_TERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<PARTICLE_POINT>(SHADER_PARTICLEPOINT_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
@@ -416,6 +425,9 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_TERRAIN_MASK_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SKYBOX_TAG, 3))) return E_FAIL;
 
+	if (FAILED(Effect_Tex()))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
 
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN3_TAG))) return E_FAIL;
@@ -439,6 +451,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(Instancing())) return E_FAIL;
 
 	if (FAILED(Item())) return E_FAIL;
+	if (FAILED(Particle())) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_File(COM_NAVIGATION3_TAG))) return E_FAIL;
@@ -450,6 +463,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXANIMMESH>(SHADER_ANIMMESH_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXCUBE>(SHADER_CUBE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXMESH>(SHADER_TERRAIN_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<PARTICLE_POINT>(SHADER_PARTICLEPOINT_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
@@ -715,6 +729,8 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_DAMAGEIMPACT_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LANTERNHALO_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SOUL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_REAPER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BATSPRITE_TAG, 4))) return E_FAIL;
 
 	return S_OK;
 }
@@ -736,6 +752,21 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK5_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKHITTAG))) return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACK1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACK2_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACK3_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACK4_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACK5_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1AIRATTACKEND_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1WAVE_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1HIT_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BAT1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BAT2_TAG))) return E_FAIL;
 
 	return S_OK;
 }

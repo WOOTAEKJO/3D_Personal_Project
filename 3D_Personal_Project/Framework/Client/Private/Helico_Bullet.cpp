@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Utility_Effect.h"
+
 CHelico_Bullet::CHelico_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -32,6 +34,8 @@ HRESULT CHelico_Bullet::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 
@@ -43,19 +47,50 @@ void CHelico_Bullet::Priority_Tick(_float fTimeDelta)
 
 void CHelico_Bullet::Tick(_float fTimeDelta)
 {
+	/*if (m_bParticle)
+	{
+		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1AIRATTACK_TAG, GO_PARTICLESUB_TAG,
+			this, nullptr, 1.f);
+
+		m_bParticle = false;
+	}*/
+
 	__super::Tick(fTimeDelta);
 }
 
 void CHelico_Bullet::Late_Tick(_float fTimeDelta)
 {
-	/*m_fTimeAcc += fTimeDelta;
+	m_fTimeAcc += fTimeDelta;
 
-	if (m_fTimeAcc > m_fLifeTime)
+	if (m_fTimeAcc > 0.05f)
+	{
+		m_fTimeAcc = 0.f;
+
+		_uint iNum = rand() % 5 + 1;
+
+		wstring strTag = TEXT("Prototype_Component_Particle_Boss1AirAttack") + to_wstring(iNum);
+
+		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, strTag, GO_PARTICLESUB_TAG,
+			this, nullptr, 0.3f);
+	}
+		
+
+	/*if (XMVector3NearEqual(XMLoadFloat4(&m_vTargetPos), m_pTransformCom->Get_State(CTransform::STATE::STATE_POS),
+		XMVectorSet(0.1f, 0.1f, 0.1f, 0.f)))
 		Set_Dead();*/
 
-	if (XMVector3NearEqual(XMLoadFloat4(&m_vTargetPos), m_pTransformCom->Get_State(CTransform::STATE::STATE_POS),
-		XMVectorSet(0.1f, 0.1f, 0.1f, 0.f)))
+	if (XMVector3NearEqual(XMVectorSet(0.f, 1.95f, 0.f, 1.f), m_pTransformCom->Get_State(CTransform::STATE::STATE_POS),
+		XMVectorSet(100.f, 0.1f, 100.f, 0.f)))
+	{
+		CUtility_Effect::Create_Damage_Effect(m_pGameInstance, this, 0.2f, _float2(0.15f, 0.15f));
+		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1AIRATTACKEND_TAG,
+			GO_PARTICLENORMAL_TAG,
+			this, nullptr, 0.5f);
 		Set_Dead();
+	}
+		
+	/*if(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS).m128_f32[0] <= 2.f)
+		Set_Dead();*/
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
@@ -129,7 +164,6 @@ HRESULT CHelico_Bullet::Ready_Component()
 {
 	if (FAILED(CBullet::Ready_Component()))
 		return E_FAIL;
-
 
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(MODEL_HELICOBULLET_TAG, &m_pModelCom))) return E_FAIL;

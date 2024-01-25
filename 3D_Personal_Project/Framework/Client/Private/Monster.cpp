@@ -137,11 +137,12 @@ void CMonster::Monster_Dead()
 {
 	if (m_Status_Desc.iCurHP <= 0)
 	{
+		Set_Dead();
+
 		Create_Soul_Effect(1.f);
 
 		if (m_pLight != nullptr)
 			m_pLight->Set_Active(false);
-		Set_Dead();
 	}
 }
 

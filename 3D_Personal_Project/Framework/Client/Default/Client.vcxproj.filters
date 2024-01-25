@@ -469,6 +469,21 @@
     <Filter Include="02.GameObjects\08. Effect\02. Soul">
       <UniqueIdentifier>{16b8326f-db11-4889-9643-c49fefa382b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="93. Utility">
+      <UniqueIdentifier>{d6b9b17c-022e-4586-ad46-d1320d732059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet\00. HelicoBullet_Particle">
+      <UniqueIdentifier>{2f620a1d-863f-40c6-9d0d-1a34e12dc027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\02. Sub_Particle">
+      <UniqueIdentifier>{2e0c6034-7cb8-40f6-96a4-fcf07c13685f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93. Utility\00. Effect">
+      <UniqueIdentifier>{5342522d-e904-4139-a590-6e6b7c985eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\03. Reaper">
+      <UniqueIdentifier>{ba976216-e446-4e28-8ba5-3cda7a1e3624}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -897,6 +912,15 @@
     <ClInclude Include="..\Public\Effect_Soul.h">
       <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Utility_Effect.h">
+      <Filter>93. Utility\00. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Sub.h">
+      <Filter>02.GameObjects\06. Particle\02. Sub_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Reaper.h">
+      <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1297,6 +1321,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Soul.cpp">
       <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utility_Effect.cpp">
+      <Filter>93. Utility\00. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Sub.cpp">
+      <Filter>02.GameObjects\06. Particle\02. Sub_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Reaper.cpp">
+      <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

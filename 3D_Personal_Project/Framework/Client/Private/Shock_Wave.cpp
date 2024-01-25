@@ -71,6 +71,14 @@ HRESULT CShock_Wave::Render()
 	return S_OK;
 }
 
+_matrix CShock_Wave::Get_ColWorldMat(_uint iIndx)
+{
+	if (iIndx >= 20)
+		return _matrix();
+
+	return XMLoadFloat4x4(&m_matWorlds[iIndx]) ;
+}
+
 HRESULT CShock_Wave::Bind_ShaderResources()
 {
 	

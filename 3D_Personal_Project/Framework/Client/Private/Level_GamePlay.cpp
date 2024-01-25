@@ -72,11 +72,11 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			return;
 	}
 
-	/*if (m_pGameInstance->Key_Down(DIK_1))
+	if (m_pGameInstance->Key_Down(DIK_1))
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS1))))
 			return;
-	}*/
+	}
 
 	/*if (m_pGameInstance->Key_Down(DIK_1))
 	{
@@ -213,8 +213,8 @@ HRESULT CLevel_GamePlay::Ready_LightDesc()
 
 	LightDesc.eType = LIGHT_DESC::LIGHT_TYPE::TYPE_DIRECTION;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vAmbient = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.8f, 1.f);
+	LightDesc.vAmbient = _float4(0.2f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))

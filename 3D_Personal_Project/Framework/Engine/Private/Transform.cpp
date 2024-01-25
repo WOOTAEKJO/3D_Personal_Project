@@ -184,7 +184,7 @@ void CTransform::Towards_Target(_fvector fTargetPos, _float fTimeDelta, _float f
 	_float fDistance = XMVectorGetX(XMVector3Length(vDir));
 
 	if(fDistance>= fSpare)
-		vPos += XMVector3Normalize(vDir) * m_fSpeedPerSec * fTimeDelta;
+		vPos += XMVector3Normalize(vDir)  * fTimeDelta;
 
 	Set_State(STATE::STATE_POS, vPos);
 

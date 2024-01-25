@@ -19,7 +19,8 @@
 #include "Helico_Bullet.h"
 #include "Shock_Wave.h"
 
-
+#include "Utility_Effect.h"
+#include "Effect_Reaper.h"
 
 CHelicoScarrow::CHelicoScarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -79,6 +80,8 @@ void CHelicoScarrow::Tick(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Down(DIK_0))
 		m_Status_Desc.bTalk = false;
+
+	Shock_Wave_Radius_Compute();
 
 	CMonster::Tick(fTimeDelta);
 }
@@ -219,8 +222,8 @@ void CHelicoScarrow::Create_Shock_Wave()
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.3f;
-	BulletDesc.fLifeTime = 0.9f;
-	BulletDesc.fSpeed = 2.f;
+	BulletDesc.fLifeTime = 1.f;
+	BulletDesc.fSpeed = 2.4f;
 	BulletDesc.pTarget = nullptr;
 	
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
@@ -233,8 +236,37 @@ void CHelicoScarrow::Create_Shock_Wave()
 	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
-		GO_SHOCK_WAVE_TAG, &BulletDesc)))
+		GO_SHOCK_WAVE_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&m_pShockWave_Col))))
 		return;
+
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1WAVE_TAG,
+		GO_PARTICLENORMAL_TAG,
+		this, nullptr, 1.1f);
+
+	_vector vEffectPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	CUtility_Effect::Create_Effect_Normal(m_pGameInstance, TEX_REAPER_TAG, GO_EFFECTREAPER_TAG,
+		this, vEffectPos, &m_pShockWave_Effect, 1.f, _float2(8.f, 8.f));
+
+	CUtility_Effect::Create_Damage_Effect(m_pGameInstance, this, 0.5f, _float2(1.5f, 1.5f));
+}
+
+void CHelicoScarrow::Shock_Wave_Radius_Compute()
+{
+	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
+		return;
+
+	if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
+		return;
+
+	_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	_vector vDir = vPos - vColPos;
+
+	_float fDistance = XMVectorGetX( XMVector3Length(vDir));
+
+	dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -243,8 +275,13 @@ void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		m_Status_Desc.bHited == false)
 	{
 		m_Status_Desc.bHited = true;
-
+		m_bHit_Effect = true;
+		Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
 		m_iHited_Count[1] += 1;
+
+		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1HIT_TAG,
+			GO_PARTICLENORMAL_TAG,
+			this, nullptr, 0.5f);
 	}
 }
 

@@ -248,6 +248,21 @@
 
 #define	PARTICLE_JACKHITTAG		TEXT("Prototype_Component_Particle_JackHit")
 
+#define	PARTICLE_BOSS1AIRATTACK1_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack1")
+#define	PARTICLE_BOSS1AIRATTACK2_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack2")
+#define	PARTICLE_BOSS1AIRATTACK3_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack3")
+#define	PARTICLE_BOSS1AIRATTACK4_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack4")
+#define	PARTICLE_BOSS1AIRATTACK5_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack5")
+
+#define	PARTICLE_BOSS1AIRATTACKEND_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttackEnd")
+
+#define	PARTICLE_BOSS1WAVE_TAG		TEXT("Prototype_Component_Particle_Boss1Wave")
+
+#define	PARTICLE_BOSS1HIT_TAG		TEXT("Prototype_Component_Particle_Boss1Hit")
+
+#define	PARTICLE_BAT1_TAG		TEXT("Prototype_Component_Particle_Bat1")
+#define	PARTICLE_BAT2_TAG		TEXT("Prototype_Component_Particle_Bat2")
+
 #pragma endregion
 
 #pragma endregion
@@ -318,6 +333,10 @@
 
 #define TEX_SOUL_TAG		TEXT("Prototype_Component_Texture_SoulTex")
 
+#define TEX_REAPER_TAG		TEXT("Prototype_Component_Texture_Reaper")
+
+#define TEX_BATSPRITE_TAG		TEXT("Prototype_Component_Texture_BatSprite")
+
 #pragma endregion
 
 #pragma endregion
@@ -346,10 +365,12 @@
 
 #define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
 #define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
+#define GO_PARTICLESUB_TAG			TEXT("Prototype_GameObject__ParticleSub")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
 #define GO_EFFECTSOUL_TAG			TEXT("Prototype_GameObject_EffectSoul")
+#define GO_EFFECTREAPER_TAG			TEXT("Prototype_GameObject_EffectReaper")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

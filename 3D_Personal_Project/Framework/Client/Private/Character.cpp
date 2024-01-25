@@ -222,6 +222,7 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 	Info.pOwner = this;
 	Info.fLifeTime = fLifeTime;
 	Info.strEffectTextureTag = strTextureTag;
+	Info.vSize = _float2(0.1f, 0.1f);
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;

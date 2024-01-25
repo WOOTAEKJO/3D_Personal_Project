@@ -32,7 +32,7 @@ HRESULT CEffect::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_fLifeTime = pInfo->fLifeTime;
-
+	m_vSize = pInfo->vSize;
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMLoadFloat4(&pInfo->vPos));
 
 	return S_OK;

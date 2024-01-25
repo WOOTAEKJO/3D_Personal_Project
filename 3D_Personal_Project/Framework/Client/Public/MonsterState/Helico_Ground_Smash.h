@@ -5,6 +5,7 @@
 
 BEGIN(Client)
 
+class CEffect;
 class CHelicoScarrow;
 
 class CHelico_Ground_Smash final : public CMonster_State

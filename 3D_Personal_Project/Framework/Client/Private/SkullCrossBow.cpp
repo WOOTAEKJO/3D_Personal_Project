@@ -74,6 +74,8 @@ HRESULT CSkullCrossBow::Initialize(void* pArg)
 
 void CSkullCrossBow::Priority_Tick(_float fTimeDelta)
 {
+	Monster_Dead();
+
 	CMonster::Priority_Tick(fTimeDelta);
 }
 
@@ -90,7 +92,7 @@ void CSkullCrossBow::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	Monster_Dead();
+	
 }
 
 HRESULT CSkullCrossBow::Render()

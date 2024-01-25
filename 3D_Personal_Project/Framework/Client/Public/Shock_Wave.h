@@ -17,6 +17,9 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	_matrix			Get_ColWorldMat(_uint iIndx);
+
 private:
 	_float4x4		m_matWorlds[20];
 

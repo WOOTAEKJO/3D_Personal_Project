@@ -27,6 +27,9 @@ HRESULT CParticle_Sprite::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Load_Data_Json(m_strParticleTag + TEXT("Info"), this)))
+		return E_FAIL;
+
 	PARTICLEINFO* pInfo = (PARTICLEINFO*)pArg;
 
 	m_pOwner = pInfo->pOwner;

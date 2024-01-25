@@ -69,6 +69,8 @@ HRESULT CSpooketon::Initialize(void* pArg)
 
 void CSpooketon::Priority_Tick(_float fTimeDelta)
 {
+	Monster_Dead();
+
 	m_pWeaponColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CMonster::Priority_Tick(fTimeDelta);
 }
@@ -88,7 +90,7 @@ void CSpooketon::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pWeaponColliderCom)))
 		return;
 
-	Monster_Dead();
+	
 }
 
 HRESULT CSpooketon::Render()

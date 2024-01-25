@@ -3,6 +3,8 @@
 
 #include "GameInstance.h"
 
+#include "Utility_Effect.h"
+
 CPlayer_Spear_Attack1::CPlayer_Spear_Attack1()
 {
 }

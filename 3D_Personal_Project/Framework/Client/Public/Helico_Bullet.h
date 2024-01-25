@@ -31,6 +31,9 @@ private:
 	CModel* m_pModelCom = { nullptr };
 
 private:
+	_bool	m_bParticle = { true };
+
+private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
 

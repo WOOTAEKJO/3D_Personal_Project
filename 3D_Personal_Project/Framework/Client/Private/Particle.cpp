@@ -30,8 +30,7 @@ HRESULT CParticle::Initialize(void* pArg)
 	m_strParticleTag = pInfo->strParticleTag;
 	m_fLifeTime = pInfo->fLifeTime;
 
-	if (FAILED(m_pGameInstance->Load_Data_Json(m_strParticleTag + TEXT("Info"), this)))
-		return E_FAIL;
+	
 
 	return S_OK;
 }
@@ -67,8 +66,8 @@ void CParticle::Late_Tick(_float fTimeDelta)
 
 HRESULT CParticle::Render()
 {
-	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+	/*if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;*/
 
 	_uint iIndx = 0;
 	if (m_pBufferCom->Open_InstancingDesc()->eColorType == INSTANCING_DESC::COLORTYPE::NORMAL_COLOR)
@@ -135,13 +134,15 @@ HRESULT CParticle::Ready_Component()
 
 void CParticle::Judge_Dead(_float fTimeDelta)
 {
-	if (m_pBufferCom->Open_InstancingDesc()->bLoop == false)
+	/*if (m_pBufferCom->Open_InstancingDesc()->bLoop == false)
 	{
-		m_fTimeAcc += fTimeDelta;
+		
+	}*/
 
-		if (m_fTimeAcc > m_fLifeTime)
-			Set_Dead();
-	}
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc > m_fLifeTime)
+		Set_Dead();
 }
 
 void CParticle::Free()

@@ -10,6 +10,9 @@ vector g_vSolid_Color;
 
 float g_fAlpha;
 
+vector g_vCenter;
+float g_fRadius;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -71,6 +74,7 @@ struct VS_OUT_EFFECT
     float4 vPosition : SV_POSITION;
     float2 vTexCoord : TEXCOORD0;
     float4 vProjPos : TEXCOORD1;
+    float4 vWorldPos : TEXCOORD2;
 };
 
 VS_OUT_EFFECT VS_MAIN_EFFECT(VS_IN In)
@@ -85,6 +89,7 @@ VS_OUT_EFFECT VS_MAIN_EFFECT(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
     Out.vTexCoord = In.vTexCoord;
     Out.vProjPos = Out.vPosition;
+    Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_matWorld);
 
     return Out;
 }
@@ -94,6 +99,7 @@ struct PS_IN_EFFECT
     float4 vPosition : SV_POSITION;
     float2 vTexCoord : TEXCOORD0;
     float4 vProjPos : TEXCOORD1;
+    float4 vWorldPos : TEXCOORD2;
 };
 
 PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
@@ -146,6 +152,29 @@ PS_OUT PS_MAIN_EFFECT_INVISIBILITY(PS_IN_EFFECT In)
     
     Out.vColor = vColor;
 
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_REAPER(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord * 2.f);
+    
+    if (vColor.a < 0.8f)
+        discard;
+   
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    vector vDir = g_vCenter - In.vWorldPos;
+   
+    float vDistance = length(vDir);
+    
+    if (vDistance>g_fRadius)
+        discard;
+   
+    Out.vColor = vColor * g_vSolid_Color;
+    
     return Out;
 }
 
@@ -202,6 +231,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
+    }
+
+    pass Effect_Reaper
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_REAPER();
     }
 
 }

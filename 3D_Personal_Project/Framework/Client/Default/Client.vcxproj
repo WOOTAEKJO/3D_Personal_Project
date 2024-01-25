@@ -209,6 +209,7 @@
     <ClInclude Include="..\Public\Effect_Damage.h" />
     <ClInclude Include="..\Public\Effect_Demo.h" />
     <ClInclude Include="..\Public\Effect_Halo.h" />
+    <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -282,6 +283,7 @@
     <ClInclude Include="..\Public\Particle_Demo.h" />
     <ClInclude Include="..\Public\Particle_Normal.h" />
     <ClInclude Include="..\Public\Particle_Sprite.h" />
+    <ClInclude Include="..\Public\Particle_Sub.h" />
     <ClInclude Include="..\Public\Phantom.h" />
     <ClInclude Include="..\Public\Plateform.h" />
     <ClInclude Include="..\Public\Plateform_Instancing.h" />
@@ -317,6 +319,7 @@
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
     <ClInclude Include="..\Public\Trigger.h" />
+    <ClInclude Include="..\Public\Utility_Effect.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -346,6 +349,7 @@
     <ClCompile Include="..\Private\Effect_Damage.cpp" />
     <ClCompile Include="..\Private\Effect_Demo.cpp" />
     <ClCompile Include="..\Private\Effect_Halo.cpp" />
+    <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
@@ -419,6 +423,7 @@
     <ClCompile Include="..\Private\Particle_Demo.cpp" />
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
     <ClCompile Include="..\Private\Particle_Sprite.cpp" />
+    <ClCompile Include="..\Private\Particle_Sub.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />
     <ClCompile Include="..\Private\Plateform_Instancing.cpp" />
@@ -454,6 +459,7 @@
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
+    <ClCompile Include="..\Private\Utility_Effect.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

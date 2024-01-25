@@ -99,11 +99,13 @@ void CModel::Play_Animation(_float fTimeDelta, _bool bLoop)
 	if (!m_pOwner->Get_In_WorldPlanes())
 		return;
 
-	if (m_iCurrentAnimationIndex >= m_iAnimationNum)
+	if (m_iCurrentAnimationIndex >= m_iAnimationNum ||
+		m_iNextAnimationIndex >= m_iAnimationNum)
 		return;
 
 	if(m_bChnageAnim){
 		
+
 		//vector<CChannel*> vecCurChannel = m_vecAnimation[m_iCurrentAnimationIndex]->Get_Channels();
 		vector<KEYFRAME> vecPrevKeyFrame = m_vecAnimation[m_iCurrentAnimationIndex]->Get_PrevKeyFrame();
 
