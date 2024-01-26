@@ -60,10 +60,10 @@ void CParticle_Sub::Tick(_float fTimeDelta)
 	{
 		//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
 		//m_pTransformCom->Towards_Target(m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS), fTimeDelta * 1.f, 0.01f);
-		m_pTransformCom->LookAt(m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
+		//m_pTransformCom->LookAt(m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
 	}
 
-	//m_pBufferCom->Update(fTimeDelta);
+	m_pBufferCom->Update(fTimeDelta);
 }
 
 void CParticle_Sub::Late_Tick(_float fTimeDelta)

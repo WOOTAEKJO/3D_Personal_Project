@@ -25,6 +25,7 @@
 #include "Particle_Normal.h"
 #include "Particle_Sprite.h"
 #include "Particle_Sub.h"
+#include "Particle_Attack.h"
 
 #include "Effect_Damage.h"
 #include "Effect_Halo.h"
@@ -255,6 +256,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Normal>(GO_PARTICLENORMAL_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sprite>(GO_PARTICLESPRITE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sub>(GO_PARTICLESUB_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Attack>(GO_PARTICLEATTACK_TAG))) return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
@@ -731,6 +733,7 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_SOUL_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_REAPER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BATSPRITE_TAG, 4))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_FEATHER_TAG, 1))) return E_FAIL;
 
 	return S_OK;
 }
@@ -750,6 +753,9 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK3_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK4_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK5_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK6_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK7_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKATTACK8_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_JACKHITTAG))) return E_FAIL;
 
@@ -767,6 +773,8 @@ HRESULT CLoader::Particle()
 
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BAT1_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BAT2_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_CROWATTACK_TAG))) return E_FAIL;
 
 	return S_OK;
 }

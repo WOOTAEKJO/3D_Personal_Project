@@ -146,7 +146,7 @@ _bool CCollider::Collision(CCollider* pTargetCollider)
 
 	for (auto& iter : m_vecBounding)
 	{
-		if (iter->Collision(pTargetCollider,&m_vCollisionDir,&m_fPushedDist))
+		if (iter->Collision(pTargetCollider,&m_vCollisionDir,&m_fPushedDist,&m_vColliderPos))
 			return true;
 	}
 

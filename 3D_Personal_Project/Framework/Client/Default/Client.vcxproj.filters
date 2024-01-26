@@ -484,6 +484,9 @@
     <Filter Include="02.GameObjects\08. Effect\03. Reaper">
       <UniqueIdentifier>{ba976216-e446-4e28-8ba5-3cda7a1e3624}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05. Character\00.Player\00. Parts\02. Effect\00. Attack_Particle">
+      <UniqueIdentifier>{a079cbfc-49fb-476f-8f3f-78546b18da4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -921,6 +924,9 @@
     <ClInclude Include="..\Public\Effect_Reaper.h">
       <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Particle_Attack.h">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Parts\02. Effect\00. Attack_Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1330,6 +1336,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Reaper.cpp">
       <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Attack.cpp">
+      <Filter>02.GameObjects\05. Character\00.Player\00. Parts\02. Effect\00. Attack_Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

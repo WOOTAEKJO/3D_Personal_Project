@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "Crow.h"
 
+#include "Utility_Effect.h"
+
 CNPC_Attack::CNPC_Attack()
 {
 }
@@ -22,6 +24,14 @@ void CNPC_Attack::State_Enter()
 
 	m_bFind = dynamic_cast<CCrow*>(m_pOwner)->Find_Range_Monster(5.f);
 	m_pOwner->Trans_Attack(true);
+
+	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW) {
+		_float4 vPos;
+		XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
+
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
+			GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f,0.f,0.f), nullptr, 1.f);
+	}
 }
 
 _uint CNPC_Attack::State_Priority_Tick(_float fTimeDelta)

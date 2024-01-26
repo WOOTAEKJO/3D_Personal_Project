@@ -18,7 +18,8 @@ public:
 	static void Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
 		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr);
 
-
+	static void Create_Particle_Attack(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
+		CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut = nullptr, _float fLifeTime = 0.f);
 
 	static void	Create_Effect_Normal(CGameInstance* pGameInstance, const wstring& strTextureTag, const wstring& strObjTag,
 		CGameObject* pOwner,_fvector vPos, CGameObject** pOut, _float fLifeTime, _float2 vSize);

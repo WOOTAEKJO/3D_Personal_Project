@@ -229,8 +229,15 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 
 	_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAM_POS);
 
+	_float2 vRandom;
+	m_pGameInstance->Random_Float2(&vRandom, -0.1f, 0.1f);
+	/*vCamPos.m128_f32[0] += vRandom.x;
+	vCamPos.m128_f32[1] += vRandom.y;*/
+
 	_vector vDir = XMVector3Normalize(vCamPos - vPos);
 	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
+	vPos.m128_f32[0] += vRandom.x;
+	vPos.m128_f32[1] += vRandom.y;
 	
 	XMStoreFloat4(&Info.vPos, vPos);
 

@@ -39,7 +39,8 @@ HRESULT CBounding_Ray::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvec
 	return S_OK;
 }
 
-_bool CBounding_Ray::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, _float* fPushedDist)
+_bool CBounding_Ray::Collision(CCollider* pTargetCollider, _float3* vCollisionDir,
+	_float* fPushedDist, _float4* vColliderPos)
 {
 	vector<CBounding*> vecBounding = pTargetCollider->Get_BoundingVec();
 	_float	fDist = 0.f;

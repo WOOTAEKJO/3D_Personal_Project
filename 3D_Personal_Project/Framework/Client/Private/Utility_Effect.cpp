@@ -3,6 +3,8 @@
 #include "Particle.h"
 #include "Effect.h"
 
+#include "Particle_Attack.h"
+
 void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone)
 {
 	CParticle::PARTICLEINFO Info = {};
@@ -16,6 +18,21 @@ void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Info, reinterpret_cast<CGameObject**>(pOut))))
+		return;
+}
+
+void CUtility_Effect::Create_Particle_Attack(CGameInstance* pGameInstance, const wstring& strParticleTag,
+	const wstring& strObjTag, CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut, _float fLifeTime)
+{
+	CParticle_Attack::ATTACKPARTICLE_DESC Desc = {};
+	Desc.pOwner = pOwner;
+	Desc.vPos = vPos;
+	Desc.vDir = vDir;
+	Desc.strParticleTag = strParticleTag;
+	Desc.fLifeTime = fLifeTime;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		strObjTag, &Desc, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }
 

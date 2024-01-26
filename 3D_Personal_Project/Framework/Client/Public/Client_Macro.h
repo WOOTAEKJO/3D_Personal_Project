@@ -245,6 +245,9 @@
 #define	PARTICLE_JACKATTACK3_TAG		TEXT("Prototype_Component_Particle_JackAttack3")
 #define	PARTICLE_JACKATTACK4_TAG		TEXT("Prototype_Component_Particle_JackAttack4")
 #define	PARTICLE_JACKATTACK5_TAG		TEXT("Prototype_Component_Particle_JackAttack5")
+#define	PARTICLE_JACKATTACK6_TAG		TEXT("Prototype_Component_Particle_JackAttack6")
+#define	PARTICLE_JACKATTACK7_TAG		TEXT("Prototype_Component_Particle_JackAttack7")
+#define	PARTICLE_JACKATTACK8_TAG		TEXT("Prototype_Component_Particle_JackAttack8")
 
 #define	PARTICLE_JACKHITTAG		TEXT("Prototype_Component_Particle_JackHit")
 
@@ -262,6 +265,8 @@
 
 #define	PARTICLE_BAT1_TAG		TEXT("Prototype_Component_Particle_Bat1")
 #define	PARTICLE_BAT2_TAG		TEXT("Prototype_Component_Particle_Bat2")
+
+#define	PARTICLE_CROWATTACK_TAG		TEXT("Prototype_Component_Particle_CrowAttack")
 
 #pragma endregion
 
@@ -337,6 +342,8 @@
 
 #define TEX_BATSPRITE_TAG		TEXT("Prototype_Component_Texture_BatSprite")
 
+#define TEX_FEATHER_TAG		TEXT("Prototype_Component_Texture_Feather")
+
 #pragma endregion
 
 #pragma endregion
@@ -366,6 +373,7 @@
 #define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
 #define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
 #define GO_PARTICLESUB_TAG			TEXT("Prototype_GameObject__ParticleSub")
+#define GO_PARTICLEATTACK_TAG			TEXT("Prototype_GameObject__ParticleAttack")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")

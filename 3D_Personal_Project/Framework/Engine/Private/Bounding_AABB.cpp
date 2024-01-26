@@ -47,7 +47,8 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fve
 	return S_OK;
 }
 
-_bool CBounding_AABB::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, _float* fPushedDist)
+_bool CBounding_AABB::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, 
+	_float* fPushedDist, _float4* vColliderPos)
 {
 	//CBounding* pBounding = pTargetCollider->Get_Bounding();
 	vector<CBounding*> vecBounding = pTargetCollider->Get_BoundingVec();

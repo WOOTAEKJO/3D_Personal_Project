@@ -280,6 +280,7 @@
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Owl.h" />
     <ClInclude Include="..\Public\Particle.h" />
+    <ClInclude Include="..\Public\Particle_Attack.h" />
     <ClInclude Include="..\Public\Particle_Demo.h" />
     <ClInclude Include="..\Public\Particle_Normal.h" />
     <ClInclude Include="..\Public\Particle_Sprite.h" />
@@ -420,6 +421,7 @@
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Owl.cpp" />
     <ClCompile Include="..\Private\Particle.cpp" />
+    <ClCompile Include="..\Private\Particle_Attack.cpp" />
     <ClCompile Include="..\Private\Particle_Demo.cpp" />
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
     <ClCompile Include="..\Private\Particle_Sprite.cpp" />

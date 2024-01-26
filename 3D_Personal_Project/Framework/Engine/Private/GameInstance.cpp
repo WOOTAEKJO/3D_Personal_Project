@@ -119,6 +119,8 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 
+	m_RandomNumber = mt19937_64(m_RandomDevice());
+
 	return S_OK;
 }
 
@@ -168,6 +170,35 @@ void CGameInstance::Clear(_uint iLevelIndex)
 	m_pComponent_Manager->Clear(iLevelIndex);
 	m_pObject_Manager->Clear(iLevelIndex);
 	//m_pCollider_Manager->Clear();
+}
+
+void CGameInstance::Random_Float(_float* vVec, _float fMin, _float fMax)
+{
+	uniform_real_distribution<float>	Random(fMin, fMax);
+
+	*vVec = Random(m_RandomNumber);
+}
+
+void CGameInstance::Random_Float2(_float2* vVec, _float fMin, _float fMax)
+{
+	uniform_real_distribution<float>	Random(fMin, fMax);
+
+	*vVec = _float2(Random(m_RandomNumber), Random(m_RandomNumber));
+}
+
+void CGameInstance::Random_Float3(_float3* vVec, _float fMin, _float fMax)
+{
+	uniform_real_distribution<float>	Random(fMin, fMax);
+
+	*vVec = _float3(Random(m_RandomNumber), Random(m_RandomNumber), Random(m_RandomNumber));
+}
+
+void CGameInstance::Random_Float4(_float4* vVec, _float fMin, _float fMax)
+{
+	uniform_real_distribution<float>	Random(fMin, fMax);
+
+	*vVec = _float4(Random(m_RandomNumber), Random(m_RandomNumber), Random(m_RandomNumber),
+		Random(m_RandomNumber));
 }
 
 HRESULT CGameInstance::Clear_BackBuffer_View(_float4 vClearColor)

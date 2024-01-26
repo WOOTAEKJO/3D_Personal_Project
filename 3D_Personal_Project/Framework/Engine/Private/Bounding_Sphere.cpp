@@ -42,7 +42,8 @@ HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _f
 	return S_OK;
 }
 
-_bool CBounding_Sphere::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, _float* fPushedDist)
+_bool CBounding_Sphere::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, 
+	_float* fPushedDist, _float4* vColliderPos)
 {
 	//CBounding* pBounding = pTargetCollider->Get_Bounding();
 
@@ -75,6 +76,8 @@ _bool CBounding_Sphere::Collision(CCollider* pTargetCollider, _float3* vCollisio
 					*vCollisionDir = vDir;
 					XMStoreFloat3(&vDir, XMVector3Normalize(vTmp));
 					pTargetCollider->Set_CollisionDir(vDir);
+		
+					memcpy(vColliderPos, &m_matWorld.m[3], sizeof(_float4));
 
 					return true;
 				}
