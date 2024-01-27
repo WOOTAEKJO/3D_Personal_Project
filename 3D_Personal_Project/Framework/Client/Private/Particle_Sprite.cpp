@@ -42,20 +42,8 @@ HRESULT CParticle_Sprite::Initialize(void* pArg)
 	m_pSocketBone = pInfo->pBones[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
-	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-
-	m_pTransformCom->LookAt_Dir(vLook);*/
 	XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
-
-		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
-
-		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-
-		m_pTransformCom->LookAt_Dir(vLook);*/
 
 	if (FAILED(Ready_Component()))
 		return E_FAIL;

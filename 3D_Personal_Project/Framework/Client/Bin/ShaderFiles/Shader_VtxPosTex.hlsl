@@ -106,7 +106,12 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    if (vColor.a < 0.3f)
+        discard;
+    
+    Out.vColor = vColor * g_vSolid_Color;
     
     //float2 vDepthTexcoord;
     //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
@@ -178,6 +183,46 @@ PS_OUT PS_MAIN_EFFECT_REAPER(PS_IN_EFFECT In)
     return Out;
 }
 
+PS_OUT PS_MAIN_EFFECT_BLEND(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.x < 0.4f && vColor.y < 0.4f && vColor.z < 0.4f)
+    {
+        vColor.a = 0.1f;
+    }
+    
+    if (vColor.a < 0.3f)
+        discard;
+   
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_BLEND_INVISIBILITY(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.x < 0.4f && vColor.y < 0.4f && vColor.z < 0.4f)
+    {
+        vColor.a = 0.1f;
+    }
+    
+    if (vColor.a < 0.3f)
+        discard;
+       
+    vColor.a = min(max(vColor.a - g_fAlpha, 0.f),1.f);
+    
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -244,6 +289,32 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_REAPER();
+    }
+
+    pass Effect_Blend
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND();
+    }
+
+    pass Effect_Blend_Invisibility
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND_INVISIBILITY();
     }
 
 }

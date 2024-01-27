@@ -4,6 +4,9 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Utility_Effect.h"
+#include "Effect_Energy.h"
+
 CTarget_Bullet::CTarget_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -50,10 +53,19 @@ void CTarget_Bullet::Tick(_float fTimeDelta)
 
 void CTarget_Bullet::Late_Tick(_float fTimeDelta)
 {
-	if (XMVector3NearEqual(XMLoadFloat4(&m_vTargetPos), m_pTransformCom->Get_State(CTransform::STATE::STATE_POS),
-		XMVectorSet(0.1f, 0.1f, 0.1f, 0.f)))
-		Set_Dead();
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
+	if (XMVector3NearEqual(XMLoadFloat4(&m_vTargetPos), vPos,
+		XMVectorSet(0.1f, 0.1f, 0.1f, 0.f)))
+	{
+		_float4 vParticlePos;
+		XMStoreFloat4(&vParticlePos, vPos);
+
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_BOSS2SHOOTHIT_TAG,
+			GO_PARTICLEATTACK_TAG, this, vParticlePos, _float3(0.f, 0.f, 0.f),nullptr,1.f);
+		Set_Dead();
+	}
+		
 	__super::Late_Tick(fTimeDelta);
 }
 

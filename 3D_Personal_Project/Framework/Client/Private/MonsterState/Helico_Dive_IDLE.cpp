@@ -19,6 +19,7 @@ HRESULT CHelico_Dive_IDLE::Initialize(CGameObject* pGameObject)
 void CHelico_Dive_IDLE::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DIVE_IDLE);
+	m_pOwner->Set_Light_Activate(false);
 
 }
 
@@ -46,6 +47,7 @@ _uint CHelico_Dive_IDLE::State_Late_Tick(_float fTimeDelta)
 
 void CHelico_Dive_IDLE::State_Exit()
 {
+	m_pOwner->Set_Light_Activate(true);
 }
 
 CHelico_Dive_IDLE* CHelico_Dive_IDLE::Create(CGameObject* pGameObject)

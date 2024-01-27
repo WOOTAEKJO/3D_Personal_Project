@@ -92,6 +92,14 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
 }
 
+void CCharacter::Set_Light_Activate(_bool bCheck)
+{
+	if (m_pLight == nullptr)
+		return;
+
+	m_pLight->Set_Active(bCheck);
+}
+
 void CCharacter::Camera_Zoom(_float3 vOffset)
 {
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),

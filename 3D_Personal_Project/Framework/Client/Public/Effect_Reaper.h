@@ -5,6 +5,12 @@ BEGIN(Client)
 
 class CEffect_Reaper final : public CEffect
 {
+public:
+	typedef struct tagEffect_ReaperInfo : public CEffect::EFFECTINFO
+	{
+		_float4 vColor = { 1.f,1.f,1.f,1.f };
+	}EFFECT_REAPERINFO;
+
 private:
 	CEffect_Reaper(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CEffect_Reaper(const CEffect_Reaper& rhs);

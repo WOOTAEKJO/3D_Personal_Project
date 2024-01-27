@@ -30,8 +30,6 @@ HRESULT CParticle::Initialize(void* pArg)
 	m_strParticleTag = pInfo->strParticleTag;
 	m_fLifeTime = pInfo->fLifeTime;
 
-	
-
 	return S_OK;
 }
 

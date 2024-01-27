@@ -271,5 +271,11 @@ void CPlateform::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 
+	if (m_bLight)
+	{
+		if (m_pLight != nullptr)
+			m_pLight->Set_Active(false);
+	}
+
 	Safe_Release(m_pLight);
 }

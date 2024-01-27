@@ -207,8 +207,11 @@
     <ClInclude Include="..\Public\DynamicCamera.h" />
     <ClInclude Include="..\Public\Effect.h" />
     <ClInclude Include="..\Public\Effect_Damage.h" />
+    <ClInclude Include="..\Public\Effect_DashRoad.h" />
     <ClInclude Include="..\Public\Effect_Demo.h" />
+    <ClInclude Include="..\Public\Effect_Energy.h" />
     <ClInclude Include="..\Public\Effect_Halo.h" />
+    <ClInclude Include="..\Public\Effect_Laser.h" />
     <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
@@ -283,6 +286,7 @@
     <ClInclude Include="..\Public\Particle_Attack.h" />
     <ClInclude Include="..\Public\Particle_Demo.h" />
     <ClInclude Include="..\Public\Particle_Normal.h" />
+    <ClInclude Include="..\Public\Particle_Always.h" />
     <ClInclude Include="..\Public\Particle_Sprite.h" />
     <ClInclude Include="..\Public\Particle_Sub.h" />
     <ClInclude Include="..\Public\Phantom.h" />
@@ -348,8 +352,11 @@
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
     <ClCompile Include="..\Private\Effect.cpp" />
     <ClCompile Include="..\Private\Effect_Damage.cpp" />
+    <ClCompile Include="..\Private\Effect_DashRoad.cpp" />
     <ClCompile Include="..\Private\Effect_Demo.cpp" />
+    <ClCompile Include="..\Private\Effect_Energy.cpp" />
     <ClCompile Include="..\Private\Effect_Halo.cpp" />
+    <ClCompile Include="..\Private\Effect_Laser.cpp" />
     <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
@@ -424,6 +431,7 @@
     <ClCompile Include="..\Private\Particle_Attack.cpp" />
     <ClCompile Include="..\Private\Particle_Demo.cpp" />
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
+    <ClCompile Include="..\Private\Particle_Always.cpp" />
     <ClCompile Include="..\Private\Particle_Sprite.cpp" />
     <ClCompile Include="..\Private\Particle_Sub.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />

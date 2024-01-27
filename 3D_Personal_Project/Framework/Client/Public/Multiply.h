@@ -34,6 +34,11 @@ private:
 	CModel*		m_pModelCom = { nullptr };
 
 private:
+	CGameObject* m_pEffect = { nullptr };
+	_bool		m_bTrans = { false };
+	_float		m_fTransTimeAcc = { 0.f };
+
+private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
 

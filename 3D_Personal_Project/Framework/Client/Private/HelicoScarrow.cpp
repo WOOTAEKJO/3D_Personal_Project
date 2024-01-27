@@ -55,6 +55,9 @@ HRESULT CHelicoScarrow::Initialize(void* pArg)
 	/*if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;*/
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	m_pSocketBone = m_pModelCom->Get_Bone(2);
 	Safe_AddRef(m_pSocketBone);
 
@@ -229,24 +232,24 @@ void CHelicoScarrow::Create_Shock_Wave()
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vLook = XMVector3Normalize( m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
 
-	vPos = vPos + vLook * 0.1f;
+	_vector vWavePos = vPos + vLook * 0.1f;
 
-	vPos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y;
+	vWavePos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y;
 
-	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+	XMStoreFloat4(&BulletDesc.fStartPos, vWavePos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
 		GO_SHOCK_WAVE_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&m_pShockWave_Col))))
 		return;
 
-	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1WAVE_TAG,
-		GO_PARTICLENORMAL_TAG,
-		this, nullptr, 1.1f);
+	_float4 vParticlePos;
+	XMStoreFloat4(&vParticlePos, vPos);
 
-	_vector vEffectPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_BOSS1WAVE_TAG, GO_PARTICLEATTACK_TAG,
+		this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 1.f);
 
-	CUtility_Effect::Create_Effect_Normal(m_pGameInstance, TEX_REAPER_TAG, GO_EFFECTREAPER_TAG,
-		this, vEffectPos, &m_pShockWave_Effect, 1.f, _float2(8.f, 8.f));
+	CUtility_Effect::Create_Effect_Reaper(m_pGameInstance, this, vPos, _float4(1.f, 0.6f, 0.4f, 1.f),
+		&m_pShockWave_Effect, 1.f, _float2(8.f, 8.f));
 
 	CUtility_Effect::Create_Damage_Effect(m_pGameInstance, this, 0.5f, _float2(1.5f, 1.5f));
 }
@@ -336,6 +339,27 @@ HRESULT CHelicoScarrow::Ready_State()
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.7f;
+	LightDesc.vDiffuse = _float4(1.f, 0.8f, 0.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 0.8f, 0.f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

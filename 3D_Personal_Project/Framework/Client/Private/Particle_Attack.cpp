@@ -38,6 +38,7 @@ HRESULT CParticle_Attack::Initialize(void* pArg)
 
 	m_vPos = pInfo->vPos;
 	m_vDir = pInfo->vDir;
+	m_bKeep = pInfo->bKeep;
 	
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
@@ -52,27 +53,54 @@ HRESULT CParticle_Attack::Initialize(void* pArg)
 		m_pTransformCom->Rotation_Quaternio(fAngle, fAngle, fAngle);
 	}
 
+	m_fMaxFrame = m_pTextureCom->Get_TextureNum();
+
+	if (m_fMaxFrame > 1)
+	{
+		m_bSprite = true;
+		m_fFrame = (_float)(rand() % (_uint)m_fMaxFrame);
+	}
+
 	return S_OK;
 }
 
 void CParticle_Attack::Priority_Tick(_float fTimeDelta)
 {
+	/*if (m_bKeep)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_vPos);
+
+		if (m_pOwner == nullptr || m_pOwner->Get_Dead())
+			Set_Dead();
+
+	}
+	else
+	{
+		
+	}*/
 }
 
 void CParticle_Attack::Tick(_float fTimeDelta)
 {
-	
+	if (m_bSprite)
+	{
+		m_fFrame += m_fMaxFrame * fTimeDelta;
+
+		if (m_fMaxFrame <= m_fFrame)
+			m_fFrame = 0.f;
+	}
+
 	m_pBufferCom->Update(fTimeDelta);
 }
 
 void CParticle_Attack::Late_Tick(_float fTimeDelta)
 {
-	
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;
 
 	Judge_Dead(fTimeDelta);
-		
+	
 }
 
 HRESULT CParticle_Attack::Render()

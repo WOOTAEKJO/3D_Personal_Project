@@ -35,9 +35,13 @@ public:
 
 public:
 	void	Create_Shock_Wave();
+	void	Shock_Wave_Radius_Compute();
+
 	void	Create_Laser();
-	void	Adjust_Pos(_float3 vAdjust);
+	void	Update_Laser_Elec();
 	void	Delete_Laser();
+
+	void	Adjust_Pos(_float3 vAdjust);
 
 	void	Create_Multiply();
 	void	SetUp_Random_Pos();
@@ -49,6 +53,7 @@ public:
 
 	void	Create_Bomb();
 	void	Start_Point_Toward_Bomb();
+	void	Delete_Failed_Bomb();
 	void	Delete_Bomb();
 	_bool	Is_Bomb_Failed();
 
@@ -85,9 +90,14 @@ private:
 	_uint				m_iHitCount = { 0 };
 
 private:
+	CGameObject* m_pShockWave_Col = { nullptr };
+	CGameObject* m_pShockWave_Effect = { nullptr };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
+	virtual HRESULT	Init_Point_Light() override;
 
 public:
 	static	CPhantom* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

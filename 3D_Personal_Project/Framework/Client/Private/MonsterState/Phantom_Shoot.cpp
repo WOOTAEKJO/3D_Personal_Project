@@ -29,7 +29,7 @@ _uint CPhantom_Shoot::State_Priority_Tick(_float fTimeDelta)
 
 	if (dynamic_cast<CPhantom*>(m_pOwner)->Is_Bomb_Failed())
 	{
-		dynamic_cast<CPhantom*>(m_pOwner)->Delete_Bomb();
+		dynamic_cast<CPhantom*>(m_pOwner)->Delete_Failed_Bomb();
 		return CPhantom::STATE::SUMMON_BOMB;
 	}
 
@@ -68,6 +68,7 @@ _uint CPhantom_Shoot::State_Late_Tick(_float fTimeDelta)
 void CPhantom_Shoot::State_Exit()
 {
 	m_pOwnerCollider->Set_UseCol(false);
+	m_bAttack = true;
 }
 
 CPhantom_Shoot* CPhantom_Shoot::Create(CGameObject* pGameObject)

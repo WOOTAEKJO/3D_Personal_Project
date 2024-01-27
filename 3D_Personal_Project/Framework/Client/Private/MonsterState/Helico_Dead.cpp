@@ -26,6 +26,7 @@ void CHelico_Dead::State_Enter()
 		m_pOwner, nullptr, 1.f);
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
 		m_pOwner, nullptr, 1.f);
+	m_pOwner->Set_Light_Activate(false);
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)

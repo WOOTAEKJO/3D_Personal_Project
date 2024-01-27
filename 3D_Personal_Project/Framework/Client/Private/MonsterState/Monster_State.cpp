@@ -53,6 +53,8 @@ CMonster::STATE CMonster_State::Dead()
 {
 	if (m_pOwner->Open_Status_Desc()->iCurHP <= 0)
 		return CMonster::STATE::DEAD;
+
+	//return (CMonster::STATE)m_iStateID;
 }
 
 void CMonster_State::Free()

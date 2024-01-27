@@ -27,6 +27,10 @@ HRESULT CEffect_Reaper::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	EFFECT_REAPERINFO* Info = (EFFECT_REAPERINFO*)pArg;
+
+	m_vSolid_Color = Info->vColor;
+
 	m_fMaxFrame = m_pTextureCom->Get_TextureNum();
 
 	if (m_fMaxFrame > 1)
@@ -37,8 +41,6 @@ HRESULT CEffect_Reaper::Initialize(void* pArg)
 	}
 	m_pTransformCom->Rotation_Quaternio(XMConvertToRadians(90.f), 0.f, 0.f);
 	m_pTransformCom->Set_Scaling(m_vSize.x, m_vSize.y, 0.1f);
-	
-	m_vSolid_Color = _float4(1.f,0.6f,0.4f,1.f);
 
 	m_fAlpha = 0.6f;
 	return S_OK;
@@ -80,10 +82,7 @@ HRESULT CEffect_Reaper::Render()
 
 HRESULT CEffect_Reaper::Bind_ShaderResources()
 {
-	_float4 vPos = {};
-	XMStoreFloat4(&vPos,m_pOwner->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
-
-	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCenter", &vPos, sizeof(_float4))))
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vCenter", &m_vPos, sizeof(_float4))))
 		return E_FAIL;
 
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fRadius", &m_fRadius, sizeof(_float))))

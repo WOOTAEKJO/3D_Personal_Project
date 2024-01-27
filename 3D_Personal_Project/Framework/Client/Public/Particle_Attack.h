@@ -10,6 +10,7 @@ public:
 	{
 		_float4	vPos;
 		_float3	vDir;
+		_bool  bKeep = false;
 
 	}ATTACKPARTICLE_DESC;
 
@@ -28,12 +29,21 @@ public:
 public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
+public:
+	void	Set_Pos(_float4 vPos) { m_vPos = vPos; }
+
 private:
 	_float	m_fTime = { 0.f };
 
 private:
 	_float4	m_vPos = {0.f,0.f,0.f,1.f};
 	_float3	m_vDir = {};
+	_bool	m_bKeep = true;
+
+private:
+	_float		m_fFrame = { 0.f };
+	_float		m_fMaxFrame = { 0.f };
+	_bool		m_bSprite = { false };
 
 private:
 	HRESULT	Bind_ShaderResources();
