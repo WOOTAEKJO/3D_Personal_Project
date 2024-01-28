@@ -35,7 +35,7 @@ _uint CPhantom_Summon_Loop::State_Priority_Tick(_float fTimeDelta)
 _uint CPhantom_Summon_Loop::State_Tick(_float fTimeDelta)
 {
 	m_fTime += fTimeDelta;
-	if (m_fTime > 0.3f)
+	if (m_fTime > 0.5f)
 	{
 		m_fTime = 0.f;
 		dynamic_cast<CPhantom*>(m_pOwner)->Create_Meteor();

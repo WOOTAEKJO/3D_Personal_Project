@@ -78,6 +78,7 @@ public:
 
 public:
 	void		Set_TypeAnimIndex(_uint iAnimTag);
+	void		Set_Light_Activate(_bool bCheck);
 
 public:
 	void	Camera_Zoom(_float3 vOffset = _float3(0.f,0.f,0.f));

@@ -33,6 +33,7 @@ public:
 
 	void	Creat_Bullet();
 	void	Create_Shock_Wave();
+	void	Shock_Wave_Radius_Compute();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
@@ -47,9 +48,14 @@ private:
 	_bool		m_bSelectBonNum = { true };
 
 private:
+	CGameObject* m_pShockWave_Col = { nullptr };
+	CGameObject* m_pShockWave_Effect = { nullptr };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
+	virtual HRESULT	Init_Point_Light() override;
 
 public:
 	static	CHelicoScarrow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

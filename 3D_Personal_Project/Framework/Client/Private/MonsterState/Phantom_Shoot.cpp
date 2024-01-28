@@ -29,7 +29,7 @@ _uint CPhantom_Shoot::State_Priority_Tick(_float fTimeDelta)
 
 	if (dynamic_cast<CPhantom*>(m_pOwner)->Is_Bomb_Failed())
 	{
-		dynamic_cast<CPhantom*>(m_pOwner)->Delete_Bomb();
+		dynamic_cast<CPhantom*>(m_pOwner)->Delete_Failed_Bomb();
 		return CPhantom::STATE::SUMMON_BOMB;
 	}
 
@@ -38,6 +38,10 @@ _uint CPhantom_Shoot::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPhantom_Shoot::State_Tick(_float fTimeDelta)
 {
+
+	m_pOwner->TargetLook();
+	m_pOwnerModel->Play_Animation(fTimeDelta, false);
+
 	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::SHOOT, 36.f))
 	{
 		if (m_bAttack)
@@ -45,11 +49,8 @@ _uint CPhantom_Shoot::State_Tick(_float fTimeDelta)
 			dynamic_cast<CPhantom*>(m_pOwner)->Create_TargetBullet();
 			m_bAttack = false;
 		}
-			
-	}
 
-	m_pOwner->TargetLook();
-	m_pOwnerModel->Play_Animation(fTimeDelta, false);
+	}
 
 	return m_iStateID;
 }
@@ -68,6 +69,7 @@ _uint CPhantom_Shoot::State_Late_Tick(_float fTimeDelta)
 void CPhantom_Shoot::State_Exit()
 {
 	m_pOwnerCollider->Set_UseCol(false);
+	m_bAttack = true;
 }
 
 CPhantom_Shoot* CPhantom_Shoot::Create(CGameObject* pGameObject)

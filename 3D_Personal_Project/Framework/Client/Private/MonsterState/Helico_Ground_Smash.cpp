@@ -4,6 +4,9 @@
 
 #include "HelicoScarrow.h"
 
+#include "Utility_Effect.h"
+#include "Effect_Reaper.h"
+
 CHelico_Ground_Smash::CHelico_Ground_Smash()
 {
 }
@@ -50,9 +53,10 @@ _uint CHelico_Ground_Smash::State_Late_Tick(_float fTimeDelta)
 		if (m_bAttack)
 		{
 			dynamic_cast<CHelicoScarrow*>(m_pOwner)->Create_Shock_Wave();
+			
+
 			m_bAttack = false;
 		}
-		
 	}
 
 	if (m_pOwnerModel->Is_Animation_Finished())
@@ -85,5 +89,6 @@ CHelico_Ground_Smash* CHelico_Ground_Smash::Create(CGameObject* pGameObject)
 void CHelico_Ground_Smash::Free()
 {
 	__super::Free();
+
 
 }

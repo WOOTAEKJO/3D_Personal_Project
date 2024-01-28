@@ -18,12 +18,19 @@ public:
 	virtual HRESULT Render() override;
 
 private:
+	CGameObject* m_pElec = { nullptr };
+
+
+
+private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
+	virtual HRESULT	Init_Point_Light() override;
 
 private:
 	void	Update_MatWorlds(_float fTimeDelta);
-	void	Update_TartgetPos();
+	void	Update_LaserElec();
+	void	Create_LaserElec();
 
 public:
 	static CLaser* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

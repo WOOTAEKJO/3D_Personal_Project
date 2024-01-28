@@ -32,6 +32,11 @@ public: /* For.Engine */
 	HRESULT Render_Engine();	// 렌더는 렌더러 클래스를 통해 실행된다.
 	void Clear(_uint iLevelIndex);
 
+	void	Random_Float(_float * vVec, _float fMin, _float fMax);
+	void	Random_Float2(_float2 * vVec, _float fMin, _float fMax);
+	void	Random_Float3(_float3 * vVec, _float fMin, _float fMax);
+	void	Random_Float4(_float4 * vVec, _float fMin, _float fMax);
+
 public: /* For.Graphic_Device */		
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
 	HRESULT Clear_DepthStencil_View();	
@@ -272,6 +277,10 @@ private:
 private:
 	ID3D11Device* m_pDevice = { nullptr };		
 	ID3D11DeviceContext* m_pContext = { nullptr };
+
+private:
+	random_device	m_RandomDevice;
+	mt19937_64		m_RandomNumber;
 
 public:
 	void Release_Manager();

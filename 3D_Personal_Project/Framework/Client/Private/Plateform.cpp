@@ -114,8 +114,8 @@ void CPlateform::Update_Light()
 
 			XMStoreFloat4(&m_vLightPos, vPos);
 
-			/*if (FAILED(Init_Point_Light()))
-				return;*/
+			if (FAILED(Init_Point_Light()))
+				return;
 
 			Create_Halo();
 		}
@@ -180,9 +180,9 @@ HRESULT CPlateform::Init_Point_Light()
 	
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	LightDesc.vPos = m_vLightPos;
-	LightDesc.fRange = 0.6f;
+	LightDesc.fRange = 2.f;
 	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
@@ -270,6 +270,12 @@ void CPlateform::Free()
 
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
+
+	if (m_bLight)
+	{
+		if (m_pLight != nullptr)
+			m_pLight->Set_Active(false);
+	}
 
 	Safe_Release(m_pLight);
 }

@@ -4,6 +4,12 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Effect_Laser.h"
+#include "Utility_Effect.h"
+#include "Particle_Attack.h"
+
+#include "Light.h"
+
 CLaser::CLaser(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -34,6 +40,9 @@ HRESULT CLaser::Initialize(void* pArg)
 
 	XMStoreFloat4(&m_vTargetPos, m_pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -44,7 +53,20 @@ void CLaser::Priority_Tick(_float fTimeDelta)
 
 void CLaser::Tick(_float fTimeDelta)
 {
-	
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc >= 0.15f)
+	{
+		Create_LaserElec();
+		m_fTimeAcc = 0.f;
+	}
+
+	if (m_pLight != nullptr)
+	{
+		m_pLight->Open_Light_Desc()->vPos = m_vTargetPos;
+			
+	}
+
 	__super::Tick(fTimeDelta);
 }
 
@@ -81,6 +103,27 @@ HRESULT CLaser::Ready_Component()
 	return S_OK;
 }
 
+HRESULT CLaser::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y * 3.f;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.3f;
+	LightDesc.vDiffuse = _float4(0.f, 0.2f, 0.3f, 1.f);
+	LightDesc.vAmbient = _float4(0.f, 0.2f, 0.3f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
+
+	return S_OK;
+}
+
 void CLaser::Update_MatWorlds(_float fTimeDelta)
 {
 	_vector vTargetPos = m_pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS);
@@ -94,8 +137,29 @@ void CLaser::Update_MatWorlds(_float fTimeDelta)
 	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 }
 
-void CLaser::Update_TartgetPos()
+void CLaser::Update_LaserElec()
 {
+	if (m_pElec == nullptr)
+		return;
+
+	dynamic_cast<CParticle_Attack*>(m_pElec)->Set_Pos(m_vTargetPos);
+}
+
+void CLaser::Create_LaserElec()
+{
+	if (m_vTargetPos.y <= 7.1f)
+	{
+		CGameObject* pElec = nullptr;
+
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_BOSS2LASERELEC_TAG, GO_PARTICLEATTACK_TAG,
+			this, m_vTargetPos, _float3(0.f, 0.f, 0.f), &pElec, 1.5f);
+
+		_float fAngle;
+
+		m_pGameInstance->Random_Float(&fAngle, 10.f, 360.f);
+
+		pElec->Get_Component<CTransform>()->Rotation_Quaternio(0.f, XMConvertToRadians(fAngle), 0.f);
+	}
 }
 
 CLaser* CLaser::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -127,4 +191,8 @@ CGameObject* CLaser::Clone(void* pArg)
 void CLaser::Free()
 {
 	__super::Free();
+
+	
+
+	Safe_Release(m_pElec);
 }

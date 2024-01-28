@@ -92,6 +92,14 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 	m_pModelCom->Set_AnimationIndex(iAnimIndex);
 }
 
+void CCharacter::Set_Light_Activate(_bool bCheck)
+{
+	if (m_pLight == nullptr)
+		return;
+
+	m_pLight->Set_Active(bCheck);
+}
+
 void CCharacter::Camera_Zoom(_float3 vOffset)
 {
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
@@ -222,14 +230,22 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 	Info.pOwner = this;
 	Info.fLifeTime = fLifeTime;
 	Info.strEffectTextureTag = strTextureTag;
+	Info.vSize = _float2(0.1f, 0.1f);
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
 
 	_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAM_POS);
 
+	_float2 vRandom;
+	m_pGameInstance->Random_Float2(&vRandom, -0.1f, 0.1f);
+	/*vCamPos.m128_f32[0] += vRandom.x;
+	vCamPos.m128_f32[1] += vRandom.y;*/
+
 	_vector vDir = XMVector3Normalize(vCamPos - vPos);
 	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
+	vPos.m128_f32[0] += vRandom.x;
+	vPos.m128_f32[1] += vRandom.y;
 	
 	XMStoreFloat4(&Info.vPos, vPos);
 

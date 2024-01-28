@@ -4,6 +4,8 @@
 
 #include "Phantom.h"
 
+#include "Effect_DashRoad.h"
+
 CPhantom_Dash::CPhantom_Dash()
 {
 }
@@ -27,6 +29,7 @@ void CPhantom_Dash::State_Enter()
 	m_pOnwerTransform->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
 	dynamic_cast<CPhantom*>(m_pOwner)->Create_Multiply();
+
 }
 
 _uint CPhantom_Dash::State_Priority_Tick(_float fTimeDelta)
@@ -47,7 +50,7 @@ _uint CPhantom_Dash::State_Tick(_float fTimeDelta)
 {
 	m_fTime += fTimeDelta;
 
-	if (m_fTime > 0.9f)
+	if (m_fTime > 0.8f)
 	{
 		if (m_iCount < 10)
 		{
@@ -73,6 +76,7 @@ void CPhantom_Dash::State_Exit()
 	m_fChangeTime = 0.f;
 	m_fTime = 0.f;
 	m_iCount = 0;
+
 }
 
 CPhantom_Dash* CPhantom_Dash::Create(CGameObject* pGameObject)

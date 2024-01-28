@@ -37,18 +37,18 @@ HRESULT CShock_Wave::Initialize(void* pArg)
 
 void CShock_Wave::Priority_Tick(_float fTimeDelta)
 {
+	
+
+}
+
+void CShock_Wave::Tick(_float fTimeDelta)
+{
 	Update_MatWorlds(fTimeDelta);
 
 	for (_uint i = 0; i < 20; i++)
 	{
 		m_pColliderCom->Update_Each(i, XMLoadFloat4x4(&m_matWorlds[i]));
 	}
-
-}
-
-void CShock_Wave::Tick(_float fTimeDelta)
-{
-
 	__super::Tick(fTimeDelta);
 }
 
@@ -69,6 +69,17 @@ HRESULT CShock_Wave::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+_matrix CShock_Wave::Get_ColWorldMat(_uint iIndx)
+{
+	if (iIndx >= 20)
+		return _matrix();
+
+	if(m_pColliderCom == nullptr)
+		return _matrix();
+
+	return XMLoadFloat4x4(&m_matWorlds[iIndx]) ;
 }
 
 HRESULT CShock_Wave::Bind_ShaderResources()

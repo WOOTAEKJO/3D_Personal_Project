@@ -4,6 +4,8 @@
 
 #include "HelicoScarrow.h"
 
+#include "Utility_Effect.h"
+
 CHelico_Dead::CHelico_Dead()
 {
 }
@@ -19,6 +21,12 @@ HRESULT CHelico_Dead::Initialize(CGameObject* pGameObject)
 void CHelico_Dead::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DEAD);
+	
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT1_TAG, GO_PARTICLESPRITE_TAG,
+		m_pOwner, nullptr, 1.f);
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
+		m_pOwner, nullptr, 1.f);
+	m_pOwner->Set_Light_Activate(false);
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)

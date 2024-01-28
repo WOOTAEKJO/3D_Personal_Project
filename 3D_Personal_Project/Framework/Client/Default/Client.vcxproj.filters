@@ -424,23 +424,8 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish">
       <UniqueIdentifier>{b83a98cc-8d22-4d01-9f39-618e5e4d69ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\07. Bullet\03. Laser">
-      <UniqueIdentifier>{77c319c4-0f7e-41ac-9c7a-4f83cf7b126e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash">
       <UniqueIdentifier>{9fd59666-1e7e-4d3c-b723-5a4981913164}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply">
-      <UniqueIdentifier>{4b386c19-ddf6-4a93-b761-c09cbbfa89de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb">
-      <UniqueIdentifier>{f38f3d23-851c-4b8c-91ce-acbcbd2cf7fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\07. Bullet\04. Target">
-      <UniqueIdentifier>{2649bd89-d1ec-46f9-9620-28dc31cbb4cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor">
-      <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
     </Filter>
     <Filter Include="96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window">
       <UniqueIdentifier>{5564a11d-35d7-4bd2-bf83-4cfa9e6b9421}</UniqueIdentifier>
@@ -468,6 +453,66 @@
     </Filter>
     <Filter Include="02.GameObjects\08. Effect\02. Soul">
       <UniqueIdentifier>{16b8326f-db11-4889-9643-c49fefa382b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93. Utility">
+      <UniqueIdentifier>{d6b9b17c-022e-4586-ad46-d1320d732059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\00. HelicoScarrow\00. HelicoBullet\00. HelicoBullet_Particle">
+      <UniqueIdentifier>{2f620a1d-863f-40c6-9d0d-1a34e12dc027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\02. Sub_Particle">
+      <UniqueIdentifier>{2e0c6034-7cb8-40f6-96a4-fcf07c13685f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="93. Utility\00. Effect">
+      <UniqueIdentifier>{5342522d-e904-4139-a590-6e6b7c985eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\03. Reaper">
+      <UniqueIdentifier>{ba976216-e446-4e28-8ba5-3cda7a1e3624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet">
+      <UniqueIdentifier>{fdbe5f4d-2cce-437d-90c5-798506077b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\01. Bomb">
+      <UniqueIdentifier>{f38f3d23-851c-4b8c-91ce-acbcbd2cf7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\02. Meteor">
+      <UniqueIdentifier>{a0ff8976-bb9a-4c56-8a82-c7bd27cd3ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Effect">
+      <UniqueIdentifier>{2eefaca7-94c2-4d6c-a6a4-8b9fd754ba11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\03. Always_Particle">
+      <UniqueIdentifier>{bc04723f-65ff-41e2-8c24-edd28f30cc19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\03. Laser">
+      <UniqueIdentifier>{77c319c4-0f7e-41ac-9c7a-4f83cf7b126e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07. Bullet\03. Target">
+      <UniqueIdentifier>{2649bd89-d1ec-46f9-9620-28dc31cbb4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\00. Multiply">
+      <UniqueIdentifier>{4b386c19-ddf6-4a93-b761-c09cbbfa89de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\04. Laser">
+      <UniqueIdentifier>{d8f3414c-5c8e-413c-880a-d4f14433b640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\04. Attack_Particle">
+      <UniqueIdentifier>{a079cbfc-49fb-476f-8f3f-78546b18da4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Effect\00. DashRoad">
+      <UniqueIdentifier>{e3747849-df4e-4e38-85a3-299cf6a68ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\05. Energy">
+      <UniqueIdentifier>{9b067676-0ae9-42ee-9bfc-a0ef4a4486c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\06. Target">
+      <UniqueIdentifier>{b6bd703d-b9d2-41e1-b332-02bcae376182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\05. Stage_Particle">
+      <UniqueIdentifier>{7a62a663-c9c3-444c-a975-be07765fb8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\07. Water">
+      <UniqueIdentifier>{4d0610ae-65f0-4ed9-a817-a8ad80dff6ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -850,22 +895,22 @@
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Laser.h">
-      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\03. Laser</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterState\Phantom_Dash.h">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Multiply.h">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\00. Multiply</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Bomb.h">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\01. Bomb</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Target_Bullet.h">
-      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+      <Filter>02.GameObjects\07. Bullet\03. Target</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Meteor.h">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\02. Meteor</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Effect_Window.h">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
@@ -896,6 +941,39 @@
     </ClInclude>
     <ClInclude Include="..\Public\Effect_Soul.h">
       <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Utility_Effect.h">
+      <Filter>93. Utility\00. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Sub.h">
+      <Filter>02.GameObjects\06. Particle\02. Sub_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Reaper.h">
+      <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Attack.h">
+      <Filter>02.GameObjects\06. Particle\04. Attack_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Always.h">
+      <Filter>02.GameObjects\06. Particle\03. Always_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Laser.h">
+      <Filter>02.GameObjects\08. Effect\04. Laser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_DashRoad.h">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Effect\00. DashRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Energy.h">
+      <Filter>02.GameObjects\08. Effect\05. Energy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Target.h">
+      <Filter>02.GameObjects\08. Effect\06. Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_Stage.h">
+      <Filter>02.GameObjects\06. Particle\05. Stage_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Water.h">
+      <Filter>02.GameObjects\08. Effect\07. Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1251,22 +1329,22 @@
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\15. Vanish</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Laser.cpp">
-      <Filter>02.GameObjects\07. Bullet\03. Laser</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\03. Laser</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState\Phantom_Dash.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\16. Dash</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Multiply.cpp">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00.Multiply</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\00. Multiply</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Bomb.cpp">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Bomb</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\01. Bomb</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Target_Bullet.cpp">
-      <Filter>02.GameObjects\07. Bullet\04. Target</Filter>
+      <Filter>02.GameObjects\07. Bullet\03. Target</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Meteor.cpp">
-      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\02. Meteor</Filter>
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\00. Bullet\02. Meteor</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Window.cpp">
       <Filter>96. Manager\00. ImGuiMgr\00. ImGui_Window\05. Effect_Window</Filter>
@@ -1297,6 +1375,39 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Soul.cpp">
       <Filter>02.GameObjects\08. Effect\02. Soul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Utility_Effect.cpp">
+      <Filter>93. Utility\00. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Sub.cpp">
+      <Filter>02.GameObjects\06. Particle\02. Sub_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Reaper.cpp">
+      <Filter>02.GameObjects\08. Effect\03. Reaper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Attack.cpp">
+      <Filter>02.GameObjects\06. Particle\04. Attack_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Always.cpp">
+      <Filter>02.GameObjects\06. Particle\03. Always_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Laser.cpp">
+      <Filter>02.GameObjects\08. Effect\04. Laser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_DashRoad.cpp">
+      <Filter>02.GameObjects\05. Character\01. Monster\01. Boss\01. Phantom\01. Effect\00. DashRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Energy.cpp">
+      <Filter>02.GameObjects\08. Effect\05. Energy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Target.cpp">
+      <Filter>02.GameObjects\08. Effect\06. Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Stage.cpp">
+      <Filter>02.GameObjects\06. Particle\05. Stage_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Water.cpp">
+      <Filter>02.GameObjects\08. Effect\07. Water</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

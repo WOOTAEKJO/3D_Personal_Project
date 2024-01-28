@@ -36,7 +36,7 @@ HRESULT CEffect_Damage::Initialize(void* pArg)
 
 	}
 
-	m_pTransformCom->Set_Scaling(0.1f, 0.1f, 0.1f);
+	m_pTransformCom->Set_Scaling(m_vSize.x, m_vSize.y, 0.1f);
 
 	m_vSolid_Color = { 1.f,1.f,1.f,1.f };
 

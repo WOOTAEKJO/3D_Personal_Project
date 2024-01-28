@@ -26,6 +26,8 @@ public:
 
 	_bool	Is_Failed() { return m_bFailed; }
 
+	void	Dead_Particle();
+
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
@@ -46,9 +48,17 @@ private:
 	_bool		m_bFailed = { false };
 	_bool		m_bBite = { false };
 
+	_float4		m_vSolid_Color = {1.f,0.f,0.f,1.f};
+	_bool		m_bChange = { false };
+	_float		m_iSign = { 1.f };
+
 private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();
+	virtual HRESULT	Init_Point_Light() override;
+
+private:
+	void	Color_Change(_float fTimeDelta);
 
 public:
 	static CBomb* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

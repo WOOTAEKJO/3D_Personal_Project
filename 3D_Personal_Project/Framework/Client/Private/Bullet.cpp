@@ -85,7 +85,7 @@ HRESULT CBullet::Render()
 
 HRESULT CBullet::Init_Point_Light()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void CBullet::Update_Light()
@@ -143,6 +143,10 @@ void CBullet::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidBodyCom);
 
-	Safe_Release(m_pLight);
+	if (m_pLight != nullptr)
+	{
+		m_pLight->Set_Active(false);
+	}
 
+	Safe_Release(m_pLight);
 }

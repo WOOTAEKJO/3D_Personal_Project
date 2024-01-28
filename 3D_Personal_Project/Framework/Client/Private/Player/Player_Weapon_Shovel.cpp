@@ -10,6 +10,8 @@
 #include "Player_Spear_AirAttack.h"
 #include "Player_Jump.h"
 
+#include "Utility_Effect.h"
+
 CPlayer_Weapon_Shovel::CPlayer_Weapon_Shovel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -105,10 +107,28 @@ void CPlayer_Weapon_Shovel::Load_FromJson(const json& In_Json)
 
 void CPlayer_Weapon_Shovel::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-	/*for (_uint i = 0; i < (_uint)COL_END; i++)
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
 	{
-		m_pColliderCom[i]->Set_UseCol(false);
-	}*/
+		_vector vColDir = XMLoadFloat3(&m_pColliderCom->Get_CollisionDir());
+		_float fColDist = m_pColliderCom->Get_PushedDist();
+
+		_vector vColPos = XMLoadFloat4(&m_pColliderCom->Get_ColliderPos());
+
+		_float3 vDir;
+		XMStoreFloat3(&vDir, -vColDir);
+		_float4 vCreatePos;
+
+		vColPos += vColDir * fColDist * 0.001f;
+
+		XMStoreFloat4(&vCreatePos, vColPos);
+
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_JACKATTACK6_TAG,
+			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_JACKATTACK7_TAG,
+			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_JACKATTACK8_TAG,
+			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
+	}
 }
 
 void CPlayer_Weapon_Shovel::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -143,12 +163,12 @@ HRESULT CPlayer_Weapon_Shovel::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	Sphere_Desc.fRadius = 30.f;
-	Sphere_Desc.vCenter = _float3(0.f, 200.f, 0.f);
+	Sphere_Desc.fRadius = 40.f;
+	Sphere_Desc.vCenter = _float3(0.f, 220.f, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 	for (_uint i = 1; i < 4; i++)
 	{
-		Sphere_Desc.vCenter = _float3(0.f, 200.f - (60.f*i), 0.f);
+		Sphere_Desc.vCenter = _float3(0.f, 220.f - (80.f*i), 0.f);
 		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
 	

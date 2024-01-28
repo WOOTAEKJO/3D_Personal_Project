@@ -24,6 +24,8 @@ void CPhantom_Marteau::State_Enter()
 
 	m_iCount += 1;
 
+	
+	dynamic_cast<CPhantom*>(m_pOwner)->Set_SmashTime(true);
 }
 
 _uint CPhantom_Marteau::State_Priority_Tick(_float fTimeDelta)
@@ -79,6 +81,8 @@ void CPhantom_Marteau::State_Exit()
 {
 	m_bAttack = true;
 	dynamic_cast<CPhantom*>(m_pOwner)->Adjust_Pos(_float3(0.f, -0.5f, 0.f));
+
+	dynamic_cast<CPhantom*>(m_pOwner)->Set_SmashTime(false);
 }
 
 CPhantom_Marteau* CPhantom_Marteau::Create(CGameObject* pGameObject)

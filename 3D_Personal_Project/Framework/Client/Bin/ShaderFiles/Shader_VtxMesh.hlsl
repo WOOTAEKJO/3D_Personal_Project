@@ -4,6 +4,8 @@ matrix		g_matWorld, g_matView, g_matProj;
 
 texture2D	g_DiffuseTexture;
 
+vector  g_vSolid_Color;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -95,6 +97,22 @@ PS_OUT PS_MODEL(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MODEL_BLEND(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+
+    if (vDiffuse.a < 0.1f)
+        discard;
+
+    Out.vDiffuse = vDiffuse * g_vSolid_Color;
+    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 1000.f, 0.f, 0.f);
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -122,6 +140,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MODEL();
+    }
+
+    pass Model_Blend
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MODEL_BLEND();
     }
 
 }

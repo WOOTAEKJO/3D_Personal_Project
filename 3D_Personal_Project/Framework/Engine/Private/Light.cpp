@@ -23,10 +23,7 @@ HRESULT CLight::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 	if (!m_bActive)
 		return S_OK;
 
-	/*if (!m_pGameInstance->IsIn_World_FrustumPlanes(XMLoadFloat4(&m_eLight_Desc.vPos), m_eLight_Desc.fRange) &&
-		m_eLight_Desc.eType == LIGHT_DESC::LIGHT_TYPE::TYPE_POINT)
-		return S_OK;*/
-	if (!m_pGameInstance->IsIn_World_FrustumPlanes(XMLoadFloat4(&m_eLight_Desc.vPos), 0.f) &&
+	if (!m_pGameInstance->IsIn_World_FrustumPlanes(XMLoadFloat4(&m_eLight_Desc.vPos), m_eLight_Desc.fRange) &&
 		m_eLight_Desc.eType == LIGHT_DESC::LIGHT_TYPE::TYPE_POINT)
 		return S_OK;
 

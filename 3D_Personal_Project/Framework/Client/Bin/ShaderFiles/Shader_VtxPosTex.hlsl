@@ -10,6 +10,12 @@ vector g_vSolid_Color;
 
 float g_fAlpha;
 
+vector g_vCenter;
+float g_fRadius;
+float g_fCompare_Radius;
+
+float g_fTimeDelta;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -71,6 +77,7 @@ struct VS_OUT_EFFECT
     float4 vPosition : SV_POSITION;
     float2 vTexCoord : TEXCOORD0;
     float4 vProjPos : TEXCOORD1;
+    float4 vWorldPos : TEXCOORD2;
 };
 
 VS_OUT_EFFECT VS_MAIN_EFFECT(VS_IN In)
@@ -85,6 +92,7 @@ VS_OUT_EFFECT VS_MAIN_EFFECT(VS_IN In)
     Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
     Out.vTexCoord = In.vTexCoord;
     Out.vProjPos = Out.vPosition;
+    Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_matWorld);
 
     return Out;
 }
@@ -94,13 +102,19 @@ struct PS_IN_EFFECT
     float4 vPosition : SV_POSITION;
     float2 vTexCoord : TEXCOORD0;
     float4 vProjPos : TEXCOORD1;
+    float4 vWorldPos : TEXCOORD2;
 };
 
 PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    if (vColor.a < 0.3f)
+        discard;
+    
+    Out.vColor = vColor; //  * g_vSolid_Color;
     
     //float2 vDepthTexcoord;
     //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
@@ -146,6 +160,117 @@ PS_OUT PS_MAIN_EFFECT_INVISIBILITY(PS_IN_EFFECT In)
     
     Out.vColor = vColor;
 
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_REAPER(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord * 2.f);
+    
+    if (vColor.a < 0.8f)
+        discard;
+   
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    vector vDir = g_vCenter - In.vWorldPos;
+   
+    float vDistance = length(vDir);
+    
+    if (vDistance>g_fRadius)
+        discard;
+   
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_BLEND(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.x < 0.4f && vColor.y < 0.4f && vColor.z < 0.4f)
+    {
+        vColor.a = 0.1f;
+
+    }
+    
+    if (vColor.a < 0.3f)
+        discard;
+   
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_BLEND_INVISIBILITY(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
+    
+    if (vColor.x < 0.3f && vColor.y < 0.3f && vColor.z < 0.3f)
+    {
+        
+        if (vColor.x < 0.15f && vColor.y < 0.15f && vColor.z < 0.15f)
+            discard;
+        else
+            vColor = g_vSolid_Color;
+    }
+
+    if (vColor.a < 0.1f)
+        discard;
+       
+    vColor.a = min(max(vColor.a - g_fAlpha, 0.f),1.f);
+    
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_TARGET(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord * 2.f);
+    
+    if (vColor.a < 0.8f)
+        discard;
+   
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    vector vDir = g_vCenter - In.vWorldPos;
+   
+    float vDistance = length(vDir);
+    
+    if (vDistance < g_fRadius || vDistance>g_fCompare_Radius)
+        discard;
+   
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04);
+    
+    if (vColor.a < 0.8f)
+        discard;
+    
+    if (vColor.r < 0.0196555f)
+    {
+        vColor.a = max(vColor.a - g_fAlpha * 1.5f, 0.f);
+    }else
+        vColor.a = max(vColor.a - g_fAlpha, 0.f);
+  
+    Out.vColor = vColor;
+    
     return Out;
 }
 
@@ -202,6 +327,71 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
+    }
+
+    pass Effect_Reaper
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_REAPER();
+    }
+
+    pass Effect_Blend
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND();
+    }
+
+    pass Effect_Blend_Invisibility
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND_INVISIBILITY();
+    }
+
+    pass Effect_Target //7
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_TARGET();
+    }
+
+    pass Effect_Water //7
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_WATER();
     }
 
 }

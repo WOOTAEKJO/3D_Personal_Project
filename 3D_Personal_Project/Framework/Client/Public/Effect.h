@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CShader;
 class CTexture;
 class CVIBuffer_Rect;
+class CVIBuffer_DRect;
 
 END
 
@@ -21,6 +22,7 @@ public:
 		CGameObject* pOwner = nullptr;
 		_float			fLifeTime = 0.f;
 		_float4			vPos = { 0.f,0.f,0.f,1.f };
+		_float2			vSize = { 1.f,1.f };
 	}EFFECTINFO;
 
 protected:
@@ -41,6 +43,7 @@ protected:
 	CShader* m_pShaderCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Rect* m_pBufferCom = { nullptr };
+	CVIBuffer_DRect* m_pDBufferCom = { nullptr };
 
 protected:
 	CGameObject* m_pOwner = { nullptr };
@@ -60,6 +63,8 @@ protected:
 protected:
 	_float4		m_vSolid_Color = { 1.f,1.f,1.f,1.f };
 	_float		m_fAlpha = { 0.f };
+	_float2		m_vSize = { 1.f,1.f };
+	_float4		m_vPos = { 0.f,0.f,0.f,1.f };
 
 protected:
 	virtual HRESULT	Bind_ShaderResources();

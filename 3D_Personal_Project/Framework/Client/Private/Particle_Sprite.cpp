@@ -27,6 +27,9 @@ HRESULT CParticle_Sprite::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Load_Data_Json(m_strParticleTag + TEXT("Info"), this)))
+		return E_FAIL;
+
 	PARTICLEINFO* pInfo = (PARTICLEINFO*)pArg;
 
 	m_pOwner = pInfo->pOwner;
@@ -39,20 +42,8 @@ HRESULT CParticle_Sprite::Initialize(void* pArg)
 	m_pSocketBone = pInfo->pBones[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
-	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS));
-
-	_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-
-	m_pTransformCom->LookAt_Dir(vLook);*/
 	XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
-
-		/*_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
-
-		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-
-		m_pTransformCom->LookAt_Dir(vLook);*/
 
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
@@ -81,17 +72,11 @@ void CParticle_Sprite::Tick(_float fTimeDelta)
 
 void CParticle_Sprite::Late_Tick(_float fTimeDelta)
 {
-	if (m_pSocketBone != nullptr)
+	if (m_pSocketBone != nullptr && m_bChild)
 	{
-		/*XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
+		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
-
-		_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
-		
-		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-		
-		m_pTransformCom->LookAt_Dir(vLook);*/
+;
 	}
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))

@@ -16,6 +16,7 @@
 #pragma region 버퍼
 
 #define BUFFER_RECT_TAG				TEXT("Prototype_Component_VIBuffer_Rect")
+#define BUFFER_DRECT_TAG				TEXT("Prototype_Component_VIBuffer_DRect")
 
 #define BUFFER_TERRAIN_TAG			TEXT("Prototype_Component_VIBuffer_Terrain")
 #define BUFFER_TERRAIN2_TAG			TEXT("Prototype_Component_VIBuffer_Terrain2")
@@ -245,8 +246,54 @@
 #define	PARTICLE_JACKATTACK3_TAG		TEXT("Prototype_Component_Particle_JackAttack3")
 #define	PARTICLE_JACKATTACK4_TAG		TEXT("Prototype_Component_Particle_JackAttack4")
 #define	PARTICLE_JACKATTACK5_TAG		TEXT("Prototype_Component_Particle_JackAttack5")
+#define	PARTICLE_JACKATTACK6_TAG		TEXT("Prototype_Component_Particle_JackAttack6")
+#define	PARTICLE_JACKATTACK7_TAG		TEXT("Prototype_Component_Particle_JackAttack7")
+#define	PARTICLE_JACKATTACK8_TAG		TEXT("Prototype_Component_Particle_JackAttack8")
 
 #define	PARTICLE_JACKHITTAG		TEXT("Prototype_Component_Particle_JackHit")
+
+#define	PARTICLE_BOSS1AIRATTACK1_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack1")
+#define	PARTICLE_BOSS1AIRATTACK2_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack2")
+#define	PARTICLE_BOSS1AIRATTACK3_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack3")
+#define	PARTICLE_BOSS1AIRATTACK4_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack4")
+#define	PARTICLE_BOSS1AIRATTACK5_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttack5")
+
+#define	PARTICLE_BOSS1AIRATTACKEND_TAG		TEXT("Prototype_Component_Particle_Boss1AirAttackEnd")
+
+#define	PARTICLE_BOSS1WAVE_TAG		TEXT("Prototype_Component_Particle_Boss1Wave")
+
+#define	PARTICLE_BOSS1HIT_TAG		TEXT("Prototype_Component_Particle_Boss1Hit")
+
+#define	PARTICLE_BAT1_TAG		TEXT("Prototype_Component_Particle_Bat1")
+#define	PARTICLE_BAT2_TAG		TEXT("Prototype_Component_Particle_Bat2")
+
+#define	PARTICLE_CROWATTACK_TAG		TEXT("Prototype_Component_Particle_CrowAttack")
+
+#define	PARTICLE_BOSS2IDLE_TAG		TEXT("Prototype_Component_Particle_Boss2IDLE")
+#define	PARTICLE_BOSS2WAVE_TAG		TEXT("Prototype_Component_Particle_Boss2Wave")
+
+#define	PARTICLE_BOSS2LASERELEC_TAG		TEXT("Prototype_Component_Particle_Boss2LaserElec")
+
+#define	PARTICLE_BOSS2DASH_TAG		TEXT("Prototype_Component_Particle_Boss2Dash")
+
+#define	PARTICLE_BOMBPARTICLE_TAG		TEXT("Prototype_Component_Particle_BombParticle")
+
+#define	PARTICLE_EXPLOSION1_TAG		TEXT("Prototype_Component_Particle_Explosion1")
+#define	PARTICLE_EXPLOSION2_TAG		TEXT("Prototype_Component_Particle_Explosion2")
+#define	PARTICLE_EXPLOSION3_TAG		TEXT("Prototype_Component_Particle_Explosion3")
+#define	PARTICLE_EXPLOSION4_TAG		TEXT("Prototype_Component_Particle_Explosion4")
+
+#define	PARTICLE_BOSS2SHOOTHIT_TAG		TEXT("Prototype_Component_Particle_Boss2ShootHit")
+
+#define	PARTICLE_METEORTAIL_TAG		TEXT("Prototype_Component_Particle_MeteorTail")
+#define	PARTICLE_METEORAFTER_TAG		TEXT("Prototype_Component_Particle_MeteorAfter")
+#define	PARTICLE_METEORWAVE_TAG		TEXT("Prototype_Component_Particle_MeteorWave")
+
+#define	PARTICLE_METEOREXPLOSION1_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion1")
+#define	PARTICLE_METEOREXPLOSION2_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion2")
+#define	PARTICLE_METEOREXPLOSION3_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion3")
+
+#define	PARTICLE_STAGE3IDLE_TAG		TEXT("Prototype_Component_Particle_Stage3IDLE")
 
 #pragma endregion
 
@@ -301,7 +348,9 @@
 
 #define TEX_BUBLE_TAG		TEXT("Prototype_Component_Texture_Buble")
 
-#define TEX_CONFETTIS_TAG		TEXT("Prototype_Component_Texture_Confettis")
+#define TEX_CONFETTISF_TAG		TEXT("Prototype_Component_Texture_ConfettisF")
+#define TEX_CONFETTISS_TAG		TEXT("Prototype_Component_Texture_ConfettisS")
+#define TEX_CONFETTIST_TAG		TEXT("Prototype_Component_Texture_ConfettisT")
 
 #define TEX_SMOKEPUFF_TAG		TEXT("Prototype_Component_Texture_SmokePuff")
 #define TEX_SMOKEPUFFMUSH_TAG	TEXT("Prototype_Component_Texture_SmokePuffMush")
@@ -317,6 +366,16 @@
 #define TEX_LANTERNHALO_TAG		TEXT("Prototype_Component_Texture_LanternHalo")
 
 #define TEX_SOUL_TAG		TEXT("Prototype_Component_Texture_SoulTex")
+
+#define TEX_REAPER_TAG		TEXT("Prototype_Component_Texture_Reaper")
+
+#define TEX_BATSPRITE_TAG		TEXT("Prototype_Component_Texture_BatSprite")
+
+#define TEX_FEATHER_TAG		TEXT("Prototype_Component_Texture_Feather")
+
+#define TEX_LASER_TAG		TEXT("Prototype_Component_Texture_Laser")
+
+#define TEX_WATER_TAG		TEXT("Prototype_Component_Texture_Water")
 
 #pragma endregion
 
@@ -346,10 +405,20 @@
 
 #define GO_PARTICLENORMAL_TAG			TEXT("Prototype_GameObject__ParticleNormal")
 #define GO_PARTICLESPRITE_TAG			TEXT("Prototype_GameObject__ParticleSprite")
+#define GO_PARTICLESUB_TAG			TEXT("Prototype_GameObject__ParticleSub")
+#define GO_PARTICLEATTACK_TAG			TEXT("Prototype_GameObject__ParticleAttack")
+#define GO_PARTICLEALWAYS_TAG			TEXT("Prototype_GameObject__ParticleAlways")
+#define GO_PARTICLESTAGE_TAG			TEXT("Prototype_GameObject__ParticleStage")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
 #define GO_EFFECTSOUL_TAG			TEXT("Prototype_GameObject_EffectSoul")
+#define GO_EFFECTREAPER_TAG			TEXT("Prototype_GameObject_EffectReaper")
+#define GO_EFFECTLASER_TAG			TEXT("Prototype_GameObject_EffectLaser")
+#define GO_EFFECTDASHROAD_TAG		TEXT("Prototype_GameObject_DashRoad")
+#define GO_EFFECTENERGY_TAG			TEXT("Prototype_GameObject_Energy")
+#define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
+#define GO_EFFECTWATER_TAG			TEXT("Prototype_GameObject_Water")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
@@ -363,8 +432,6 @@
 #define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
 #define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
 #define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
-
-
 
 #pragma region 캐릭터
 

@@ -19,7 +19,8 @@
 #include "Helico_Bullet.h"
 #include "Shock_Wave.h"
 
-
+#include "Utility_Effect.h"
+#include "Effect_Reaper.h"
 
 CHelicoScarrow::CHelicoScarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -54,6 +55,9 @@ HRESULT CHelicoScarrow::Initialize(void* pArg)
 	/*if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
 		return E_FAIL;*/
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	m_pSocketBone = m_pModelCom->Get_Bone(2);
 	Safe_AddRef(m_pSocketBone);
 
@@ -79,6 +83,8 @@ void CHelicoScarrow::Tick(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Down(DIK_0))
 		m_Status_Desc.bTalk = false;
+
+	Shock_Wave_Radius_Compute();
 
 	CMonster::Tick(fTimeDelta);
 }
@@ -219,22 +225,51 @@ void CHelicoScarrow::Create_Shock_Wave()
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.3f;
-	BulletDesc.fLifeTime = 0.9f;
-	BulletDesc.fSpeed = 2.f;
+	BulletDesc.fLifeTime = 1.f;
+	BulletDesc.fSpeed = 2.4f;
 	BulletDesc.pTarget = nullptr;
 	
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vLook = XMVector3Normalize( m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK));
 
-	vPos = vPos + vLook * 0.1f;
+	_vector vWavePos = vPos + vLook * 0.1f;
 
-	vPos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y;
+	vWavePos.m128_f32[1] -= m_pTransformCom->Get_Scaled().y;
 
-	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
+	XMStoreFloat4(&BulletDesc.fStartPos, vWavePos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
-		GO_SHOCK_WAVE_TAG, &BulletDesc)))
+		GO_SHOCK_WAVE_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&m_pShockWave_Col))))
 		return;
+
+	_float4 vParticlePos;
+	XMStoreFloat4(&vParticlePos, vPos);
+
+	CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_BOSS1WAVE_TAG, GO_PARTICLEATTACK_TAG,
+		this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 1.f);
+
+	CUtility_Effect::Create_Effect_Reaper(m_pGameInstance, this, vPos, _float4(1.f, 0.6f, 0.4f, 1.f),
+		&m_pShockWave_Effect, 1.f, _float2(8.f, 8.f));
+
+	CUtility_Effect::Create_Damage_Effect(m_pGameInstance, this, 0.5f, _float2(1.5f, 1.5f));
+}
+
+void CHelicoScarrow::Shock_Wave_Radius_Compute()
+{
+	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
+		return;
+
+	if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
+		return;
+
+	_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	_vector vDir = vPos - vColPos;
+
+	_float fDistance = XMVectorGetX( XMVector3Length(vDir));
+
+	dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -243,8 +278,13 @@ void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		m_Status_Desc.bHited == false)
 	{
 		m_Status_Desc.bHited = true;
-
+		m_bHit_Effect = true;
+		Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
 		m_iHited_Count[1] += 1;
+
+		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1HIT_TAG,
+			GO_PARTICLENORMAL_TAG,
+			this, nullptr, 0.5f);
 	}
 }
 
@@ -299,6 +339,27 @@ HRESULT CHelicoScarrow::Ready_State()
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.7f;
+	LightDesc.vDiffuse = _float4(1.f, 0.8f, 0.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 0.8f, 0.f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

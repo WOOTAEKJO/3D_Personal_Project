@@ -11,6 +11,7 @@
 #include "AnimMesh_Demo.h"
 
 #include "Monster.h"
+#include "Utility_Effect.h"
 
 CLevel_Boss2::CLevel_Boss2(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -44,12 +45,20 @@ HRESULT CLevel_Boss2::Initialize()
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_TRIGGER_BULLET))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_MONSTER, COLLIDER_LAYER::COL_TRIGGER_BULLET))) return E_FAIL;
+
+	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE3IDLE_TAG, _float4(16.739f, 3.5f, 18.639f, 1.f),
+		nullptr, nullptr);
+
+	CUtility_Effect::Create_Effect_Normal(m_pGameInstance, TEX_WATER_TAG, GO_EFFECTWATER_TAG, nullptr,
+		XMVectorSet(16.739, 7.f, 18.639, 1.f), nullptr, 0.f, _float2(25.f, 25.f));
+	
 	
 	return S_OK; 
 }
 
 void CLevel_Boss2::Tick(_float fTimeDelta)
 {
+	
 }
 
 HRESULT CLevel_Boss2::Render()

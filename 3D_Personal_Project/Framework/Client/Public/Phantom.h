@@ -30,14 +30,20 @@ public:
 	PHASE	Get_CurrentPhase() { return m_eCurrentPhase; }
 	_uint	Get_PrevState();
 
+	void	Set_SmashTime(_bool bCheck) { m_bSmashTime = bCheck; }
+
 public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 public:
 	void	Create_Shock_Wave();
+	void	Shock_Wave_Radius_Compute();
+
 	void	Create_Laser();
-	void	Adjust_Pos(_float3 vAdjust);
+	void	Update_Laser_Elec();
 	void	Delete_Laser();
+
+	void	Adjust_Pos(_float3 vAdjust);
 
 	void	Create_Multiply();
 	void	SetUp_Random_Pos();
@@ -49,6 +55,7 @@ public:
 
 	void	Create_Bomb();
 	void	Start_Point_Toward_Bomb();
+	void	Delete_Failed_Bomb();
 	void	Delete_Bomb();
 	_bool	Is_Bomb_Failed();
 
@@ -64,6 +71,8 @@ public:
 	void	Navi_Filter();
 
 	_bool	Is_Target_Near();
+
+	void	Judge_Dead();
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
@@ -85,9 +94,20 @@ private:
 	_uint				m_iHitCount = { 0 };
 
 private:
+	CGameObject* m_pIDLEParicle = { nullptr };
+
+private:
+	CGameObject* m_pShockWave_Col = { nullptr };
+	CGameObject* m_pShockWave_Effect = { nullptr };
+
+private:
+	_bool		m_bSmashTime = { false };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
+	virtual HRESULT	Init_Point_Light() override;
 
 public:
 	static	CPhantom* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

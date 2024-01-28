@@ -28,12 +28,13 @@ HRESULT CEffect::Initialize(void* pArg)
 
 	m_strTextureTag = pInfo->strEffectTextureTag;
 	m_pOwner = pInfo->pOwner;
-	if (m_pOwner == nullptr)
-		return E_FAIL;
+	/*if (m_pOwner == nullptr)
+		return E_FAIL;*/
 
 	m_fLifeTime = pInfo->fLifeTime;
-
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMLoadFloat4(&pInfo->vPos));
+	m_vSize = pInfo->vSize;
+	m_vPos = pInfo->vPos;
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMLoadFloat4(&m_vPos));
 
 	return S_OK;
 }
@@ -142,4 +143,5 @@ void CEffect::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pBufferCom);	
+	Safe_Release(m_pDBufferCom);
 }

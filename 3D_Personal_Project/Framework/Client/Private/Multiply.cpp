@@ -7,6 +7,9 @@
 #include "Bone.h"
 #include "Model.h"
 
+#include "Effect_DashRoad.h"
+#include "Utility_Effect.h"
+
 CMultiply::CMultiply(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -45,14 +48,32 @@ HRESULT CMultiply::Initialize(void* pArg)
 
 	m_pTransformCom->LookAt(m_pTarget->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
 
+	CEffect_DashRoad::EFFECT_DASHROADINFO Info = {};
+	Info.pOwner = this;
+	Info.fLifeTime = 0.f;
+	Info.strEffectTextureTag = TEX_LASER_TAG;
+	Info.vSize = _float2(1.5f, 15.f);
+	Info.vColor = _float4(0.f, 0.8f, 1.f, 1.f);
+	XMStoreFloat4(&Info.vPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTDASHROAD_TAG, &Info, reinterpret_cast<CGameObject**>(&m_pEffect))))
+		return E_FAIL;
+
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS2DASH_TAG, GO_PARTICLEALWAYS_TAG,
+		this, nullptr,0.05f);
+
 	return S_OK;
 }
 
 void CMultiply::Priority_Tick(_float fTimeDelta)
 {
+	m_fTransTimeAcc += fTimeDelta;
+
+	if (m_fTransTimeAcc > 0.5f)
+		Toward(fTimeDelta);
 
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
-	Toward(fTimeDelta);
 
 }
 
@@ -173,4 +194,5 @@ void CMultiply::Free()
 
 	Safe_Release(m_pModelCom);
 	Safe_Release(m_pSocketBone);
+	//Safe_Release(m_pEffect);
 }
