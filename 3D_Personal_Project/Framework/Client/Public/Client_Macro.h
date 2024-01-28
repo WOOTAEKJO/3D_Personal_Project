@@ -285,6 +285,9 @@
 
 #define	PARTICLE_BOSS2SHOOTHIT_TAG		TEXT("Prototype_Component_Particle_Boss2ShootHit")
 
+#define	PARTICLE_METEORTAIL_TAG		TEXT("Prototype_Component_Particle_MeteorTail")
+#define	PARTICLE_METEORAFTER_TAG		TEXT("Prototype_Component_Particle_MeteorAfter")
+#define	PARTICLE_METEORWAVE_TAG		TEXT("Prototype_Component_Particle_MeteorWave")
 
 #pragma endregion
 
@@ -405,6 +408,7 @@
 #define GO_EFFECTLASER_TAG			TEXT("Prototype_GameObject_EffectLaser")
 #define GO_EFFECTDASHROAD_TAG		TEXT("Prototype_GameObject_DashRoad")
 #define GO_EFFECTENERGY_TAG			TEXT("Prototype_GameObject_Energy")
+#define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_Defines.h"
 #include "Client_Defines.h"
+#include "Effect_Reaper.h"
 
 BEGIN(Engine)
 
@@ -25,7 +26,8 @@ public:
 		CGameObject* pOwner,_fvector vPos, CGameObject** pOut, _float fLifeTime, _float2 vSize);
 
 	static void	Create_Effect_Reaper(CGameInstance* pGameInstance,
-		CGameObject* pOwner, _fvector vPos,_float4 vColor, CGameObject** pOut, _float fLifeTime, _float2 vSize);
+		CGameObject* pOwner, _fvector vPos,_float4 vColor, CGameObject** pOut, _float fLifeTime, _float2 vSize,
+		CEffect_Reaper::COMPUTE_TYPE eType = CEffect_Reaper::COMPUTE_TYPE::POS_END);
 
 	static void	Create_Damage_Effect(CGameInstance* pGameInstance, CGameObject* pOwner, _float fLifeTime, _float2 vSize);
 	

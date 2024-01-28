@@ -36,6 +36,7 @@
 #include "Effect_Laser.h"
 #include "Effect_DashRoad.h"
 #include "Effect_Energy.h"
+#include "Effect_Target.h"
 
 CPhantom::CPhantom(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
@@ -98,10 +99,10 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 void CPhantom::Priority_Tick(_float fTimeDelta)
 {
-	
-
 	if (!m_bActivate)
 		return;
+
+	Shock_Wave_Radius_Compute();
 
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CGameObject::Priority_Tick(fTimeDelta);
@@ -114,8 +115,6 @@ void CPhantom::Tick(_float fTimeDelta)
 
 	if (m_Status_Desc.bTalk)
 		XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
-
-	Shock_Wave_Radius_Compute();
 
 	CMonster::Tick(fTimeDelta);
 }
@@ -192,6 +191,8 @@ void CPhantom::Create_Shock_Wave()
 		GO_SHOCK_WAVE_TAG, &BulletDesc,&m_pShockWave_Col)))
 		return;
 
+	//Safe_AddRef(m_pShockWave_Col);
+
 	vWavePos.m128_f32[1] += 0.3f;
 
 	_float4 vParticlePos;
@@ -203,7 +204,8 @@ void CPhantom::Create_Shock_Wave()
 	CUtility_Effect::Create_Effect_Reaper(m_pGameInstance, this, vWavePos, _float4(0.f, 0.8f, 1.f, 1.f),
 		&m_pShockWave_Effect, 1.5f, _float2(8.f, 8.f));
 
-	//CUtility_Effect::Create_Damage_Effect(m_pGameInstance, this, 0.5f, _float2(1.5f, 1.5f));
+	//Safe_AddRef(m_pShockWave_Effect);
+
 	CEffect::EFFECTINFO Info = {};
 	Info.pOwner = this;
 	Info.fLifeTime = 0.5f;
@@ -265,7 +267,7 @@ void CPhantom::Create_Laser()
 	Info.fLifeTime = 0.f;
 	Info.strEffectTextureTag = TEX_LASER_TAG;
 	Info.vSize = _float2(1.f, 1.f);
-	Info.vColor = _float4(0.f, 0.8f, 1.f, 1.f);
+	Info.vColor = _float4(0.f, 1.f, 1.f, 1.f);
 	Info.pTarger = m_pPlayer;
 
 	XMStoreFloat4(&Info.vPos, vPos);
@@ -574,8 +576,8 @@ void CPhantom::Create_Meteor()
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.2f;
-	BulletDesc.fLifeTime = 0.9f;
-	BulletDesc.fSpeed = 7.f;
+	BulletDesc.fLifeTime = 0.f;
+	BulletDesc.fSpeed = 5.f;
 	BulletDesc.pTarget = m_pPlayer;
 
 	_float fX = Random({ -1.f,-0.7f,-0.5f,-0.3f,-0.2f,-0.1f,0.f,0.1f,0.2f,0.3f,0.5f,0.7f,1.f});
@@ -584,7 +586,7 @@ void CPhantom::Create_Meteor()
 	_float4 vPos;
 	XMStoreFloat4(&vPos, m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 	vPos.x += fX;
-	vPos.y = 10.f;
+	vPos.y = 15.f;
 	vPos.z += fZ;
 	vPos.w = 1.f;
 
@@ -593,6 +595,8 @@ void CPhantom::Create_Meteor()
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
 		GO_METEOR_TAG, &BulletDesc)))
 		return;
+
+
 }
 
 void CPhantom::Drop_Floor(_uint iFloorType)
@@ -787,4 +791,7 @@ CGameObject* CPhantom::Clone(void* pArg)
 void CPhantom::Free()
 {
 	__super::Free();
+
+	/*Safe_Release(m_pShockWave_Col);
+	Safe_Release(m_pShockWave_Effect);*/
 }

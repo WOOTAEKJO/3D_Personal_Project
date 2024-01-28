@@ -505,6 +505,9 @@
     <Filter Include="02.GameObjects\08. Effect\05. Energy">
       <UniqueIdentifier>{9b067676-0ae9-42ee-9bfc-a0ef4a4486c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Effect\06. Target">
+      <UniqueIdentifier>{b6bd703d-b9d2-41e1-b332-02bcae376182}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -957,6 +960,9 @@
     <ClInclude Include="..\Public\Effect_Energy.h">
       <Filter>02.GameObjects\08. Effect\05. Energy</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Target.h">
+      <Filter>02.GameObjects\08. Effect\06. Target</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1381,6 +1387,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Energy.cpp">
       <Filter>02.GameObjects\08. Effect\05. Energy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Target.cpp">
+      <Filter>02.GameObjects\08. Effect\06. Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

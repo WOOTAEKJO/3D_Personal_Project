@@ -52,7 +52,7 @@ HRESULT CMultiply::Initialize(void* pArg)
 	Info.pOwner = this;
 	Info.fLifeTime = 0.f;
 	Info.strEffectTextureTag = TEX_LASER_TAG;
-	Info.vSize = _float2(3.f, 15.f);
+	Info.vSize = _float2(1.5f, 15.f);
 	Info.vColor = _float4(0.f, 0.8f, 1.f, 1.f);
 	XMStoreFloat4(&Info.vPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 

@@ -4,7 +4,6 @@
 #include "Effect.h"
 
 #include "Particle_Attack.h"
-#include "Effect_Reaper.h"
 
 void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone)
 {
@@ -55,7 +54,8 @@ void CUtility_Effect::Create_Effect_Normal(CGameInstance* pGameInstance, const w
 		return;
 }
 
-void CUtility_Effect::Create_Effect_Reaper(CGameInstance* pGameInstance, CGameObject* pOwner, _fvector vPos, _float4 vColor, CGameObject** pOut, _float fLifeTime, _float2 vSize)
+void CUtility_Effect::Create_Effect_Reaper(CGameInstance* pGameInstance, CGameObject* pOwner, _fvector vPos,
+	_float4 vColor, CGameObject** pOut, _float fLifeTime, _float2 vSize, CEffect_Reaper::COMPUTE_TYPE eType)
 {
 	CEffect_Reaper::EFFECT_REAPERINFO Info = {};
 	Info.pOwner = pOwner;
@@ -63,6 +63,7 @@ void CUtility_Effect::Create_Effect_Reaper(CGameInstance* pGameInstance, CGameOb
 	Info.strEffectTextureTag = TEX_REAPER_TAG;
 	Info.vSize = vSize;
 	Info.vColor = vColor;
+	Info.eComputeType = eType;
 
 	XMStoreFloat4(&Info.vPos, vPos);
 

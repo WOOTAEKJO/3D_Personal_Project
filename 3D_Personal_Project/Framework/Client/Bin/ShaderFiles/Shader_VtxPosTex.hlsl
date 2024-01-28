@@ -12,6 +12,7 @@ float g_fAlpha;
 
 vector g_vCenter;
 float g_fRadius;
+float g_fCompare_Radius;
 
 struct VS_IN
 {
@@ -192,6 +193,7 @@ PS_OUT PS_MAIN_EFFECT_BLEND(PS_IN_EFFECT In)
     if (vColor.x < 0.4f && vColor.y < 0.4f && vColor.z < 0.4f)
     {
         vColor.a = 0.1f;
+
     }
     
     if (vColor.a < 0.3f)
@@ -208,16 +210,43 @@ PS_OUT PS_MAIN_EFFECT_BLEND_INVISIBILITY(PS_IN_EFFECT In)
     
     float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord);
     
-    if (vColor.x < 0.4f && vColor.y < 0.4f && vColor.z < 0.4f)
+    if (vColor.x < 0.3f && vColor.y < 0.3f && vColor.z < 0.3f)
     {
-        vColor.a = 0.1f;
+        
+        if (vColor.x < 0.15f && vColor.y < 0.15f && vColor.z < 0.15f)
+            discard;
+        else
+            vColor = g_vSolid_Color;
     }
-    
-    if (vColor.a < 0.3f)
+
+    if (vColor.a < 0.1f)
         discard;
        
     vColor.a = min(max(vColor.a - g_fAlpha, 0.f),1.f);
     
+    Out.vColor = vColor * g_vSolid_Color;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_TARGET(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexCoord * 2.f);
+    
+    if (vColor.a < 0.8f)
+        discard;
+   
+    vColor.a = max(vColor.a - g_fAlpha, 0.f);
+    
+    vector vDir = g_vCenter - In.vWorldPos;
+   
+    float vDistance = length(vDir);
+    
+    if (vDistance < g_fRadius || vDistance>g_fCompare_Radius)
+        discard;
+   
     Out.vColor = vColor * g_vSolid_Color;
     
     return Out;
@@ -315,6 +344,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND_INVISIBILITY();
+    }
+
+    pass Effect_Target //7
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_TARGET();
     }
 
 }

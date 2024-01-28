@@ -48,7 +48,7 @@ HRESULT CEffect_DashRoad::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(m_vSize.x, m_vSize.y, 1.f);
 
-	*m_pSpare += 0.00001f;
+	*m_pSpare += 0.000015f;
 	//m_pTransformCom->Rotation_Quaternio(XMConvertToRadians(90.f),0.f , 0.f);
 	SetUp();
 	

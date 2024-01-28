@@ -24,12 +24,17 @@ HRESULT CEffect_Reaper::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	m_pOwnerTransform = m_pOwner->Get_Component<CTransform>();
+	if (m_pOwnerTransform == nullptr)
+		return E_FAIL;
+
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
 	EFFECT_REAPERINFO* Info = (EFFECT_REAPERINFO*)pArg;
 
 	m_vSolid_Color = Info->vColor;
+	m_eComputeType = Info->eComputeType;
 
 	m_fMaxFrame = m_pTextureCom->Get_TextureNum();
 
@@ -43,24 +48,58 @@ HRESULT CEffect_Reaper::Initialize(void* pArg)
 	m_pTransformCom->Set_Scaling(m_vSize.x, m_vSize.y, 0.1f);
 
 	m_fAlpha = 0.6f;
+
+	switch (m_eComputeType)
+	{
+	case Client::CEffect_Reaper::POSX:
+		break;
+	case Client::CEffect_Reaper::POSY:
+		_vector vOwnerPos = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS);
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+		m_fTotal_Distance = vOwnerPos.m128_f32[1] - vPos.m128_f32[1];
+
+		break;
+	case Client::CEffect_Reaper::POSZ:
+		break;
+	}
+
+	m_fMaxRadius = m_pTransformCom->Get_Scaled().x * 0.5f;
+
 	return S_OK;
 }
 
 void CEffect_Reaper::Priority_Tick(_float fTimeDelta)
 {
 
-	//__super::Priority_Tick(fTimeDelta);
 }
 
 void CEffect_Reaper::Tick(_float fTimeDelta)
 {
-	//m_fRadius += fTimeDelta;
+	Compute_Pos();
 	__super::Tick(fTimeDelta);
 }
 
 void CEffect_Reaper::Late_Tick(_float fTimeDelta)
 {
-	Judge_Dead(fTimeDelta);
+	
+	switch (m_eComputeType)
+	{
+	case Client::CEffect_Reaper::POSX:
+		break;
+	case Client::CEffect_Reaper::POSY:
+		if (m_pOwner == nullptr || m_pOwner->Get_Dead())
+			Set_Dead();
+
+		break;
+	case Client::CEffect_Reaper::POSZ:
+		break;
+	case Client::CEffect_Reaper::POS_END:
+		Judge_Dead(fTimeDelta);
+		break;
+	default:
+		break;
+	}
 
 	__super::Late_Tick(fTimeDelta);
 
@@ -78,6 +117,36 @@ HRESULT CEffect_Reaper::Render()
 	m_pBufferCom->Render();
 
 	return S_OK;
+}
+
+void CEffect_Reaper::Compute_Pos()
+{
+	switch (m_eComputeType)
+	{
+	case Client::CEffect_Reaper::POSX:
+		break;
+	case Client::CEffect_Reaper::POSY:
+
+	{
+		_float3 fScale = m_pTransformCom->Get_Scaled();
+
+		_vector vOwnerPos = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_POS);
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+		_float fDistY = vOwnerPos.m128_f32[1] - vPos.m128_f32[1];
+
+		_float fResult = ((m_fTotal_Distance - fDistY) * m_fMaxRadius) / m_fTotal_Distance;
+
+		if (m_fMaxRadius > fResult)
+		{
+			m_fRadius = fResult;
+		}
+	}
+	
+		break;
+	case Client::CEffect_Reaper::POSZ:
+		break;
+	}
 }
 
 HRESULT CEffect_Reaper::Bind_ShaderResources()

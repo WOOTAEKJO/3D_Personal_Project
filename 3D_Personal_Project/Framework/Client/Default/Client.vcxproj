@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\Effect_Laser.h" />
     <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
+    <ClInclude Include="..\Public\Effect_Target.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="..\Private\Effect_Laser.cpp" />
     <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
+    <ClCompile Include="..\Private\Effect_Target.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />
