@@ -22,6 +22,9 @@ public:
 	HRESULT	Add_RenderGroup(RENDERGROUP eRenderID, class CGameObject* pGameObject);
 	HRESULT	Add_DebugRender(CComponent* pComponent);
 	HRESULT	Draw_RenderGroup();
+
+	void	Fog_SetUp(_float2 vForStart_End, _float4 vFogColor);
+
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
@@ -45,7 +48,9 @@ private:
 	list<CComponent*>			m_listComponent;
 #endif 
 
-
+private:
+	_float2						m_vFogPosition = {0.f,0.f};
+	_float4						m_vFogColor = {1.f,1.f,1.f,1.f};
 
 private:
 	HRESULT Render_Priority();

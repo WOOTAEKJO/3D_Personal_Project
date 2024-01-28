@@ -31,6 +31,10 @@ texture2D	g_DepthTexture;
 texture2D	g_SpecularTexture;
 texture2D	g_ShadeTexture;
 
+float       g_fFogStart;
+float       g_fFogEnd;
+vector      g_vFogColor;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -189,6 +193,13 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
     vector vSpecular = g_SpecularTexture.Sample(LinearSampler, In.vTexCoord);
     
     Out.vColor = vDiffuse * vShade + vSpecular;
+    
+    vector vDepth = g_DepthTexture.Sample(PointSampler, In.vTexCoord);
+    float fViewZ = vDepth.y * g_fFar;
+    
+    float FogFactor = saturate((g_fFogEnd - fViewZ) / (g_fFogEnd - g_fFogStart));
+   
+    Out.vColor = FogFactor * Out.vColor + (1.f - FogFactor) * g_vFogColor;
 	
     return Out;
 }

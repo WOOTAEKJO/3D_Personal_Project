@@ -85,6 +85,8 @@ public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
 	HRESULT	Add_DebugRender(CComponent* pComponent);
 
+	void	Fog_SetUp(_float2 vForStart_End, _float4 vFogColor);
+
 public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
 	HRESULT	Execute_Event(const wstring & strEventTag);

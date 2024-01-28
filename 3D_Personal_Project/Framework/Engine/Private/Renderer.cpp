@@ -132,6 +132,12 @@ HRESULT CRenderer::Draw_RenderGroup()
 	return S_OK;
 }
 
+void CRenderer::Fog_SetUp(_float2 vForStart_End, _float4 vFogColor)
+{
+	m_vFogPosition = vForStart_End;
+	m_vFogColor = vFogColor;
+}
+
 HRESULT CRenderer::Render_Priority()
 {
 	for (auto& pGameObject : m_listRenderObject[RENDERGROUP::RENDER_PRIORITY]) {
@@ -233,6 +239,12 @@ HRESULT CRenderer::Render_Deferred()
 		return E_FAIL;
 	if (FAILED(m_pGameInstance->Bind_RenderTarget_ShaderResource(RTV_TYPE::RT_SPECULAR, m_pShader, "g_SpecularTexture")))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Bind_RenderTarget_ShaderResource(RTV_TYPE::RT_DEPTH, m_pShader, "g_DepthTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_RawValue("g_fFogStart", &m_vFogPosition.x, sizeof(_float)))) return E_FAIL;
+	if (FAILED(m_pShader->Bind_RawValue("g_fFogEnd", &m_vFogPosition.y, sizeof(_float)))) return E_FAIL;
+	if (FAILED(m_pShader->Bind_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4)))) return E_FAIL;
 
 	m_pShader->Begin(3);
 

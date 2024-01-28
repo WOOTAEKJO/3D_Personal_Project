@@ -52,7 +52,8 @@ HRESULT CLevel_Boss2::Initialize()
 	CUtility_Effect::Create_Effect_Normal(m_pGameInstance, TEX_WATER_TAG, GO_EFFECTWATER_TAG, nullptr,
 		XMVectorSet(16.739, 7.f, 18.639, 1.f), nullptr, 0.f, _float2(25.f, 25.f));
 	
-	
+	m_pGameInstance->Fog_SetUp(_float2(0.f, 30.f), _float4(0.4f, 1.f, 1.f, 0.5f));
+
 	return S_OK; 
 }
 

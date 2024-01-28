@@ -263,7 +263,8 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
     if (vColor.a < 0.8f)
         discard;
     
-    if (vColor.r < 0.0196555f)
+    // 0.0196555f
+    if (vColor.r < 0.0196078432f)
     {
         vColor.a = max(vColor.a - g_fAlpha * 1.5f, 0.f);
     }else

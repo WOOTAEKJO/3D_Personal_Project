@@ -415,6 +415,14 @@ HRESULT CGameInstance::Add_DebugRender(CComponent* pComponent)
 	return m_pRenderer->Add_DebugRender(pComponent);
 }
 
+void CGameInstance::Fog_SetUp(_float2 vForStart_End, _float4 vFogColor)
+{
+	if (nullptr == m_pRenderer)
+		return ;
+
+	m_pRenderer->Fog_SetUp(vForStart_End, vFogColor);
+}
+
 HRESULT CGameInstance::Add_Event(const wstring& strEventTag, function<void()> pFunction)
 {
 	if (nullptr == m_pEvent_Manager)
