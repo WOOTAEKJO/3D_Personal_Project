@@ -4,6 +4,7 @@
 #include "Effect.h"
 
 #include "Particle_Attack.h"
+#include "Particle_Stage.h"
 
 void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag,
 	const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone,
@@ -38,6 +39,18 @@ void CUtility_Effect::Create_Particle_Attack(CGameInstance* pGameInstance, const
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Desc, reinterpret_cast<CGameObject**>(pOut))))
+		return;
+}
+
+void CUtility_Effect::Create_Particle_Stage(CGameInstance* pGameInstance, const wstring& strParticleTag, _float4 vPos, CGameObject* pOwner, CGameObject** pOut)
+{
+	CParticle_Stage::STAGEPARTICLE_DESC Desc = {};
+	Desc.pOwner = pOwner;
+	Desc.vPos = vPos;
+	Desc.strParticleTag = strParticleTag;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_PARTICLESTAGE_TAG, &Desc, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }
 

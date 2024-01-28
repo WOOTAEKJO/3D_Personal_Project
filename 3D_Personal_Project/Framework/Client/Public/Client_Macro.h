@@ -293,6 +293,8 @@
 #define	PARTICLE_METEOREXPLOSION2_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion2")
 #define	PARTICLE_METEOREXPLOSION3_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion3")
 
+#define	PARTICLE_STAGE3IDLE_TAG		TEXT("Prototype_Component_Particle_Stage3IDLE")
+
 #pragma endregion
 
 #pragma endregion
@@ -373,6 +375,8 @@
 
 #define TEX_LASER_TAG		TEXT("Prototype_Component_Texture_Laser")
 
+#define TEX_WATER_TAG		TEXT("Prototype_Component_Texture_Water")
+
 #pragma endregion
 
 #pragma endregion
@@ -404,6 +408,7 @@
 #define GO_PARTICLESUB_TAG			TEXT("Prototype_GameObject__ParticleSub")
 #define GO_PARTICLEATTACK_TAG			TEXT("Prototype_GameObject__ParticleAttack")
 #define GO_PARTICLEALWAYS_TAG			TEXT("Prototype_GameObject__ParticleAlways")
+#define GO_PARTICLESTAGE_TAG			TEXT("Prototype_GameObject__ParticleStage")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
@@ -413,6 +418,7 @@
 #define GO_EFFECTDASHROAD_TAG		TEXT("Prototype_GameObject_DashRoad")
 #define GO_EFFECTENERGY_TAG			TEXT("Prototype_GameObject_Energy")
 #define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
+#define GO_EFFECTWATER_TAG			TEXT("Prototype_GameObject_Water")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

@@ -508,6 +508,12 @@
     <Filter Include="02.GameObjects\08. Effect\06. Target">
       <UniqueIdentifier>{b6bd703d-b9d2-41e1-b332-02bcae376182}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06. Particle\05. Stage_Particle">
+      <UniqueIdentifier>{7a62a663-c9c3-444c-a975-be07765fb8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\07. Water">
+      <UniqueIdentifier>{4d0610ae-65f0-4ed9-a817-a8ad80dff6ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -963,6 +969,12 @@
     <ClInclude Include="..\Public\Effect_Target.h">
       <Filter>02.GameObjects\08. Effect\06. Target</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Particle_Stage.h">
+      <Filter>02.GameObjects\06. Particle\05. Stage_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Water.h">
+      <Filter>02.GameObjects\08. Effect\07. Water</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1390,6 +1402,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Target.cpp">
       <Filter>02.GameObjects\08. Effect\06. Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_Stage.cpp">
+      <Filter>02.GameObjects\06. Particle\05. Stage_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Water.cpp">
+      <Filter>02.GameObjects\08. Effect\07. Water</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

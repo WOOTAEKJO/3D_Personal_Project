@@ -28,8 +28,8 @@ HRESULT CEffect::Initialize(void* pArg)
 
 	m_strTextureTag = pInfo->strEffectTextureTag;
 	m_pOwner = pInfo->pOwner;
-	if (m_pOwner == nullptr)
-		return E_FAIL;
+	/*if (m_pOwner == nullptr)
+		return E_FAIL;*/
 
 	m_fLifeTime = pInfo->fLifeTime;
 	m_vSize = pInfo->vSize;

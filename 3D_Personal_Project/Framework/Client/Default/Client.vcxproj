@@ -215,6 +215,7 @@
     <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Target.h" />
+    <ClInclude Include="..\Public\Effect_Water.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
@@ -289,6 +290,7 @@
     <ClInclude Include="..\Public\Particle_Normal.h" />
     <ClInclude Include="..\Public\Particle_Always.h" />
     <ClInclude Include="..\Public\Particle_Sprite.h" />
+    <ClInclude Include="..\Public\Particle_Stage.h" />
     <ClInclude Include="..\Public\Particle_Sub.h" />
     <ClInclude Include="..\Public\Phantom.h" />
     <ClInclude Include="..\Public\Plateform.h" />
@@ -361,6 +363,7 @@
     <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Target.cpp" />
+    <ClCompile Include="..\Private\Effect_Water.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />
@@ -435,6 +438,7 @@
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
     <ClCompile Include="..\Private\Particle_Always.cpp" />
     <ClCompile Include="..\Private\Particle_Sprite.cpp" />
+    <ClCompile Include="..\Private\Particle_Stage.cpp" />
     <ClCompile Include="..\Private\Particle_Sub.cpp" />
     <ClCompile Include="..\Private\Phantom.cpp" />
     <ClCompile Include="..\Private\Plateform.cpp" />

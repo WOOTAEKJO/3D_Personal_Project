@@ -27,6 +27,7 @@
 #include "Particle_Sub.h"
 #include "Particle_Attack.h"
 #include "Particle_Always.h"
+#include "Particle_Stage.h"
 
 #include "Effect_Damage.h"
 #include "Effect_Halo.h"
@@ -36,6 +37,7 @@
 #include "Effect_DashRoad.h"
 #include "Effect_Energy.h"
 #include "Effect_Target.h"
+#include "Effect_Water.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -264,12 +266,15 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Sub>(GO_PARTICLESUB_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Attack>(GO_PARTICLEATTACK_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Always>(GO_PARTICLEALWAYS_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Stage>(GO_PARTICLESTAGE_TAG))) return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Soul>(GO_EFFECTSOUL_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Reaper>(GO_EFFECTREAPER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Energy>(GO_EFFECTENERGY_TAG))) return E_FAIL;
+
+	
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -488,8 +493,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Laser>(GO_EFFECTLASER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_DashRoad>(GO_EFFECTDASHROAD_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Target>(GO_EFFECTTARGET_TAG))) return E_FAIL;
-
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Water>(GO_EFFECTWATER_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -733,6 +737,7 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BATSPRITE_TAG, 4))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_FEATHER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LASER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_WATER_TAG, 1))) return E_FAIL;
 
 	return S_OK;
 }
@@ -797,6 +802,8 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION2_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION3_TAG))) return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_STAGE3IDLE_TAG))) return E_FAIL;
+	
 	return S_OK;
 }
 

@@ -22,6 +22,9 @@ public:
 	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Monster(const wstring& strLayerTag);
 	
+private:
+	_bool m_bCheck = { true };
+
 public:
 	static CLevel_Boss2* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual void Free() override;

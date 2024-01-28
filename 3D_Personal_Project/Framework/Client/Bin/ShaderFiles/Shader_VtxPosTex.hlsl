@@ -14,6 +14,8 @@ vector g_vCenter;
 float g_fRadius;
 float g_fCompare_Radius;
 
+float g_fTimeDelta;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -252,6 +254,26 @@ PS_OUT PS_MAIN_EFFECT_TARGET(PS_IN_EFFECT In)
     return Out;
 }
 
+PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04);
+    
+    if (vColor.a < 0.8f)
+        discard;
+    
+    if (vColor.r < 0.0196555f)
+    {
+        vColor.a = max(vColor.a - g_fAlpha * 1.5f, 0.f);
+    }else
+        vColor.a = max(vColor.a - g_fAlpha, 0.f);
+  
+    Out.vColor = vColor;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -357,6 +379,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_TARGET();
+    }
+
+    pass Effect_Water //7
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_WATER();
     }
 
 }
