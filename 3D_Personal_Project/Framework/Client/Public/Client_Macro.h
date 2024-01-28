@@ -289,6 +289,10 @@
 #define	PARTICLE_METEORAFTER_TAG		TEXT("Prototype_Component_Particle_MeteorAfter")
 #define	PARTICLE_METEORWAVE_TAG		TEXT("Prototype_Component_Particle_MeteorWave")
 
+#define	PARTICLE_METEOREXPLOSION1_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion1")
+#define	PARTICLE_METEOREXPLOSION2_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion2")
+#define	PARTICLE_METEOREXPLOSION3_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion3")
+
 #pragma endregion
 
 #pragma endregion

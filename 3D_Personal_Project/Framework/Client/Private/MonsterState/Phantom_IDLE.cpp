@@ -37,6 +37,7 @@ _uint CPhantom_IDLE::State_Tick(_float fTimeDelta)
 		//return CPhantom::STATE::LASER;
 		//return CPhantom::STATE::VANISH;
 		//return CPhantom::STATE::APPEAR;
+		//return CPhantom::STATE::DEAD;
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);

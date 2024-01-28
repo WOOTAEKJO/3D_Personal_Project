@@ -792,7 +792,11 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEORTAIL_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEORAFTER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEORWAVE_TAG))) return E_FAIL;
-	
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION2_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION3_TAG))) return E_FAIL;
+
 	return S_OK;
 }
 

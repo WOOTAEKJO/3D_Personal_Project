@@ -92,7 +92,7 @@ HRESULT CPhantom::Initialize(void* pArg)
 	m_iHitCount = 2;*/
 	
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS2IDLE_TAG, GO_PARTICLEALWAYS_TAG,
-		this,nullptr);
+		this, &m_pIDLEParicle);
 
 	return S_OK;
 }
@@ -102,7 +102,7 @@ void CPhantom::Priority_Tick(_float fTimeDelta)
 	if (!m_bActivate)
 		return;
 
-	Shock_Wave_Radius_Compute();
+	
 
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CGameObject::Priority_Tick(fTimeDelta);
@@ -121,11 +121,14 @@ void CPhantom::Tick(_float fTimeDelta)
 
 void CPhantom::Late_Tick(_float fTimeDelta)
 {
+	Shock_Wave_Radius_Compute();
 
 	CMonster::Late_Tick(fTimeDelta);
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+
+	Judge_Dead();
 
 }
 
@@ -175,7 +178,7 @@ void CPhantom::Create_Shock_Wave()
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.3f;
 	BulletDesc.fLifeTime = 1.5f;
-	BulletDesc.fSpeed = 2.f;
+	BulletDesc.fSpeed = 2.2f;
 	BulletDesc.pTarget = nullptr;
 	
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
@@ -220,6 +223,9 @@ void CPhantom::Create_Shock_Wave()
 
 void CPhantom::Shock_Wave_Radius_Compute()
 {
+	if (!m_bSmashTime)
+		return;
+
 	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
 		return;
 
@@ -665,6 +671,17 @@ _bool CPhantom::Is_Target_Near()
 		return true;
 
 	return false;
+}
+
+void CPhantom::Judge_Dead()
+{
+	if (m_pStateMachineCom->Get_StateID() == (_uint)CPhantom::STATE::DEAD)
+	{
+		if (m_pIDLEParicle != nullptr && !m_pIDLEParicle->Get_Dead())
+		{
+			m_pIDLEParicle->Set_Dead();
+		}
+	}
 }
 
 void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)

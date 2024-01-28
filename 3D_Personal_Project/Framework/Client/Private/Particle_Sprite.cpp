@@ -72,17 +72,11 @@ void CParticle_Sprite::Tick(_float fTimeDelta)
 
 void CParticle_Sprite::Late_Tick(_float fTimeDelta)
 {
-	if (m_pSocketBone != nullptr)
+	if (m_pSocketBone != nullptr && m_bChild)
 	{
-		/*XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
+		XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() *
 			m_pSocketBone->Get_CombinedTransformationMatrix() * m_pOwnerTransform->Get_WorldMatrix_Matrix());
-
-		_vector vPos = XMVectorSet(m_matWorldMat.m[3][0], m_matWorldMat.m[3][1], m_matWorldMat.m[3][2], 1.f);
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
-		
-		_vector vLook = m_pOwnerTransform->Get_State(CTransform::STATE::STATE_LOOK);
-		
-		m_pTransformCom->LookAt_Dir(vLook);*/
+;
 	}
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))

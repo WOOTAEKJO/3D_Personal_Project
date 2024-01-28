@@ -21,6 +21,8 @@ public:
 		CGameObject*	pOwner = nullptr;
 		_float			fLifeTime = 0.f;
 		vector<CBone*>		pBones;
+		_bool				bChild = false;
+
 	}PARTICLEINFO;
 
 protected:
@@ -62,6 +64,9 @@ protected:
 protected:
 	_float		m_fTimeAcc = { 0.f };
 	_float		m_fLifeTime = { 0.f };
+
+protected:
+	_bool		m_bChild = { false };
 
 protected:
 	HRESULT	Bind_ShaderResources();

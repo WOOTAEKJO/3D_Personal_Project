@@ -5,7 +5,9 @@
 
 #include "Particle_Attack.h"
 
-void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone)
+void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag,
+	const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone,
+	_bool bChild)
 {
 	CParticle::PARTICLEINFO Info = {};
 	Info.pOwner = pOwner;
@@ -15,6 +17,7 @@ void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const
 		Info.pBones = Info.pOwner->Get_Component<CModel>()->Get_Bones();
 	else
 		Info.pBones = *vecBone;
+	Info.bChild = bChild;
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Info, reinterpret_cast<CGameObject**>(pOut))))

@@ -30,6 +30,8 @@ public:
 	PHASE	Get_CurrentPhase() { return m_eCurrentPhase; }
 	_uint	Get_PrevState();
 
+	void	Set_SmashTime(_bool bCheck) { m_bSmashTime = bCheck; }
+
 public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
@@ -70,6 +72,8 @@ public:
 
 	_bool	Is_Target_Near();
 
+	void	Judge_Dead();
+
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
@@ -90,8 +94,14 @@ private:
 	_uint				m_iHitCount = { 0 };
 
 private:
+	CGameObject* m_pIDLEParicle = { nullptr };
+
+private:
 	CGameObject* m_pShockWave_Col = { nullptr };
 	CGameObject* m_pShockWave_Effect = { nullptr };
+
+private:
+	_bool		m_bSmashTime = { false };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

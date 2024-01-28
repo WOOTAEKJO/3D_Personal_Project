@@ -112,7 +112,7 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
     if (vColor.a < 0.3f)
         discard;
     
-    Out.vColor = vColor * g_vSolid_Color;
+    Out.vColor = vColor; //  * g_vSolid_Color;
     
     //float2 vDepthTexcoord;
     //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;

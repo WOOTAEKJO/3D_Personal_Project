@@ -17,7 +17,7 @@ class CUtility_Effect
 {
 public:
 	static void Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
-		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr);
+		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr, _bool bChild = false);
 
 	static void Create_Particle_Attack(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
 		CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut = nullptr, _float fLifeTime = 0.f,_bool bKeep = false);
