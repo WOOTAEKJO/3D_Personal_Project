@@ -215,6 +215,7 @@
     <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Target.h" />
+    <ClInclude Include="..\Public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Effect_Water.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
@@ -363,6 +364,7 @@
     <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Target.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Effect_Water.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />

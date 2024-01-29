@@ -6,6 +6,8 @@
 #include "Particle_Attack.h"
 #include "Particle_Stage.h"
 
+#include "Effect_Trail.h"
+
 void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag,
 	const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone,
 	_bool bChild)
@@ -106,5 +108,23 @@ void CUtility_Effect::Create_Damage_Effect(CGameInstance* pGameInstance, CGameOb
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		GO_EFFECTDAMAGE_TAG, &Info)))
+		return;
+}
+
+void CUtility_Effect::Create_Effect_Trail(CGameInstance* pGameInstance, const wstring& strTextureTag, CGameObject* pOwner,
+	_float3 vTrailPos_0, _float3 vTrailPos_1, _uint iTrailMaxCnt, _uint iLerpPointNum,
+	_float4 vColor, CGameObject** pOut)
+{
+	CEffect_Trail::EFFECT_TRAILINFO Info = {};
+	Info.pOwner = pOwner;
+	Info.strEffectTextureTag = strTextureTag;
+	Info.vTrailPos_0 = vTrailPos_0;
+	Info.vTrailPos_1 = vTrailPos_1;
+	Info.iTrailMaxCnt = iTrailMaxCnt;
+	Info.iLerpPointNum = iLerpPointNum;
+	Info.vSolid_Color = vColor;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTTRAIL_TAG, &Info, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }

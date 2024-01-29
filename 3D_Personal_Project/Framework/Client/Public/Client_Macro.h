@@ -29,6 +29,8 @@
 
 #define BUFFER_PARTICLEPOINT_TAG	TEXT("Prototype_Component_VIBuffer_ParticlePoint")
 
+#define BUFFER_TRAIL_TAG	TEXT("Prototype_Component_VIBuffer_Trail")
+
 #pragma endregion
 
 #pragma region Ω¶¿Ã¥ı
@@ -419,6 +421,7 @@
 #define GO_EFFECTENERGY_TAG			TEXT("Prototype_GameObject_Energy")
 #define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
 #define GO_EFFECTWATER_TAG			TEXT("Prototype_GameObject_Water")
+#define GO_EFFECTTRAIL_TAG			TEXT("Prototype_GameObject_Trail")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

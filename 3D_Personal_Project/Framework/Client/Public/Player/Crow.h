@@ -38,6 +38,9 @@ private:
 	_float	m_fAttackTime = { 0.f };
 
 private:
+	CGameObject* m_pTrailEffect = { nullptr };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT	Ready_Component() override;
 	virtual HRESULT	Ready_State() override;

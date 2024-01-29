@@ -8,6 +8,9 @@
 
 #include "Monster.h"
 
+#include "Utility_Effect.h"
+#include "Effect_Trail.h"
+
 CCrow::CCrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CNPC(pDevice, pContext)
 {
@@ -55,6 +58,9 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	//m_Status_Desc.fDetection_Range = ;
 
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
+		_float3(0.f, 0.04f, 0.f), 30,12, _float4(0.2f, 0.6f, 1.f, 1.f), &m_pTrailEffect);
+
 	return S_OK;
 }
 
@@ -70,6 +76,8 @@ void CCrow::Priority_Tick(_float fTimeDelta)
 
 void CCrow::Tick(_float fTimeDelta)
 {
+
+	dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 	CNPC::Tick(fTimeDelta);
 }
 

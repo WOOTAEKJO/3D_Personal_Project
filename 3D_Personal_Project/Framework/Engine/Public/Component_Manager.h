@@ -4,6 +4,7 @@
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_DRect.h"
 #include "VIBuffer_Cube.h"
+#include "VIBuffer_Trail.h"
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_DTerrain.h"
 #include "VIBuffer_Particle_Rect.h"

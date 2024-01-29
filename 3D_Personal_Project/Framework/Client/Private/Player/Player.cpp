@@ -336,6 +336,7 @@ HRESULT CPlayer::Ready_Parts()
 	CPlayer_Weapon_Shovel::PLAYERSHOVEL_DESC PlayerShovel_Desc = {};
 	PlayerShovel_Desc.pParentsTransform = m_pTransformCom;
 	PlayerShovel_Desc.pBones = Get_BodyModel()->Get_Bones();
+	PlayerShovel_Desc.pOwner = this;
 	if (FAILED(Add_Parts(GO_PLAYER_SHOVEL_TAG, PARTS_TYPE::PARTS_WEAPON, &PlayerShovel_Desc))) return E_FAIL;
 
 	/*CCrow::CROW_DESC Crow_Desc = {};

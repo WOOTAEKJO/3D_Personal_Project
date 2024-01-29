@@ -8,6 +8,7 @@ class CModel;
 class CShader;
 class CBone;
 class CCollider;
+class CVIBuffer_Trail;
 
 END
 
@@ -20,6 +21,7 @@ public:
 	{
 		vector<CBone*>		pBones;
 		CTransform* pParentsTransform = nullptr;
+		CGameObject* pOwner = nullptr;
 
 	}PLAYERSHOVEL_DESC;
 
@@ -58,6 +60,11 @@ private:
 
 private:
 	wstring		m_strModelTag;
+
+private:
+	CGameObject* m_pTrailEffect = { nullptr };
+	CPlayer* m_pOwner = { nullptr };
+	_bool		m_bTrail = { true };
 
 private:
 	HRESULT Bind_ShaderResources();

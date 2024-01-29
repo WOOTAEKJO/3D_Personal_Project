@@ -35,6 +35,13 @@ namespace Engine
 
 	}_uint3;
 
+	typedef struct tagUnsigned_Short
+	{
+
+		unsigned short _1, _2, _3;
+
+	}_ushort3;
+
 	typedef struct tagfloat3x3
 	{
 		_float3 vVertex0;

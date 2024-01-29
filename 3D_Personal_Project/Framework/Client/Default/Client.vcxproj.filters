@@ -514,6 +514,9 @@
     <Filter Include="02.GameObjects\08. Effect\07. Water">
       <UniqueIdentifier>{4d0610ae-65f0-4ed9-a817-a8ad80dff6ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Effect\08. Trail">
+      <UniqueIdentifier>{38e3fe05-3016-432f-b25b-0becd9f369f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -975,6 +978,9 @@
     <ClInclude Include="..\Public\Effect_Water.h">
       <Filter>02.GameObjects\08. Effect\07. Water</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail.h">
+      <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1408,6 +1414,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Water.cpp">
       <Filter>02.GameObjects\08. Effect\07. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail.cpp">
+      <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

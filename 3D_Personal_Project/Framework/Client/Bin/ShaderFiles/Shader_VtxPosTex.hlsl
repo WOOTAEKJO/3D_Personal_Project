@@ -278,7 +278,7 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
-	pass Default
+	pass Default //0
 	{
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -291,7 +291,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
-    pass Effect
+    pass Effect //1
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -304,11 +304,11 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT();
     }
 
-    pass Effect_Solid
+    pass Effect_Solid //2
     {
         SetRasterizerState(RS_Cull_None);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
         GeometryShader = NULL;
@@ -317,7 +317,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_SOLID();
     }
 
-    pass Effect_Invisibility
+    pass Effect_Invisibility //3
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -330,7 +330,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
     }
 
-    pass Effect_Reaper
+    pass Effect_Reaper //4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -343,7 +343,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_REAPER();
     }
 
-    pass Effect_Blend
+    pass Effect_Blend //5
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -356,7 +356,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND();
     }
 
-    pass Effect_Blend_Invisibility
+    pass Effect_Blend_Invisibility //6
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -382,7 +382,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_TARGET();
     }
 
-    pass Effect_Water //7
+    pass Effect_Water //8
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);

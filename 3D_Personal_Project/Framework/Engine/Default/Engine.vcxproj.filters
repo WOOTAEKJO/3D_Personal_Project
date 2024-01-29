@@ -286,6 +286,9 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect">
       <UniqueIdentifier>{1d7eabf2-46f9-4a95-9515-e2052e4633ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail">
+      <UniqueIdentifier>{ecc9b48d-7d9d-47b8-ad14-db08e43c4838}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -561,6 +564,9 @@
     <ClInclude Include="..\Public\VIBuffer_DRect.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Trail.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -814,6 +820,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_DRect.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

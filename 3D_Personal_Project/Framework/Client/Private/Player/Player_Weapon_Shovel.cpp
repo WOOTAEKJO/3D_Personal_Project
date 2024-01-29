@@ -10,6 +10,7 @@
 #include "Player_Spear_AirAttack.h"
 #include "Player_Jump.h"
 
+#include "Effect_Trail.h"
 #include "Utility_Effect.h"
 
 CPlayer_Weapon_Shovel::CPlayer_Weapon_Shovel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -39,12 +40,21 @@ HRESULT CPlayer_Weapon_Shovel::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(GO_PLAYER_SHOVEL_TAG,this)))
 		return E_FAIL;
 
-	m_pParentsTransform = ((PLAYERSHOVEL_DESC*)pArg)->pParentsTransform;
+	PLAYERSHOVEL_DESC* Desc = ((PLAYERSHOVEL_DESC*)pArg);
+
+	m_pOwner = dynamic_cast<CPlayer*>( Desc->pOwner);
+	if (m_pOwner == nullptr)
+		return E_FAIL;
+
+	m_pParentsTransform = Desc->pParentsTransform;
 	Safe_AddRef(m_pParentsTransform);
-	m_pSocketBone = (((PLAYERSHOVEL_DESC*)pArg)->pBones)[m_iSocketBoneIndex];
+	m_pSocketBone = Desc->pBones[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
+
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.2f, 0.f),
+		_float3(0.f, 0.27f, 0.f), 20,12, _float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
 
 	return S_OK;
 }
@@ -57,7 +67,30 @@ void CPlayer_Weapon_Shovel::Priority_Tick(_float fTimeDelta)
 
 void CPlayer_Weapon_Shovel::Tick(_float fTimeDelta)
 {
-	
+	if (m_pColliderCom->Get_UseCol())
+	{
+		/*if (m_bTrail)
+		{
+			CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.1f, 0.f),
+				_float3(0.f, 0.2f, 0.f), 10, _float4(1.f, 0.64f, 0.2f, 0.8f), &m_pTrailEffect);
+			m_bTrail = false;
+		}*/
+		
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(XMLoadFloat4x4(&m_matWorldMat));
+	}
+	else
+	{
+		/*if (m_pTrailEffect != nullptr)
+		{
+			m_pTrailEffect->Set_Dead();
+			m_pTrailEffect = nullptr;
+			m_bTrail = true;
+		}*/
+
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Reset(XMLoadFloat4x4(&m_matWorldMat));
+	}
+
+	dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(XMLoadFloat4x4(&m_matWorldMat));
 }
 
 void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)
@@ -171,6 +204,7 @@ HRESULT CPlayer_Weapon_Shovel::Ready_Component()
 		Sphere_Desc.vCenter = _float3(0.f, 220.f - (80.f*i), 0.f);
 		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
+	
 	
 
 	return S_OK;

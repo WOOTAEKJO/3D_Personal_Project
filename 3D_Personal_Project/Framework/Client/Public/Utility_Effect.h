@@ -33,6 +33,9 @@ public:
 		CEffect_Reaper::COMPUTE_TYPE eType = CEffect_Reaper::COMPUTE_TYPE::POS_END);
 
 	static void	Create_Damage_Effect(CGameInstance* pGameInstance, CGameObject* pOwner, _float fLifeTime, _float2 vSize);
+
+	static void Create_Effect_Trail(CGameInstance* pGameInstance, const wstring& strTextureTag, CGameObject* pOwner,
+		_float3 vTrailPos_0, _float3 vTrailPos_1, _uint iTrailMaxCnt, _uint iLerpPointNum, _float4 vColor, CGameObject** pOut);
 	
 
 };
