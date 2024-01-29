@@ -46,6 +46,8 @@ HRESULT COwl::Initialize(void* pArg)
 
 	//m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
 
+	m_Status_Desc.bHited = false;
+
 	return S_OK;
 }
 
