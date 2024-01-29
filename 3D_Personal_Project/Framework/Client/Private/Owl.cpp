@@ -115,6 +115,8 @@ HRESULT COwl::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bHited", &m_bHit_Effect, sizeof(_bool))))
+		return E_FAIL;
 
 	return S_OK;
 }

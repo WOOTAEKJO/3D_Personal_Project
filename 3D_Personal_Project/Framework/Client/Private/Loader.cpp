@@ -806,6 +806,9 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION3_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_STAGE3IDLE_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT2_TAG))) return E_FAIL;
 	
 	return S_OK;
 }

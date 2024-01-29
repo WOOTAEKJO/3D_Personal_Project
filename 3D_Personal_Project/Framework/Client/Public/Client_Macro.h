@@ -266,6 +266,9 @@
 
 #define	PARTICLE_BOSS1HIT_TAG		TEXT("Prototype_Component_Particle_Boss1Hit")
 
+#define	PARTICLE_BOSS1BAT1_TAG		TEXT("Prototype_Component_Particle_Boss1Bat1")
+#define	PARTICLE_BOSS1BAT2_TAG		TEXT("Prototype_Component_Particle_Boss1Bat2")
+
 #define	PARTICLE_BAT1_TAG		TEXT("Prototype_Component_Particle_Bat1")
 #define	PARTICLE_BAT2_TAG		TEXT("Prototype_Component_Particle_Bat2")
 

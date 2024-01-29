@@ -50,6 +50,8 @@ HRESULT CLevel_Boss1::Initialize()
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
 
+	m_pGameInstance->Fog_SetUp(_float2(0.f, 15.f), _float4(1.f, 0.6f, 0.6f, 0.5f));
+
 	return S_OK; 
 }
 

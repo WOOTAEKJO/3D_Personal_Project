@@ -31,7 +31,16 @@ HRESULT CSkyBox::Initialize(void* pArg)
 		m_vFogColor = _float4(1.f, 0.6f, 0.6f, 0.5f);
 		m_vFogPosition = _float2(0.f, 20.f);
 	}
-
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		m_vFogColor = _float4(1.f, 0.6f, 0.6f, 0.5f);
+		m_vFogPosition = _float2(0.f, 20.f);
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		m_vFogColor = _float4(0.4f, 1.f, 1.f, 0.5f);
+		m_vFogPosition = _float2(0.f, 30.f);
+	}
 
 	return S_OK;
 }

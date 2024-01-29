@@ -114,6 +114,8 @@ void CSpooketon::Load_FromJson(const json& In_Json)
 
 void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
+	if (!m_bActivate)
+		return;
 
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{

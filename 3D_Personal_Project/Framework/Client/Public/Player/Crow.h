@@ -28,6 +28,7 @@ public:
 	_bool	Find_Range_Monster(_float fRange);
 
 	_bool	Is_Col();
+	void	Reset_Col() { m_bCol = false; }
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
@@ -39,6 +40,9 @@ private:
 
 private:
 	CGameObject* m_pTrailEffect = { nullptr };
+
+private:
+	_bool	m_bCol = { false };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

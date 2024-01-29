@@ -60,7 +60,7 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
 	{
-		/*if (m_pOwner->Is_Target_Range(0.1f))
+		/*if (m_pOwner->Is_Target_Range(0.01f))
 			return CNPC::STATE::IDLE;*/
 		_bool b = dynamic_cast<CCrow*>(m_pOwner)->Is_Col();
 
@@ -76,6 +76,7 @@ void CNPC_Attack::State_Exit()
 {
 	m_pOwner->Trans_Attack(false);
 	m_bFind = false;
+	dynamic_cast<CCrow*>(m_pOwner)->Reset_Col();
 }
 
 CNPC_Attack* CNPC_Attack::Create(CGameObject* pGameObject)
