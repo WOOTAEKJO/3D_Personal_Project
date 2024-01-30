@@ -111,6 +111,14 @@ void CCharacter::Camera_Zoom(_float3 vOffset)
 		pCamera->SetUp_Offset(vOffset);
 }
 
+void CCharacter::Camera_Shaking(_float fAmplitude, _float fSpeed, _float fTime)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	pCamera->Shaking_SetUp(fAmplitude, fSpeed, fTime);
+}
+
 void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
 {
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
@@ -120,6 +128,23 @@ void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
 		pCamera->Reset_LookAt_Height();
 	else
 		pCamera->SetUp_LookAt_Height(fHeight);
+}
+
+void CCharacter::Camera_Target_Change(_float3 vOffset,_float fSensitivity, _bool bCutScene, CGameObject* pTarget)
+{
+	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
+		g_strLayerName[LAYER::LAYER_CAMERA]).front());
+
+	if (pTarget == nullptr)
+	{
+		pCamera->Change_Target(fSensitivity, bCutScene, nullptr);
+		pCamera->Reset_Offset();
+	}
+	else {
+		pCamera->Change_Target(fSensitivity, bCutScene, pTarget);
+		pCamera->SetUp_Offset(vOffset);
+	}
+
 }
 
 HRESULT CCharacter::Init_Point_Light()
@@ -173,6 +198,11 @@ HRESULT CCharacter::Ready_Component()
 }
 
 HRESULT CCharacter::Ready_Animation()
+{
+	return S_OK;
+}
+
+HRESULT CCharacter::Ready_Act()
 {
 	return S_OK;
 }

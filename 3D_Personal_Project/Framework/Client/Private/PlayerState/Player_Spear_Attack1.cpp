@@ -24,6 +24,8 @@ void CPlayer_Spear_Attack1::State_Enter()
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK1);
 	Attack_Particle(1.f);
 
+	//m_pOwner->Camera_Shaking(0.2f, 0.1f, 0.3f);
+
 }
 
 _uint CPlayer_Spear_Attack1::State_Priority_Tick(_float fTimeDelta)

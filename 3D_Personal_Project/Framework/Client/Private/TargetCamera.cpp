@@ -26,7 +26,9 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 		g_strLayerName[LAYER::LAYER_PLAYER]).front();
 	if (m_pTarget == nullptr)
 		return E_FAIL;
-	Safe_AddRef(m_pTarget);
+	//Safe_AddRef(m_pTarget);
+
+	m_pOriginTarget = m_pTarget;
 
 	CAMERADESC CameraDesc = {};
 
@@ -77,7 +79,10 @@ void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
 	//Mouse_Fix();
 	StateTrans(fTimeDelta);
-	Mouse_Input(fTimeDelta);
+	if (m_bCutScene)
+		CutScene(fTimeDelta);
+	else
+		Mouse_Input(fTimeDelta);
 }
 
 void CTargetCamera::Tick(_float fTimeDelta)
@@ -88,6 +93,61 @@ void CTargetCamera::Tick(_float fTimeDelta)
 void CTargetCamera::Late_Tick(_float fTimeDelta)
 {
 
+}
+
+_vector CTargetCamera::Camera_Shaking(_fvector vCamPos, _float fTimeDelta)
+{
+	m_fShakingTimeAcc += fTimeDelta;
+
+	_vector vCurCamPos = vCamPos;
+
+	if (m_fShakingTimeAcc < m_fShakingTime)
+	{
+		_float fX = m_fShakingAmplitude *
+			cosf(m_fShakingTimeAcc * m_fShakingSpeed +
+				(((_float)rand() / (_float)RAND_MAX) * XMConvertToRadians(180.f)));
+		_float fY = m_fShakingAmplitude *
+			-sinf(m_fShakingTimeAcc * m_fShakingSpeed +
+				(((_float)rand() / (_float)RAND_MAX) * XMConvertToRadians(180.f)));
+
+		_vector vShakePos = XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE_RIGHT)) * fX +
+			XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE_UP)) * fY * 0.5f;
+
+		vCurCamPos += vShakePos;
+	}
+	else {
+		m_bShaking = false;
+	}
+
+	return vCurCamPos;
+}
+
+void CTargetCamera::Shaking_SetUp(_float fAmplitude, _float fSpeed, _float fTime)
+{
+	m_bShaking = true;
+	m_fShakingAmplitude = fAmplitude;
+	m_fShakingSpeed = fSpeed;
+	m_fShakingTimeAcc = 0.f;
+	m_fShakingTime = fTime;
+}
+
+void CTargetCamera::Change_Target(_float fSensitivity, _bool bCutScene, CGameObject* pTarget)
+{
+	m_bCutScene = bCutScene;
+
+	if (pTarget == nullptr)
+	{
+		//m_bPlayer = true;
+		m_pTarget = m_pOriginTarget;
+	}
+	else {
+		//m_bPlayer = false;
+		m_pTarget = pTarget;
+	}
+
+	m_pTargetTransform = m_pTarget->Get_Component<CTransform>();
+
+	m_fSensitivity = fSensitivity;
 }
 
 HRESULT CTargetCamera::Ready_Component()
@@ -101,6 +161,9 @@ HRESULT CTargetCamera::Ready_Component()
 
 void CTargetCamera::StateTrans(_float fTimeDelta)
 {
+	if (m_bCutScene)
+		return;
+
 	if (m_pTargetStateMachine->Get_StateID() == (_uint)CPlayer::STATE::IDLE)
 	{
 		m_fTransAcc += fTimeDelta;
@@ -118,8 +181,6 @@ void CTargetCamera::StateTrans(_float fTimeDelta)
 
 void CTargetCamera::Mouse_Input(_float fTimeDelta)
 {
-	//_bool bCheck = true;
-
 	_long MouseMove = 0;
 
 	_vector vTargetPos, vPos, vDir, vEye;
@@ -127,10 +188,11 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	_matrix matRot = XMMatrixIdentity();
 
 	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
-	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
 	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
-	if(!m_bStateTrans)
+	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
+
+	if (!m_bStateTrans)
 	{
 		if (MouseMove = m_pGameInstance->Get_DIMouseMove(DIMS_Y))
 		{
@@ -148,25 +210,24 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	_vector vRot = XMQuaternionRotationRollPitchYaw(m_fAngleAccY, m_fAngleAccX, 0.f);
 	matRot = XMMatrixRotationQuaternion(vRot);
 
-	/*vDir = (XMVector3TransformNormal(m_bStateTrans == true ? XMLoadFloat3(&m_vOffset) : XMVectorSet(0.5f, -0.7f, 0.5f, 0.f)
-		, matRot));*/
 	vDir = (XMVector3TransformNormal(XMLoadFloat3(&m_vOffset), matRot));
-
-	
 
 	vEye = vTargetPos - vDir;
 
 	if (m_bStateTrans)
 		vEye.m128_f32[1] = vTargetPos.m128_f32[1] - m_vOffset.y;
 
-	//Camera_Sliding(Camera_Spring(vEye, vPos, fTimeDelta), m_pNavigationCom, fTimeDelta);
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta));
+	if (m_bShaking)
+	{
+		vEye = Camera_Shaking(vEye, fTimeDelta);
+	}
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta * m_fSensitivity));
 
 	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y * m_fLookAt_Height;
 	m_vPrevTargetPos.y = vTargetPos.m128_f32[1];
 
-	//m_pTransformCom->LookAt(XMVectorLerp(vTargetPos, Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta), 0.5f));
-	m_pTransformCom->LookAt(Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta));
+	m_pTransformCom->LookAt(Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta * m_fSensitivity));
 
 	XMStoreFloat4(&m_vPrevTargetPos, vTargetPos);
 }
@@ -177,6 +238,38 @@ void CTargetCamera::Mouse_Fix()
 
 	ClientToScreen(g_hWnd, &pt);
 	SetCursorPos(pt.x, pt.y);
+}
+
+void CTargetCamera::CutScene(_float fTimeDelta)
+{
+	_long MouseMove = 0;
+
+	_vector vTargetPos, vPos, vDir, vEye;
+
+	_matrix matRot = XMMatrixIdentity();
+
+	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
+	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	vDir = XMLoadFloat3(&m_vOffset);
+
+	vEye = vTargetPos - vDir;
+
+	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
+
+	if (m_bCutSceneSpring)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta * m_fSensitivity));
+		m_pTransformCom->LookAt(Camera_Spring(XMLoadFloat4(&m_vPrevTargetPos), vTargetPos, fTimeDelta * m_fSensitivity));
+
+		XMStoreFloat4(&m_vPrevTargetPos, vTargetPos);
+	}
+	else {
+		
+
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vEye);
+		m_pTransformCom->LookAt(vTargetPos);
+	}
 }
 
 CTargetCamera* CTargetCamera::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -208,7 +301,7 @@ CGameObject* CTargetCamera::Clone(void* pArg)
 void CTargetCamera::Free()
 {
 	//Safe_Release(m_pTransformCom);
-	Safe_Release(m_pTarget);
+	//Safe_Release(m_pTarget);
 	Safe_Release(m_pNavigationCom);
 
 	__super::Free();

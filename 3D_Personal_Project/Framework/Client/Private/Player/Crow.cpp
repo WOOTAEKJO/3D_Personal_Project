@@ -51,12 +51,10 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
-		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));*/
 
 	m_pTransformCom->Set_Ground(false);
-
-	//m_Status_Desc.fDetection_Range = ;
 
 	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
 		_float3(0.f, 0.04f, 0.f), 30,12, _float4(0.2f, 0.6f, 1.f, 1.f), &m_pTrailEffect);

@@ -439,6 +439,8 @@
 #define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
 #define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
 
+#define GO_CROWDUMMY_TAG			TEXT("Prototype_GameObject_CrowDummy")
+
 #pragma region Ä³¸¯ÅÍ
 
 //#define GO_PLAYER_TAG			TEXT("Prototype_GameObject_PLAYER")

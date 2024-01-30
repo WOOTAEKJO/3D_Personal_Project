@@ -18,6 +18,8 @@
 
 #include "Plateform_Trap.h"
 
+#include "OwlTalk.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -29,6 +31,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Plateform(g_strLayerName[LAYER_PLATEFORM])))
+		return E_FAIL;
+
+	if (FAILED(Ready_Production()))
 		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
@@ -108,8 +113,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Player(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
-		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -204,6 +209,21 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("OwlTalk"), [this]() {
+
+		m_pGameInstance->SetUp_Production(TEXT("OwlTalk"));
+
+		})))
+		return E_FAIL;
+
+		TriggerDesc.strEventName = TEXT("OwlTalk");
+		TriggerDesc.vPosition = _float4(6.f, 7.f, 3.f, 1.f);
+		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+			, GO_TRIGGER_TAG, &TriggerDesc)))
+			return E_FAIL;
+
 	return S_OK;
 }
 
@@ -219,6 +239,13 @@ HRESULT CLevel_GamePlay::Ready_LightDesc()
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_GamePlay::Ready_Production()
+{
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk"), COwlTalk::Create()))) return E_FAIL;
 
 	return S_OK;
 }

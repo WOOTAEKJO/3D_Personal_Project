@@ -517,6 +517,15 @@
     <Filter Include="02.GameObjects\08. Effect\08. Trail">
       <UniqueIdentifier>{38e3fe05-3016-432f-b25b-0becd9f369f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="92. Production">
+      <UniqueIdentifier>{bbb3352c-8dec-413d-a1ce-61ebb77d0455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\00. OwlTalk">
+      <UniqueIdentifier>{f52f0033-f071-4bda-b83c-0b42d6dc13ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy">
+      <UniqueIdentifier>{ece850ad-2ec8-4ec9-b66d-8925ba5197d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -981,6 +990,15 @@
     <ClInclude Include="..\Public\Effect_Trail.h">
       <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk.h">
+      <Filter>92. Production\00. OwlTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Production.h">
+      <Filter>92. Production</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrowDummy.h">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1417,6 +1435,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk.cpp">
+      <Filter>92. Production\00. OwlTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Client_Production.cpp">
+      <Filter>92. Production</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrowDummy.cpp">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

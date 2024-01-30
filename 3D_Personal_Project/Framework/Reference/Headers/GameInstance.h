@@ -253,6 +253,11 @@ public: /* For. Frustum*/
 	_bool	IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius);
 	_bool	IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius);
 
+public: /* For. Production_Manager*/
+	HRESULT	Add_Production(const wstring& strProductionTag, class CProduction* pProduction);
+	HRESULT	Add_Actor(const wstring& strProductionTag, const wstring& strActorTag, CGameObject* pActor);
+	void	SetUp_Production(const wstring& strProductionTag);
+	void	Finish_Production();
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -273,6 +278,7 @@ private:
 	class CLight_Manager*			m_pLight_Manager = { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager = { nullptr };
 	class CFrustum*					m_pFrustum = { nullptr };
+	class CProduction_Manager*		m_pProduction_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

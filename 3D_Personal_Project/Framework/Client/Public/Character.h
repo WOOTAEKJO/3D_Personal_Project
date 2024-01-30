@@ -15,6 +15,8 @@ END
 
 BEGIN(Client)
 
+class CTargetCamera;
+
 class CCharacter abstract : public CGameObject
 {
 public:
@@ -82,7 +84,9 @@ public:
 
 public:
 	void	Camera_Zoom(_float3 vOffset = _float3(0.f,0.f,0.f));
+	void	Camera_Shaking(_float fAmplitude, _float fSpeed, _float fTime);
 	void	Camera_SetUp_LookAt_Hegith(_float fHeight = 0.f);
+	void	Camera_Target_Change(_float3 vOffset,_float fSensitivity,_bool bCutScene, CGameObject* pTarget);
 
 	virtual HRESULT	Init_Point_Light();
 	void	Update_Light();
@@ -113,9 +117,13 @@ protected:
 	CLight*				m_pLight = { nullptr };
 
 protected:
+	//CTargetCamera*		m_pTargetCamera;
+
+protected:
 	virtual HRESULT Bind_ShaderResources();
 	virtual HRESULT Ready_Component();
 	virtual HRESULT	Ready_Animation();
+	virtual	HRESULT	Ready_Act();
 
 protected:
 	void	Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex);

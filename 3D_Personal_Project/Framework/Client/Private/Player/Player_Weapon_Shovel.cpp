@@ -161,6 +161,8 @@ void CPlayer_Weapon_Shovel::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
 		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_JACKATTACK8_TAG,
 			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
+
+		m_pOwner->Camera_Shaking(0.2f, 0.2f, 0.08f);
 	}
 }
 

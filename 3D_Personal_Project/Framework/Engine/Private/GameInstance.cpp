@@ -13,6 +13,7 @@
 #include "Light_Manager.h"
 #include "Camera_Manager.h"
 #include "Frustum.h"
+#include "Production_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -113,6 +114,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pFrustum)
 		return E_FAIL;
 
+	/* 연출 매니저 사용 준비*/
+	m_pProduction_Manager = CProduction_Manager::Create();
+	if (nullptr == m_pProduction_Manager)
+		return E_FAIL;
+	
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
@@ -139,6 +145,8 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPipeLine->Tick();
 	m_pFrustum->Tick();
 	
+	m_pProduction_Manager->Tick();
+
 	m_pLevel_Manager->Tick(fTimeDelta);
 
 	m_pInput_Device->LateUpdate_InputDev();
@@ -153,6 +161,8 @@ HRESULT CGameInstance::Render_Engine()
 		return E_FAIL;
 
 	m_pRenderer->Draw_RenderGroup();
+
+	m_pProduction_Manager->Render();
 
 #ifdef _DEBUG
 	m_pLevel_Manager->Render();
@@ -824,11 +834,44 @@ _bool CGameInstance::IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius)
 	return m_pFrustum->IsIn_World_FrustumPlanes(vPoint, fRadius);
 }
 
+HRESULT CGameInstance::Add_Production(const wstring& strProductionTag, CProduction* pProduction)
+{
+	if (m_pProduction_Manager == nullptr)
+		return E_FAIL;
+
+	return m_pProduction_Manager->Add_Production(strProductionTag, pProduction);
+}
+
+HRESULT CGameInstance::Add_Actor(const wstring& strProductionTag, const wstring& strActorTag, CGameObject* pActor)
+{
+	if (m_pProduction_Manager == nullptr)
+		return E_FAIL;
+
+	return m_pProduction_Manager->Add_Actor(strProductionTag, strActorTag, pActor);
+}
+
+void CGameInstance::SetUp_Production(const wstring& strProductionTag)
+{
+	if (m_pProduction_Manager == nullptr)
+		return;
+
+	m_pProduction_Manager->SetUp_Production(strProductionTag);
+}
+
+void CGameInstance::Finish_Production()
+{
+	if (m_pProduction_Manager == nullptr)
+		return;
+
+	m_pProduction_Manager->Finish_Production();
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pProduction_Manager);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFile_Manager);

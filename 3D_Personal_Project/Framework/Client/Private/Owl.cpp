@@ -7,6 +7,7 @@
 #include "Player.h"
 
 #include "Monster.h"
+#include "Trigger.h"
 
 COwl::COwl(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CNPC(pDevice, pContext)
@@ -47,6 +48,26 @@ HRESULT COwl::Initialize(void* pArg)
 	//m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
 
 	m_Status_Desc.bHited = false;
+
+	if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Owl"), this)))
+		return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_Event(TEXT("OwlTalk"), [this]() {
+
+		m_pStateMachineCom->Set_State(COwl::STATE::TALK);
+
+		})))
+		return E_FAIL;
+
+
+		CTrigger::TRIGGER_DESC TriggerDesc = {};
+		TriggerDesc.strEventName = TEXT("OwlTalk");
+		TriggerDesc.vPosition = _float4(6.f, 7.f, 3.f, 1.f);
+		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+			, GO_TRIGGER_TAG, &TriggerDesc)))
+			return E_FAIL;*/
 
 	return S_OK;
 }
@@ -142,8 +163,10 @@ HRESULT COwl::Ready_Component()
 
 HRESULT COwl::Ready_State()
 {
+
 	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
+
 
 	return S_OK;
 }

@@ -77,6 +77,7 @@ private:
 	HRESULT	Ready_Parts();
 	HRESULT	Ready_Controller();
 	virtual HRESULT	Ready_Animation() override;
+	virtual	HRESULT	Ready_Act() override;
 	HRESULT	Add_Parts(const wstring& strPrototypeTag, PARTS_TYPE ePartsTag, void* pArg = nullptr);
 	HRESULT	Add_WeaponType_By_Animation(WEAPON_TYPE eWeaponType, STATE eStateType, _uint iAnimIndex);
 	_int Find_AnimIndex(WEAPON_TYPE eWeaponType, STATE eStateType);
