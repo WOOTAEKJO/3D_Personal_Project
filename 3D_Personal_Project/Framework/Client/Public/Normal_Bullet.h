@@ -5,6 +5,13 @@ BEGIN(Client)
 
 class CNormal_Bullet final : public CBullet
 {
+public:
+	typedef struct tagNormalBullet_Desc : public CBullet::BULLET_DESC
+	{
+		_float4 vTrailColor;
+
+	}BULLET_NORMAL_DESC;
+
 private:
 	CNormal_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	CNormal_Bullet(const CNormal_Bullet& rhs);
@@ -16,6 +23,9 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+
+private:
+	CGameObject* m_pTrailEffect = { nullptr };
 
 private:
 	_bool	m_bFall = { false };

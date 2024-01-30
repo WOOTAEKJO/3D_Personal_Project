@@ -6,6 +6,9 @@
 
 #include "Light.h"
 
+#include "Utility_Effect.h"
+#include "Effect_Trail.h"
+
 CNormal_Bullet::CNormal_Bullet(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CBullet(pDevice, pContext)
 {
@@ -29,7 +32,7 @@ HRESULT CNormal_Bullet::Initialize(void* pArg)
 	if (FAILED(CBullet::Ready_Component()))
 		return E_FAIL;
 
-	BULLET_DESC* BulletDesc = (BULLET_DESC*)pArg;
+	BULLET_NORMAL_DESC* BulletDesc = (BULLET_NORMAL_DESC*)pArg;
 
 	if (FAILED(m_pGameInstance->Add_Collision(BulletDesc->eCollider_Layer, m_pColliderCom)))
 		return E_FAIL;
@@ -42,6 +45,9 @@ HRESULT CNormal_Bullet::Initialize(void* pArg)
 
 	/*if (FAILED(Init_Point_Light()))
 		return E_FAIL;*/
+
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
+		_float3(0.f, 0.04f, 0.f), 10, 6, BulletDesc->vTrailColor, &m_pTrailEffect);
 
 	return S_OK;
 }
@@ -63,6 +69,8 @@ void CNormal_Bullet::Tick(_float fTimeDelta)
 	{
 		m_pRigidBodyCom->Set_GravityPower(-369.65f * fTimeDelta);
 	}*/
+	if(m_pTrailEffect != nullptr)
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 	__super::Tick(fTimeDelta);
 }
 

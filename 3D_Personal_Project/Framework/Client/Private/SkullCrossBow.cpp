@@ -14,6 +14,8 @@
 
 #include "Light.h"
 
+#include "Effect_Energy.h"
+
 CSkullCrossBow::CSkullCrossBow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -108,13 +110,16 @@ HRESULT CSkullCrossBow::Render()
 
 HRESULT CSkullCrossBow::Create_Bullet()
 {
-	CNormal_Bullet::BULLET_DESC BulletDesc = {};
+	CGameObject* pBullet = nullptr;
+
+	CNormal_Bullet::BULLET_NORMAL_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.05f;
 	BulletDesc.fLifeTime = 2.f;
 	BulletDesc.fSpeed = 3.f;
 	BulletDesc.pTarget = m_pPlayer;
+	BulletDesc.vTrailColor = _float4(0.8f, 0.2f, 0.2f, 1.f);
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS) +
 		XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK)) * 0.1f;
@@ -124,7 +129,26 @@ HRESULT CSkullCrossBow::Create_Bullet()
 	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
-		GO_NORMAL_BULLET_TAG, &BulletDesc)))
+		GO_NORMAL_BULLET_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&pBullet))))
+		return E_FAIL;
+
+	CEffect_Energy::EFFECT_ENERGYINFO Info = {};
+	Info.pOwner = pBullet;
+	Info.fLifeTime = 0.f;
+	Info.strEffectTextureTag = TEX_BUBLE_TAG;
+	Info.vSize = _float2(0.1f, 0.1f);
+	Info.vColor = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	Info.fSizeSpeed = -0.01f;
+
+	CTransform* pTrans = pBullet->Get_Component<CTransform>();
+
+	_vector vBulletPos = pTrans->Get_State(CTransform::STATE::STATE_POS);
+	vBulletPos.m128_f32[1] += pTrans->Get_Scaled().y;
+
+	XMStoreFloat4(&Info.vPos, vBulletPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTENERGY_TAG, &Info)))
 		return E_FAIL;
 
 	return S_OK;
@@ -223,8 +247,8 @@ HRESULT CSkullCrossBow::Init_Point_Light()
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.3f;
-	LightDesc.vDiffuse = _float4(0.8f, 0.2f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vDiffuse = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	LightDesc.vAmbient = _float4(0.8f, 0.2f, 0.2f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))

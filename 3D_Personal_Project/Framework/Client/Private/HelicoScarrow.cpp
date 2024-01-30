@@ -67,6 +67,8 @@ HRESULT CHelicoScarrow::Initialize(void* pArg)
 	m_Status_Desc.bAttack_able = false;
 	m_Status_Desc.bTalk = true;
 
+	if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Boss1"), this))) return E_FAIL;
+
 	return S_OK;
 }
 
@@ -81,8 +83,8 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 
 void CHelicoScarrow::Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;
+	/*if (m_pGameInstance->Key_Down(DIK_0))
+		m_Status_Desc.bTalk = false;*/
 
 	Shock_Wave_Radius_Compute();
 

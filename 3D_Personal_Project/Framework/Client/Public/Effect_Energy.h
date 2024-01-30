@@ -9,6 +9,7 @@ public:
 	typedef struct tagEffect_EnergyInfo : public CEffect::EFFECTINFO
 	{
 		_float4 vColor = { 1.f,1.f,1.f,1.f };
+		_float	fSizeSpeed = { 1.f };
 
 	}EFFECT_ENERGYINFO;
 private:
@@ -34,7 +35,7 @@ private:
 	void	Update_Pos();
 
 private:
-	
+	_float	m_fSizeSpeed = {1.f};
 
 public:
 	static CEffect_Energy* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

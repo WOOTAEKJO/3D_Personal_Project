@@ -298,6 +298,8 @@
 #define	PARTICLE_METEOREXPLOSION2_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion2")
 #define	PARTICLE_METEOREXPLOSION3_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion3")
 
+#define	PARTICLE_STAGE1IDLE_TAG		TEXT("Prototype_Component_Particle_Stage1IDLE")
+#define	PARTICLE_STAGE2IDLE_TAG		TEXT("Prototype_Component_Particle_Stage2IDLE")
 #define	PARTICLE_STAGE3IDLE_TAG		TEXT("Prototype_Component_Particle_Stage3IDLE")
 
 #pragma endregion

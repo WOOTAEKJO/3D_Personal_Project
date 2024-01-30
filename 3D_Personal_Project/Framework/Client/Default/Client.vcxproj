@@ -196,6 +196,7 @@
     <ClInclude Include="..\Public\AnimMesh_Demo.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Bomb.h" />
+    <ClInclude Include="..\Public\Boss1Talk.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
@@ -352,6 +353,7 @@
     <ClCompile Include="..\Private\AnimMesh_Demo.cpp" />
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
+    <ClCompile Include="..\Private\Boss1Talk.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />

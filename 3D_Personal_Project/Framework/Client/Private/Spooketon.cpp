@@ -198,7 +198,7 @@ HRESULT CSpooketon::Init_Point_Light()
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.3f;
 	LightDesc.vDiffuse = _float4(0.f, 1.f, 0.3f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vAmbient = _float4(0.f, 1.f, 0.3f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))

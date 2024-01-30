@@ -122,5 +122,5 @@ void CCharacter_State::Free()
 	Safe_Release(m_pOnwerController);
 	Safe_Release(m_pOwnerCollider);
 
-	Safe_Release(m_pParticle);
+	//Safe_Release(m_pParticle);
 }

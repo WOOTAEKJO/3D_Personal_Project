@@ -49,6 +49,7 @@ private:
 	virtual HRESULT	Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
 	virtual HRESULT	Ready_Animation() override;
+	virtual HRESULT	Init_Point_Light() override;
 
 public:
 	static	CCrow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

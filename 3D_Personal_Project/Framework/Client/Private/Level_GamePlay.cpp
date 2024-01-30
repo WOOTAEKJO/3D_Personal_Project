@@ -21,6 +21,8 @@
 #include "OwlTalk.h"
 #include "CrowTalk.h"
 
+#include "Utility_Effect.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -67,6 +69,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 	m_pGameInstance->Fog_SetUp(_float2(0.f, 15.f), _float4(1.f, 0.6f, 0.6f, 0.5f));
 	
+	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE1IDLE_TAG, _float4(25.9, 3.f, 21.2f, 1.f),
+		nullptr, nullptr);
+
 	return S_OK; 
 }
 

@@ -47,6 +47,9 @@ HRESULT CCrow::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
@@ -309,6 +312,27 @@ HRESULT CCrow::Ready_Animation()
 	Add_TypeAnimIndex(STATE::FOLLOW, 1);
 	Add_TypeAnimIndex(STATE::ATTACK, 1);
 	Add_TypeAnimIndex(STATE::TALK, 2);
+
+	return S_OK;
+}
+
+HRESULT CCrow::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.5f;
+	LightDesc.vDiffuse = _float4(0.8f, 0.f, 0.f, 1.f);
+	LightDesc.vAmbient = _float4(0.8f, 0.f, 0.f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

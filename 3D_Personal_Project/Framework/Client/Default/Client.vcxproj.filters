@@ -532,6 +532,9 @@
     <Filter Include="92. Production\01. CrowTalk">
       <UniqueIdentifier>{c42b718c-fb6b-43c8-8420-da4949f95d34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="92. Production\02. Boss1Talk">
+      <UniqueIdentifier>{0c6dfed3-d3ca-4c9b-b0e2-881e73a4853d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1011,6 +1014,9 @@
     <ClInclude Include="..\Public\CrowTalk.h">
       <Filter>92. Production\01. CrowTalk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Boss1Talk.h">
+      <Filter>92. Production\02. Boss1Talk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1462,6 +1468,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CrowTalk.cpp">
       <Filter>92. Production\01. CrowTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss1Talk.cpp">
+      <Filter>92. Production\02. Boss1Talk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

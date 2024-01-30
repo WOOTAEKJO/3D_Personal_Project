@@ -33,17 +33,13 @@ _uint CHelico_IDLE::State_Priority_Tick(_float fTimeDelta)
 
 _uint CHelico_IDLE::State_Tick(_float fTimeDelta)
 {
-	if (!bdd)
-	{
-		//dynamic_cast<CHelicoScarrow*>(m_pOwner)->Create_Shock_Wave();
-		bdd = true;
-	}
 	
 
 	if (!m_pOwner->Open_Status_Desc()->bTalk)
 	{
 		return CHelicoScarrow::STATE::HELICO_START;
 	}
+		
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 

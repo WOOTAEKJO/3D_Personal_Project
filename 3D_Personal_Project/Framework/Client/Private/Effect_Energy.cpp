@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Utility_Effect.h"
+
 CEffect_Energy::CEffect_Energy(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CEffect(pDevice, pContext)
 {
@@ -30,6 +32,7 @@ HRESULT CEffect_Energy::Initialize(void* pArg)
 	EFFECT_ENERGYINFO* Info = (EFFECT_ENERGYINFO*)pArg;
 
 	m_vSolid_Color = Info->vColor;
+	m_fSizeSpeed = Info->fSizeSpeed;
 
 	m_fMaxFrame = m_pTextureCom->Get_TextureNum();
 
@@ -54,7 +57,7 @@ void CEffect_Energy::Priority_Tick(_float fTimeDelta)
 
 void CEffect_Energy::Tick(_float fTimeDelta)
 {
-	Size_Up(fTimeDelta * -1.f);
+	Size_Up(fTimeDelta * m_fSizeSpeed);
 	__super::Tick(fTimeDelta);
 }
 

@@ -553,6 +553,7 @@ void CPhantom::Create_TargetBullet()
 	Info.strEffectTextureTag = TEX_BUBLE_TAG;
 	Info.vSize = _float2(0.4f, 0.4f);
 	Info.vColor = _float4(0.f, 1.f, 1.f, 1.f);
+	Info.fSizeSpeed = -1.f;
 
 	XMStoreFloat4(&Info.vPos, pBullet->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
 

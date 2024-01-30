@@ -54,6 +54,8 @@ void CNPC::Tick(_float fTimeDelta)
 void CNPC::Late_Tick(_float fTimeDelta)
 {
 	CCharacter::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CNPC::Render()
