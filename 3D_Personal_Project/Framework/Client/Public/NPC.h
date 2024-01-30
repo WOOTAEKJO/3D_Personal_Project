@@ -6,7 +6,7 @@ BEGIN(Client)
 class CNPC abstract : public CCharacter
 {
 public:
-	enum STATE { IDLE, FOLLOW, ATTACK, TALK, STATE_END };
+	enum STATE { IDLE, FOLLOW, ATTACK, TALK,READY, STATE_END };
 
 	enum NPC_TYPE { CROW, OWL, NPC_TYPE_END };
 

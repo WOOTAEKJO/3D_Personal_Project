@@ -204,6 +204,7 @@
     <ClInclude Include="..\Public\Client_Macro.h" />
     <ClInclude Include="..\Public\Client_Production.h" />
     <ClInclude Include="..\Public\CrowDummy.h" />
+    <ClInclude Include="..\Public\CrowTalk.h" />
     <ClInclude Include="..\Public\DataMgr.h" />
     <ClInclude Include="..\Public\Demo.h" />
     <ClInclude Include="..\Public\DynamicCamera.h" />
@@ -282,6 +283,7 @@
     <ClInclude Include="..\Public\NPCState\NPC_Attack.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Follow.h" />
     <ClInclude Include="..\Public\NPCState\NPC_IDLE.h" />
+    <ClInclude Include="..\Public\NPCState\NPC_Ready.h" />
     <ClInclude Include="..\Public\NPCState\NPC_State.h" />
     <ClInclude Include="..\Public\NPCState\NPC_Talk.h" />
     <ClInclude Include="..\Public\ObjectMesh_Demo.h" />
@@ -356,6 +358,7 @@
     <ClCompile Include="..\Private\Character_State.cpp" />
     <ClCompile Include="..\Private\Client_Production.cpp" />
     <ClCompile Include="..\Private\CrowDummy.cpp" />
+    <ClCompile Include="..\Private\CrowTalk.cpp" />
     <ClCompile Include="..\Private\DataMgr.cpp" />
     <ClCompile Include="..\Private\Demo.cpp" />
     <ClCompile Include="..\Private\DynamicCamera.cpp" />
@@ -434,6 +437,7 @@
     <ClCompile Include="..\Private\NPCState\NPC_Attack.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Follow.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_IDLE.cpp" />
+    <ClCompile Include="..\Private\NPCState\NPC_Ready.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_State.cpp" />
     <ClCompile Include="..\Private\NPCState\NPC_Talk.cpp" />
     <ClCompile Include="..\Private\ObjectMesh_Demo.cpp" />

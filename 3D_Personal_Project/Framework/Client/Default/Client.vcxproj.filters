@@ -526,6 +526,12 @@
     <Filter Include="02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy">
       <UniqueIdentifier>{ece850ad-2ec8-4ec9-b66d-8925ba5197d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready">
+      <UniqueIdentifier>{446cca8a-855b-4bd2-ae8a-96f21fe02711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\01. CrowTalk">
+      <UniqueIdentifier>{c42b718c-fb6b-43c8-8420-da4949f95d34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -999,6 +1005,12 @@
     <ClInclude Include="..\Public\CrowDummy.h">
       <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_Ready.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrowTalk.h">
+      <Filter>92. Production\01. CrowTalk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1444,6 +1456,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CrowDummy.cpp">
       <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_Ready.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrowTalk.cpp">
+      <Filter>92. Production\01. CrowTalk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

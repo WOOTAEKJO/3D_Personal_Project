@@ -167,6 +167,8 @@ HRESULT COwl::Ready_State()
 	if (FAILED(__super::Ready_State()))
 		return E_FAIL;
 
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+		return E_FAIL;
 
 	return S_OK;
 }

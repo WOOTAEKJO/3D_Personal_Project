@@ -77,6 +77,42 @@ void CClient_Production::Camera_Reset()
 	m_pCamera->Reset_Offset();
 }
 
+_float3 CClient_Production::Compute_Offset(const wstring& strActorTag, _float fX, _float fY, _float fZ)
+{
+	CGameObject* pActor = Find_Actor(strActorTag);
+	if(pActor == nullptr)
+		return _float3();
+
+	CTransform* pActorTransform = pActor->Get_Component<CTransform>();
+
+	//_vector vPos = pActorTransform->Get_State(CTransform::STATE::STATE_POS);
+	_vector vRight = XMVector3Normalize(pActorTransform->Get_State(CTransform::STATE::STATE_RIGHT)) * fX;
+	_vector vUp = XMVector3Normalize(pActorTransform->Get_State(CTransform::STATE::STATE_UP)) * fY;
+	_vector vLook = XMVector3Normalize( pActorTransform->Get_State(CTransform::STATE::STATE_LOOK)) * fZ;
+	
+
+	_float3 vOffset;
+
+	XMStoreFloat3(&vOffset, vLook + vRight + vUp);
+
+	return vOffset;
+}
+
+_float3 CClient_Production::Compute_Offset_Transform(CTransform* pActorTramsform, _float fLook, _float fRight)
+{
+	if(pActorTramsform == nullptr)
+		return _float3();
+
+	_vector vLook = XMVector3Normalize(pActorTramsform->Get_State(CTransform::STATE::STATE_LOOK)) * fLook;
+	_vector vRight = XMVector3Normalize(pActorTramsform->Get_State(CTransform::STATE::STATE_RIGHT)) * fRight;
+
+	_float3 vOffset;
+
+	XMStoreFloat3(&vOffset, vLook + vRight);
+
+	return vOffset;
+}
+
 void CClient_Production::Free()
 {
 	__super::Free();

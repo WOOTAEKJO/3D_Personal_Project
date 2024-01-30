@@ -6,6 +6,7 @@
 #include "NPC_Follow.h"
 #include "NPC_Attack.h"
 #include "NPC_Talk.h"
+#include "NPC_Ready.h"
 
 CNPC::CNPC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -169,9 +170,10 @@ HRESULT CNPC::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::FOLLOW, CNPC_Follow::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNPC_Attack::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::TALK, CNPC_Talk::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::READY, CNPC_Ready::Create(this)))) return E_FAIL;
+	
 
-	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
-		return E_FAIL;
+	
 
 	return S_OK;
 }

@@ -51,8 +51,23 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
-		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));*/
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, _float4(27.201f,8.25f,43.852f,1.f));
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("CrowTalk"), TEXT("Crow"), this))) return E_FAIL;
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+			m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+	}
+
+	
 
 	m_pTransformCom->Set_Ground(false);
 
@@ -280,6 +295,9 @@ HRESULT CCrow::Ready_Component()
 HRESULT CCrow::Ready_State()
 {
 	if (FAILED(__super::Ready_State()))
+		return E_FAIL;
+
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::READY)))
 		return E_FAIL;
 
 	return S_OK;

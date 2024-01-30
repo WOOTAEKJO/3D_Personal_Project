@@ -3,6 +3,7 @@
 #include "TargetCamera.h"
 
 #include "Owl.h"
+#include "Player.h"
 
 COwlTalk::COwlTalk()
 {
@@ -23,18 +24,20 @@ void COwlTalk::Enter()
 
 	PRODUCTION_ACTOR_DESC OwlInfo1 = {};
 	OwlInfo1.fSensitivity = 0.1f;
-	OwlInfo1.vOffset = _float3(0.5f, -0.1f, 0.1f);
+	//OwlInfo1.vOffset = _float3(0.5f, -0.1f, 0.1f);
+	OwlInfo1.vOffset = Compute_Offset(TEXT("Owl"), 0.1f, -0.1f, 0.5f);
 	OwlInfo1.iAnimIndex = 2;
 	OwlInfo1.strActorTag = TEXT("Owl");
 
 	PRODUCTION_ACTOR_DESC OwlInfo2 = {};
 	OwlInfo2.fSensitivity = 0.7f;
-	OwlInfo2.vOffset = _float3(0.5f, -0.1f, 0.1f);
+	OwlInfo2.vOffset = OwlInfo1.vOffset;
 	OwlInfo2.strActorTag = TEXT("Owl");
 
 	PRODUCTION_ACTOR_DESC PlayerInfo = {};
 	PlayerInfo.fSensitivity = 0.7f;
-	PlayerInfo.vOffset = _float3(-0.4f, -0.3f, 0.3f);
+	//PlayerInfo.vOffset = _float3(-0.4f, -0.3f, 0.3f);
+	PlayerInfo.vOffset = Compute_Offset(TEXT("Player"), 0.3f, -0.3f, -0.4f);
 	PlayerInfo.strActorTag = TEXT("Player");
 
 	m_vecActorOrder.push_back(OwlInfo1);

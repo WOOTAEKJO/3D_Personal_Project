@@ -73,6 +73,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("CrowTalk"), TEXT("Player"), this))) return E_FAIL;
 	}
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
 	{
@@ -155,6 +156,15 @@ CModel* CPlayer::Get_BodyModel()
 		return nullptr;
 
 	return pBody->Get_Component<CModel>();
+}
+
+CTransform* CPlayer::Get_BodyTransform()
+{
+	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>(Find_Parts(PARTS_TYPE::PARTS_BODY));
+	if (pBody == nullptr)
+		return nullptr;
+
+	return pBody->Get_Component<CTransform>();
 }
 
 CCollider* CPlayer::Get_WeaponCollider()

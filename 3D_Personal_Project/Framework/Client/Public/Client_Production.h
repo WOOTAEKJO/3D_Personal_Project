@@ -44,6 +44,8 @@ protected:
 	_bool	SetUp_Camera();
 	void	Camera_Target_Change(_bool bSpring = false);
 	void	Camera_Reset();
+	_float3	Compute_Offset(const wstring& strActorTag,_float fX, _float fY, _float fZ);
+	_float3	Compute_Offset_Transform(CTransform* pActorTramsform, _float fLook, _float fRight);
 
 public:
 	virtual	void	Free();

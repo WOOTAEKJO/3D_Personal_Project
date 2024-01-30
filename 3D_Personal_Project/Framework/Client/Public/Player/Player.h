@@ -38,6 +38,7 @@ public:
 public:
 	CGameObject* Find_Parts(PARTS_TYPE ePartsTag);
 	CModel* Get_BodyModel();
+	CTransform* Get_BodyTransform();
 	CCollider* Get_WeaponCollider();
 	_uint		Get_NextAttackID() { return m_iAttackID; }
 	_int	Get_CurrentState();

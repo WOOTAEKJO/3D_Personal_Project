@@ -31,6 +31,8 @@ _uint CNPC_IDLE::State_Tick(_float fTimeDelta)
 {
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
 	{
+
+
 		if (dynamic_cast<CCrow*>(m_pOwner)->Attack_Input())
 			return CNPC::STATE::ATTACK;
 

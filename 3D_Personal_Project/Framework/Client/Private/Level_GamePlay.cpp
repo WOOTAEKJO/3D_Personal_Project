@@ -19,6 +19,7 @@
 #include "Plateform_Trap.h"
 
 #include "OwlTalk.h"
+#include "CrowTalk.h"
 
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -193,10 +194,15 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		list<CGameObject*> listMonst = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 			g_strLayerName[LAYER::LAYER_MONSTER]);
 
+		_uint i = 0;
 		for (auto& iter : listMonst)
 		{
+			if (i == 9)
+				return;
 			dynamic_cast<CMonster*>(iter)->Set_Activate();
+			++i;
 		}
+		
 		
 		})))
 		return E_FAIL;
@@ -214,15 +220,30 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		m_pGameInstance->SetUp_Production(TEXT("OwlTalk"));
 
 		})))
+	return E_FAIL;
+
+	TriggerDesc.strEventName = TEXT("OwlTalk");
+	TriggerDesc.vPosition = _float4(6.f, 7.f, 3.f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
 
-		TriggerDesc.strEventName = TEXT("OwlTalk");
-		TriggerDesc.vPosition = _float4(6.f, 7.f, 3.f, 1.f);
-		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("CrowTalk"), [this]() {
 
-		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
-			, GO_TRIGGER_TAG, &TriggerDesc)))
-			return E_FAIL;
+		m_pGameInstance->SetUp_Production(TEXT("CrowTalk"));
+
+		})))
+		return E_FAIL;
+
+	TriggerDesc.strEventName = TEXT("CrowTalk");
+	TriggerDesc.vPosition = _float4(27.f, 7.f, 43.5f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -246,6 +267,7 @@ HRESULT CLevel_GamePlay::Ready_LightDesc()
 HRESULT CLevel_GamePlay::Ready_Production()
 {
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk"), COwlTalk::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("CrowTalk"), CCrowTalk::Create()))) return E_FAIL;
 
 	return S_OK;
 }
