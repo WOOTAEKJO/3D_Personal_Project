@@ -443,6 +443,8 @@
 
 #define GO_CROWDUMMY_TAG			TEXT("Prototype_GameObject_CrowDummy")
 
+#define GO_CAMERAPOINT_TAG			TEXT("Prototype_GameObject_CameraPoint")
+
 #pragma region Ä³¸¯ÅÍ
 
 //#define GO_PLAYER_TAG			TEXT("Prototype_GameObject_PLAYER")

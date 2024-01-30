@@ -27,10 +27,20 @@ void CHelico_Dead::State_Enter()
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1BAT2_TAG, GO_PARTICLESPRITE_TAG,
 		m_pOwner, nullptr, 1.f);
 	m_pOwner->Set_Light_Activate(false);
+
+	
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)
 {
+	m_fTime += fTimeDelta;
+
+	if (m_fTime > 0.5f && m_bIntro)
+	{
+		m_pGameInstance->SetUp_Production(TEXT("Boss2Intro"));
+		m_bIntro = false;
+	}
+
 	return m_iStateID;
 }
 

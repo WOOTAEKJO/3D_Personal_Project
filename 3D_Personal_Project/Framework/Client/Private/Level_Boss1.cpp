@@ -18,6 +18,9 @@
 #include "Utility_Effect.h"
 
 #include "Boss1Talk.h"
+#include "Boss2Intro.h"
+
+#include "CameraPoint.h"
 
 CLevel_Boss1::CLevel_Boss1(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -29,12 +32,12 @@ HRESULT CLevel_Boss1::Initialize()
 	if (FAILED(Ready_Layer_BackGround(g_strLayerName[LAYER_BACKGROUND])))
 		return E_FAIL;
 
+	if (FAILED(Ready_Production()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Plateform(g_strLayerName[LAYER_PLATEFORM])))
 		return E_FAIL;
 
-	if (FAILED(Ready_Production()))
-		return E_FAIL;
-	
 	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
 		return E_FAIL;
 
@@ -105,6 +108,15 @@ HRESULT CLevel_Boss1::Ready_Layer_Player(const wstring& strLayerTag)
 
 HRESULT CLevel_Boss1::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
+	CCameraPoint::CAMERAPOINT_DESC TriggerDesc = {};
+	//TriggerDesc.vPosition = _float4(21.4f, 6.f, 21.6f, 1.f);
+	TriggerDesc.vPosition = _float4(26.750, 3.f, 28.6f, 1.f);
+	TriggerDesc.vAtPos = _float4(21.4f, 6.f, 21.6f, 1.f);
+	TriggerDesc.vScale = _float3(1.f,1.f,1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_CAMERAPOINT_TAG, &TriggerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -163,6 +175,7 @@ HRESULT CLevel_Boss1::Ready_Trigger()
 HRESULT CLevel_Boss1::Ready_Production()
 {
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss1Talk"), CBoss1Talk::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss2Intro"), CBoss2Intro::Create()))) return E_FAIL;
 
 	return S_OK;
 }

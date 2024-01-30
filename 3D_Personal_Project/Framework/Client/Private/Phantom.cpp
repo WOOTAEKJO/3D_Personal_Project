@@ -83,7 +83,7 @@ HRESULT CPhantom::Initialize(void* pArg)
 	m_pTransformCom->Set_Scaling(0.5f, 0.5f, 0.5f);
 
 	m_Status_Desc.bAttack_able = false;
-	m_Status_Desc.bTalk = true;
+	
 
 	SetUp_Random_Pos();
 
@@ -99,19 +99,34 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 void CPhantom::Priority_Tick(_float fTimeDelta)
 {
+	if (m_bStart)
+	{
+		if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		{
+			m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, _float4(0.f, 0.f, 0.f, 1.f));
+			if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Intro"), TEXT("Boss2"), this))) return;
+
+			m_Status_Desc.bTalk = true;
+		}
+		else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		{
+			m_Status_Desc.bTalk = false;
+		}
+		m_bStart = false;
+	}
+
 	if (!m_bActivate)
 		return;
 
-	
-
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CGameObject::Priority_Tick(fTimeDelta);
+
 }
 
 void CPhantom::Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;
+	/*if (m_pGameInstance->Key_Down(DIK_0))
+		m_Status_Desc.bTalk = false;*/
 
 	if (m_Status_Desc.bTalk)
 		XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));

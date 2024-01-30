@@ -83,8 +83,10 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 
 void CHelicoScarrow::Tick(_float fTimeDelta)
 {
-	/*if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;*/
+	if (m_pGameInstance->Key_Down(DIK_0))
+	{
+		m_pStateMachineCom->Set_State(CHelicoScarrow::STATE::DEAD);
+	}
 
 	Shock_Wave_Radius_Compute();
 

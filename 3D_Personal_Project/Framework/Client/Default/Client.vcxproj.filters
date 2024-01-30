@@ -535,6 +535,15 @@
     <Filter Include="92. Production\02. Boss1Talk">
       <UniqueIdentifier>{0c6dfed3-d3ca-4c9b-b0e2-881e73a4853d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="92. Production\03. Boss2Intro">
+      <UniqueIdentifier>{c2760345-44ae-4f74-953a-02cff4327fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\04. Boss2Talk">
+      <UniqueIdentifier>{f0faab9c-3867-49a8-87bc-e4692abf5cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint">
+      <UniqueIdentifier>{8f424943-8e26-4894-8343-b4b19c45fb6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1017,6 +1026,12 @@
     <ClInclude Include="..\Public\Boss1Talk.h">
       <Filter>92. Production\02. Boss1Talk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Boss2Intro.h">
+      <Filter>92. Production\03. Boss2Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CameraPoint.h">
+      <Filter>02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1471,6 +1486,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Boss1Talk.cpp">
       <Filter>92. Production\02. Boss1Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss2Intro.cpp">
+      <Filter>92. Production\03. Boss2Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraPoint.cpp">
+      <Filter>02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

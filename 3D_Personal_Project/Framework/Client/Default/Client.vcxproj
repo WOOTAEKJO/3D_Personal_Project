@@ -197,7 +197,9 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Boss1Talk.h" />
+    <ClInclude Include="..\Public\Boss2Intro.h" />
     <ClInclude Include="..\Public\Bullet.h" />
+    <ClInclude Include="..\Public\CameraPoint.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Character_State.h" />
@@ -354,7 +356,9 @@
     <ClCompile Include="..\private\BackGround.cpp" />
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Boss1Talk.cpp" />
+    <ClCompile Include="..\Private\Boss2Intro.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
+    <ClCompile Include="..\Private\CameraPoint.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Character_State.cpp" />

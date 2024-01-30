@@ -104,6 +104,9 @@ private:
 	_bool		m_bSmashTime = { false };
 
 private:
+	_bool		m_bStart = { true };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
