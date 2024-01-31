@@ -24,7 +24,7 @@ public:
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
 
 private:
-	
+	_uint* m_pCount = { nullptr };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

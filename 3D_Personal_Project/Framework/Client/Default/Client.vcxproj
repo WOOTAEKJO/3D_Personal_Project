@@ -297,6 +297,8 @@
     <ClInclude Include="..\Public\Object_Window.h" />
     <ClInclude Include="..\Public\Owl.h" />
     <ClInclude Include="..\Public\OwlTalk.h" />
+    <ClInclude Include="..\Public\OwlTalk2.h" />
+    <ClInclude Include="..\Public\OwlTalk3.h" />
     <ClInclude Include="..\Public\Particle.h" />
     <ClInclude Include="..\Public\Particle_Attack.h" />
     <ClInclude Include="..\Public\Particle_Demo.h" />
@@ -459,6 +461,8 @@
     <ClCompile Include="..\Private\Object_Window.cpp" />
     <ClCompile Include="..\Private\Owl.cpp" />
     <ClCompile Include="..\Private\OwlTalk.cpp" />
+    <ClCompile Include="..\Private\OwlTalk2.cpp" />
+    <ClCompile Include="..\Private\OwlTalk3.cpp" />
     <ClCompile Include="..\Private\Particle.cpp" />
     <ClCompile Include="..\Private\Particle_Attack.cpp" />
     <ClCompile Include="..\Private\Particle_Demo.cpp" />

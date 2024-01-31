@@ -302,6 +302,10 @@
 #define	PARTICLE_STAGE2IDLE_TAG		TEXT("Prototype_Component_Particle_Stage2IDLE")
 #define	PARTICLE_STAGE3IDLE_TAG		TEXT("Prototype_Component_Particle_Stage3IDLE")
 
+#define	PARTICLE_PORTAL_TAG		TEXT("Prototype_Component_Particle_Portal")
+
+#define	PARTICLE_DUST_TAG		TEXT("Prototype_Component_Particle_Dust")
+
 #pragma endregion
 
 #pragma endregion

@@ -4,6 +4,9 @@
 
 #include "Phantom.h"
 
+#include "Trigger.h"
+#include "Utility_Effect.h"
+
 CBoss2Talk::CBoss2Talk()
 {
 
@@ -61,6 +64,18 @@ void CBoss2Talk::Render()
 void CBoss2Talk::Exite()
 {
 	Find_Actor(TEXT("Boss2"))->Get_Component<CStateMachine>()->Set_State(CPhantom::STATE::INTROEND);
+
+	CTrigger::TRIGGER_DESC TriggerDesc = {};
+	TriggerDesc.strEventName = TEXT("Portal_Boss2");
+	TriggerDesc.vPosition = _float4(26.3f, 2.f, 28.4f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
+		return;
+
+	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_PORTAL_TAG, _float4(26.3f, 2.f, 28.4f, 1.f),
+		nullptr, nullptr);
 
 	Camera_Reset();
 }

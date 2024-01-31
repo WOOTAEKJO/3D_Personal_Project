@@ -821,7 +821,11 @@ HRESULT CLoader::Particle()
 
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT1_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT2_TAG))) return E_FAIL;
-	
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_PORTAL_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_DUST_TAG))) return E_FAIL;
+
 	return S_OK;
 }
 

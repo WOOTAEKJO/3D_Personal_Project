@@ -41,7 +41,6 @@ void CEffect_Trail::Priority_Tick(_float fTimeDelta)
 
 void CEffect_Trail::Tick(_float fTimeDelta)
 {
-
 	__super::Tick(fTimeDelta);
 }
 

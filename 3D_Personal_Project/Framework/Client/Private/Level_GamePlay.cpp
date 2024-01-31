@@ -19,6 +19,8 @@
 #include "Plateform_Trap.h"
 
 #include "OwlTalk.h"
+#include "OwlTalk2.h"
+#include "OwlTalk3.h"
 #include "CrowTalk.h"
 
 #include "Utility_Effect.h"
@@ -91,11 +93,11 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			return;
 	}
 
-	/*if (m_pGameInstance->Key_Down(DIK_1))
+	if (m_pGameInstance->Key_Down(DIK_1))
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS1))))
 			return;
-	}*/
+	}
 
 	/*if (m_pGameInstance->Key_Down(DIK_1))
 	{
@@ -234,6 +236,21 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("OwlTalk2"), [this]() {
+
+		m_pGameInstance->SetUp_Production(TEXT("OwlTalk2"));
+
+		})))
+		return E_FAIL;
+
+	TriggerDesc.strEventName = TEXT("OwlTalk2");
+	TriggerDesc.vPosition = _float4(42.9f, 9.f, 33.5f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("CrowTalk"), [this]() {
 
 		m_pGameInstance->SetUp_Production(TEXT("CrowTalk"));
@@ -271,6 +288,8 @@ HRESULT CLevel_GamePlay::Ready_LightDesc()
 HRESULT CLevel_GamePlay::Ready_Production()
 {
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk"), COwlTalk::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk2"), COwlTalk2::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk3"), COwlTalk2::Create()))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("CrowTalk"), CCrowTalk::Create()))) return E_FAIL;
 
 	return S_OK;

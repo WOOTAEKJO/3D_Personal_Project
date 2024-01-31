@@ -5,6 +5,8 @@
 
 #include "Light.h"
 
+#include "Utility_Effect.h"
+
 CPuzzle::CPuzzle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
 {
@@ -44,10 +46,10 @@ HRESULT CPuzzle::Initialize(void* pArg)
 
 void CPuzzle::Priority_Tick(_float fTimeDelta)
 {
-	/*if (m_pLight == nullptr)
+	if (m_pLight == nullptr)
 	{
 		Init_Point_Light();
-	}*/
+	}
 
 	m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 }
@@ -95,6 +97,25 @@ void CPuzzle::Down(_float fTimeDelta)
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
+	if (m_bParticle)
+	{
+		if (m_pLight != nullptr)
+		{
+			/*m_pLight->Open_Light_Desc()->vDiffuse = m_vResetColor;
+			m_pLight->Open_Light_Desc()->vAmbient = m_vResetColor;
+			m_pLight->Open_Light_Desc()->vSpecular = m_vResetColor;*/
+			m_pLight->Set_Active(false);
+		}
+
+		_float4 vParticlePos = {};
+		XMStoreFloat4(&vParticlePos, vPos);
+
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_DUST_TAG, GO_PARTICLEATTACK_TAG,
+			this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 2.5f);
+
+		m_bParticle = false;
+	}
+
 	if (XMVector3NearEqual(vPos, XMVectorSet(0.f, 3.f, 0.f, 0.f), XMVectorSet(1000.f, 0.1f, 1000.f, 1.f)))
 	{
 		m_bFinish = true;
@@ -139,22 +160,24 @@ HRESULT CPuzzle::Bind_ShaderResources()
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
 
-	/*if (m_bHit && m_bRelent)
-	{
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vSolid_Color", &m_vLightColor, sizeof(_float4))))
-			return E_FAIL;
-	}
-	else {
-		if (FAILED(m_pShaderCom->Bind_RawValue("g_vSolid_Color", &m_vResetColor, sizeof(_float4))))
-			return E_FAIL;
-	}*/
-
 	if (m_bRelent)
 	{
+		if (m_pLight != nullptr)
+		{
+			m_pLight->Open_Light_Desc()->vDiffuse = m_vLightColor;
+			m_pLight->Open_Light_Desc()->vAmbient = m_vLightColor;
+			m_pLight->Open_Light_Desc()->vSpecular = m_vLightColor;
+		}
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vSolid_Color", &m_vLightColor, sizeof(_float4))))
 			return E_FAIL;
 	}
 	else {
+		if (m_pLight != nullptr)
+		{
+			m_pLight->Open_Light_Desc()->vDiffuse = m_vResetColor;
+			m_pLight->Open_Light_Desc()->vAmbient = m_vResetColor;
+			m_pLight->Open_Light_Desc()->vSpecular = m_vResetColor;
+		}
 		if (FAILED(m_pShaderCom->Bind_RawValue("g_vSolid_Color", &m_vResetColor, sizeof(_float4))))
 			return E_FAIL;
 	}
@@ -183,14 +206,14 @@ HRESULT CPuzzle::Init_Point_Light()
 	LIGHT_DESC LightDesc = {};
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-	vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+	//vPos.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
 
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	//LightDesc.vPos = m_vLightPos;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
-	LightDesc.fRange = 5.f;
-	LightDesc.vDiffuse = m_vLightColor;//_float4(0.8f, 0.8f, 0.f, 1.f);
-	LightDesc.vAmbient = m_vLightColor;//_float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.fRange = 0.5f;
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
@@ -248,6 +271,9 @@ void CPuzzle::Free()
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pModelCom);
 
+	if (m_pLight != nullptr)
+		m_pLight->Set_Active(false);
 	Safe_Release(m_pLight);
+
 
 }

@@ -23,7 +23,7 @@ void COwlTalk::Enter()
 	SetUp_Camera();
 
 	PRODUCTION_ACTOR_DESC OwlInfo1 = {};
-	OwlInfo1.fSensitivity = 0.1f;
+	OwlInfo1.fSensitivity = 0.2f;
 	//OwlInfo1.vOffset = _float3(0.5f, -0.1f, 0.1f);
 	OwlInfo1.vOffset = Compute_Offset(TEXT("Owl"), 0.1f, -0.1f, 0.5f);
 	OwlInfo1.iAnimIndex = 2;

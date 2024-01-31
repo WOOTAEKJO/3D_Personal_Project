@@ -81,6 +81,9 @@ private:
 	_bool		m_bRelent = { false };
 
 private:
+	_bool		m_bParticle = { true };
+
+private:
 	HRESULT Bind_ShaderResources();
 	HRESULT	Ready_Component();
 	HRESULT	Init_Point_Light();

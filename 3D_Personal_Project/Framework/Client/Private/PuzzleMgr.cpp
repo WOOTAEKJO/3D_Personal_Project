@@ -7,6 +7,7 @@
 #include "Puzzle.h"
 
 #include "Trigger.h"
+#include "Utility_Effect.h"
 
 IMPLEMENT_SINGLETON(CPuzzleMgr)
 
@@ -85,6 +86,11 @@ void CPuzzleMgr::Tick()
 				if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
 					, GO_TRIGGER_TAG, &TriggerDesc)))
 					return;
+
+				CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_PORTAL_TAG, _float4(46.f, 9.f, 34.f, 1.f),
+					nullptr, nullptr);
+
+				m_pGameInstance->SetUp_Production(TEXT("OwlTalk3"));
 
 				return;
 			}
@@ -181,7 +187,7 @@ _float4 CPuzzleMgr::Select_Color(_uint iIndx)
 
 _bool CPuzzleMgr::Compare_Indx(_uint iSour, _uint iDest)
 {
-	if (iSour == 0 && iDest == 13)
+	if ((iSour == 0 && iDest == 13) || (iSour == 13 && iDest == 0))
 	{
 		return true;
 	}

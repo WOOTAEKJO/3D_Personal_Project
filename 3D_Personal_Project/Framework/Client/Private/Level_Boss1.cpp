@@ -148,14 +148,6 @@ HRESULT CLevel_Boss1::Ready_Trigger()
 		})))
 		return E_FAIL;
 
-		CTrigger::TRIGGER_DESC TriggerDesc = {};
-		TriggerDesc.strEventName = TEXT("Portal_Boss2");
-		TriggerDesc.vPosition = _float4(26.3f, 2.f, 28.4f, 1.f);
-		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
-
-		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
-			, GO_TRIGGER_TAG, &TriggerDesc)))
-			return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("Boss1Talk"), [this]() {
 		
@@ -164,6 +156,7 @@ HRESULT CLevel_Boss1::Ready_Trigger()
 		})))
 		return E_FAIL;
 
+		CTrigger::TRIGGER_DESC TriggerDesc = {};
 	TriggerDesc.strEventName = TEXT("Boss1Talk");
 	TriggerDesc.vPosition = _float4(17.3f, 2.f, 18.f, 1.f);
 	TriggerDesc.vScale = _float3(2.f, 1.f, 2.f);

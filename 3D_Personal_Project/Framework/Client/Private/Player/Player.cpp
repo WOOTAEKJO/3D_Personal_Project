@@ -75,7 +75,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(39.53f, 9.f, 28.438f, 1.f));
 		m_pNavigationCom->Set_CurrentIndex(397);
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Player"), this))) return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("CrowTalk"), TEXT("Player"), this))) return E_FAIL;
+
 	}
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
 	{

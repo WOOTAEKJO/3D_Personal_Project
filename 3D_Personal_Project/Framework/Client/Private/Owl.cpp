@@ -15,12 +15,16 @@ COwl::COwl(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 COwl::COwl(const COwl& rhs)
-	: CNPC(rhs)
+	: CNPC(rhs), m_pCount(rhs.m_pCount)
 {
 }
 
 HRESULT COwl::Initialize_Prototype()
 {
+	m_pCount = new _uint;
+
+	*m_pCount = 0;
+
 	return S_OK;
 }
 
@@ -48,36 +52,30 @@ HRESULT COwl::Initialize(void* pArg)
 	if (FAILED(Init_Point_Light()))
 		return E_FAIL;
 
-
-	//m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
-
 	m_Status_Desc.bHited = false;
+	
+	if (*m_pCount == 0)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Owl"), this)))
+			return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Owl"), this)))
-		return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Add_Event(TEXT("OwlTalk"), [this]() {
-
-		m_pStateMachineCom->Set_State(COwl::STATE::TALK);
-
-		})))
-		return E_FAIL;
-
-
-		CTrigger::TRIGGER_DESC TriggerDesc = {};
-		TriggerDesc.strEventName = TEXT("OwlTalk");
-		TriggerDesc.vPosition = _float4(6.f, 7.f, 3.f, 1.f);
-		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
-
-		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
-			, GO_TRIGGER_TAG, &TriggerDesc)))
-			return E_FAIL;*/
+		*m_pCount += 1;
+	}
+	else if (*m_pCount == 1)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Owl"), this)))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Owl"), this)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 void COwl::Priority_Tick(_float fTimeDelta)
 {
+	
+
 	CNPC::Priority_Tick(fTimeDelta);
 }
 
@@ -149,7 +147,8 @@ HRESULT COwl::Bind_ShaderResources()
 HRESULT COwl::Ready_Component()
 {
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
-	NavigationDesc.iCurrentIndex = m_pPlayer->Get_Component<CNavigation>()->Get_CurrentIndex();
+	//NavigationDesc.iCurrentIndex = m_pPlayer->Get_Component<CNavigation>()->Get_CurrentIndex();
+	//NavigationDesc.iCurrentIndex = 0;
 	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
@@ -235,4 +234,9 @@ CGameObject* COwl::Clone(void* pArg)
 void COwl::Free()
 {
 	__super::Free();
+
+	if (m_isCloned == false)
+	{
+		Safe_Delete(m_pCount);
+	}
 }

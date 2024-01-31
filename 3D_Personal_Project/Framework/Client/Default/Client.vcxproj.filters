@@ -556,6 +556,12 @@
     <Filter Include="02.GameObjects\96. Puzzle\01. PuzzleMgr2">
       <UniqueIdentifier>{1261f62b-4dfb-4562-bf90-7728bf6b6ce5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="92. Production\05. OwlTalk2">
+      <UniqueIdentifier>{0606f0e5-8d1d-4a28-9e49-f981d264ee53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\06. OwlTalk3">
+      <UniqueIdentifier>{9960496c-8676-49cc-97ed-231b2ff19939}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1059,6 +1065,12 @@
     <ClInclude Include="..\Public\PuzzleMgr.h">
       <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk2.h">
+      <Filter>92. Production\05. OwlTalk2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk3.h">
+      <Filter>92. Production\06. OwlTalk3</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1534,6 +1546,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\PuzzleMgr.cpp">
       <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk2.cpp">
+      <Filter>92. Production\05. OwlTalk2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk3.cpp">
+      <Filter>92. Production\06. OwlTalk3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
