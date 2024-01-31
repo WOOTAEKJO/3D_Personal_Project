@@ -295,6 +295,9 @@
     <Filter Include="01.Utility\97. Manager\04. Production_Manager\00. Production">
       <UniqueIdentifier>{0eff7cbe-1ef2-4f7b-9fb3-57278b66d902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\07. Light\01. ShadowLight">
+      <UniqueIdentifier>{b3b8ba74-a0f9-411b-b684-7452c2105b86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -579,6 +582,9 @@
     <ClInclude Include="..\Public\Production.h">
       <Filter>01.Utility\97. Manager\04. Production_Manager\00. Production</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ShadowLight.h">
+      <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -841,6 +847,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Production.cpp">
       <Filter>01.Utility\97. Manager\04. Production_Manager\00. Production</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShadowLight.cpp">
+      <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

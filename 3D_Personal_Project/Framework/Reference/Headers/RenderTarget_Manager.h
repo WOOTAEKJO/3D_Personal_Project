@@ -17,7 +17,7 @@ public:
 	HRESULT Initialize();
 	HRESULT	Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
-	HRESULT	Begin_MRT(const wstring& strMRTTag);
+	HRESULT	Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV);
 	HRESULT	End_MRT();
 	HRESULT Bind_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 

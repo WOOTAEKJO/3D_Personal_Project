@@ -44,10 +44,19 @@ void CCamera::Priority_Tick(_float fTimeDelta)
 
 void CCamera::Tick(_float fTimeDelta)
 {
-	m_pGameInstance->Set_Transform(CPipeLine::TRANSFORMSTATE::VIEW, 
-		XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix_Matrix()));
-	m_pGameInstance->Set_Transform(CPipeLine::TRANSFORMSTATE::PROJ,
-		XMMatrixPerspectiveFovLH(m_fFovy,m_fAspect,m_fNear,m_fFar));
+	_matrix matView = XMMatrixInverse(nullptr, m_pTransformCom->Get_WorldMatrix_Matrix());
+	_matrix matProj = XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect, m_fNear, m_fFar);
+
+	m_pGameInstance->Set_Transform(CPipeLine::TRANSFORMSTATE::VIEW, matView);
+	m_pGameInstance->Set_Transform(CPipeLine::TRANSFORMSTATE::PROJ, matProj);
+
+	/*_float4x4 View, Proj;
+
+	XMStoreFloat4x4(&View, matView);
+	XMStoreFloat4x4(&Proj, matProj);
+
+	m_pGameInstance->Get_ShadowLight()->Set_Matrix(CShadowLight::STATE::VIEW, View);
+	m_pGameInstance->Get_ShadowLight()->Set_Matrix(CShadowLight::STATE::PROJ, Proj);*/
 }
 
 void CCamera::Late_Tick(_float fTimeDelta)

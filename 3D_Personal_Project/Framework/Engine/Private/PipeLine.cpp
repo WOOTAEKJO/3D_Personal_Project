@@ -27,6 +27,7 @@ void CPipeLine::Tick()
 		//memcpy(&m_vCameraInfo[i], &m_matTransformInverse[TRANSFORMSTATE::VIEW].m[i], sizeof(_float4));
 		memcpy(&m_matCamera.m[i], &m_matTransformInverse[TRANSFORMSTATE::VIEW].m[i], sizeof(_float4));
 	}
+
 }
 
 void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _float4x4 matMatrix)

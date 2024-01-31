@@ -71,9 +71,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
 	{
-		//m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
-		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(39.53f, 9.f, 28.438f, 1.f));
-		m_pNavigationCom->Set_CurrentIndex(397);
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
+		/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(39.53f, 9.f, 28.438f, 1.f));
+		m_pNavigationCom->Set_CurrentIndex(397);*/
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Player"), this))) return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Player"), this))) return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Player"), this))) return E_FAIL;
@@ -110,7 +110,8 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	
+	ShadowLight_SetUp();
+
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Tick(fTimeDelta);
@@ -143,6 +144,8 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -488,6 +491,26 @@ void CPlayer::NextAttackID()
 	default:
 		break;
 	}
+}
+
+void CPlayer::ShadowLight_SetUp()
+{
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	XMStoreFloat4(&Shadow_Desc.vPos, XMVectorAdd(vPos, XMVectorSet(-5.f, 5.f, -5.f, 0.f)));
+	XMStoreFloat4(&Shadow_Desc.vAt, vPos);
+
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect =((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 300.f;
+
+	//m_pGameInstance->Get_ShadowLight()->Open_Light_Desc();
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
 }
 
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

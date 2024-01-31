@@ -34,6 +34,7 @@ public:
 	// 업데이트를 먼저, 중간, 나중으로 나누어 사용한다.
 
 	virtual HRESULT Render();
+	virtual HRESULT Render_Shadow() { return S_OK; }
 
 public:
 	void	In_WorldPlanes();

@@ -8,6 +8,8 @@
 
 #include "Utility_String.h"
 
+#include "ShadowLight.h"
+
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
 /* DX11을 통해 필요한 객체를 생성하고 렌더링하는 작업을 수행한다. */
@@ -229,7 +231,7 @@ public: /* For. Font_Manager*/
 public: /* For. CRednerTarget_Manager*/
 	HRESULT	Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
-	HRESULT	Begin_MRT(const wstring& strMRTTag);
+	HRESULT	Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
 	HRESULT	End_MRT();
 	HRESULT Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 
@@ -243,6 +245,8 @@ public: /* For. CLight_Manager*/
 	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ class CLight** ppLight = nullptr);
 	void Delete_Light(CLight* ppLight);
 	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
+	HRESULT	Add_ShadowLight(const SHADOW_LIGHT_DESC& eLightDesc);
+	class CShadowLight* Get_ShadowLight();
 
 public: /* For. Camera_Manager*/
 	HRESULT	Add_Camera(const wstring& strCameraTag, class CCamera* pCamera);

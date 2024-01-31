@@ -2,6 +2,7 @@
 
 #include "Shader.h"
 #include "Light.h"
+#include "ShadowLight.h"
 
 CLight_Manager::CLight_Manager()
 {
@@ -59,6 +60,22 @@ HRESULT CLight_Manager::Render(CShader* pShader, CVIBuffer_Rect* pBuffer)
 	return S_OK;
 }
 
+HRESULT CLight_Manager::Add_ShadowLight(const SHADOW_LIGHT_DESC& eLightDesc)
+{
+	CShadowLight* pLight = CShadowLight::Create(eLightDesc);
+	if (pLight == nullptr)
+		return E_FAIL;
+
+	m_pShadowLight = pLight;
+
+	return S_OK;
+}
+
+CShadowLight* CLight_Manager::Get_ShadowLight()
+{
+	return m_pShadowLight;
+}
+
 CLight_Manager* CLight_Manager::Create()
 {
 	CLight_Manager* pInstance = new CLight_Manager();
@@ -78,4 +95,6 @@ void CLight_Manager::Free()
 	for (auto& iter : m_listLight)
 		Safe_Release(iter);
 	m_listLight.clear();
+
+	Safe_Release(m_pShadowLight);
 }

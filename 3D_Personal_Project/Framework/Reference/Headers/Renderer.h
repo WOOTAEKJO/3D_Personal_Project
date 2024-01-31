@@ -11,7 +11,7 @@ class CComponent;
 class CRenderer final : public CBase
 {
 public:
-	enum RENDERGROUP {RENDER_PRIORITY,RENDER_NONLIGHT,RENDER_NONBLEND,RENDER_BLEND,RENDER_UI,RENDER_END};
+	enum RENDERGROUP {RENDER_PRIORITY, RENDER_SHADOW,RENDER_NONLIGHT,RENDER_NONBLEND,RENDER_BLEND,RENDER_UI,RENDER_END};
 	// ±×¸®´Â ¼ø¼­´ë·Î ·»´õ ¿­°ÅÃ¼¸¦ ¸¸µë
 private:
 	CRenderer(ID3D11Device* pDevice,ID3D11DeviceContext* pContext);
@@ -53,7 +53,11 @@ private:
 	_float4						m_vFogColor = {1.f,1.f,1.f,1.f};
 
 private:
+	ID3D11DepthStencilView* m_pLightDepthDSV = { nullptr };	// ½¦µµ¿ì ·»´õ Å¸°Ù Àü¿ë ±íÀÌ ¹öÆÛ
+
+private:
 	HRESULT Render_Priority();
+	HRESULT Render_Shadow();
 	HRESULT Render_NonLight();
 	HRESULT Render_NonBlend();
 	HRESULT Render_LightAcc();
@@ -69,6 +73,7 @@ private:
 
 private:
 	HRESULT	Ready_Component();
+	HRESULT	Create_DepthStencil();
 
 public:
 	static  CRenderer*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

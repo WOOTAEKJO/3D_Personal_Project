@@ -74,6 +74,19 @@ namespace Engine
 		_float4 vSpecular;
 	}LIGHT_DESC;
 
+	typedef struct tagShadowLight
+	{
+		_float4 vPos;
+		_float4 vAt;
+		_float4 vUpDir;
+
+		_float	fFov;
+		_float	fAspect;
+		_float	fNear;
+		_float	fFar;
+
+	}SHADOW_LIGHT_DESC;
+
 	typedef	struct tagKeyFrame
 	{
 		_float3 vScale;

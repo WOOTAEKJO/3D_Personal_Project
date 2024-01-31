@@ -11,6 +11,8 @@ int2		g_iDiscardIndx; // 특정 뼈의 메쉬를 투명하게 하기 위함
 
 bool        g_bHited;
 
+float       g_fLightFar;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -150,10 +152,24 @@ PS_OUT PS_INVISIBLE_MODEL(PS_IN In)
     return Out;
 }
 
+struct PS_OUT_SHADOW
+{
+    vector vLightDepth : SV_TARGET0;
+};
+
+PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN In)
+{
+    PS_OUT_SHADOW Out = (PS_OUT_SHADOW) 0;
+
+    Out.vLightDepth = In.vProjPos.w / g_fLightFar;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
-	pass Model
+	pass Model  //0
 	{
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -166,7 +182,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MODEL();
 	}
 
-    pass NonCul_Model
+    pass NonCul_Model //1
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -179,7 +195,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MODEL();
     }
 
-    pass NonCul_InvisibleModel
+    pass NonCul_InvisibleModel //2
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -190,5 +206,18 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_INVISIBLE_MODEL();
+    }
+
+    pass Shadow //3
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
     }
 }

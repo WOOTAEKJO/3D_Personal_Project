@@ -80,6 +80,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE1IDLE_TAG, _float4(25.9, 3.f, 21.2f, 1.f),
 		nullptr, nullptr);
 
+	
+	// 그림자 빛 세팅
+
 	return S_OK; 
 }
 

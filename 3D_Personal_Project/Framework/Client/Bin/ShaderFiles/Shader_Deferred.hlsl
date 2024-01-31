@@ -4,6 +4,9 @@ matrix		g_matWorld, g_matView, g_matProj;
 
 matrix		g_matViewInv, g_matProjInv;
 // 깊이 렌더 타겟에서 얻어온 z 값을 이용해 픽셀의 월드 위치를 구할 때 필요한 자료
+matrix g_matLightView, g_matLightProj;
+// 쉐도우 렌더 타겟을 위함
+// 그림자 빛의 뷰와 행렬
 
 vector		g_vLightDir;
 // 방향성 광원
@@ -25,11 +28,15 @@ vector		g_vCameraPos;
 float		g_fFar; 
 // 뷰 스페이스 상에 Far 값
 
+float       g_fLightFar;
+// 그림자 빛의 far 값
+
 texture2D	g_DiffuseTexture;
 texture2D	g_NormalTexture;
 texture2D	g_DepthTexture;
 texture2D	g_SpecularTexture;
 texture2D	g_ShadeTexture;
+texture2D   g_LightDepthTexture;
 
 float       g_fFogStart;
 float       g_fFogEnd;
@@ -196,10 +203,40 @@ PS_OUT PS_MAIN_FINAL(PS_IN In)
     
     vector vDepth = g_DepthTexture.Sample(PointSampler, In.vTexCoord);
     float fViewZ = vDepth.y * g_fFar;
+   
+    vector vWorldPos;
+    // 투영행렬
+    vWorldPos.x = In.vTexCoord.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexCoord.y * -2.f + 1.f;
+    vWorldPos.z = vDepth.x;
+    vWorldPos.w = 1.f;
+    
+    // 뷰행렬
+    vWorldPos = vWorldPos * fViewZ;
+    vWorldPos = mul(vWorldPos, g_matProjInv);
+    
+    // 월드행렬
+    vWorldPos = mul(vWorldPos, g_matViewInv);
+    
+    vWorldPos = mul(vWorldPos, g_matLightView);
+    vWorldPos = mul(vWorldPos, g_matLightProj);
+    // 그림자 빛의 뷰와 투영을 곱합
+    
+    float2 vUV = (float2) 0.0f;
+    
+    vUV.x = (vWorldPos.x / vWorldPos.w) * 0.5f + 0.5f;
+    vUV.y = (vWorldPos.y / vWorldPos.w) * -0.5f + 0.5f;
+    // 투영좌표를 UV 좌표로 변경
+    
+    float4 vLightDepth = g_LightDepthTexture.Sample(LinearSampler, vUV);
+    
+    if (vWorldPos.w - 0.1f > vLightDepth.x * g_fLightFar)
+        Out.vColor = Out.vColor * 0.7f;
+    // z 값을 비교해서 그림자 연산
     
     float FogFactor = saturate((g_fFogEnd - fViewZ) / (g_fFogEnd - g_fFogStart));
-   
     Out.vColor = FogFactor * Out.vColor + (1.f - FogFactor) * g_vFogColor;
+    // 안개 쉐이더
 	
     return Out;
 }

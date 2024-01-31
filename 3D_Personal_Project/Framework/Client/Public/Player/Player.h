@@ -34,6 +34,7 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	
 
 public:
 	CGameObject* Find_Parts(PARTS_TYPE ePartsTag);
@@ -85,6 +86,9 @@ private:
 
 private:
 	void			NextAttackID();
+
+private:
+	void			ShadowLight_SetUp();
 
 public:
 	static	CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

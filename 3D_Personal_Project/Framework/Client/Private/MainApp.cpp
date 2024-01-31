@@ -36,6 +36,19 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
 
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(20.f, 20.f, 20.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 300.f;
+
+	m_pGameInstance->Add_ShadowLight(Shadow_Desc);
+	// 그림자 빛 세팅
+
 	return S_OK;
 }
 

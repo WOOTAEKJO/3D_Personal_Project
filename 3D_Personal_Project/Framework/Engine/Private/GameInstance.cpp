@@ -729,12 +729,12 @@ HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RTV_TYPE eType)
 	return m_pRenderTarget_Manager->Add_MRT(strMRTTag, eType);
 }
 
-HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
 {
 	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
-	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag, pDSV);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -791,6 +791,22 @@ HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
 		return E_FAIL;
 
 	return m_pLight_Manager->Render(pShader, pBuffer);
+}
+
+HRESULT CGameInstance::Add_ShadowLight(const SHADOW_LIGHT_DESC& eLightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_ShadowLight(eLightDesc);
+}
+
+CShadowLight* CGameInstance::Get_ShadowLight()
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
+
+	return m_pLight_Manager->Get_ShadowLight();
 }
 
 HRESULT CGameInstance::Add_Camera(const wstring& strCameraTag, CCamera* pCamera)
