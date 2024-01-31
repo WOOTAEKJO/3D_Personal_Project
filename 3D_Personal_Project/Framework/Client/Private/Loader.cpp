@@ -68,6 +68,8 @@
 
 #include "CameraPoint.h"
 
+#include "Puzzle.h"
+
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -265,6 +267,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkullCrossBow>(ANIMMODEL_SKULLCROSSBOW_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTrigger>(GO_TRIGGER_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPuzzle>(GO_PUZZLE_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CNormal_Bullet>(GO_NORMAL_BULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CRange_Bullet>(GO_RANGE_BULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
@@ -526,6 +530,15 @@ HRESULT CLoader::Item()
 	matPivot = XMMatrixScaling(0.0015f, 0.0015f, 0.0015f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_HELICOBULLET_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BOMB_TAG, matPivot))) return E_FAIL;
+
+	matPivot = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_ENVY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GLUTTONY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GREED_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_LUXURY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PRIDE_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SLOTH_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WRATH_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
 

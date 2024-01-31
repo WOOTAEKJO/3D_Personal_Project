@@ -547,6 +547,15 @@
     <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd">
       <UniqueIdentifier>{af212508-1cf3-4111-a8da-c77ff35186b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle">
+      <UniqueIdentifier>{1a3f92b7-71eb-4b9c-a5fa-5863baff320a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle\00. PuzzleMgr">
+      <UniqueIdentifier>{1c8e922c-8525-4874-98dd-e8c6b7984c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle\01. PuzzleMgr2">
+      <UniqueIdentifier>{1261f62b-4dfb-4562-bf90-7728bf6b6ce5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1041,6 +1050,15 @@
     <ClInclude Include="..\Public\MonsterState\Phantom_IntroEnd.h">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Puzzle.h">
+      <Filter>02.GameObjects\96. Puzzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PuzzleMgr2.h">
+      <Filter>02.GameObjects\96. Puzzle\01. PuzzleMgr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PuzzleMgr.h">
+      <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1507,6 +1525,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterState\Phantom_IntroEnd.cpp">
       <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Puzzle.cpp">
+      <Filter>02.GameObjects\96. Puzzle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PuzzleMgr2.cpp">
+      <Filter>02.GameObjects\96. Puzzle\01. PuzzleMgr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PuzzleMgr.cpp">
+      <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

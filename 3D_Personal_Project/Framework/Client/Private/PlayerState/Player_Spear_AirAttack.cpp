@@ -99,8 +99,8 @@ void CPlayer_Spear_AirAttack::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < 3; i++)
+	/*for (_uint i = 0; i < 3; i++)
 	{
 		Safe_Release(m_pElec[i]);
-	}
+	}*/
 }

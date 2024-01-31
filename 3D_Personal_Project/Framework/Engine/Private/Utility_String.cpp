@@ -116,5 +116,15 @@ wstring CUtility_String::Get_LastName(wstring str)
 	return strTmp;
 }
 
+_bool CUtility_String::Compare_WString(wstring strSoul, wstring strDest)
+{
+	if (!wcscmp(strSoul.c_str(), strDest.c_str()))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 
 

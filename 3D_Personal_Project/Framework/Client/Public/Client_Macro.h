@@ -317,6 +317,20 @@
 
 #pragma endregion
 
+#define	MODEL_ENVY_TAG			TEXT("Prototype_Component_Model_Envy")
+
+#define	MODEL_GLUTTONY_TAG			TEXT("Prototype_Component_Model_Gluttony")
+
+#define	MODEL_GREED_TAG			TEXT("Prototype_Component_Model_Greed")
+
+#define	MODEL_LUXURY_TAG			TEXT("Prototype_Component_Model_Luxury")
+
+#define	MODEL_PRIDE_TAG			TEXT("Prototype_Component_Model_Pride")
+
+#define	MODEL_SLOTH_TAG			TEXT("Prototype_Component_Model_Sloth")
+
+#define	MODEL_WRATH_TAG			TEXT("Prototype_Component_Model_Wrath")
+
 #pragma endregion
 
 #pragma region 기타 컴포넌트
@@ -444,6 +458,8 @@
 #define GO_CROWDUMMY_TAG			TEXT("Prototype_GameObject_CrowDummy")
 
 #define GO_CAMERAPOINT_TAG			TEXT("Prototype_GameObject_CameraPoint")
+
+#define GO_PUZZLE_TAG			TEXT("Prototype_GameObject_Puzzle")
 
 #pragma region 캐릭터
 

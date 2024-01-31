@@ -23,6 +23,8 @@
 
 #include "Utility_Effect.h"
 
+#include "PuzzleMgr.h"
+
 CLevel_GamePlay::CLevel_GamePlay(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -40,6 +42,9 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 	
 	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
+		return E_FAIL;
+
+	if (FAILED(CPuzzleMgr::GetInstance()->Initialize()))
 		return E_FAIL;
 
 	if (FAILED(CDataMgr::GetInstance()->Level_Object_Load("../Bin/Data/Object/Stage1.bin")))
@@ -65,6 +70,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_MONSTER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, COLLIDER_LAYER::COL_TRIGGER_BULLET))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRAP))) return E_FAIL;
 	
 	m_pGameInstance->Fog_SetUp(_float2(0.f, 15.f), _float4(1.f, 0.6f, 0.6f, 0.5f));
@@ -77,17 +83,19 @@ HRESULT CLevel_GamePlay::Initialize()
 
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
+	CPuzzleMgr::GetInstance()->Tick();
+
 	if (m_bNextLevel)
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS1))))
 			return;
 	}
 
-	if (m_pGameInstance->Key_Down(DIK_1))
+	/*if (m_pGameInstance->Key_Down(DIK_1))
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS1))))
 			return;
-	}
+	}*/
 
 	/*if (m_pGameInstance->Key_Down(DIK_1))
 	{
@@ -186,15 +194,6 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		})))
 		return E_FAIL;
 
-	CTrigger::TRIGGER_DESC TriggerDesc = {};
-	TriggerDesc.strEventName = TEXT("Portal_Boss1");
-	TriggerDesc.vPosition = _float4(46.f, 9.f, 34.f, 1.f);
-	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
-
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
-		, GO_TRIGGER_TAG,&TriggerDesc)))
-		return E_FAIL;
-
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle1"), [this]() {
 		list<CGameObject*> listMonst = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 			g_strLayerName[LAYER::LAYER_MONSTER]);
@@ -211,7 +210,7 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		
 		})))
 		return E_FAIL;
-
+	CTrigger::TRIGGER_DESC TriggerDesc = {};
 	TriggerDesc.strEventName = TEXT("Battle1");
 	TriggerDesc.vPosition = _float4(13.5f, 7.f, 13.2f, 1.f);
 	TriggerDesc.vScale = _float3(5.f, 1.f, 1.f);
@@ -291,6 +290,8 @@ CLevel_GamePlay * CLevel_GamePlay::Create(ID3D11Device * pDevice, ID3D11DeviceCo
 
 void CLevel_GamePlay::Free()
 {
+	CPuzzleMgr::GetInstance()->DestroyInstance();
+
 	__super::Free();
 
 }

@@ -109,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,6 +156,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -323,6 +325,9 @@
     <ClInclude Include="..\Public\Player\Player_Body.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Shovel.h" />
     <ClInclude Include="..\Public\Player\Player_Weapon_Spear.h" />
+    <ClInclude Include="..\Public\Puzzle.h" />
+    <ClInclude Include="..\Public\PuzzleMgr.h" />
+    <ClInclude Include="..\Public\PuzzleMgr2.h" />
     <ClInclude Include="..\Public\Range_Bullet.h" />
     <ClInclude Include="..\Public\Shock_Wave.h" />
     <ClInclude Include="..\Public\SkullCrossBow.h" />
@@ -482,6 +487,9 @@
     <ClCompile Include="..\Private\Player\Player_Body.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Shovel.cpp" />
     <ClCompile Include="..\Private\Player\Player_Weapon_Spear.cpp" />
+    <ClCompile Include="..\Private\Puzzle.cpp" />
+    <ClCompile Include="..\Private\PuzzleMgr.cpp" />
+    <ClCompile Include="..\Private\PuzzleMgr2.cpp" />
     <ClCompile Include="..\Private\Range_Bullet.cpp" />
     <ClCompile Include="..\Private\Shock_Wave.cpp" />
     <ClCompile Include="..\Private\SkullCrossBow.cpp" />

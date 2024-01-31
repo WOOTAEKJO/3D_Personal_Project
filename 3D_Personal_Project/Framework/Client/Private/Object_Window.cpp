@@ -264,6 +264,8 @@ HRESULT CObject_Window::Save_Data(const _char* strFilePath)
 				_int iNaviInd = iter->Get_NaviCellIndex();
 				if (iNaviInd == -2)
 					strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TRAP_TAG);
+				else if(iNaviInd == -5)
+					strProTag = CUtility_String::WString_To_string(GO_PUZZLE_TAG);
 				else
 					strProTag = CUtility_String::WString_To_string(GO_PLATEFORM_TAG);
 
@@ -628,6 +630,8 @@ void CObject_Window::ObjectMesh()
 	ImGui::RadioButton("Floor", &m_iNaviIndxRadiButton, -3);
 	ImGui::SameLine();
 	ImGui::RadioButton("Floor2", &m_iNaviIndxRadiButton, -4);
+	ImGui::SameLine();
+	ImGui::RadioButton("Puzzle", &m_iNaviIndxRadiButton, -5);
 	// 담부터 이렇게 만들지 말자 시간 없으니 이렇게 사용하지만
 
 	if (ImGui::Button("Apply Function"))

@@ -41,8 +41,6 @@ HRESULT CPlateform::Initialize(void* pArg)
 
 	m_RandomNumber = mt19937_64(m_RandomDevice());
 
-	
-	
 	return S_OK;
 }
 

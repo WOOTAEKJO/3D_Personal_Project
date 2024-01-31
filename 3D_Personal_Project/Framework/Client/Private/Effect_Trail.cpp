@@ -16,7 +16,7 @@ CEffect_Trail::CEffect_Trail(const CEffect_Trail& rhs)
 
 HRESULT CEffect_Trail::Initialize_Prototype()
 {
-	D3D11_RASTERIZER_DESC;
+	//D3D11_RASTERIZER_DESC;
 
 	return S_OK;
 }
