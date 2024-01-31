@@ -65,7 +65,7 @@ void CEffect::Late_Tick(_float fTimeDelta)
 	
 
 	__super::Late_Tick(fTimeDelta);
-
+	Compute_CamDistance();
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
 		return;
 }

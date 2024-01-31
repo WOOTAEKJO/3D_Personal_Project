@@ -62,7 +62,7 @@ HRESULT CEffect_Trail::Render()
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
 
-	m_pShaderCom->Begin(2);
+	m_pShaderCom->Begin(9);
 
 	m_pTrailCom->Bind_Buffer();
 	m_pTrailCom->Render();

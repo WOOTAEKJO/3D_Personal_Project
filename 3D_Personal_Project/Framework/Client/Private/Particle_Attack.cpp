@@ -96,8 +96,11 @@ void CParticle_Attack::Tick(_float fTimeDelta)
 void CParticle_Attack::Late_Tick(_float fTimeDelta)
 {
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+	Compute_CamDistance();
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
 		return;
+	/*if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;*/
 
 	Judge_Dead(fTimeDelta);
 	

@@ -1,6 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "AlphaObject.h"
 
 BEGIN(Engine)
 
@@ -12,7 +12,7 @@ END
 
 BEGIN(Client)
 
-class CParticle abstract : public CGameObject
+class CParticle abstract : public CAlphaObject
 {
 public:
 	typedef struct tagParticleInfo : public CGameObject::GAMEOBJECT_DESC
