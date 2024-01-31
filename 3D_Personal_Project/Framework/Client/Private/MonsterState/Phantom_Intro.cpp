@@ -3,6 +3,7 @@
 #include "StateMachine.h"
 
 #include "Phantom.h"
+#include "Trigger.h"
 
 CPhantom_Intro::CPhantom_Intro()
 {
@@ -47,6 +48,21 @@ _uint CPhantom_Intro::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Intro::State_Exit()
 {
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Boss2Talk"), [this]() {
+
+		m_pGameInstance->SetUp_Production(TEXT("Boss2Talk"));
+
+		})))
+		return;
+
+	CTrigger::TRIGGER_DESC TriggerDesc = {};
+	TriggerDesc.strEventName = TEXT("Boss2Talk");
+	TriggerDesc.vPosition = _float4(22.9f, 2.f, 24.555f, 1.f);
+	TriggerDesc.vScale = _float3(1.5f, 1.f, 1.5f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
+		return;
 }
 
 CPhantom_Intro* CPhantom_Intro::Create(CGameObject* pGameObject)

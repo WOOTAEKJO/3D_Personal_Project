@@ -175,8 +175,6 @@ HRESULT CNPC::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::READY, CNPC_Ready::Create(this)))) return E_FAIL;
 	
 
-	
-
 	return S_OK;
 }
 

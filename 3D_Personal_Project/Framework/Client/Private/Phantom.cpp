@@ -27,6 +27,7 @@
 #include "Phantom_Summon_Loop.h"
 #include "Phantom_Vanish.h"
 #include "Phantom_Dash.h"
+#include "Phantom_IntroEnd.h"
 
 #include "Plateform.h"
 #include "Cell.h"
@@ -105,12 +106,14 @@ void CPhantom::Priority_Tick(_float fTimeDelta)
 		{
 			m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, _float4(0.f, 0.f, 0.f, 1.f));
 			if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Intro"), TEXT("Boss2"), this))) return;
+			if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Talk"), TEXT("Boss2"), this))) return;
 
 			m_Status_Desc.bTalk = true;
 		}
 		else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
 		{
 			m_Status_Desc.bTalk = false;
+			XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 		}
 		m_bStart = false;
 	}
@@ -128,8 +131,12 @@ void CPhantom::Tick(_float fTimeDelta)
 	/*if (m_pGameInstance->Key_Down(DIK_0))
 		m_Status_Desc.bTalk = false;*/
 
-	if (m_Status_Desc.bTalk)
-		XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	//if (m_Status_Desc.bTalk)
+	//{
+	//	XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	//	//m_Status_Desc.bTalk = false;
+	//}
+		
 
 	CMonster::Tick(fTimeDelta);
 }
@@ -769,6 +776,7 @@ HRESULT CPhantom::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::SUMMON_LOOP, CPhantom_Summon_Loop::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::VANISH, CPhantom_Vanish::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DASH, CPhantom_Dash::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::INTROEND, CPhantom_IntroEnd::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;

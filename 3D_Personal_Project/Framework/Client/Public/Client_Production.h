@@ -19,6 +19,7 @@ public:
 		_float fSensitivity;
 		wstring strActorTag;
 		_int	iAnimIndex = { -1 };
+		_float	fLookHeight = { 1.f };
 
 	}PRODUCTION_ACTOR_DESC;
 

@@ -64,6 +64,7 @@ void CClient_Production::Camera_Target_Change(_bool bSpring)
 	m_pCamera->Change_Target(Infp.fSensitivity, true, pActor);
 	m_pCamera->SetUp_Offset(Infp.vOffset);
 	m_pCamera->CutSceneSpring(bSpring);
+	m_pCamera->SetUp_LookAt_Height(Infp.fLookHeight);
 
 	if (Infp.iAnimIndex != -1)
 		pActor->Get_Component<CModel>()->Set_AnimationIndex(Infp.iAnimIndex);
@@ -75,6 +76,7 @@ void CClient_Production::Camera_Reset()
 {
 	m_pCamera->Change_Target(1.f, false, Find_Actor(TEXT("Player")));
 	m_pCamera->Reset_Offset();
+	m_pCamera->Reset_LookAt_Height();
 }
 
 _float3 CClient_Production::Compute_Offset(const wstring& strActorTag, _float fX, _float fY, _float fZ)

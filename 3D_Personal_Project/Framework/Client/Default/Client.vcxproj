@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\Bomb.h" />
     <ClInclude Include="..\Public\Boss1Talk.h" />
     <ClInclude Include="..\Public\Boss2Intro.h" />
+    <ClInclude Include="..\Public\Boss2Talk.h" />
     <ClInclude Include="..\Public\Bullet.h" />
     <ClInclude Include="..\Public\CameraPoint.h" />
     <ClInclude Include="..\Public\Camera_Window.h" />
@@ -271,6 +272,7 @@
     <ClInclude Include="..\Public\MonsterState\Phantom_Hit_Chasse.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_IDLE.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Intro.h" />
+    <ClInclude Include="..\Public\MonsterState\Phantom_IntroEnd.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Laser.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Marteau.h" />
     <ClInclude Include="..\Public\MonsterState\Phantom_Shoot.h" />
@@ -357,6 +359,7 @@
     <ClCompile Include="..\Private\Bomb.cpp" />
     <ClCompile Include="..\Private\Boss1Talk.cpp" />
     <ClCompile Include="..\Private\Boss2Intro.cpp" />
+    <ClCompile Include="..\Private\Boss2Talk.cpp" />
     <ClCompile Include="..\Private\Bullet.cpp" />
     <ClCompile Include="..\Private\CameraPoint.cpp" />
     <ClCompile Include="..\Private\Camera_Window.cpp" />
@@ -428,6 +431,7 @@
     <ClCompile Include="..\Private\MonsterState\Phantom_Hit_Chasse.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_IDLE.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Intro.cpp" />
+    <ClCompile Include="..\Private\MonsterState\Phantom_IntroEnd.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Laser.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Marteau.cpp" />
     <ClCompile Include="..\Private\MonsterState\Phantom_Shoot.cpp" />

@@ -26,10 +26,11 @@ void CNPC_Attack::State_Enter()
 	m_pOwner->Trans_Attack(true);
 
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW) {
-		_float4 vPos;
-		XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
 		if (m_bFind)
 		{
+			_float4 vPos;
+			XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
+
 			CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
 				GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.f);
 		}
@@ -60,11 +61,9 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
 	{
-		/*if (m_pOwner->Is_Target_Range(0.01f))
-			return CNPC::STATE::IDLE;*/
-		_bool b = dynamic_cast<CCrow*>(m_pOwner)->Is_Col();
-
-		if (b)
+		if (dynamic_cast<CCrow*>(m_pOwner)->Is_Col())
+			return CNPC::STATE::IDLE;
+		else if(m_pOwner->Is_Target_Range(0.01f))
 			return CNPC::STATE::IDLE;
 
 	}

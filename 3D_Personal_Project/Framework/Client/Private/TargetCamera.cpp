@@ -255,7 +255,7 @@ void CTargetCamera::CutScene(_float fTimeDelta)
 
 	vEye = vTargetPos - vDir;
 
-	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
+	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y * m_fLookAt_Height;
 
 	if (m_bCutSceneSpring)
 	{

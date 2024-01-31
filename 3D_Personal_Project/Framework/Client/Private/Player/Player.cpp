@@ -77,8 +77,10 @@ HRESULT CPlayer::Initialize(void* pArg)
 	}
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
 	{
-		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Player"), this))) return E_FAIL;
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(10.f, 2.f, 13.f, 1.f));
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Talk"), TEXT("Player"), this))) return E_FAIL;
+		
 	}		
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
 	{

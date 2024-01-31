@@ -19,6 +19,7 @@
 
 #include "Boss1Talk.h"
 #include "Boss2Intro.h"
+#include "Boss2Talk.h"
 
 #include "CameraPoint.h"
 
@@ -100,7 +101,9 @@ HRESULT CLevel_Boss1::Ready_Layer_Player(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+		return E_FAIL;*/
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_NPC], ANIMMODEL_CROW_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -169,6 +172,8 @@ HRESULT CLevel_Boss1::Ready_Trigger()
 		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 
@@ -176,6 +181,7 @@ HRESULT CLevel_Boss1::Ready_Production()
 {
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss1Talk"), CBoss1Talk::Create()))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss2Intro"), CBoss2Intro::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss2Talk"), CBoss2Talk::Create()))) return E_FAIL;
 
 	return S_OK;
 }
