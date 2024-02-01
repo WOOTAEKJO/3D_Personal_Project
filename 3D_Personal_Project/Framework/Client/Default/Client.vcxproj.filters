@@ -565,6 +565,12 @@
     <Filter Include="02.GameObjects\06. Particle\06. NonBlur_Particle">
       <UniqueIdentifier>{ca1d073f-7e7b-4bea-9892-8a904656a3b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09. UI">
+      <UniqueIdentifier>{c9c31921-3fab-4a29-8e49-c8bc27815f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\00. ChatBox">
+      <UniqueIdentifier>{5cd3e8b0-ba3f-4e78-9862-3734b1c38db4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1077,6 +1083,12 @@
     <ClInclude Include="..\Public\Particle_NonBlur.h">
       <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>02.GameObjects\09. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ChatBox.h">
+      <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1561,6 +1573,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Particle_NonBlur.cpp">
       <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI.cpp">
+      <Filter>02.GameObjects\09. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ChatBox.cpp">
+      <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,10 @@ public:
 
 private:
 
+private:
+	virtual	HRESULT Ready_UI() override;
+	virtual	void	Ready_Font() override;
+
 public:
 	static COwlTalk* Create();
 	virtual	void	Free();

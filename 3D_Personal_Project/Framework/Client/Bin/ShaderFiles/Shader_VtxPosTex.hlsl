@@ -67,12 +67,17 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
-	vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
+	//vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
+	//vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
+   
+    float4 vResultColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
 
-	Out.vColor = vSColor + vDColor;
-	
-	return Out;
+    if (vResultColor.a <0.3f)
+        discard;
+    
+    Out.vColor = vResultColor;
+    
+    return Out;
 }
 
 struct VS_OUT_EFFECT

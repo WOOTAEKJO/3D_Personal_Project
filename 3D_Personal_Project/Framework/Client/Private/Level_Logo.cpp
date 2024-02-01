@@ -45,6 +45,8 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const wstring& strLayerTag)
 {
 	CBackGround::BACKGROUND_DESC BackGroundDesc = {};
 
+	/*BackGroundDesc.fX = Client::g_iWinSizeX * 0.5f;
+	BackGroundDesc.fY = Client::g_iWinSizeY * 0.5f;*/
 	BackGroundDesc.fX = Client::g_iWinSizeX * 0.5f;
 	BackGroundDesc.fY = Client::g_iWinSizeY * 0.5f;
 	BackGroundDesc.fSizeX = g_iWinSizeX;

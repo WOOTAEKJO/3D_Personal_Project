@@ -2,6 +2,7 @@
 #include "..\Public\Client_Production.h"
 
 #include "TargetCamera.h"
+#include "UI.h"
 
 CClient_Production::CClient_Production()
 {
@@ -113,6 +114,130 @@ _float3 CClient_Production::Compute_Offset_Transform(CTransform* pActorTramsform
 	XMStoreFloat3(&vOffset, vLook + vRight);
 
 	return vOffset;
+}
+
+HRESULT CClient_Production::Ready_UI()
+{
+
+	return S_OK;
+}
+
+void CClient_Production::Ready_Font()
+{
+
+}
+
+CUI* CClient_Production::Add_UI(_float2 vCenterPos, _float2 vScale, const wstring& strTextureTag, const wstring& strProtoTag)
+{
+	CGameObject* pUi = nullptr;
+
+	CUI::UI_DESC Desc = {};
+
+	Desc.strTextureTag = strTextureTag;
+	Desc.vCenterPos = vCenterPos;
+	Desc.vScale = vScale;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, strProtoTag, &Desc, reinterpret_cast<CGameObject**>(&pUi)))) return nullptr;
+
+	return dynamic_cast<CUI*>(pUi);
+}
+
+HRESULT CClient_Production::Add_GROUP(const wstring& strGroupTag, CUI* pUI)
+{
+	if (pUI == nullptr)
+		return E_FAIL;
+
+	list<CUI*>* pList = Find_UIGROUP(strGroupTag);
+	
+	if (pList == nullptr)
+	{
+		list<CUI*> listUI;
+		listUI.push_back(pUI);
+
+		m_mapUI.emplace(strGroupTag, listUI);
+	}
+	else {
+		pList->push_back(pUI);
+	}
+
+	return S_OK;
+}
+
+list<CUI*>* CClient_Production::Find_UIGROUP(const wstring& strGroupTag)
+{
+	auto& iter = m_mapUI.find(strGroupTag);
+	if (iter == m_mapUI.end())
+		return nullptr;
+
+	return &iter->second;
+}
+
+void CClient_Production::SetUp_UI_Group(const wstring& strGroupTag)
+{
+	if (CUtility_String::Compare_WString(m_strActivateGroupTag, strGroupTag))
+	{
+		return;
+	}
+	else {
+		list<CUI*>* pList = Find_UIGROUP(strGroupTag);
+		if (pList == nullptr)
+			return;
+
+		for (auto& iter : *pList)
+		{
+			iter->Set_Render(true);
+		}
+
+		m_strActivateGroupTag = strGroupTag;
+	}
+}
+
+void CClient_Production::Clear_UI_Group()
+{
+	list<CUI*>* pList = Find_UIGROUP(m_strActivateGroupTag);
+	if (pList == nullptr)
+		return;
+
+	for (auto& iter : *pList)
+	{
+		iter->Set_Render(false);
+	}
+}
+
+void CClient_Production::RenderUI()
+{
+	_uint iSize = m_vecUIOrder.size();
+
+	if (m_iCurrentUIOrderIndx >= iSize)
+	{
+		Clear_UI_Group();
+		return;
+	}
+
+	if (m_iCurrentUIOrderIndx != 0)
+	{
+		++m_iCurrentFontIndx;
+		Clear_UI_Group();
+	}
+
+	SetUp_UI_Group(m_vecUIOrder[m_iCurrentUIOrderIndx]);
+
+	++m_iCurrentUIOrderIndx;
+}
+
+void CClient_Production::RenderFont()
+{
+	if (m_iCurrentFontIndx >= m_vecFont.size())
+		return;
+
+	m_pGameInstance->Render_Font(m_vecFont[m_iCurrentFontIndx].iFontTag,
+		m_vecFont[m_iCurrentFontIndx].strText,
+		m_vecFont[m_iCurrentFontIndx].vPosition,
+		XMLoadFloat4(&m_vecFont[m_iCurrentFontIndx].vColor),
+		m_vecFont[m_iCurrentFontIndx].fScale,
+		m_vecFont[m_iCurrentFontIndx].vOrigin,
+		m_vecFont[m_iCurrentFontIndx].fRotation);
 }
 
 void CClient_Production::Free()

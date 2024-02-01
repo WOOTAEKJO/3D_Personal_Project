@@ -491,8 +491,8 @@ HRESULT CRenderer::Render_Debug()
 	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pBufferCom)))
 		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pBufferCom)))
-		return E_FAIL;
+	/*if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Shadow"), m_pShader, m_pBufferCom)))
+		return E_FAIL;*/
 
 	/*if (FAILED(m_pGameInstance->Render_MRT_Debug(TEXT("MRT_Effect"), m_pShader, m_pBufferCom)))
 		return E_FAIL;

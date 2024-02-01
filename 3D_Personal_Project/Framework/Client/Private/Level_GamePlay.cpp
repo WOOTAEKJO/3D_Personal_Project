@@ -302,7 +302,7 @@ HRESULT CLevel_GamePlay::Ready_Production()
 {
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk"), COwlTalk::Create()))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk2"), COwlTalk2::Create()))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk3"), COwlTalk2::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("OwlTalk3"), COwlTalk3::Create()))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Production(TEXT("CrowTalk"), CCrowTalk::Create()))) return E_FAIL;
 
 	return S_OK;

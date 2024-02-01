@@ -17,6 +17,8 @@ public:
 	virtual	void	Exite() override;
 
 private:
+	virtual	HRESULT Ready_UI() override;
+	virtual	void	Ready_Font() override;
 
 public:
 	static CBoss2Talk* Create();

@@ -37,15 +37,15 @@ HRESULT CBackGround::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 	
-	/*m_pTransformCom->Set_Scaling(m_fSizeX, m_fSizeY, 1.f);
+	m_pTransformCom->Set_Scaling(m_fSizeX, m_fSizeY, 1.f);
 	m_pTransformCom->Set_State(CTransform::STATE_POS, XMVectorSet(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f, 1.f));
 
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));*/
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(g_iWinSizeX, g_iWinSizeY, 0.f, 1.f));
 
-	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(XMVectorSet(0.f, 0.f, -10.f, 0.f), XMVectorSet(0.f, 0.f, 0.f, 0.f),
+	/*XMStoreFloat4x4(&m_ViewMatrix, XMMatrixLookAtLH(XMVectorSet(0.f, 0.f, -10.f, 0.f), XMVectorSet(0.f, 0.f, 0.f, 0.f),
 		XMVectorSet(0.f, 1.f, 0.f, 0.f)));
-	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(60.f), (_float)g_iWinSizeX / (_float)g_iWinSizeY, 0.2f, 300.f));
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixPerspectiveFovLH(XMConvertToRadians(60.f), (_float)g_iWinSizeX / (_float)g_iWinSizeY, 0.2f, 300.f));*/
 	
 	return S_OK;
 }
@@ -57,7 +57,7 @@ void CBackGround::Priority_Tick(_float fTimeDelta)
 
 void CBackGround::Tick(_float fTimeDelta)
 {
-	if (GetKeyState(VK_LEFT) & 0x8000)
+	/*if (GetKeyState(VK_LEFT) & 0x8000)
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -1.f);
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 		m_pTransformCom->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta);
@@ -65,7 +65,7 @@ void CBackGround::Tick(_float fTimeDelta)
 	if (GetKeyState(VK_UP) & 0x8000)
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	if (GetKeyState(VK_DOWN) & 0x8000)
-		m_pTransformCom->Go_BackWard(fTimeDelta);
+		m_pTransformCom->Go_BackWard(fTimeDelta);*/
 }
 
 void CBackGround::Late_Tick(_float fTimeDelta)

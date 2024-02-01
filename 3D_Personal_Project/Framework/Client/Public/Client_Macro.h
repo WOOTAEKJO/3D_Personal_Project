@@ -232,6 +232,8 @@
 #define	MODELINSTANCING_SMALLROCK_TAG			TEXT("Prototype_Component_ModelInstancing_SmallRock")
 #define	MODELINSTANCING_PURPLESCHROOMS_TAG		TEXT("Prototype_Component_ModelInstancing_PurpleSchrooms")
 
+#pragma endregion
+
 #pragma region 파티클
 
 #define	PARTICLE_TEST_TAG		TEXT("Prototype_Component_Particle_Test1")
@@ -305,8 +307,6 @@
 #define	PARTICLE_PORTAL_TAG		TEXT("Prototype_Component_Particle_Portal")
 
 #define	PARTICLE_DUST_TAG		TEXT("Prototype_Component_Particle_Dust")
-
-#pragma endregion
 
 #pragma endregion
 
@@ -420,6 +420,29 @@
 
 #pragma endregion
 
+#pragma region UI 텍스쳐
+
+#define UI_CROW_TAG		TEXT("Prototype_Component_Texture_CharacterCrow")
+#define UI_JACK_TAG		TEXT("Prototype_Component_Texture_CharacterJack")
+#define UI_OWL_TAG		TEXT("Prototype_Component_Texture_CharacterOwl")
+#define UI_PHANTOM_TAG		TEXT("Prototype_Component_Texture_CharacterPhantom")
+#define UI_SCARECROW_TAG		TEXT("Prototype_Component_Texture_CharacterScarecrow")
+
+#define UI_CHATBOX_TAG		TEXT("Prototype_Component_Texture_ChatBox")
+
+#define UI_CROWLIFEBAR_TAG		TEXT("Prototype_Component_Texture_CrowLifebar")
+
+#define UI_HEADDEATH_TAG		TEXT("Prototype_Component_Texture_HeadDeath")
+
+#define UI_LIFEBARMASK_TAG		TEXT("Prototype_Component_Texture_LifebarMask")
+
+#define UI_LOADING1_TAG		TEXT("Prototype_Component_Texture_LoadingScreensLVLF")
+#define UI_LOADING2_TAG		TEXT("Prototype_Component_Texture_LoadingScreensLVLS")
+
+#define UI_LOGO_TAG		TEXT("Prototype_Component_Texture_PumpkinJack")
+
+#define UI_SPINNER_TAG		TEXT("Prototype_Component_Texture_Spinner")
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -481,6 +504,8 @@
 #define GO_CAMERAPOINT_TAG			TEXT("Prototype_GameObject_CameraPoint")
 
 #define GO_PUZZLE_TAG			TEXT("Prototype_GameObject_Puzzle")
+
+#define GO_UICHATBOX_TAG			TEXT("Prototype_GameObject_UIChatBox")
 
 #pragma region 캐릭터
 

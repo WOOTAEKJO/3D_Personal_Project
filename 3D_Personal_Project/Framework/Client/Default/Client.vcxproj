@@ -346,6 +346,8 @@
     <ClInclude Include="..\Public\Test_State1.h" />
     <ClInclude Include="..\Public\Test_State2.h" />
     <ClInclude Include="..\Public\Trigger.h" />
+    <ClInclude Include="..\Public\UI.h" />
+    <ClInclude Include="..\Public\UI_ChatBox.h" />
     <ClInclude Include="..\Public\Utility_Effect.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -511,6 +513,8 @@
     <ClCompile Include="..\Private\Test_State1.cpp" />
     <ClCompile Include="..\Private\Test_State2.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
+    <ClCompile Include="..\Private\UI.cpp" />
+    <ClCompile Include="..\Private\UI_ChatBox.cpp" />
     <ClCompile Include="..\Private\Utility_Effect.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
