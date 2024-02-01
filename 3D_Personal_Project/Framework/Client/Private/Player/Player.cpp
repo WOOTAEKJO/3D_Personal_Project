@@ -110,7 +110,7 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	ShadowLight_SetUp();
+	//ShadowLight_SetUp();
 
 	for (auto& iter : m_mapParts)
 	{
@@ -317,9 +317,9 @@ HRESULT CPlayer::Init_Point_Light()
 
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
-	LightDesc.fRange = 0.6f;
+	LightDesc.fRange = 0.4f;
 	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 0.6f, 0.4f, 1.f);
 	LightDesc.vSpecular = LightDesc.vDiffuse;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
@@ -499,15 +499,15 @@ void CPlayer::ShadowLight_SetUp()
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
-	XMStoreFloat4(&Shadow_Desc.vPos, XMVectorAdd(vPos, XMVectorSet(-5.f, 5.f, -5.f, 0.f)));
+	//XMStoreFloat4(&Shadow_Desc.vPos, XMVectorAdd(vPos, XMVectorSet(-5.f, 5.f, -5.f, 0.f)));
 	XMStoreFloat4(&Shadow_Desc.vAt, vPos);
-
+	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
 	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
 
 	Shadow_Desc.fFov = XMConvertToRadians(60.f);
 	Shadow_Desc.fAspect =((_float)g_iWinSizeX / g_iWinSizeY);
 	Shadow_Desc.fNear = 0.1f;
-	Shadow_Desc.fFar = 300.f;
+	Shadow_Desc.fFar = 600.f;
 
 	//m_pGameInstance->Get_ShadowLight()->Open_Light_Desc();
 	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);

@@ -76,8 +76,10 @@ void CParticle_Normal::Tick(_float fTimeDelta)
 void CParticle_Normal::Late_Tick(_float fTimeDelta)
 {
 
-	Compute_CamDistance();
+	/*Compute_CamDistance();
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
+		return;*/
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;
 
 	Judge_Dead(fTimeDelta);

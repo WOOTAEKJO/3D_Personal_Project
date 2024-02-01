@@ -48,7 +48,9 @@ void CEffect_Trail::Late_Tick(_float fTimeDelta)
 {
 
 	//__super::Late_Tick(fTimeDelta);
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
+	/*if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
+		return;*/
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;
 
 	if (m_pOwner == nullptr || m_pOwner->Get_Dead())

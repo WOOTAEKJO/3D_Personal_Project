@@ -61,6 +61,10 @@ private:
 
 	_float3			m_vOriginOffset = { 0.7f,-0.5f,0.7f };
 	_float3			m_vOffset;
+
+private:
+	_float2			m_vClampMinMax = { 0.f,0.f };
+
 private:
 	wstring			m_strCurrentNaviTag;
 

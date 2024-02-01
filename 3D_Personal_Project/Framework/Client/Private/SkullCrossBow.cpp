@@ -94,7 +94,8 @@ void CSkullCrossBow::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 }
 
 HRESULT CSkullCrossBow::Render()
@@ -103,6 +104,14 @@ HRESULT CSkullCrossBow::Render()
 		return E_FAIL;
 
 	if (FAILED(CMonster::Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSkullCrossBow::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
 		return E_FAIL;
 
 	return S_OK;

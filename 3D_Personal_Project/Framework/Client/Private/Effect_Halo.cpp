@@ -57,6 +57,8 @@ void CEffect_Halo::Tick(_float fTimeDelta)
 void CEffect_Halo::Late_Tick(_float fTimeDelta)
 {
 	__super::Late_Tick(fTimeDelta);
+	/*if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;*/
 
 }
 
@@ -81,14 +83,19 @@ HRESULT CEffect_Halo::Bind_ShaderResources()
 
 	if (FAILED(__super::Bind_ShaderResources()))
 		return E_FAIL;
+	/*if (FAILED(m_pMaskTexture->Bind_ShaderResources(m_pShaderCom, "g_MaskTexture")))
+		return E_FAIL;*/
 
 	return S_OK;
 }
 
 HRESULT CEffect_Halo::Ready_Component()
 {
+	
+
 	if (FAILED(__super::Ready_Component()))
 		return E_FAIL;
+	//if (FAILED(Add_Component<CTexture>(MASK_GLOWTEST_TAG, &m_pMaskTexture,nullptr,1))) return E_FAIL;
 
 	return S_OK;
 }

@@ -51,11 +51,11 @@ void CParticle_Stage::Tick(_float fTimeDelta)
 
 void CParticle_Stage::Late_Tick(_float fTimeDelta)
 {
-	Compute_CamDistance();
+	/*Compute_CamDistance();
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
-		return;
-	/*if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
 		return;*/
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;
 }
 
 HRESULT CParticle_Stage::Render()

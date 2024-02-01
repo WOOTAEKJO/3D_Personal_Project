@@ -87,6 +87,9 @@ void CSpooketon::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pWeaponColliderCom)))
 		return;
 
@@ -99,6 +102,14 @@ HRESULT CSpooketon::Render()
 		return E_FAIL;
 
 	if (FAILED(CMonster::Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSpooketon::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
 		return E_FAIL;
 
 	return S_OK;

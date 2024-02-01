@@ -87,8 +87,9 @@ void CEffect_DashRoad::Late_Tick(_float fTimeDelta)
 		}
 	}
 
-	__super::Late_Tick(fTimeDelta);
-
+	//__super::Late_Tick(fTimeDelta);
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;
 }
 
 HRESULT CEffect_DashRoad::Render()

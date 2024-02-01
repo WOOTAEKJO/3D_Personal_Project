@@ -80,7 +80,17 @@ HRESULT CLevel_GamePlay::Initialize()
 	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE1IDLE_TAG, _float4(25.9, 3.f, 21.2f, 1.f),
 		nullptr, nullptr);
 
-	
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(30.f, 30.f, 30.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 700.f;
+
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
 	// 그림자 빛 세팅
 
 	return S_OK; 

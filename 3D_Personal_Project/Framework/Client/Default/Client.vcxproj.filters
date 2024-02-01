@@ -562,6 +562,9 @@
     <Filter Include="92. Production\06. OwlTalk3">
       <UniqueIdentifier>{9960496c-8676-49cc-97ed-231b2ff19939}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06. Particle\06. NonBlur_Particle">
+      <UniqueIdentifier>{ca1d073f-7e7b-4bea-9892-8a904656a3b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1071,6 +1074,9 @@
     <ClInclude Include="..\Public\OwlTalk3.h">
       <Filter>92. Production\06. OwlTalk3</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Particle_NonBlur.h">
+      <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1552,6 +1558,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\OwlTalk3.cpp">
       <Filter>92. Production\06. OwlTalk3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_NonBlur.cpp">
+      <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

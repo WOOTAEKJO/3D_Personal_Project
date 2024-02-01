@@ -66,12 +66,31 @@ HRESULT CLevel_Boss1::Initialize()
 	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE2IDLE_TAG, _float4(14.5f, 0.f, 17.f, 1.f),
 		nullptr, nullptr);
 
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 700.f;
+
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
+	// 그림자 빛 세팅
+
 	return S_OK; 
 }
 
 void CLevel_Boss1::Tick(_float fTimeDelta)
 {
 	if (m_bNextLevel)
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
+			return;
+	}
+
+	if (m_pGameInstance->Key_Down(DIK_1))
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
 			return;

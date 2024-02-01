@@ -404,6 +404,12 @@
 
 #pragma endregion
 
+#pragma region 마스크 텍스쳐
+
+#define MASK_GLOWTEST_TAG		TEXT("Prototype_Component_Texture_GlowTest")
+
+#pragma endregion
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -434,6 +440,7 @@
 #define GO_PARTICLEATTACK_TAG			TEXT("Prototype_GameObject__ParticleAttack")
 #define GO_PARTICLEALWAYS_TAG			TEXT("Prototype_GameObject__ParticleAlways")
 #define GO_PARTICLESTAGE_TAG			TEXT("Prototype_GameObject__ParticleStage")
+#define GO_PARTICLENONBLUR_TAG			TEXT("Prototype_GameObject__ParticleNonBlur")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")

@@ -79,6 +79,39 @@ HRESULT CCharacter::Render()
 	return S_OK;
 }
 
+HRESULT CCharacter::Render_Shadow()
+{
+	/*if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat)))
+		return E_FAIL;*/
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightFar", &m_pGameInstance->Get_ShadowLight()->
+		Open_Light_Desc()->fFar, sizeof(_float))))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(3);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
 void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 {
 	if (m_pModelCom == nullptr)

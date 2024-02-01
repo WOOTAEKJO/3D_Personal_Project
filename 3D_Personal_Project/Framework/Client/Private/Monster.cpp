@@ -84,6 +84,17 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
+HRESULT CMonster::Render_Shadow()
+{
+	if (!m_bActivate)
+		return S_OK;
+
+	if (FAILED(CCharacter::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CMonster::TargetLook()
 {
 	m_pTransformCom->LookAt_OnLand(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));

@@ -302,6 +302,7 @@
     <ClInclude Include="..\Public\Particle.h" />
     <ClInclude Include="..\Public\Particle_Attack.h" />
     <ClInclude Include="..\Public\Particle_Demo.h" />
+    <ClInclude Include="..\Public\Particle_NonBlur.h" />
     <ClInclude Include="..\Public\Particle_Normal.h" />
     <ClInclude Include="..\Public\Particle_Always.h" />
     <ClInclude Include="..\Public\Particle_Sprite.h" />
@@ -466,6 +467,7 @@
     <ClCompile Include="..\Private\Particle.cpp" />
     <ClCompile Include="..\Private\Particle_Attack.cpp" />
     <ClCompile Include="..\Private\Particle_Demo.cpp" />
+    <ClCompile Include="..\Private\Particle_NonBlur.cpp" />
     <ClCompile Include="..\Private\Particle_Normal.cpp" />
     <ClCompile Include="..\Private\Particle_Always.cpp" />
     <ClCompile Include="..\Private\Particle_Sprite.cpp" />

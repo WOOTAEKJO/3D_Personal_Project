@@ -88,6 +88,8 @@ void COwl::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 
 	CNPC::Late_Tick(fTimeDelta);
 	
@@ -111,6 +113,14 @@ HRESULT COwl::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT COwl::Render_Shadow()
+{
+	if (FAILED(CNPC::Render_Shadow()))
+		return E_FAIL;
 
 	return S_OK;
 }

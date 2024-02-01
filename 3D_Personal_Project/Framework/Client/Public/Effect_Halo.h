@@ -18,7 +18,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
-
+	CTexture* m_pMaskTexture = { nullptr };
 private:
 	
 private:

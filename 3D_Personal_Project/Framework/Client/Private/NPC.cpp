@@ -66,6 +66,14 @@ HRESULT CNPC::Render()
 	return S_OK;
 }
 
+HRESULT CNPC::Render_Shadow()
+{
+	if (FAILED(CCharacter::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CNPC::PlayerLook()
 {
 	_vector vDir = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_LOOK);

@@ -114,7 +114,7 @@ void CMeteor::Late_Tick(_float fTimeDelta)
 		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_METEORWAVE_TAG, GO_PARTICLEATTACK_TAG,
 			this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 1.f);
 
-		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_METEORAFTER_TAG, GO_PARTICLEATTACK_TAG,
+		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_METEORAFTER_TAG, GO_PARTICLENONBLUR_TAG,
 			this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 1.7f);
 
 

@@ -90,7 +90,7 @@ void CPlayer_Weapon_Shovel::Tick(_float fTimeDelta)
 		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Reset(XMLoadFloat4x4(&m_matWorldMat));
 	}
 
-	dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(XMLoadFloat4x4(&m_matWorldMat));
+	//dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(XMLoadFloat4x4(&m_matWorldMat));
 }
 
 void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)

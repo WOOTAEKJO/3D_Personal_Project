@@ -46,9 +46,14 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 	m_vOffset = m_vOriginOffset;
 	m_fLookAt_Height = m_fOriginLookAt_Height;
+	m_vClampMinMax = _float2(XMConvertToRadians(-30.f), XMConvertToRadians(30.f));
 
 	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
 		m_vOffset = _float3(-1.5f, -0.5f, -1.5f);
+		m_vClampMinMax = _float2(XMConvertToRadians(-20.f), XMConvertToRadians(20.f));
+	}
+		
 
 	_vector vPos,vDir;
 	vPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
@@ -198,7 +203,7 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 		{
 			m_fAngleAccY += MouseMove * fTimeDelta * 0.5f;
 
-			m_fAngleAccY = Clamp(XMConvertToRadians(-30.f), XMConvertToRadians(30.f), m_fAngleAccY);
+			m_fAngleAccY = Clamp(m_vClampMinMax.x, m_vClampMinMax.y, m_fAngleAccY);
 		}
 	}
 

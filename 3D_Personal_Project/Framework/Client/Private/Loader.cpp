@@ -28,6 +28,7 @@
 #include "Particle_Attack.h"
 #include "Particle_Always.h"
 #include "Particle_Stage.h"
+#include "Particle_NonBlur.h"
 
 #include "Effect_Damage.h"
 #include "Effect_Halo.h"
@@ -279,7 +280,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Attack>(GO_PARTICLEATTACK_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Always>(GO_PARTICLEALWAYS_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Stage>(GO_PARTICLESTAGE_TAG))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_NonBlur>(GO_PARTICLENONBLUR_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Soul>(GO_EFFECTSOUL_TAG))) return E_FAIL;
@@ -752,6 +754,8 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LASER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_WATER_TAG, 1))) return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_GLOWTEST_TAG, 1))) return E_FAIL;
+	
 	return S_OK;
 }
 

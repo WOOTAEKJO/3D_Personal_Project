@@ -88,9 +88,9 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 	SetUp_Random_Pos();
 
-	m_eCurrentPhase = PHASE::PAHSE1;
-	/*m_eCurrentPhase = PHASE::PAHSE2;
-	m_iHitCount = 2;*/
+	//m_eCurrentPhase = PHASE::PAHSE1;
+	m_eCurrentPhase = PHASE::PAHSE2;
+	m_iHitCount = 2;
 	
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS2IDLE_TAG, GO_PARTICLEALWAYS_TAG,
 		this, &m_pIDLEParicle);
@@ -149,6 +149,8 @@ void CPhantom::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 
 	Judge_Dead();
 
@@ -175,6 +177,14 @@ HRESULT CPhantom::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
+		return E_FAIL;
 
 	return S_OK;
 }

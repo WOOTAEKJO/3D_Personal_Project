@@ -100,6 +100,8 @@ void CHelicoScarrow::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 
 	/*if (m_Status_Desc.iCurHP <= 0)
 		Set_Dead();*/
@@ -111,6 +113,14 @@ HRESULT CHelicoScarrow::Render()
 		return E_FAIL;
 
 	if (FAILED(CMonster::Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
 		return E_FAIL;
 
 	return S_OK;

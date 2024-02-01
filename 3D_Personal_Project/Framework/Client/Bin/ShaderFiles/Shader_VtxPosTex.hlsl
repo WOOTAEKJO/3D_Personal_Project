@@ -5,6 +5,7 @@ texture2D	g_Texture[2];
 
 texture2D g_DiffuseTexture;
 texture2D g_DepthTexture;
+texture2D g_MaskTexture;
 
 vector g_vSolid_Color;
 
@@ -115,7 +116,7 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
         discard;
     
     Out.vColor = vColor; //  * g_vSolid_Color;
-    
+  
     //float2 vDepthTexcoord;
     //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
     //vDepthTexcoord.y = (In.vPosition.y / In.vPosition.w) * -0.5f + 0.5f;
@@ -125,7 +126,7 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
     //Out.vColor.a = Out.vColor.a * (vDepthDesc.y * 1000.f - In.vProjPos.w) * 2.f;
 	// 화면에 그려진 픽셀들의 깊이 값과 비교해서 깊이 값이 크면 알파가 크게 작으면 알파가 점점 작아져서 투명해진다.
 	
-    return Out;
+        return Out;
 }
 
 PS_OUT PS_MAIN_EFFECT_SOLID(PS_IN_EFFECT In)

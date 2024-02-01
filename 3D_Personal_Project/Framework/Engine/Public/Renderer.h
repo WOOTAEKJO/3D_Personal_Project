@@ -62,6 +62,7 @@ private:
 	HRESULT Render_NonBlend();
 	HRESULT Render_LightAcc();
 	HRESULT Render_Deferred();
+	HRESULT Render_Bloom();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
 

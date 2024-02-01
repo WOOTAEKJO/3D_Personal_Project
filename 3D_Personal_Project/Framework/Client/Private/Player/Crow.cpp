@@ -108,6 +108,8 @@ void CCrow::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
 		return;
@@ -135,6 +137,14 @@ HRESULT CCrow::Render()
 		m_pModelCom->Render(i);
 	}
 
+
+	return S_OK;
+}
+
+HRESULT CCrow::Render_Shadow()
+{
+	if (FAILED(CNPC::Render_Shadow()))
+		return E_FAIL;
 
 	return S_OK;
 }
