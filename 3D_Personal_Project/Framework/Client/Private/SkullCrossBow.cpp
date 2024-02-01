@@ -124,7 +124,7 @@ HRESULT CSkullCrossBow::Create_Bullet()
 	CNormal_Bullet::BULLET_NORMAL_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
-	BulletDesc.fRadius = 0.05f;
+	BulletDesc.fRadius = 0.03f;
 	BulletDesc.fLifeTime = 2.f;
 	BulletDesc.fSpeed = 3.f;
 	BulletDesc.pTarget = m_pPlayer;
@@ -145,7 +145,7 @@ HRESULT CSkullCrossBow::Create_Bullet()
 	Info.pOwner = pBullet;
 	Info.fLifeTime = 0.f;
 	Info.strEffectTextureTag = TEX_BUBLE_TAG;
-	Info.vSize = _float2(0.1f, 0.1f);
+	Info.vSize = _float2(0.07f, 0.07f);
 	Info.vColor = _float4(0.8f, 0.2f, 0.2f, 1.f);
 	Info.fSizeSpeed = -0.01f;
 

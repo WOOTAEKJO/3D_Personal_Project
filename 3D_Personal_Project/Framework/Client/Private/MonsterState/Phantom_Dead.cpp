@@ -39,7 +39,7 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 			CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT1_TAG, GO_PARTICLESPRITE_TAG,
 				m_pOwner, nullptr, 9.9f,nullptr, true);
 			CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
-				m_pOwner, nullptr, 10.f, nullptr, true);
+				m_pOwner, nullptr, 10.f, nullptr, true,false);
 			m_bParticle = false;
 		}
 	}

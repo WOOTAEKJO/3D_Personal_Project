@@ -754,8 +754,16 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LASER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_WATER_TAG, 1))) return E_FAIL;
 
+	//----- Mask -------
+
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_GLOWTEST_TAG, 1))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL3_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_CROWTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_NORMALBULLETTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_LIGHTMASK_TAG, 1))) return E_FAIL;
+
 	return S_OK;
 }
 

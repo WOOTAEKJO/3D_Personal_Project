@@ -17,13 +17,13 @@ class CUtility_Effect
 {
 public:
 	static void Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
-		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr, _bool bChild = false);
+		CGameObject* pOwner, CGameObject** pOut, _float fLifeTime = 0.f, vector<CBone*>* vecBone = nullptr, _bool bChild = false,_bool bBlur = true);
 
 	static void Create_Particle_Attack(CGameInstance* pGameInstance, const wstring& strParticleTag, const wstring& strObjTag,
-		CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut = nullptr, _float fLifeTime = 0.f,_bool bKeep = false);
+		CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut = nullptr, _float fLifeTime = 0.f,_bool bKeep = false, _bool bBlur = true);
 
 	static void Create_Particle_Stage(CGameInstance* pGameInstance, const wstring& strParticleTag,_float4 vPos,
-		CGameObject* pOwner, CGameObject** pOut);
+		CGameObject* pOwner, CGameObject** pOut, _bool bBlur = true);
 
 	static void	Create_Effect_Normal(CGameInstance* pGameInstance, const wstring& strTextureTag, const wstring& strObjTag,
 		CGameObject* pOwner,_fvector vPos, CGameObject** pOut, _float fLifeTime, _float2 vSize);
@@ -34,7 +34,8 @@ public:
 
 	static void	Create_Damage_Effect(CGameInstance* pGameInstance, CGameObject* pOwner, _float fLifeTime, _float2 vSize);
 
-	static void Create_Effect_Trail(CGameInstance* pGameInstance, const wstring& strTextureTag, CGameObject* pOwner,
+	static void Create_Effect_Trail(CGameInstance* pGameInstance, const wstring& strTextureTag, const wstring& strMaskTextureTag
+		, CGameObject* pOwner,_float fAlpha,_bool bRevers,
 		_float3 vTrailPos_0, _float3 vTrailPos_1, _uint iTrailMaxCnt, _uint iLerpPointNum, _float4 vColor, CGameObject** pOut);
 	
 

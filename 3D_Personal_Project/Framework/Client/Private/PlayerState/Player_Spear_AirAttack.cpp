@@ -58,6 +58,8 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 				m_pOwner, &m_pElec[2], 3.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 			Particle_Loop_SetUp(m_pElec[2], false);
 
+			m_pOwner->Camera_Shaking(0.3f, 0.3f, 0.13f);
+
 		}
 		
 		if (m_pOwnerModel->Is_Animation_Finished()) {

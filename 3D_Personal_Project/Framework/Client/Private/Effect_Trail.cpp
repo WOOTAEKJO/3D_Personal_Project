@@ -29,6 +29,7 @@ HRESULT CEffect_Trail::Initialize(void* pArg)
 	m_TrainInfo = *(EFFECT_TRAILINFO*)pArg;
 
 	m_vSolid_Color = m_TrainInfo.vSolid_Color;
+
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
@@ -85,6 +86,11 @@ HRESULT CEffect_Trail::Bind_ShaderResources()
 {
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_vSolid_Color", &m_vSolid_Color, sizeof(_float4))))
 		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bRevers", &m_TrainInfo.bRevers, sizeof(_bool))))
+		return E_FAIL;
+
+	if (FAILED(m_pMaskTexture->Bind_ShaderResource(m_pShaderCom, "g_MaskTexture", _uint(m_fFrame))))
+		return E_FAIL;
 
 	if (FAILED(__super::Bind_ShaderResources()))
 		return E_FAIL;
@@ -94,9 +100,6 @@ HRESULT CEffect_Trail::Bind_ShaderResources()
 
 HRESULT CEffect_Trail::Ready_Component()
 {
-	if (FAILED(Add_Component<CShader>(SHADER_POS_TAG, &m_pShaderCom))) return E_FAIL;
-	if (FAILED(Add_Component<CTexture>(m_strTextureTag, &m_pTextureCom))) return E_FAIL;
-
 	CVIBuffer_Trail::VIBUFFER_TRAIL_DESC Trail_Desc = {};
 	Trail_Desc.vPos_0 = m_TrainInfo.vTrailPos_0;
 	Trail_Desc.vPos_1 = m_TrainInfo.vTrailPos_1;
@@ -104,6 +107,10 @@ HRESULT CEffect_Trail::Ready_Component()
 	Trail_Desc.iLerpPointNum = m_TrainInfo.iLerpPointNum;
 
 	if (FAILED(Add_Component<CVIBuffer_Trail>(BUFFER_TRAIL_TAG, &m_pTrailCom, &Trail_Desc))) return E_FAIL;
+
+	if (FAILED(Add_Component<CShader>(SHADER_POS_TAG, &m_pShaderCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(m_strTextureTag, &m_pTextureCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(m_TrainInfo.strMaskTag, &m_pMaskTexture,nullptr,1))) return E_FAIL;
 
 	return S_OK;
 }
@@ -138,5 +145,6 @@ void CEffect_Trail::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pMaskTexture);
 	Safe_Release(m_pTrailCom);
 }

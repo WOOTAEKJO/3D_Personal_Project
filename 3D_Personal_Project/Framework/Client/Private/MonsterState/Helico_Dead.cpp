@@ -25,7 +25,7 @@ void CHelico_Dead::State_Enter()
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1BAT1_TAG, GO_PARTICLESPRITE_TAG,
 		m_pOwner, nullptr, 1.f);
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1BAT2_TAG, GO_PARTICLESPRITE_TAG,
-		m_pOwner, nullptr, 1.f);
+		m_pOwner, nullptr, 1.f,false,false);
 	m_pOwner->Set_Light_Activate(false);
 
 	

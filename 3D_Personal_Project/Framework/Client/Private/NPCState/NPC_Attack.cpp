@@ -32,7 +32,7 @@ void CNPC_Attack::State_Enter()
 			XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
 
 			CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
-				GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.f);
+				GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.f,false,false);
 		}
 	}
 }

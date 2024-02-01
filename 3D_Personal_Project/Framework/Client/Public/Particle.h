@@ -22,6 +22,7 @@ public:
 		_float			fLifeTime = 0.f;
 		vector<CBone*>		pBones;
 		_bool				bChild = false;
+		_bool				bBlur = true;
 
 	}PARTICLEINFO;
 
@@ -67,6 +68,7 @@ protected:
 
 protected:
 	_bool		m_bChild = { false };
+	_bool		m_bBlur = { true };
 
 protected:
 	HRESULT	Bind_ShaderResources();

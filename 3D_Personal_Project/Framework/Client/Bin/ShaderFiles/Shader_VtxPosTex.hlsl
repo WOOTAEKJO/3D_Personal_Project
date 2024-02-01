@@ -17,6 +17,8 @@ float g_fCompare_Radius;
 
 float g_fTimeDelta;
 
+bool g_bRevers;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -276,6 +278,33 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
     return Out;
 }
 
+PS_OUT PS_MAIN_TRAIL(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    //float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+   
+    float4 vColor = g_vSolid_Color;
+   
+    if (g_bRevers)
+    {
+        vColor.a = (1.f - vMask.x);
+    }
+    else
+    {
+        vColor.a = vMask.x;
+    }
+    
+    if (vColor.a < g_fAlpha)
+        discard;
+	
+    Out.vColor = vColor ;
+    
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -406,7 +435,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         HullShader = NULL;
         DomainShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_SOLID();
+        PixelShader = compile ps_5_0 PS_MAIN_TRAIL();
     }
 
 }

@@ -88,9 +88,9 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 	SetUp_Random_Pos();
 
-	//m_eCurrentPhase = PHASE::PAHSE1;
-	m_eCurrentPhase = PHASE::PAHSE2;
-	m_iHitCount = 2;
+	m_eCurrentPhase = PHASE::PAHSE1;
+	/*m_eCurrentPhase = PHASE::PAHSE2;
+	m_iHitCount = 2;*/
 	
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS2IDLE_TAG, GO_PARTICLEALWAYS_TAG,
 		this, &m_pIDLEParicle);
@@ -136,7 +136,8 @@ void CPhantom::Tick(_float fTimeDelta)
 	//	XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
 	//	//m_Status_Desc.bTalk = false;
 	//}
-		
+	if (m_pGameInstance->Key_Down(DIK_0))
+		m_pStateMachineCom->Set_State(CPhantom::STATE::DEAD);
 
 	CMonster::Tick(fTimeDelta);
 }

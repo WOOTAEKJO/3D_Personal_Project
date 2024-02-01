@@ -408,6 +408,16 @@
 
 #define MASK_GLOWTEST_TAG		TEXT("Prototype_Component_Texture_GlowTest")
 
+#define MASK_JACKTRAIL_TAG		TEXT("Prototype_Component_Texture_JackTrail")
+#define MASK_JACKTRAIL2_TAG		TEXT("Prototype_Component_Texture_JackTrailT")
+#define MASK_JACKTRAIL3_TAG		TEXT("Prototype_Component_Texture_JackTrailF")
+
+#define MASK_CROWTRAIL_TAG		TEXT("Prototype_Component_Texture_CrowTrail")
+
+#define MASK_NORMALBULLETTRAIL_TAG		TEXT("Prototype_Component_Texture_NormalBulletTrail")
+
+#define MASK_LIGHTMASK_TAG		TEXT("Prototype_Component_Texture_LightMask")
+
 #pragma endregion
 
 #pragma endregion

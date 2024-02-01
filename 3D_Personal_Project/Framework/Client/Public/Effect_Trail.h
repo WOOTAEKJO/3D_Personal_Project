@@ -19,6 +19,9 @@ public:
 		_uint iLerpPointNum;
 		
 		_float4 vSolid_Color;
+		wstring	strMaskTag;
+		_float	fAlpha;
+		_bool	bRevers;
 
 	}EFFECT_TRAILINFO;
 private:
@@ -39,9 +42,11 @@ public:
 
 private:
 	CVIBuffer_Trail* m_pTrailCom = { nullptr };
+	CTexture* m_pMaskTexture = { nullptr };
 
 private:
 	EFFECT_TRAILINFO m_TrainInfo = {};
+
 
 private:
 	virtual HRESULT	Bind_ShaderResources() override;

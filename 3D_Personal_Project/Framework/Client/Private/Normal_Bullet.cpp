@@ -46,8 +46,11 @@ HRESULT CNormal_Bullet::Initialize(void* pArg)
 	/*if (FAILED(Init_Point_Light()))
 		return E_FAIL;*/
 
-	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
-		_float3(0.f, 0.04f, 0.f), 10, 6, BulletDesc->vTrailColor, &m_pTrailEffect);
+	/*CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
+		_float3(0.f, 0.04f, 0.f), 10, 6, BulletDesc->vTrailColor, &m_pTrailEffect);*/
+
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, MASK_NORMALBULLETTRAIL_TAG, this, 0.f,
+		false,_float3(0.f, 0.01f, 0.f), _float3(0.f, 0.05f, 0.f), 10, 10, BulletDesc->vTrailColor, &m_pTrailEffect);
 
 	return S_OK;
 }
