@@ -23,6 +23,9 @@
 
 #include "Particle.h"
 
+#include "UI.h"
+#include "UI_HP.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
@@ -67,6 +70,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Init_Point_Light()))
 		return E_FAIL;
 
+	if (FAILED(Ready_UI()))
+		return E_FAIL;
+
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
 	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
@@ -94,6 +100,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 		
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
+
+	m_Status_Desc.iMaxHP = 100;
+	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
 
 	return S_OK;
 }
@@ -240,7 +249,7 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		{
 			m_bHit_Effect = true;
 			//m_Status_Desc.bHited = true;
-			if(m_Status_Desc.iCurHP > 1)
+			if(m_Status_Desc.iCurHP > 10)
 				m_Status_Desc.iCurHP -= 1;
 
 			CParticle::PARTICLEINFO Info = {};
@@ -326,6 +335,37 @@ HRESULT CPlayer::Init_Point_Light()
 		return E_FAIL;
 
 	Safe_AddRef(m_pLight);
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_UI()
+{
+
+	CUI_HP::UI_HP_DESC Hp_Desc = {};
+
+	Hp_Desc.strTextureTag = TEX_WATER_TAG;
+	Hp_Desc.strMaskTexture = UI_LIFEBARMASK_TAG;
+	Hp_Desc.strNoiseTexture = UI_SUBBAR_TAG;
+	Hp_Desc.vSolidColor = _float4(0.f, 0.2f, 0.f, 1.f);
+	Hp_Desc.vCenterPos = _float2(g_iWinSizeX * 0.15f, (_float)g_iWinSizeY - g_iWinSizeY * 0.1f);
+	Hp_Desc.vScale = _float2(350.f, 80.f);
+	Hp_Desc.pOwner = this;
+	Hp_Desc.iShaderPassIndx = 10;
+	Hp_Desc.bRender = true;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, GO_UIHP_TAG, &Hp_Desc))) return E_FAIL;
+
+	CUI::UI_DESC Desc = {};
+
+	Desc.strTextureTag = UI_CROWLIFEBAR_TAG;
+	Desc.vCenterPos = _float2(Hp_Desc.vCenterPos.x + Hp_Desc.vScale.x * 0.01f, Hp_Desc.vCenterPos.y - Hp_Desc.vScale.y * 0.51f);
+	Desc.vScale = _float2(360.f, 100.f);
+	Desc.bRender = true;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, GO_UICHATBOX_TAG, &Desc))) return E_FAIL;
 
 	return S_OK;
 }

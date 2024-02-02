@@ -90,11 +90,11 @@ void CLevel_Boss1::Tick(_float fTimeDelta)
 			return;
 	}
 
-	/*if (m_pGameInstance->Key_Down(DIK_1))
+	if (m_pGameInstance->Key_Down(DIK_1))
 	{
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
 			return;
-	}*/
+	}
 }
 
 HRESULT CLevel_Boss1::Render()

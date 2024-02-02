@@ -25,6 +25,8 @@ HRESULT CUI::Initialize(void* pArg)
 
 	m_tUI_Desc = *(UI_DESC*)pArg;
 
+	m_bRender = m_tUI_Desc.bRender;
+
 	m_pTransformCom->Set_Scaling(m_tUI_Desc.vScale.x, m_tUI_Desc.vScale.y, 1.f);
 	m_pTransformCom->Set_State(CTransform::STATE_POS, 
 		XMVectorSet(m_tUI_Desc.vCenterPos.x - g_iWinSizeX * 0.5f, -m_tUI_Desc.vCenterPos.y +

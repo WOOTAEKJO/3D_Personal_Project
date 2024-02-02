@@ -5,6 +5,9 @@
 #include "Level_Loading.h"
 #include "DataMgr.h"
 
+#include "UI_ChatBox.h"
+#include "UI_Move.h"
+
 CMainApp::CMainApp()	
 	: m_pGameInstance(CGameInstance::GetInstance())
 {
@@ -105,6 +108,7 @@ HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
 HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 {
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Rect>(BUFFER_RECT_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG))) return E_FAIL;
@@ -112,6 +116,17 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CRigidBody>(COM_RIGIDBODY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CCollider>(COM_COLLIDER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CController>(COM_CONTROLLER_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_HEADDEATH_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING1_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SPINNER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_ChatBox>(GO_UICHATBOX_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Move>(GO_UIMOVE_TAG))) return E_FAIL;
 
 	return S_OK;
 }

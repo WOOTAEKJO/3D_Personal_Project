@@ -6,8 +6,10 @@ texture2D	g_Texture[2];
 texture2D g_DiffuseTexture;
 texture2D g_DepthTexture;
 texture2D g_MaskTexture;
+texture2D g_NoiseTexture;
 
 vector g_vSolid_Color;
+//vector g_vSub_Color;
 
 float g_fAlpha;
 
@@ -266,7 +268,7 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04);
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04f);
     
     if (vColor.a < 0.8f)
         discard;
@@ -287,8 +289,6 @@ PS_OUT PS_MAIN_TRAIL(PS_IN_EFFECT In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    //float4 vColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
-    
     float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
    
     float4 vColor = g_vSolid_Color;
@@ -305,8 +305,51 @@ PS_OUT PS_MAIN_TRAIL(PS_IN_EFFECT In)
     if (vColor.a < g_fAlpha)
         discard;
 	
-    Out.vColor = vColor ;
+    Out.vColor = vColor;
     
+    return Out;
+}
+
+PS_OUT PS_MAIN_HP(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    float2 vUV = In.vTexCoord * 0.08f;
+    vUV.y += g_fTimeDelta * 0.01f;
+
+    float4 vNoiseColor = g_NoiseTexture.Sample(LinearSampler, vUV);
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+
+    float4 vSubColor = float4(0.6f, 0.2f, 0.2f, 0.3f);
+
+    float4 vColor;
+
+    float2 vUV2 = In.vTexCoord;
+
+    if (vUV2.x <= g_fRadius)
+    {
+        vColor = g_vSolid_Color;
+    }
+    else {
+        vColor = vSubColor;
+
+    }
+    vColor.rgb *= vNoiseColor.rgb * 2 + 1;
+    vColor.a *= vMask.x;
+
+    if (vMask.x < 1.f)
+    {
+        vColor = float4(0.f, 0.f, 0.f, vColor.a);
+    }
+
+    if (vColor.a < 0.3f)
+        discard;
+
+    if (vColor.x == 0.f)
+        vColor.a = 1.f;
+
+    Out.vColor = vColor;
+
     return Out;
 }
 
@@ -441,6 +484,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_TRAIL();
+    }
+
+    pass Effect_HP // 10
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_HP();
     }
 
 }

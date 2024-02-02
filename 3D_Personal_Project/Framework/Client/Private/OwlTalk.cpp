@@ -126,7 +126,7 @@ void COwlTalk::Ready_Font()
 	Desc.strText = TEXT("허수아비를 보았니?");
 	m_vecFont.push_back(Desc);
 
-	Desc.strText = TEXT("안쪽으로 갔어");
+	Desc.strText = TEXT("까마귀를 찾아가봐");
 	m_vecFont.push_back(Desc);
 }
 

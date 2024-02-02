@@ -348,6 +348,8 @@
     <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\Public\UI_ChatBox.h" />
+    <ClInclude Include="..\Public\UI_HP.h" />
+    <ClInclude Include="..\Public\UI_Move.h" />
     <ClInclude Include="..\Public\Utility_Effect.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
@@ -515,6 +517,8 @@
     <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\UI_ChatBox.cpp" />
+    <ClCompile Include="..\Private\UI_HP.cpp" />
+    <ClCompile Include="..\Private\UI_Move.cpp" />
     <ClCompile Include="..\Private\Utility_Effect.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -443,6 +443,13 @@
 
 #define UI_SPINNER_TAG		TEXT("Prototype_Component_Texture_Spinner")
 
+#define UI_MAIN_TAG		TEXT("Prototype_Component_Main")
+
+#define UI_LOADINGHOLDER_TAG		TEXT("Prototype_Component_LoadingScreensHolder")
+#define UI_LOADINGLOGO_TAG		TEXT("Prototype_Component_LoadingScreensLogo")
+
+#define UI_SUBBAR_TAG		TEXT("Prototype_Component_SubBar")
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -506,6 +513,8 @@
 #define GO_PUZZLE_TAG			TEXT("Prototype_GameObject_Puzzle")
 
 #define GO_UICHATBOX_TAG			TEXT("Prototype_GameObject_UIChatBox")
+#define GO_UIMOVE_TAG			TEXT("Prototype_GameObject_UIMove")
+#define GO_UIHP_TAG			TEXT("Prototype_GameObject_UIHP")
 
 #pragma region 캐릭터
 

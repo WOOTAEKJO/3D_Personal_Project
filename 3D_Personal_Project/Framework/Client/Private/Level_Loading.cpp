@@ -9,6 +9,8 @@
 #include "Level_Boss1.h"
 #include "Level_Boss2.h"
 
+#include "UI.h"
+#include "UI_Move.h"
 
 CLevel_Loading::CLevel_Loading(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
@@ -26,11 +28,17 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	/* 로딩레벨에서 보여줘야할 객체들을 생성한다.(배경, 일러스트, 로딩바) */
 
 	/* 추가적인 스레드를 생성하여 eNextLevelID에 필요한 자원들을 로드한다. */
+
+	m_pGameInstance->Set_Current_Level(m_eNextLevelID);
+
 	m_pLoader = CLoader::Create(m_pDevice, m_pContext, eNextLevelID);
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
 	m_pGameInstance->Collision_Clear();
+
+	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -79,6 +87,67 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 HRESULT CLevel_Loading::Render()
 {
 	m_pLoader->Print_LoadingText();
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_BackGround(const wstring& strLayerTag)
+{
+	CUI::UI_DESC Desc = {};
+
+	wstring strLoadingTag;
+
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL_BOSS2)
+		strLoadingTag = UI_LOADING2_TAG;
+	else
+		strLoadingTag = UI_LOADING1_TAG;
+
+	Desc.strTextureTag = strLoadingTag;
+	Desc.vCenterPos = _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f);
+	Desc.vScale = _float2((_float)g_iWinSizeX, (_float)g_iWinSizeY);
+	Desc.bRender = true;
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOADING, g_strLayerName[LAYER::LAYER_UI]
+		, GO_UICHATBOX_TAG, &Desc))) return E_FAIL;
+
+	Desc.strTextureTag = UI_LOADINGHOLDER_TAG;
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOADING, g_strLayerName[LAYER::LAYER_UI]
+		, GO_UICHATBOX_TAG, &Desc))) return E_FAIL;
+
+	CUI_Move::UI_MOVE_DESC Move_Desc = {};
+
+	Move_Desc.strTextureTag = UI_LOADINGLOGO_TAG;
+	Move_Desc.vCenterPos = _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f);
+	Move_Desc.vScale = _float2((_float)g_iWinSizeX, (_float)g_iWinSizeY);
+	Move_Desc.bRender = true;
+	Move_Desc.fSpeed = 7.f;
+	Move_Desc.fAngle = 0.f;
+	Move_Desc.vDir = _float3(-1.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOADING, g_strLayerName[LAYER::LAYER_UI]
+		, GO_UIMOVE_TAG, &Move_Desc))) return E_FAIL;
+
+	Move_Desc.strTextureTag = UI_HEADDEATH_TAG;
+	Move_Desc.vCenterPos = _float2(g_iWinSizeX * 0.5f, g_iWinSizeY * 0.5f);
+	Move_Desc.vScale = _float2((_float)g_iWinSizeX, (_float)g_iWinSizeY);
+	Move_Desc.bRender = true;
+	Move_Desc.fSpeed = 7.f;
+	Move_Desc.fAngle = 0.f;
+	Move_Desc.vDir = _float3(1.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOADING, g_strLayerName[LAYER::LAYER_UI]
+		, GO_UIMOVE_TAG, &Move_Desc))) return E_FAIL;
+
+	Move_Desc.strTextureTag = UI_SPINNER_TAG;
+	Move_Desc.vCenterPos = _float2((_float)g_iWinSizeX - (g_iWinSizeX * 0.1f), (_float)g_iWinSizeY - g_iWinSizeY * 0.1f);
+	Move_Desc.vScale = _float2(100.f, 100.f);
+	Move_Desc.bRender = true;
+	Move_Desc.fSpeed = 0.f;
+	Move_Desc.fAngle = XMConvertToRadians(-90.f);
+	Move_Desc.vDir = _float3(1.f, 0.f, 0.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(LEVEL_LOADING, g_strLayerName[LAYER::LAYER_UI]
+		, GO_UIMOVE_TAG, &Move_Desc))) return E_FAIL;
 
 	return S_OK;
 }

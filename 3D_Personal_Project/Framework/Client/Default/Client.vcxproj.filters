@@ -571,6 +571,12 @@
     <Filter Include="02.GameObjects\09. UI\00. ChatBox">
       <UniqueIdentifier>{5cd3e8b0-ba3f-4e78-9862-3734b1c38db4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09. UI\01. Move">
+      <UniqueIdentifier>{406070d1-4940-49c7-b36c-dc50b95f7ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\02. HP">
+      <UniqueIdentifier>{58e0ec22-d762-4550-82a8-03ab87fd941e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1089,6 +1095,12 @@
     <ClInclude Include="..\Public\UI_ChatBox.h">
       <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Move.h">
+      <Filter>02.GameObjects\09. UI\01. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_HP.h">
+      <Filter>02.GameObjects\09. UI\02. HP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1579,6 +1591,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_ChatBox.cpp">
       <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Move.cpp">
+      <Filter>02.GameObjects\09. UI\01. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_HP.cpp">
+      <Filter>02.GameObjects\09. UI\02. HP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

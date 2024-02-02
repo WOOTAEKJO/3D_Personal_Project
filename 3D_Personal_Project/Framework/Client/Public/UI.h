@@ -16,6 +16,7 @@ public:
 		_float2 vScale;
 		_float2 vCenterPos;
 		wstring strTextureTag;
+		_bool	bRender = false;
 
 	}UI_DESC;
 
