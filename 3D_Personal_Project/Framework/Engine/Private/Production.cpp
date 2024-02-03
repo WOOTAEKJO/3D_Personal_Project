@@ -39,7 +39,7 @@ HRESULT CProduction::Add_Actor(const wstring& strActorTag, CGameObject* pActor)
 		return E_FAIL;
 
 	m_mapActor.emplace(strActorTag, pActor);
-	Safe_AddRef(pActor);
+	//Safe_AddRef(pActor);
 
 	return S_OK;
 }
@@ -87,9 +87,9 @@ void CProduction::Free()
 {
 	__super::Free();
 
-	for (auto& iter : m_mapActor)
+	/*for (auto& iter : m_mapActor)
 		Safe_Release(iter.second);
-	m_mapActor.clear();
+	m_mapActor.clear();*/
 
 	Safe_Release(m_pGameInstance);
 }

@@ -450,6 +450,8 @@
 
 #define UI_SUBBAR_TAG		TEXT("Prototype_Component_SubBar")
 
+#define UI_DISSOLVE_TAG		TEXT("Prototype_Component_Dissolve")
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -515,6 +517,7 @@
 #define GO_UICHATBOX_TAG			TEXT("Prototype_GameObject_UIChatBox")
 #define GO_UIMOVE_TAG			TEXT("Prototype_GameObject_UIMove")
 #define GO_UIHP_TAG			TEXT("Prototype_GameObject_UIHP")
+#define GO_UIDISSOLVE_TAG			TEXT("Prototype_GameObject_UIDissolve")
 
 #pragma region 캐릭터
 

@@ -148,6 +148,8 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderID, CGameObject* pGameObje
 
 HRESULT CRenderer::Add_DebugRender(CComponent* pComponent)
 {
+
+#ifdef _DEBUG
 	if (pComponent == nullptr)
 		return E_FAIL;
 
@@ -155,8 +157,13 @@ HRESULT CRenderer::Add_DebugRender(CComponent* pComponent)
 
 	Safe_AddRef(pComponent);
 
+#endif
+
 	return S_OK;
+
 }
+
+
 
 HRESULT CRenderer::Draw_RenderGroup()
 {
@@ -595,9 +602,11 @@ CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContex
 
 void CRenderer::Free()
 {
+#ifdef _DEBUG
 	for (auto& iter : m_listComponent)
 		Safe_Release(iter);
 	m_listComponent.clear();
+#endif 
 
 	Safe_Release(m_pShader);
 	Safe_Release(m_pBufferCom);

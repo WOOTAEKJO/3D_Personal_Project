@@ -6,6 +6,7 @@
 #include "Player.h"
 
 #include "UI_ChatBox.h"
+#include "UI_Dissolve.h"
 
 COwlTalk::COwlTalk()
 {
@@ -57,6 +58,8 @@ void COwlTalk::Enter()
 
 void COwlTalk::Tick()
 {
+	Is_Font_Render();
+
 	if (m_pGameInstance->Key_Down(DIK_UPARROW))
 	{
 		Camera_Target_Change();
@@ -73,7 +76,6 @@ void COwlTalk::Render()
 
 void COwlTalk::Exite()
 {
-	//dynamic_cast<CCharacter*>()
 	Find_Actor(TEXT("Owl"))->Get_Component<CStateMachine>()->Set_State(COwl::STATE::IDLE);
 
 	Camera_Reset();
@@ -84,20 +86,20 @@ HRESULT COwlTalk::Ready_UI()
 	_float2 vChatPos = { (_float)(g_iWinSizeX - (g_iWinSizeX / 5.f)),(_float)(g_iWinSizeY - (g_iWinSizeY / 7.f)) };
 	_float2 vMarkPos = { (_float)(g_iWinSizeX - (g_iWinSizeX / 9.5f)),(_float)(g_iWinSizeY - (g_iWinSizeY / 2.7f)) };
 
-	if (FAILED(Add_GROUP(TEXT("Owl1"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_OWL_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Owl1"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Owl1"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_OWL_TAG,UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Owl1"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
-	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_JACK_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_JACK_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
-	if (FAILED(Add_GROUP(TEXT("Owl2"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_OWL_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Owl2"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Owl2"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_OWL_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Owl2"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
 	m_vecUIOrder.push_back(TEXT("Owl1"));
 	m_vecUIOrder.push_back(TEXT("Player1"));

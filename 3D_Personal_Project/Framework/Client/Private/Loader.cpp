@@ -73,6 +73,7 @@
 
 #include "UI_ChatBox.h"
 #include "UI_HP.h"
+#include "UI_Dissolve.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -176,6 +177,7 @@ HRESULT CLoader::Loading_For_Logo_Level()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_MAIN_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BACKGROUND_TAG, 2))) return E_FAIL;
 
@@ -306,7 +308,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Trail>(GO_EFFECTTRAIL_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_HP>(GO_UIHP_TAG))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Dissolve>(GO_UIDISSOLVE_TAG))) return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -802,7 +805,9 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SUBBAR_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
 
+	
 	return S_OK;
 }
 

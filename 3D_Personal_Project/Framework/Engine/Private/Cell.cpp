@@ -56,6 +56,8 @@ HRESULT CCell::Initialize(CELL2 Cell, _uint iIndex, CNavigation::NAVITYPE eType)
 	return S_OK;
 }
 
+#ifdef _DEBUG
+
 HRESULT CCell::Render(CShader* pShader, _float4 vColor)
 {
 	if (FAILED(pShader->Bind_RawValue("g_vColor", &vColor, sizeof(_float4))))
@@ -78,6 +80,8 @@ HRESULT CCell::Render(CShader* pShader, _float4 vColor)
 
 	return S_OK;
 }
+
+#endif
 
 _bool CCell::Compare_Points(_float3 SourPoint, _float3 DestPoint)
 {
@@ -223,6 +227,8 @@ CCell::LINES CCell::Get_Line(_float3 vPos1, _float3 vPos2)
 	return CCell::LINES::LINE_END;
 }
 
+#ifdef _DEBUG
+
 void CCell::Update_Buffer(FLOAT3X3 vPositions)
 {
 	if (m_pDBufferCom == nullptr)
@@ -234,6 +240,8 @@ void CCell::Update_Buffer(FLOAT3X3 vPositions)
 
 	m_pDBufferCom->Update_Buffer(vPositions);
 }
+
+#endif
 
 CCell* CCell::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, CELL2 Cell, _uint iIndex,
 	CNavigation::NAVITYPE eType)

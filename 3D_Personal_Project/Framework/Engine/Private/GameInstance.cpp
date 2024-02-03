@@ -753,6 +753,8 @@ HRESULT CGameInstance::Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader*
 	return m_pRenderTarget_Manager->Bind_ShaderResource(eType, pShader, pConstantName);
 }
 
+#ifdef _DEBUG
+
 HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	if (nullptr == m_pRenderTarget_Manager)
@@ -768,6 +770,8 @@ HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShad
 
 	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
+
+#endif
 
 HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 {

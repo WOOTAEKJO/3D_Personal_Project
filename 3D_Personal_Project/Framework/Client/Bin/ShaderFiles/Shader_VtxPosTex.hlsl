@@ -7,6 +7,7 @@ texture2D g_DiffuseTexture;
 texture2D g_DepthTexture;
 texture2D g_MaskTexture;
 texture2D g_NoiseTexture;
+texture2D g_DissolveTexture;
 
 vector g_vSolid_Color;
 //vector g_vSub_Color;
@@ -20,6 +21,11 @@ float g_fCompare_Radius;
 float g_fTimeDelta;
 
 bool g_bRevers;
+
+float g_fDissolveAmount;
+float g_fDissolveGradiationDistance;
+float3 g_vDissolveGradiationStartColor;
+float3 g_vDissolveGradiationGoalColor;
 
 struct VS_IN
 {
@@ -353,6 +359,38 @@ PS_OUT PS_MAIN_HP(PS_IN_EFFECT In)
     return Out;
 }
 
+PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    
+    float4 DissolveTexture = g_DissolveTexture.Sample(LinearSampler, In.vTexCoord + g_fTimeDelta * 0.01f);
+
+    float DissolveDesc = DissolveTexture.r;
+
+    float4 DiffuseTexture1 = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    float4 DiffuseTexture2 = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord + DissolveDesc* g_fDissolveAmount);
+
+    float4 DiffuseTexture;
+
+    clip(DissolveDesc - g_fDissolveAmount);
+
+    if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
+    {
+        float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+        Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
+       
+    }
+    else {
+        Out.vColor = DiffuseTexture2;
+    }
+
+    if (DiffuseTexture1.a < 0.3f)
+        discard;
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -497,6 +535,19 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_HP();
+    }
+
+    pass Effect_Dissolve // 11
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
     }
 
 }

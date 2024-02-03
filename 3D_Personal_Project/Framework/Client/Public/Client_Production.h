@@ -56,6 +56,10 @@ protected:
 	_uint				m_iCurrentFontIndx = { 0 };
 
 protected:
+	_bool				m_bFontRender = { false };
+	_float				m_fTimeAcc = { 0.f };
+
+protected:
 	_bool	SetUp_Camera();
 	void	Camera_Target_Change(_bool bSpring = false);
 	void	Camera_Reset();
@@ -68,11 +72,14 @@ protected:
 
 protected:
 	CUI* Add_UI(_float2 vCenterPos, _float2 vScale, const wstring& strTextureTag,const wstring& strProtoTag);
+	CUI* Add_UI_Dissolve(_float2 vCenterPos, _float2 vScale, const wstring& strTextureTag,const wstring& strDissolveTexture, const wstring& strProtoTag);
 	HRESULT	Add_GROUP(const wstring& strGroupTag,CUI* pUI);
 	list<CUI*>* Find_UIGROUP(const wstring& strGroupTag);
 
 	void	SetUp_UI_Group(const wstring& strGroupTag);
 	void	Clear_UI_Group();
+
+	void	Is_Font_Render();
 
 	void	RenderUI();
 	void	RenderFont();

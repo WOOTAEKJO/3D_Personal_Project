@@ -51,7 +51,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <EnableUnitySupport>false</EnableUnitySupport>
+    <EnableUnitySupport>true</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -348,6 +348,7 @@
     <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="..\Public\UI.h" />
     <ClInclude Include="..\Public\UI_ChatBox.h" />
+    <ClInclude Include="..\Public\UI_Dissolve.h" />
     <ClInclude Include="..\Public\UI_HP.h" />
     <ClInclude Include="..\Public\UI_Move.h" />
     <ClInclude Include="..\Public\Utility_Effect.h" />
@@ -517,6 +518,7 @@
     <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\UI_ChatBox.cpp" />
+    <ClCompile Include="..\Private\UI_Dissolve.cpp" />
     <ClCompile Include="..\Private\UI_HP.cpp" />
     <ClCompile Include="..\Private\UI_Move.cpp" />
     <ClCompile Include="..\Private\Utility_Effect.cpp" />

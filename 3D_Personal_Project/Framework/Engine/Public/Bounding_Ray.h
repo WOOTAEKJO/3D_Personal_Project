@@ -19,9 +19,12 @@ private:
 public:
 	HRESULT	Initialize(BOUNDING_DESC* Bounding_Desc);
 	virtual	void	Update(_fmatrix	matWorld) override;
-	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
 	virtual _bool	Collision(class CCollider* pTargetCollider, _float3* vCollisionDir,
 		_float* fPushedDist, _float4* vColliderPos) override;
+
+#ifdef _DEBUG
+	virtual	HRESULT	Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor) override;
+#endif
 
 public:
 	BOUNDING_RAY_DESC		Get_BoundingRay() { return m_Ray; }

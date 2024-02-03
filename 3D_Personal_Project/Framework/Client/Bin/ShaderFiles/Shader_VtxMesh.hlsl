@@ -8,6 +8,8 @@ vector  g_vSolid_Color;
 
 float g_fLightFar;
 
+vector g_vCamPos;
+
 struct VS_IN
 {
 	float3	vPosition : POSITION;
@@ -91,6 +93,9 @@ PS_OUT PS_MODEL(PS_IN In)
 
 	if (vDiffuse.a < 0.1f)
 		discard;
+
+    if(In.vProjPos.w <0.5f)
+        discard;
 
     Out.vDiffuse = vDiffuse;
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);

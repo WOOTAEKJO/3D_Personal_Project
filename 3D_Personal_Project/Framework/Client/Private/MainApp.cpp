@@ -75,6 +75,8 @@ HRESULT CMainApp::Render()
 	/* 그려야할 모델들을 그리낟.*/	
 	m_pGameInstance->Render_Engine();
 
+
+#ifdef _DEBUG
 	++m_iNumRender;
 
 	if (1.f <= m_fTimeAcc)
@@ -85,6 +87,8 @@ HRESULT CMainApp::Render()
 	}
 
 	m_pGameInstance->Render_Font(FONT_139EX, m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 0.f, 0.f, 1.f));
+
+#endif
 	m_pGameInstance->Present();
 
 	return S_OK;
@@ -124,6 +128,7 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SPINNER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_ChatBox>(GO_UICHATBOX_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Move>(GO_UIMOVE_TAG))) return E_FAIL;

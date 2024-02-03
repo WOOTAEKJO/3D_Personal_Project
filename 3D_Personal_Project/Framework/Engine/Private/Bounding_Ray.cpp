@@ -29,6 +29,8 @@ void CBounding_Ray::Update(_fmatrix matWorld)
 	XMStoreFloat3(&m_Ray.vDir, XMVector3Normalize( XMVector3TransformNormal(XMLoadFloat3(&m_OriginRay.vDir), matWorld)));
 }
 
+#ifdef _DEBUG
+
 HRESULT CBounding_Ray::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
 	if (pBatch == nullptr)
@@ -38,6 +40,8 @@ HRESULT CBounding_Ray::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvec
 
 	return S_OK;
 }
+
+#endif
 
 _bool CBounding_Ray::Collision(CCollider* pTargetCollider, _float3* vCollisionDir,
 	_float* fPushedDist, _float4* vColliderPos)

@@ -58,6 +58,8 @@ void CBoss1Talk::Enter()
 
 void CBoss1Talk::Tick()
 {
+	Is_Font_Render();
+
 	if (m_pGameInstance->Key_Down(DIK_UPARROW))
 	{
 		Camera_Target_Change();
@@ -82,25 +84,25 @@ HRESULT CBoss1Talk::Ready_UI()
 	_float2 vChatPos = { (_float)(g_iWinSizeX - (g_iWinSizeX / 5.f)),(_float)(g_iWinSizeY - (g_iWinSizeY / 7.f)) };
 	_float2 vMarkPos = { (_float)(g_iWinSizeX - (g_iWinSizeX / 9.5f)),(_float)(g_iWinSizeY - (g_iWinSizeY / 2.7f)) };
 
-	if (FAILED(Add_GROUP(TEXT("Boss1"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_SCARECROW_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Boss1"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Boss1"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_SCARECROW_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Boss1"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
-	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_JACK_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_JACK_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player1"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
-	if (FAILED(Add_GROUP(TEXT("Boss2"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_SCARECROW_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Boss2"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Boss2"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_SCARECROW_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Boss2"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
-	if (FAILED(Add_GROUP(TEXT("Player2"), Add_UI(_float2(vMarkPos.x, vMarkPos.y),
-		_float2(200.f, 250.f), UI_JACK_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
-	if (FAILED(Add_GROUP(TEXT("Player2"), Add_UI(_float2(vChatPos.x, vChatPos.y),
-		_float2(550.f, 150.f), UI_CHATBOX_TAG, GO_UICHATBOX_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player2"), Add_UI_Dissolve(_float2(vMarkPos.x, vMarkPos.y),
+		_float2(200.f, 250.f), UI_JACK_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
+	if (FAILED(Add_GROUP(TEXT("Player2"), Add_UI_Dissolve(_float2(vChatPos.x, vChatPos.y),
+		_float2(550.f, 150.f), UI_CHATBOX_TAG, UI_DISSOLVE_TAG, GO_UIDISSOLVE_TAG)))) return E_FAIL;
 
 	m_vecUIOrder.push_back(TEXT("Boss1"));
 	m_vecUIOrder.push_back(TEXT("Player1"));

@@ -577,6 +577,9 @@
     <Filter Include="02.GameObjects\09. UI\02. HP">
       <UniqueIdentifier>{58e0ec22-d762-4550-82a8-03ab87fd941e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\09. UI\03. Dissolve">
+      <UniqueIdentifier>{df71a413-4075-482f-a7b6-4e013a3a7b81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1101,6 +1104,9 @@
     <ClInclude Include="..\Public\UI_HP.h">
       <Filter>02.GameObjects\09. UI\02. HP</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Dissolve.h">
+      <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1597,6 +1603,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_HP.cpp">
       <Filter>02.GameObjects\09. UI\02. HP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Dissolve.cpp">
+      <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

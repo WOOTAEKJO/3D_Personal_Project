@@ -293,8 +293,9 @@ void CTerrain_Demo::Update_Navigation_Cell(_uint iCellIndex, FLOAT3X3 vPositions
 {
 	if (m_pNavigationCom == nullptr)
 		return;
-
+#ifdef _DEBUG
 	m_pNavigationCom->Update_Buffer(iCellIndex, vPositions);
+#endif
 }
 
 void CTerrain_Demo::All_Delete_Cell()

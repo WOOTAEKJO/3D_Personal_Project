@@ -32,7 +32,12 @@ public:
 	void	Find_CurrentCell(_fvector vPosition);
 	_int	Find_PositionCell(_fvector vPosition);
 	HRESULT	Add_Cell(_float3* pPoints,_uint* iCellIndex, _uint iCellType);
+
+#ifdef _DEBUG
+
 	void	Update_Buffer(_uint iCellIndex, FLOAT3X3 vPositions);
+
+#endif
 	void	All_Delete_Cell();
 	void	Delete_Cell(_uint iCellIndex);
 	void	Add_Neighbor(_uint iSourCellIndx,_float3* vSourPoints, _uint iDestCellIndx, _float3* vDestPoints);

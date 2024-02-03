@@ -3,6 +3,8 @@
 
 #include "TargetCamera.h"
 #include "UI.h"
+#include "UI_Dissolve.h"
+#include "UI_Dissolve.h"
 
 CClient_Production::CClient_Production()
 {
@@ -143,6 +145,24 @@ CUI* CClient_Production::Add_UI(_float2 vCenterPos, _float2 vScale, const wstrin
 	return dynamic_cast<CUI*>(pUi);
 }
 
+CUI* CClient_Production::Add_UI_Dissolve(_float2 vCenterPos, _float2 vScale, const wstring& strTextureTag,
+	const wstring& strDissolveTexture, const wstring& strProtoTag)
+{
+	CGameObject* pUi = nullptr;
+
+	CUI_Dissolve::UI_DISSOLVE_DESC Desc = {};
+
+	Desc.strTextureTag = strTextureTag;
+	Desc.strDissolveTexture = strDissolveTexture;
+	Desc.vCenterPos = vCenterPos;
+	Desc.vScale = vScale;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, strProtoTag, &Desc, reinterpret_cast<CGameObject**>(&pUi)))) return nullptr;
+
+	return dynamic_cast<CUI*>(pUi);
+}
+
 HRESULT CClient_Production::Add_GROUP(const wstring& strGroupTag, CUI* pUI)
 {
 	if (pUI == nullptr)
@@ -203,6 +223,20 @@ void CClient_Production::Clear_UI_Group()
 	{
 		iter->Set_Render(false);
 	}
+
+	m_bFontRender = false;
+}
+
+void CClient_Production::Is_Font_Render()
+{
+	if (m_iCurrentUIOrderIndx >= m_vecUIOrder.size())
+		return;
+
+	if (dynamic_cast<CUI_Dissolve*>(Find_UIGROUP(m_vecUIOrder[m_iCurrentUIOrderIndx])->front())->Get_Ready_Ok())
+	{
+		m_bFontRender = true;
+		++m_iCurrentUIOrderIndx;
+	}
 }
 
 void CClient_Production::RenderUI()
@@ -221,13 +255,14 @@ void CClient_Production::RenderUI()
 		Clear_UI_Group();
 	}
 
-	SetUp_UI_Group(m_vecUIOrder[m_iCurrentUIOrderIndx]);
-
-	++m_iCurrentUIOrderIndx;
+	SetUp_UI_Group(m_vecUIOrder[m_iCurrentUIOrderIndx]);	
 }
 
 void CClient_Production::RenderFont()
 {
+	if (!m_bFontRender)
+		return;
+
 	if (m_iCurrentFontIndx >= m_vecFont.size())
 		return;
 

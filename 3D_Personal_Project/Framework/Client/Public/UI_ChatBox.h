@@ -18,9 +18,6 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	
-
-private:
 	virtual HRESULT	Bind_ShaderResources() override;
 	virtual HRESULT	Ready_Component() override;
 
