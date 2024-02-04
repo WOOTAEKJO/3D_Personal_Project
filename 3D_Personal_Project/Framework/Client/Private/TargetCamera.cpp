@@ -307,7 +307,7 @@ void CTargetCamera::Free()
 {
 	//Safe_Release(m_pTransformCom);
 	//Safe_Release(m_pTarget);
-	Safe_Release(m_pNavigationCom);
+	//Safe_Release(m_pNavigationCom);
 
 	__super::Free();
 

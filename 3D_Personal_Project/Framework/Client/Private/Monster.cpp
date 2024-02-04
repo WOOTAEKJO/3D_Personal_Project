@@ -154,6 +154,9 @@ void CMonster::Monster_Dead()
 
 		if (m_pLight != nullptr)
 			m_pLight->Set_Active(false);
+
+		m_pGameInstance->Play_Sound(L"Spooketon", L"DeadVoice.ogg", CHANNELID::SOUND_MONSTER_VOICE, 0.5f, false);
+		m_pGameInstance->Play_Sound(L"Spooketon", L"Dead.ogg", CHANNELID::SOUND_MONSTER_HIT, 0.3f, false);
 	}
 }
 

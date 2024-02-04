@@ -580,6 +580,9 @@
     <Filter Include="02.GameObjects\09. UI\03. Dissolve">
       <UniqueIdentifier>{df71a413-4075-482f-a7b6-4e013a3a7b81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96. Manager\02. GameMgr">
+      <UniqueIdentifier>{0cc48f70-d780-4ca3-bc38-d024a9c1a5a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1107,6 +1110,9 @@
     <ClInclude Include="..\Public\UI_Dissolve.h">
       <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameMgr.h">
+      <Filter>96. Manager\02. GameMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1606,6 +1612,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Dissolve.cpp">
       <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameMgr.cpp">
+      <Filter>96. Manager\02. GameMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

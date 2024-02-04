@@ -21,6 +21,7 @@ void CHelico_Attack_Start::State_Enter()
 	m_pOwner->Camera_Zoom(_float3(1.f,-0.5f,1.f));
 	//m_pOwner->Camera_SetUp_LookAt_Hegith(1.5f);
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::HELICO_START);
+	m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Attack_StartVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
 }
 
 _uint CHelico_Attack_Start::State_Priority_Tick(_float fTimeDelta)

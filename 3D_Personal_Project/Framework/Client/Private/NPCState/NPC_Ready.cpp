@@ -7,6 +7,8 @@
 #include "Monster.h"
 #include "Trigger.h"
 
+#include "GameMgr.h"
+
 CNPC_Ready::CNPC_Ready()
 {
 }
@@ -46,10 +48,27 @@ _uint CNPC_Ready::State_Late_Tick(_float fTimeDelta)
 
 void CNPC_Ready::State_Exit()
 {
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle2_Start"), [this]() {
+		m_pGameInstance->Play_Sound(L"BGM", L"FightBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+		})))
+		return;
+
+		if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle2_End"), [this]() {
+			m_pGameInstance->Play_Sound(L"BGM", L"StageBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+			m_pGameInstance->Play_Sound(L"BGM", L"StageAmbiant.ogg", CHANNELID::SOUND_ENVIRONMENT, 0.7f, true);
+			})))
+			return;
+
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle2"), [this]() {
 
 		list<CGameObject*> listMonst = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 			g_strLayerName[LAYER::LAYER_MONSTER]);
+
+		CGameMgr::GAME_EVENT_DESC Desc = {};
+		Desc.strStartEventName = TEXT("Battle2_Start");
+		Desc.strEndEventName = TEXT("Battle2_End");
+
+		CGameMgr::GetInstance()->Start_Game(Desc);
 
 		_uint i = 0;
 		for (auto& iter : listMonst)
@@ -57,6 +76,7 @@ void CNPC_Ready::State_Exit()
 			if (i == 9)
 				return;
 			dynamic_cast<CMonster*>(iter)->Set_Activate();
+			CGameMgr::GetInstance()->Add_GameToken(iter);
 			++i;
 		}
 

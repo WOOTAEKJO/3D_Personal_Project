@@ -33,6 +33,8 @@ void CNPC_Attack::State_Enter()
 
 			CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
 				GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.f,false,false);
+
+			m_pGameInstance->Play_Sound(L"Character", L"Crow.ogg", CHANNELID::SOUND_NPC_VOICE, 1.f, false);
 		}
 	}
 }

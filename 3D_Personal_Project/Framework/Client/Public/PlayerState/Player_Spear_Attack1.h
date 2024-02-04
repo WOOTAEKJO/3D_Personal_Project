@@ -20,6 +20,10 @@ private:
 	_float		m_fRushTime = { 0.f };
 	_bool		m_bCheck = { true };
 
+private:
+	_bool		m_bSound = { true };
+	_float		m_fSoundTime = { 0.f };
+
 public:
 	static	CPlayer_Spear_Attack1* Create(CGameObject * pGameObject);
 	virtual	void			Free();

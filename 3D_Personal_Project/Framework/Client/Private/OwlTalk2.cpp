@@ -87,6 +87,8 @@ void COwlTalk2::Exite()
 	//dynamic_cast<CCharacter*>()
 	Find_Actor(TEXT("Owl"))->Get_Component<CStateMachine>()->Set_State(COwl::STATE::IDLE);
 
+	m_pGameInstance->Play_Sound(L"BGM", L"MinigameBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+
 	Camera_Reset();
 }
 

@@ -57,6 +57,8 @@ void COwlTalk3::Enter()
 	
 	Camera_Target_Change(true);
 	RenderUI();
+
+	m_pGameInstance->Play_Sound(L"BGM", L"MinigameEnd.ogg", CHANNELID::SOUND_BGM, 0.7f, false);
 }
 
 void COwlTalk3::Tick()
@@ -77,10 +79,12 @@ void COwlTalk3::Render()
 
 void COwlTalk3::Exite()
 {
-	//dynamic_cast<CCharacter*>()
 	Find_Actor(TEXT("Owl"))->Get_Component<CStateMachine>()->Set_State(COwl::STATE::IDLE);
 
 	Camera_Reset();
+
+	m_pGameInstance->Play_Sound(L"BGM", L"StageBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+	m_pGameInstance->Play_Sound(L"BGM", L"StageAmbiant.ogg", CHANNELID::SOUND_ENVIRONMENT, 0.7f, true);
 }
 
 HRESULT COwlTalk3::Ready_UI()

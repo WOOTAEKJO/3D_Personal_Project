@@ -18,6 +18,7 @@ HRESULT CPlayer_Land::Initialize(CGameObject* pGameObject)
 void CPlayer_Land::State_Enter()
 {
 	m_pOwner->Animation_By_Type(CPlayer::STATE::LAND);
+	m_pGameInstance->Play_Sound(L"Jack", L"Land.ogg", CHANNELID::SOUND_PLAYER_MOVE, 0.5f);
 }
 
 _uint CPlayer_Land::State_Priority_Tick(_float fTimeDelta)

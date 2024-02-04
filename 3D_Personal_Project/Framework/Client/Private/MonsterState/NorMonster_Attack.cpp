@@ -32,12 +32,25 @@ _uint CNorMonster_Attack::State_Priority_Tick(_float fTimeDelta)
 _uint CNorMonster_Attack::State_Tick(_float fTimeDelta)
 {		
 	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
-		Is_Attack_Time(fTimeDelta,0.5f, m_pOwner->Get_WeaponCollider());
+	{
+		Is_Attack_Time(fTimeDelta, 0.5f, m_pOwner->Get_WeaponCollider());
+
+		if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(5,65))
+		{
+			if (m_bSound)
+			{
+				m_pGameInstance->Play_Sound(L"Spooketon", L"Attack1.ogg", CHANNELID::SOUND_MOSTER_ATTACK, 1.f);
+				m_bSound = false;
+			}
+		}
+	}
+		
 	else if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SKULLCROSSBOW)
 	{
 		if (Is_Attack_Time(fTimeDelta,0.3f))
 		{
 			dynamic_cast<CSkullCrossBow*>(m_pOwner)->Create_Bullet();
+			m_pGameInstance->Play_Sound(L"Spooketon", L"Attack2.ogg", CHANNELID::SOUND_MOSTER_ATTACK, 1.f);
 		}
 	}
 
@@ -62,6 +75,7 @@ void CNorMonster_Attack::State_Exit()
 	if (m_pOwner->Get_MonsterType() == CMonster::MONSTER_TYPE::SPOOKETON)
 		Reset_Attack_Time(m_pOwner->Get_WeaponCollider());
 
+	m_bSound = true;
 	m_bAttack = true;
 }
 

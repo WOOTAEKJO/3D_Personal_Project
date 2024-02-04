@@ -255,7 +255,11 @@ void CClient_Production::RenderUI()
 		Clear_UI_Group();
 	}
 
-	SetUp_UI_Group(m_vecUIOrder[m_iCurrentUIOrderIndx]);	
+	SetUp_UI_Group(m_vecUIOrder[m_iCurrentUIOrderIndx]);
+
+	wstring strSoundTag = m_vecActorOrder[m_iCurrentUIOrderIndx].strActorTag + L".ogg";
+	m_pGameInstance->Play_Sound(L"Character", strSoundTag,
+		CHANNELID::SOUND_NPC_VOICE, 1.f);
 }
 
 void CClient_Production::RenderFont()

@@ -19,14 +19,7 @@ HRESULT CNPC_Talk::Initialize(CGameObject* pGameObject)
 void CNPC_Talk::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::TALK);
-	/*if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::OWL)
-	{
-		m_pOwner->Camera_Target_Change(_float3(0.5f, -0.1f, 0.1f), 0.3f, true, m_pOwner);
-	}
-	else if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
-	{
 
-	}*/
 }
 
 _uint CNPC_Talk::State_Priority_Tick(_float fTimeDelta)
@@ -37,11 +30,7 @@ _uint CNPC_Talk::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNPC_Talk::State_Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_UPARROW))
-	{
-
-	}
-
+	
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
 	return m_iStateID;

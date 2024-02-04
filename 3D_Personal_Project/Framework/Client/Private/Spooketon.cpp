@@ -141,6 +141,9 @@ void CSpooketon::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			m_Status_Desc.iCurHP -= 1;
 
 			Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
+
+			m_pGameInstance->Play_Sound(L"Spooketon", L"HitVoice.ogg", CHANNELID::SOUND_MONSTER_VOICE, 0.5f);
+			m_pGameInstance->Play_Sound(L"Spooketon", L"Hit.ogg", CHANNELID::SOUND_MONSTER_HIT, 0.3f);
 		}
 	}
 

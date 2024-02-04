@@ -94,7 +94,7 @@ PS_OUT PS_MODEL(PS_IN In)
 	if (vDiffuse.a < 0.1f)
 		discard;
 
-    if(In.vProjPos.w <0.5f)
+    if(In.vProjPos.w <0.2f)
         discard;
 
     Out.vDiffuse = vDiffuse;

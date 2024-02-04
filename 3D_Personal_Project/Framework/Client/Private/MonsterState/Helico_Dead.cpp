@@ -28,7 +28,7 @@ void CHelico_Dead::State_Enter()
 		m_pOwner, nullptr, 1.f,false,false);
 	m_pOwner->Set_Light_Activate(false);
 
-	
+	m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Attack_StartVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)

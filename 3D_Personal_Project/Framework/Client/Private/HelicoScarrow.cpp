@@ -299,6 +299,9 @@ void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1HIT_TAG,
 			GO_PARTICLENORMAL_TAG,
 			this, nullptr, 0.5f);
+
+		m_pGameInstance->Play_Sound(L"HelicoScarrow", L"HitVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
+		m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Hit.ogg", CHANNELID::SOUND_BOSS_HIT, 0.5f);
 	}
 }
 

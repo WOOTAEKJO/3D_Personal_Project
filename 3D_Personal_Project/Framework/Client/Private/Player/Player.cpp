@@ -263,6 +263,8 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 				return;
 
 			Create_Damage_Effect(0.3f,TEX_DAMAGEIMPACT_TAG);
+			m_pGameInstance->Play_Sound(L"Jack", L"HitVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 1.f);
+			m_pGameInstance->Play_Sound(L"Jack", L"Hit.ogg", CHANNELID::SOUND_PLAYER_HIT, 0.3f);
 		}
 	}
 }

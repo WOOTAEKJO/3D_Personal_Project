@@ -4,6 +4,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "DataMgr.h"
+#include "GameMgr.h"
 
 #include "UI_ChatBox.h"
 #include "UI_Move.h"
@@ -35,6 +36,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(CDataMgr::GetInstance()->Initialize()))
 		return E_FAIL;
+	if (FAILED(CGameMgr::GetInstance()->Initialize()))
+		return E_FAIL;
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
@@ -59,6 +62,7 @@ void CMainApp::Tick(_float fTimeDelta)
 {
 	
 	m_pGameInstance->Tick_Engine(fTimeDelta);
+	CGameMgr::GetInstance()->Tick();
 
 #ifdef _DEBUG
 	m_fTimeAcc += fTimeDelta;
@@ -159,6 +163,7 @@ CMainApp * CMainApp::Create()
 void CMainApp::Free()
 {
 	CDataMgr::GetInstance()->DestroyInstance();
+	CGameMgr::GetInstance()->DestroyInstance();
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 

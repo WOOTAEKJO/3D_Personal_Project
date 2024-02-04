@@ -54,6 +54,8 @@ void CBoss1Talk::Enter()
 
 	Camera_Target_Change(true);
 	RenderUI();
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Boss1Intro.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
 }
 
 void CBoss1Talk::Tick()
@@ -77,6 +79,8 @@ void CBoss1Talk::Exite()
 	dynamic_cast<CHelicoScarrow*>(Find_Actor(TEXT("Boss1")))->Open_Status_Desc()->bTalk = false;
 
 	Camera_Reset();
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Boss1Fight.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
 }
 
 HRESULT CBoss1Talk::Ready_UI()

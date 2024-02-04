@@ -298,6 +298,9 @@
     <Filter Include="01.Utility\07. Light\01. ShadowLight">
       <UniqueIdentifier>{b3b8ba74-a0f9-411b-b684-7452c2105b86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\97. Manager\05. Sound_Manager">
+      <UniqueIdentifier>{36d3156c-f2c7-44ec-beba-73b755deb16c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -585,6 +588,9 @@
     <ClInclude Include="..\Public\ShadowLight.h">
       <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Sound_Manager.h">
+      <Filter>01.Utility\97. Manager\05. Sound_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -850,6 +856,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\ShadowLight.cpp">
       <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sound_Manager.cpp">
+      <Filter>01.Utility\97. Manager\05. Sound_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

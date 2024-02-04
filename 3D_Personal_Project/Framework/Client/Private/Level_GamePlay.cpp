@@ -8,6 +8,7 @@
 
 #include "GameInstance.h"
 #include "DataMgr.h"
+#include "GameMgr.h"
 
 #include "ObjectMesh_Demo.h"
 #include "AnimMesh_Demo.h"
@@ -92,6 +93,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
 	// 그림자 빛 세팅
+
+	m_pGameInstance->Play_Sound(L"BGM",L"StageBGM.ogg",CHANNELID::SOUND_BGM,0.7f,true);
+	m_pGameInstance->Play_Sound(L"BGM", L"StageAmbiant.ogg", CHANNELID::SOUND_ENVIRONMENT, 0.7f, true);
 
 	return S_OK; 
 }
@@ -206,6 +210,18 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 {
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("Portal_Boss1"), [this]() {
 		this->Set_NextLevel();
+		
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle1_Start"), [this]() {
+		m_pGameInstance->Play_Sound(L"BGM", L"FightBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+		})))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Battle1_End"), [this]() {
+		m_pGameInstance->Play_Sound(L"BGM", L"StageBGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+		m_pGameInstance->Play_Sound(L"BGM", L"StageAmbiant.ogg", CHANNELID::SOUND_ENVIRONMENT, 0.7f, true);
 		})))
 		return E_FAIL;
 
@@ -213,15 +229,21 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 		list<CGameObject*> listMonst = m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 			g_strLayerName[LAYER::LAYER_MONSTER]);
 
+		CGameMgr::GAME_EVENT_DESC Desc = {};
+		Desc.strStartEventName = TEXT("Battle1_Start");
+		Desc.strEndEventName = TEXT("Battle1_End");
+
+		CGameMgr::GetInstance()->Start_Game(Desc);
+
 		_uint i = 0;
 		for (auto& iter : listMonst)
 		{
 			if (i == 9)
 				return;
 			dynamic_cast<CMonster*>(iter)->Set_Activate();
+			CGameMgr::GetInstance()->Add_GameToken(iter);
 			++i;
 		}
-		
 		
 		})))
 		return E_FAIL;
@@ -233,6 +255,8 @@ HRESULT CLevel_GamePlay::Ready_Trigger()
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
 		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return E_FAIL;
+
+	
 
 	if (FAILED(m_pGameInstance->Add_Event(TEXT("OwlTalk"), [this]() {
 

@@ -17,6 +17,8 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
 		return E_FAIL;
 
+	m_pGameInstance->Play_Sound(L"BGM", L"LogoBGM.ogg", CHANNELID::SOUND_BGM, 1.f, true);
+
 	return S_OK;
 }
 

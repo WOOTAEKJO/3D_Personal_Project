@@ -14,6 +14,7 @@
 #include "Camera_Manager.h"
 #include "Frustum.h"
 #include "Production_Manager.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -117,6 +118,11 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	/* 연출 매니저 사용 준비*/
 	m_pProduction_Manager = CProduction_Manager::Create();
 	if (nullptr == m_pProduction_Manager)
+		return E_FAIL;
+
+	/* 사운드 매니저 사용 준비*/
+	m_pSound_Manager = CSound_Manager::Create();
+	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 	
 	m_pDevice = *ppDevice;
@@ -886,11 +892,60 @@ void CGameInstance::Finish_Production()
 	m_pProduction_Manager->Finish_Production();
 }
 
+void CGameInstance::Play_Sound(const wstring& strGroupKey, const wstring& strSoundKey, CHANNELID eID, _float fVolume, _bool bLoop)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Play_Sound(strGroupKey, strSoundKey, eID, fVolume, bLoop);
+}
+
+void CGameInstance::Play_BGM(const wstring& strGroupKey, const wstring& strSoundKey, _float fVolume)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Play_BGM(strGroupKey, strSoundKey, fVolume);
+}
+
+void CGameInstance::Stop_Sound(CHANNELID eID)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Stop_Sound(eID);
+}
+
+void CGameInstance::Stop_All()
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Stop_All();
+}
+
+void CGameInstance::Set_ChannelVolume(CHANNELID eID, float fVolume)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Set_ChannelVolume(eID, fVolume);
+}
+
+_bool CGameInstance::Is_SoundFinished(CHANNELID eID)
+{
+	if (m_pSound_Manager == nullptr)
+		return false;
+
+	return m_pSound_Manager->Is_SoundFinished(eID);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pSound_Manager);
 	Safe_Release(m_pProduction_Manager);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pLight_Manager);

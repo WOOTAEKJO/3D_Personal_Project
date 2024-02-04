@@ -263,6 +263,15 @@ public: /* For. Production_Manager*/
 	void	SetUp_Production(const wstring& strProductionTag);
 	void	Finish_Production();
 
+public: /* For. Sound_Manager*/
+	void Play_Sound(const wstring& strGroupKey, const wstring& strSoundKey, CHANNELID eID, _float fVolume = 1.f,
+		_bool bLoop = false);
+	void Play_BGM(const wstring& strGroupKey, const wstring& strSoundKey, _float fVolume = 1.f);
+	void Stop_Sound(CHANNELID eID);
+	void Stop_All();
+	void Set_ChannelVolume(CHANNELID eID, float fVolume);
+	_bool Is_SoundFinished(CHANNELID eID);
+
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
 	class CInput_Device*			m_pInput_Device = { nullptr };
@@ -283,6 +292,7 @@ private:
 	class CCamera_Manager*			m_pCamera_Manager = { nullptr };
 	class CFrustum*					m_pFrustum = { nullptr };
 	class CProduction_Manager*		m_pProduction_Manager = { nullptr };
+	class CSound_Manager*			m_pSound_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

@@ -144,6 +144,8 @@ void CPuzzle::Down(_float fTimeDelta)
 		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_DUST_TAG, GO_PARTICLEATTACK_TAG,
 			this, vParticlePos, _float3(0.f, 0.f, 0.f), nullptr, 2.5f);
 
+		m_pGameInstance->Play_Sound(L"Puzzle", L"Distroy.ogg", CHANNELID::SOUND_PUZZLE_EFFECT, 1.f);
+
 		m_bParticle = false;
 	}
 

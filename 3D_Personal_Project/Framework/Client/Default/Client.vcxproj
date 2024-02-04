@@ -107,7 +107,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/;../../Reference/Fmod/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -154,7 +154,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Reference/Headers/;../Public/;../Default/;../Public/PlayerState/;../Public/Player/;../Public/MonsterState/;../Public/NPCState/;../../Reference/Fmod/</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -227,6 +227,7 @@
     <ClInclude Include="..\Public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Effect_Water.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
+    <ClInclude Include="..\Public\GameMgr.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
     <ClInclude Include="..\Public\Helico_Bullet.h" />
@@ -397,6 +398,7 @@
     <ClCompile Include="..\Private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Effect_Water.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
+    <ClCompile Include="..\Private\GameMgr.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />
     <ClCompile Include="..\Private\Helico_Bullet.cpp" />
