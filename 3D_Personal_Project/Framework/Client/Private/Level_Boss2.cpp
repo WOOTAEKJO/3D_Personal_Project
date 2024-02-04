@@ -67,6 +67,8 @@ HRESULT CLevel_Boss2::Initialize()
 	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
 	// 그림자 빛 세팅
 
+	m_pGameInstance->Play_Sound(L"BGM", L"Stage3BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+
 	return S_OK; 
 }
 

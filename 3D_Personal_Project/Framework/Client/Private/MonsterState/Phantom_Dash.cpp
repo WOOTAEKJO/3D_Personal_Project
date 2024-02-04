@@ -57,7 +57,16 @@ _uint CPhantom_Dash::State_Tick(_float fTimeDelta)
 			m_fTime = 0.f;
 			m_iCount += 1;
 			dynamic_cast<CPhantom*>(m_pOwner)->Create_Multiply();
+			
 		}
+		if (m_iCount % 3 == 0)
+			m_pGameInstance->Play_Sound(L"Phantom", L"DashVoice2.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.7f);
+		else if(m_iCount % 3 == 1)
+			m_pGameInstance->Play_Sound(L"Phantom", L"DashVoice3.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.7f);
+		else if(m_iCount % 3 == 2)
+			m_pGameInstance->Play_Sound(L"Phantom", L"DashVoice1.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.7f);
+
+		m_pGameInstance->Play_Sound(L"Phantom", L"Dash.ogg", CHANNELID::SOUND_BOSS_ATTACK, 1.f);
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);

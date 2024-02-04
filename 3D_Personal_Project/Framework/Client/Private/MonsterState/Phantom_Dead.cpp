@@ -21,7 +21,7 @@ HRESULT CPhantom_Dead::Initialize(CGameObject* pGameObject)
 void CPhantom_Dead::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::DEAD);
-	
+	m_pGameInstance->Play_Sound(L"BGM", L"Stage3Victory.ogg", CHANNELID::SOUND_BGM, 0.7f);
 }
 
 _uint CPhantom_Dead::State_Priority_Tick(_float fTimeDelta)
@@ -40,7 +40,20 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 				m_pOwner, nullptr, 9.9f,nullptr, true);
 			CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
 				m_pOwner, nullptr, 10.f, nullptr, true,false);
+
+			m_pGameInstance->Play_Sound(L"Phantom", L"Dead.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
+			
 			m_bParticle = false;
+		}
+	}
+
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(10, 180))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"BGM", L"Stage2BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+			m_pGameInstance->Play_Sound(L"Phantom", L"Dead2.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
+			m_bSound = false;
 		}
 	}
 
@@ -51,11 +64,14 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 
 _uint CPhantom_Dead::State_Late_Tick(_float fTimeDelta)
 {
+
 	return m_iStateID;
 }
 
 void CPhantom_Dead::State_Exit()
 {
+	m_bSound = true;
+	m_bParticle = true;
 }
 
 CPhantom_Dead* CPhantom_Dead::Create(CGameObject* pGameObject)

@@ -30,6 +30,16 @@ _uint CPhantom_Intro::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPhantom_Intro::State_Tick(_float fTimeDelta)
 {
+
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::INTRO, 120.f))
+	{
+		if (m_bAttack)
+		{
+			m_pGameInstance->Play_Sound(L"Phantom", L"IntroVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.5f, false);
+			m_bAttack = false;
+		}
+
+	}
 	
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -63,6 +73,8 @@ void CPhantom_Intro::State_Exit()
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
 		, GO_TRIGGER_TAG, &TriggerDesc)))
 		return;
+
+	m_bAttack = true;
 }
 
 CPhantom_Intro* CPhantom_Intro::Create(CGameObject* pGameObject)

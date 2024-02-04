@@ -36,6 +36,7 @@ HRESULT CSound_Manager::Ready_Sound()
 	Load_SoundFile_GroupAsync(L"Spooketon", "../Bin/Resources/Sound/Spooketon/");
 	Load_SoundFile_GroupAsync(L"Puzzle", "../Bin/Resources/Sound/Puzzle/");
 	Load_SoundFile_GroupAsync(L"HelicoScarrow", "../Bin/Resources/Sound/HelicoScarrow/");
+	Load_SoundFile_GroupAsync(L"Phantom", "../Bin/Resources/Sound/Phantom/");
 
 	return S_OK;
 }

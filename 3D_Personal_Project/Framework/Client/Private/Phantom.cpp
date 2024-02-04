@@ -617,7 +617,7 @@ void CPhantom::Create_Meteor()
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.2f;
 	BulletDesc.fLifeTime = 0.f;
-	BulletDesc.fSpeed = 5.f;
+	BulletDesc.fSpeed = 10.f;
 	BulletDesc.pTarget = m_pPlayer;
 
 	_float fX = Random({ -1.f,-0.7f,-0.5f,-0.3f,-0.2f,-0.1f,0.f,0.1f,0.2f,0.3f,0.5f,0.7f,1.f});

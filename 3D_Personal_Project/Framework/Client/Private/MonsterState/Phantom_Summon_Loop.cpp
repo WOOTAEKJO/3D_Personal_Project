@@ -39,7 +39,7 @@ _uint CPhantom_Summon_Loop::State_Tick(_float fTimeDelta)
 	{
 		m_fTime = 0.f;
 		dynamic_cast<CPhantom*>(m_pOwner)->Create_Meteor();
-
+		m_pGameInstance->Play_Sound(L"Phantom", L"Summon.ogg", CHANNELID::SOUND_BOSS_ATTACK, 1.f);
 		m_iCount += 1;
 	}
 	

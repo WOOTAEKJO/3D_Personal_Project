@@ -257,14 +257,16 @@ PS_OUT_FINAL PS_MAIN_FINAL(PS_IN In)
     PS_OUT_FINAL Out = (PS_OUT_FINAL) 0;
 
     vector vDiffuse = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
-    if (vDiffuse.a == 0.f)
-        discard;
+    
     
     vector vShade = g_ShadeTexture.Sample(LinearSampler, In.vTexCoord);
     vector vSpecular = g_SpecularTexture.Sample(LinearSampler, In.vTexCoord);
     vector vBlur = g_BlurTexture.Sample(LinearSampler, In.vTexCoord);
     vector vEffect = g_EffectTexture.Sample(LinearSampler, In.vTexCoord);
     // 블러 추가
+    
+    if (vDiffuse.a == 0.f && vBlur.a == 0.f && vEffect.a == 0.f)
+        discard;
     
     //Out.vResult = vDiffuse * vShade + vSpecular + vEffect + vBlur;
     Out.vResult = vDiffuse * vShade + vSpecular;

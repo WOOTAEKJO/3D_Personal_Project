@@ -26,6 +26,9 @@ void CPhantom_Marteau::State_Enter()
 
 	
 	dynamic_cast<CPhantom*>(m_pOwner)->Set_SmashTime(true);
+
+	
+	
 }
 
 _uint CPhantom_Marteau::State_Priority_Tick(_float fTimeDelta)
@@ -55,9 +58,14 @@ _uint CPhantom_Marteau::State_Late_Tick(_float fTimeDelta)
 					iNum = 1;
 				dynamic_cast<CPhantom*>(m_pOwner)->Drop_Floor(iNum);
 				dynamic_cast<CPhantom*>(m_pOwner)->Navi_Filter();
+				m_pGameInstance->Play_Sound(L"Phantom", L"WoodBreak.ogg", CHANNELID::SOUND_BOSS_MOVE, 1.f);
+				m_pOwner->Camera_Shaking(0.7f, 0.7f, 0.5f);
 			}
 			dynamic_cast<CPhantom*>(m_pOwner)->Create_Shock_Wave();
 			m_bAttack = false;
+
+			m_pGameInstance->Play_Sound(L"Phantom", L"WaveVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.7f);
+			m_pGameInstance->Play_Sound(L"Phantom", L"Wave.ogg", CHANNELID::SOUND_BOSS_ATTACK, 0.7f);
 		}
 
 	}
@@ -83,6 +91,7 @@ void CPhantom_Marteau::State_Exit()
 	dynamic_cast<CPhantom*>(m_pOwner)->Adjust_Pos(_float3(0.f, -0.5f, 0.f));
 
 	dynamic_cast<CPhantom*>(m_pOwner)->Set_SmashTime(false);
+
 }
 
 CPhantom_Marteau* CPhantom_Marteau::Create(CGameObject* pGameObject)

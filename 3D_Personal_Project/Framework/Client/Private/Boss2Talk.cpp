@@ -66,6 +66,7 @@ void CBoss2Talk::Enter()
 
 	Camera_Target_Change(true);
 	RenderUI();
+	m_pGameInstance->Play_Sound(L"Phantom", L"Laugh.ogg", CHANNELID::SOUND_BOSS_HIT, 1.5f, false);
 }
 
 void CBoss2Talk::Tick()
@@ -101,6 +102,8 @@ void CBoss2Talk::Exite()
 		nullptr, nullptr);
 
 	Camera_Reset();
+
+	m_pGameInstance->Play_Sound(L"Phantom", L"Laugh.ogg", CHANNELID::SOUND_BOSS_HIT, 1.5f, false);
 }
 
 HRESULT CBoss2Talk::Ready_UI()

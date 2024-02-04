@@ -32,6 +32,8 @@ void CBoss2Intro::Enter()
 	m_vecActorOrder.push_back(CamInfo1);
 
 	Camera_Target_Change(true);
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Boss2Intro.ogg", CHANNELID::SOUND_BGM, 0.7f, false);
 }
 
 void CBoss2Intro::Tick()
@@ -50,6 +52,8 @@ void CBoss2Intro::Render()
 void CBoss2Intro::Exite()
 {
 	Find_Actor(TEXT("Boss2"))->Get_Component<CStateMachine>()->Set_State(CPhantom::STATE::IDLE);
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Boss2Talk.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
 
 	Camera_Reset();
 }

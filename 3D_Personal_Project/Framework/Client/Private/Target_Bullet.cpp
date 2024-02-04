@@ -63,6 +63,8 @@ void CTarget_Bullet::Late_Tick(_float fTimeDelta)
 
 		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_BOSS2SHOOTHIT_TAG,
 			GO_PARTICLEATTACK_TAG, this, vParticlePos, _float3(0.f, 0.f, 0.f),nullptr,1.f);
+
+		m_pGameInstance->Play_Sound(L"Phantom", L"Shoot.ogg", CHANNELID::SOUND_BOSS_ATTACK, 1.f);
 		Set_Dead();
 	}
 		
