@@ -13,8 +13,7 @@ BEGIN(Client)
 
 class CGameMgr final : public CBase
 {
-	DECLARE_SINGLETON(CGameMgr)
-
+	
 public:
 	typedef struct tagGmaeMgr_Desc
 	{
@@ -22,6 +21,8 @@ public:
 		wstring		strEndEventName;
 
 	}GAME_EVENT_DESC;
+
+	DECLARE_SINGLETON(CGameMgr)
 
 private:
 	CGameMgr();
@@ -35,6 +36,7 @@ public:
 
 public:
 	void	Start_Game(GAME_EVENT_DESC Event_Desc);
+	void	Is_End_Game();
 
 private:
 	CGameInstance* m_pGameInstance = { nullptr };
@@ -45,9 +47,7 @@ private:
 private:
 	_bool	m_bGameActivate = { false };
 	GAME_EVENT_DESC m_Event_Desc;
-
-private:
-	void	Is_End_Game();
+	
 
 public:
 	virtual	void	Free() override;

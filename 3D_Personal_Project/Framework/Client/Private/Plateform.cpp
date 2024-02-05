@@ -74,6 +74,11 @@ void CPlateform::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
 		return;
 
+	if (m_bLight)
+	{
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+			return;
+	}
 	
 }
 
@@ -123,6 +128,20 @@ HRESULT CPlateform::Render_Shadow()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT CPlateform::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 1, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(1);
 
 	return S_OK;
 }

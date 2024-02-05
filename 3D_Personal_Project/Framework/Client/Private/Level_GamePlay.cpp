@@ -103,6 +103,7 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	CPuzzleMgr::GetInstance()->Tick();
+	CGameMgr::GetInstance()->Tick();
 
 	if (m_bNextLevel)
 	{
