@@ -50,6 +50,8 @@ void CGameMgr::Is_End_Game()
 	{
 		if (!iter->Get_Dead())
 			return;
+		/*if (iter != nullptr)
+			return;*/
 	}
 
 	m_pGameInstance->Execute_Event(m_Event_Desc.strEndEventName);
