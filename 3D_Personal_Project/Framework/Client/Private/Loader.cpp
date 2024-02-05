@@ -40,6 +40,7 @@
 #include "Effect_Target.h"
 #include "Effect_Water.h"
 #include "Effect_Trail.h"
+#include "Effect_Light.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -306,6 +307,7 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Reaper>(GO_EFFECTREAPER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Energy>(GO_EFFECTENERGY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Trail>(GO_EFFECTTRAIL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Light>(GO_EFFECTLIGHT_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_HP>(GO_UIHP_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Dissolve>(GO_UIDISSOLVE_TAG))) return E_FAIL;
@@ -807,7 +809,10 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SUBBAR_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
 
-	
+	// ------ Noise ----------
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(NOISE_DEFAULT_TAG, 1))) return E_FAIL;
+
 	return S_OK;
 }
 

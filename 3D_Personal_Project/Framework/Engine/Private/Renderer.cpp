@@ -285,6 +285,16 @@ HRESULT CRenderer::Render_NonLight()
 
 	m_listRenderObject[RENDERGROUP::RENDER_NONLIGHT].clear();
 
+	for (auto& pGameObject : m_listRenderObject[RENDERGROUP::RENDER_BLUR]) {
+
+		if (pGameObject != nullptr)
+			pGameObject->Render_Blur();
+
+		Safe_Release(pGameObject);
+	}
+
+	m_listRenderObject[RENDERGROUP::RENDER_BLUR].clear();
+
 	if (FAILED(m_pGameInstance->End_MRT()))
 		return E_FAIL;
 

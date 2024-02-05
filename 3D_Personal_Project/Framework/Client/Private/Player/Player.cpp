@@ -23,6 +23,8 @@
 
 #include "Particle.h"
 
+#include "Utility_Effect.h"
+
 #include "UI.h"
 #include "UI_HP.h"
 
@@ -107,10 +109,20 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
-	m_Status_Desc.iMaxHP = 100;
-	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
+	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = Get_BodyModel()->Get_Bones()[7];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(25000.f, 25000.f),
+		vEffectPos, _float4(1.f, 0.6f, 0.4f, 1.f), 0.3f,&m_pLightEffect);
 
 	m_Status_Desc.iMaxHP = *m_pMaxHP;
+	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
 
 	return S_OK;
 }
@@ -163,8 +175,6 @@ HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
-
-	
 
 	return S_OK;
 }
@@ -342,8 +352,12 @@ HRESULT CPlayer::Init_Point_Light()
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.4f;
 	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
-	LightDesc.vAmbient = _float4(1.f, 0.6f, 0.4f, 1.f);
-	LightDesc.vSpecular = LightDesc.vDiffuse;
+	//LightDesc.vAmbient = _float4(1.f, 0.6f, 0.4f, 1.f);
+	// //LightDesc.vSpecular = LightDesc.vDiffuse;
+	// 
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
 		return E_FAIL;

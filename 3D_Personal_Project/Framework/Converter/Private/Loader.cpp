@@ -495,7 +495,7 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_BOMB_PATH))))
 		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ENVY_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ENVY_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ENVY_PATH))))
 		return E_FAIL;
 
@@ -521,8 +521,12 @@ HRESULT CLoader::Loading_For_Converter_Level()
 
 	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WRATH_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WRATH_PATH))))
-		return E_FAIL;
+		return E_FAIL;*/
 
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FLOORLAMP_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FLOORLAMP_PATH))))
+		return E_FAIL;
 
 #pragma endregion 
 

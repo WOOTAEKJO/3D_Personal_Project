@@ -18,6 +18,7 @@ public:
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 	virtual HRESULT Render_Shadow() override;
+	virtual HRESULT Render_Blur() override;
 
 public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;

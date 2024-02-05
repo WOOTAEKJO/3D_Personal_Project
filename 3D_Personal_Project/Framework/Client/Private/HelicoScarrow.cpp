@@ -77,6 +77,21 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 	if (!m_bActivate)
 		return;
 
+	if (m_bActivate && (m_pLightEffect == nullptr))
+	{
+		_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+		_float4 vEffectPos;
+		XMStoreFloat4(&vEffectPos, vTmp);
+
+		CBone* pBone = m_pModelCom->Get_Bones()[16];
+
+		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+			MASK_GLOWTEST_TAG, _float2(10.f, 10.f),
+			vEffectPos, _float4(1.f, 0.8f, 0.f, 1.f), 0.3f, &m_pLightEffect);
+	}
+
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CGameObject::Priority_Tick(fTimeDelta);
 }
@@ -102,9 +117,8 @@ void CHelicoScarrow::Late_Tick(_float fTimeDelta)
 		return;
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
 		return;
-
-	/*if (m_Status_Desc.iCurHP <= 0)
-		Set_Dead();*/
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+		return;
 }
 
 HRESULT CHelicoScarrow::Render()
@@ -122,6 +136,28 @@ HRESULT CHelicoScarrow::Render_Shadow()
 {
 	if (FAILED(CMonster::Render_Shadow()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint iIndx[4] = { 1,2,6,7 };
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", iIndx[i])))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", iIndx[i], TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(iIndx[i]);
+	}
 
 	return S_OK;
 }

@@ -221,6 +221,7 @@
     <ClInclude Include="..\Public\Effect_Energy.h" />
     <ClInclude Include="..\Public\Effect_Halo.h" />
     <ClInclude Include="..\Public\Effect_Laser.h" />
+    <ClInclude Include="..\Public\Effect_Light.h" />
     <ClInclude Include="..\Public\Effect_Reaper.h" />
     <ClInclude Include="..\Public\Effect_Soul.h" />
     <ClInclude Include="..\Public\Effect_Target.h" />
@@ -392,6 +393,7 @@
     <ClCompile Include="..\Private\Effect_Energy.cpp" />
     <ClCompile Include="..\Private\Effect_Halo.cpp" />
     <ClCompile Include="..\Private\Effect_Laser.cpp" />
+    <ClCompile Include="..\Private\Effect_Light.cpp" />
     <ClCompile Include="..\Private\Effect_Reaper.cpp" />
     <ClCompile Include="..\Private\Effect_Soul.cpp" />
     <ClCompile Include="..\Private\Effect_Target.cpp" />

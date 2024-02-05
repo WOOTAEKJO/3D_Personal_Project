@@ -420,6 +420,12 @@
 
 #pragma endregion
 
+#pragma region 노이즈 텍스쳐
+
+#define NOISE_DEFAULT_TAG		TEXT("Prototype_Component_Texture_Default")
+
+#pragma endregion
+
 #pragma region UI 텍스쳐
 
 #define UI_CROW_TAG		TEXT("Prototype_Component_Texture_CharacterCrow")
@@ -494,6 +500,7 @@
 #define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
 #define GO_EFFECTWATER_TAG			TEXT("Prototype_GameObject_Water")
 #define GO_EFFECTTRAIL_TAG			TEXT("Prototype_GameObject_Trail")
+#define GO_EFFECTLIGHT_TAG			TEXT("Prototype_GameObject_Light")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 

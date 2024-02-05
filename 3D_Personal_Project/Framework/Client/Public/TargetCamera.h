@@ -88,6 +88,9 @@ private:
 	_float			m_fSensitivity = { 1.f };
 
 private:
+	_bool			m_bActivate = { false };
+
+private:
 	HRESULT	Ready_Component();
 	void	StateTrans(_float fTimeDelta);
 

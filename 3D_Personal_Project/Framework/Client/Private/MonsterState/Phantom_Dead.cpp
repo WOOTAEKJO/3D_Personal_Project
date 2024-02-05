@@ -53,7 +53,7 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 		if (m_bSound)
 		{
 			m_pGameInstance->Play_Sound(L"Phantom", L"Dead2.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
-			
+			m_pOwner->Start_DeadTime();
 			m_bSound = false;
 		}
 	}
@@ -63,6 +63,9 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 		if (m_bSound2)
 		{
 			m_pGameInstance->Play_Sound(L"BGM", L"Stage2BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+
+
+
 			m_bSound2 = false;
 		}
 

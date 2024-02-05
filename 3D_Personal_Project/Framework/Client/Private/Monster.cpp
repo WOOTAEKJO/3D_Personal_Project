@@ -44,6 +44,11 @@ HRESULT CMonster::Initialize(void* pArg)
 	if (m_pPlayer_Transform == nullptr)
 		return E_FAIL;
 
+	m_fDissolveAmount = 0.f;
+	m_fDissolveGradiationDistance = 0.f;
+	m_vDissolveGradiationStartColor = _float3(0.f,0.f,0.f);
+	m_vDissolveGradiationGoalColor = _float3(0.f, 0.f, 0.f);
+
 	return S_OK;
 }
 
@@ -57,6 +62,8 @@ void CMonster::Priority_Tick(_float fTimeDelta)
 
 void CMonster::Tick(_float fTimeDelta)
 {
+	
+
 	if (!m_bActivate)
 		return;
 
@@ -75,11 +82,22 @@ void CMonster::Late_Tick(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-	if (!m_bActivate)
+	if (!m_bActivate && !m_bDeadTime)
 		return S_OK;
 
-	if (FAILED(CCharacter::Render()))
-		return E_FAIL;
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(4);
+
+		m_pModelCom->Render(i);
+	}
 
 	return S_OK;
 }
@@ -144,25 +162,61 @@ _float4x4 CMonster::Get_Col_WorldMat()
 	return m_pColliderCom->Get_Collider_WorldMat();
 }
 
-void CMonster::Monster_Dead()
+void CMonster::Monster_Dead(_float fTimeDelta)
 {
 	if (m_Status_Desc.iCurHP <= 0)
 	{
-		Set_Dead();
+		//Set_Dead();
+		if (!m_bDeadTime)
+		{
+			Create_Soul_Effect(1.f);
 
-		Create_Soul_Effect(1.f);
+			if (m_pLight != nullptr)
+				m_pLight->Set_Active(false);
 
-		if (m_pLight != nullptr)
-			m_pLight->Set_Active(false);
+			m_pGameInstance->Play_Sound(L"Spooketon", L"DeadVoice.ogg", CHANNELID::SOUND_MONSTER_VOICE, 0.5f, false);
+			m_pGameInstance->Play_Sound(L"Spooketon", L"Dead.ogg", CHANNELID::SOUND_MONSTER_HIT, 0.3f, false);
 
-		m_pGameInstance->Play_Sound(L"Spooketon", L"DeadVoice.ogg", CHANNELID::SOUND_MONSTER_VOICE, 0.5f, false);
-		m_pGameInstance->Play_Sound(L"Spooketon", L"Dead.ogg", CHANNELID::SOUND_MONSTER_HIT, 0.3f, false);
+			m_pStateMachineCom->Set_State(CMonster::STATE::DEAD);
+
+			m_bDeadTime = true;
+			//m_bActivate = false;
+
+			m_pColliderCom->Set_UseCol(false);
+
+			if (m_pLightEffect != nullptr)
+				m_pLightEffect->Set_Dead();
+		}
+	}
+}
+
+void CMonster::Dissolve(_float fAmount, _float fDistance, _float fTimeDelta)
+{
+	if (m_bDeadTime)
+	{
+		if (m_fDissolveAmount < 1.f)
+			m_fDissolveAmount += fTimeDelta * fAmount;
+
+		if (m_fDissolveGradiationDistance < 1.f)
+			m_fDissolveGradiationDistance += fTimeDelta * fDistance;
 	}
 }
 
 HRESULT CMonster::Bind_ShaderResources()
 {
 	if (FAILED(CCharacter::Bind_ShaderResources()))
+		return E_FAIL;
+
+	if (FAILED(m_pNoiseTextureCom->Bind_ShaderResources(m_pShaderCom, "g_DissolveTexture")))
+		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fDissolveGradiationDistance", &m_fDissolveGradiationDistance, sizeof(_float))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vDissolveGradiationStartColor", &m_vDissolveGradiationStartColor, sizeof(_float3))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vDissolveGradiationGoalColor", &m_vDissolveGradiationGoalColor, sizeof(_float3))))
 		return E_FAIL;
 
 	return S_OK;
@@ -172,6 +226,8 @@ HRESULT CMonster::Ready_Component()
 {
 	if (FAILED(CCharacter::Ready_Component()))
 		return E_FAIL;
+
+	if (FAILED(Add_Component<CTexture>(NOISE_DEFAULT_TAG, &m_pNoiseTextureCom))) return E_FAIL;
 
 	return S_OK;
 }
@@ -198,4 +254,5 @@ void CMonster::Free()
 
 	Safe_Release(m_pSocketBone);
 	Safe_Release(m_pWeaponColliderCom);
+	Safe_Release(m_pNoiseTextureCom);
 }

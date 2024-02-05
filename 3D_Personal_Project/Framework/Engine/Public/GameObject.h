@@ -35,6 +35,7 @@ public:
 
 	virtual HRESULT Render();
 	virtual HRESULT Render_Shadow() { return S_OK; }
+	virtual HRESULT Render_Blur() { return S_OK; }
 
 public:
 	void	In_WorldPlanes();

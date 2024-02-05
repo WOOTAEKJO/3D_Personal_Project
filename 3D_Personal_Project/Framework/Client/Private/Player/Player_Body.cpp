@@ -55,6 +55,9 @@ void CPlayer_Body::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
 		return;
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+		return;
 }
 
 HRESULT CPlayer_Body::Render()
@@ -103,6 +106,32 @@ HRESULT CPlayer_Body::Render_Shadow()
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
 		m_pShaderCom->Begin(3);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Body::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		_uint iIndx = 5;
+		if (i == 1)
+			iIndx = 0;
+
+		m_pShaderCom->Begin(iIndx);
 
 		m_pModelCom->Render(i);
 	}

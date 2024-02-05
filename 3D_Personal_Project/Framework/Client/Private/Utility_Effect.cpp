@@ -136,3 +136,20 @@ void CUtility_Effect::Create_Effect_Trail(CGameInstance* pGameInstance, const ws
 		GO_EFFECTTRAIL_TAG, &Info, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }
+
+void CUtility_Effect::Create_Effect_Light(CGameInstance* pGameInstance, CGameObject* pOwner, CBone* pBone
+	, const wstring& strMaskTag, _float2 vSize, _float4 vPos, _float4 vColor, _float fAlpha, CGameObject** pOut)
+{
+	CEffect_Light::EFFECT_LIGHT_INFO Info = {};
+	Info.pOwner = pOwner;
+	Info.strEffectTextureTag = strMaskTag;
+	Info.strMaskTag = strMaskTag;
+	Info.vSolid_Color = vColor;
+	Info.fAlpha = fAlpha;
+	Info.vSize = vSize;
+	Info.pSocketBone = pBone;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTLIGHT_TAG, &Info, reinterpret_cast<CGameObject**>(pOut))))
+		return;
+}

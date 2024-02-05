@@ -391,6 +391,26 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_EFFECT_LIGHT(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vDiffuseColor = g_vSolid_Color;
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+   
+    //if (vMask.x > 0.1f)
+    //    vMask.x = 0.1f;
+    
+    vDiffuseColor.a *= vMask.x;
+   
+    if (vDiffuseColor.a < g_fAlpha)
+        discard;
+
+    Out.vColor = vDiffuseColor;
+   
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
@@ -548,6 +568,21 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+    }
+
+    pass Effect_Light // 12
+    {
+        SetRasterizerState(RS_Cull_None);
+        //SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        //SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);   
+        
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_LIGHT();
     }
 
 }

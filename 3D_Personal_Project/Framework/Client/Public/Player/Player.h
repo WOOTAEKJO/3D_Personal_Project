@@ -72,6 +72,9 @@ private:
 	_int* m_pCurHP = { nullptr };
 
 private:
+	CGameObject* m_pLightEffect = { nullptr };
+
+private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Init_Point_Light() override;

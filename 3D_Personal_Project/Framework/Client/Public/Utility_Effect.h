@@ -1,7 +1,9 @@
 #pragma once
 #include "Engine_Defines.h"
 #include "Client_Defines.h"
+
 #include "Effect_Reaper.h"
+#include "Effect_Light.h"
 
 BEGIN(Engine)
 
@@ -38,6 +40,9 @@ public:
 		, CGameObject* pOwner,_float fAlpha,_bool bRevers,
 		_float3 vTrailPos_0, _float3 vTrailPos_1, _uint iTrailMaxCnt, _uint iLerpPointNum, _float4 vColor, CGameObject** pOut);
 	
+	static void	Create_Effect_Light(CGameInstance* pGameInstance, CGameObject* pOwner, CBone* pBone,
+		const wstring& strMaskTag, _float2 vSize, _float4 vPos, _float4 vColor, _float fAlpha,
+		CGameObject** pOut = nullptr);
 
 };
 

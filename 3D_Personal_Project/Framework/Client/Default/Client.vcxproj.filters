@@ -583,6 +583,9 @@
     <Filter Include="96. Manager\02. GameMgr">
       <UniqueIdentifier>{0cc48f70-d780-4ca3-bc38-d024a9c1a5a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Effect\09. Light">
+      <UniqueIdentifier>{92dc71c8-5090-4724-b3f5-00bfd7f16d97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1113,6 +1116,9 @@
     <ClInclude Include="..\Public\GameMgr.h">
       <Filter>96. Manager\02. GameMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Light.h">
+      <Filter>02.GameObjects\08. Effect\09. Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1615,6 +1621,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\GameMgr.cpp">
       <Filter>96. Manager\02. GameMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Light.cpp">
+      <Filter>02.GameObjects\08. Effect\09. Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

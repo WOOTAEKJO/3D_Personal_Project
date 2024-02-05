@@ -45,6 +45,13 @@ RasterizerState RS_Cull_None
     FrontCounterClockwise = false;
 };
 
+RasterizerState RS_Sky
+{
+    FillMode = solid;
+    CullMode = front;
+    FrontCounterClockwise = false;
+};
+
 DepthStencilState DSS_Default
 {
     DepthEnable = true;
@@ -56,6 +63,27 @@ DepthStencilState DSS_None
 {
     DepthEnable = false;
     DepthWriteMask = zero;
+};
+
+DepthStencilState DSS_ZTest_And_No_Write
+{
+    DepthEnable = true;
+    DepthWriteMask = zero;
+};
+
+DepthStencilState DSS_DepthStencilEnable
+{
+    DepthEnable = true;
+    DepthWriteMask = all;
+    DepthFunc = less_equal;
+
+    StencilEnable = true;
+    StencilReadMask = 0xff;
+    StencilWriteMask = 0xff;
+
+    FrontFaceStencilFunc = always;
+    FrontFaceStencilPass = replace;
+    FrontFaceStencilFail = keep;
 };
 
 BlendState BS_Default

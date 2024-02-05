@@ -100,6 +100,8 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 void CPhantom::Priority_Tick(_float fTimeDelta)
 {
+	
+
 	if (m_bStart)
 	{
 		if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
@@ -118,24 +120,34 @@ void CPhantom::Priority_Tick(_float fTimeDelta)
 		m_bStart = false;
 	}
 
+	if (m_bActivate && (m_pLightEffect == nullptr))
+	{
+		_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+		_float4 vEffectPos;
+		XMStoreFloat4(&vEffectPos, vTmp);
+
+		CBone* pBone = m_pModelCom->Get_Bones()[7];
+
+		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+			MASK_GLOWTEST_TAG, _float2(90.f, 90.f),
+			vEffectPos, _float4(0.f, 0.7f, 1.f, 1.f), 0.3f, &m_pLightEffect);
+	}
+
 	if (!m_bActivate)
 		return;
 
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
-	CGameObject::Priority_Tick(fTimeDelta);
 
+	CGameObject::Priority_Tick(fTimeDelta);
+	// 캐릭터 사전 틱을 거치지 않으려고
 }
 
 void CPhantom::Tick(_float fTimeDelta)
 {
-	/*if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;*/
+	Dissolve(0.25f, 0.05f, fTimeDelta);
 
-	//if (m_Status_Desc.bTalk)
-	//{
-	//	XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
-	//	//m_Status_Desc.bTalk = false;
-	//}
 	if (m_pGameInstance->Key_Down(DIK_0))
 		m_pStateMachineCom->Set_State(CPhantom::STATE::DEAD);
 
@@ -151,6 +163,8 @@ void CPhantom::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
 
 	Judge_Dead();
@@ -174,7 +188,7 @@ HRESULT CPhantom::Render()
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(1);
+		m_pShaderCom->Begin(4);
 
 		m_pModelCom->Render(i);
 	}
@@ -186,6 +200,27 @@ HRESULT CPhantom::Render_Shadow()
 {
 	if (FAILED(CMonster::Render_Shadow()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Render_Blur()
+{
+	if (!m_bActivate)
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+
+	if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", 0)))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 0, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(0);
 
 	return S_OK;
 }
@@ -714,6 +749,12 @@ void CPhantom::Judge_Dead()
 		if (m_pIDLEParicle != nullptr && !m_pIDLEParicle->Get_Dead())
 		{
 			m_pIDLEParicle->Set_Dead();
+			
+		}
+
+		if (m_pLightEffect != nullptr && !m_pLightEffect->Get_Dead())
+		{
+			m_pLightEffect->Set_Dead();
 		}
 	}
 }
@@ -769,6 +810,7 @@ HRESULT CPhantom::Ready_Component()
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(NOISE_DEFAULT_TAG, &m_pNoiseTextureCom))) return E_FAIL;
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;

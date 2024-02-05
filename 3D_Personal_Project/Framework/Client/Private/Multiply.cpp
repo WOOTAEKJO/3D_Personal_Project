@@ -63,6 +63,19 @@ HRESULT CMultiply::Initialize(void* pArg)
 	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS2DASH_TAG, GO_PARTICLEALWAYS_TAG,
 		this, nullptr,0.05f);
 
+
+	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = m_pModelCom->Get_Bones()[7];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(90.f, 90.f),
+		vEffectPos, _float4(0.f, 0.7f, 1.f, 1.f), 0.3f);
+
 	return S_OK;
 }
 
@@ -92,6 +105,8 @@ void CMultiply::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+		return;
 
 	__super::Late_Tick(fTimeDelta);
 
@@ -115,6 +130,24 @@ HRESULT CMultiply::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT CMultiply::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+
+	if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", 0)))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 0, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(0);
 
 	return S_OK;
 }

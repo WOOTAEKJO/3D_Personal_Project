@@ -86,7 +86,20 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, MASK_CROWTRAIL_TAG, this, 0.f,
 		false, _float3(0.f, 0.03f, 0.f), _float3(0.f, 0.045f, 0.f), 100, 12,
-		_float4(0.2f, 0.6f, 1.f, 1.f), &m_pTrailEffect);
+		_float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
+
+
+	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = m_pModelCom->Get_Bones()[5];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(1000.f, 1000.f),
+		vEffectPos, _float4(1.f, 0.7f, 0.3f, 1.f),0.3f);
 
 	return S_OK;
 }
@@ -113,6 +126,8 @@ void CCrow::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
@@ -149,6 +164,29 @@ HRESULT CCrow::Render_Shadow()
 {
 	if (FAILED(CNPC::Render_Shadow()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCrow::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(2);
+
+		m_pModelCom->Render(i);
+	}
+
 
 	return S_OK;
 }
@@ -343,9 +381,13 @@ HRESULT CCrow::Init_Point_Light()
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.5f;
-	LightDesc.vDiffuse = _float4(0.8f, 0.f, 0.f, 1.f);
-	LightDesc.vAmbient = _float4(0.8f, 0.f, 0.f, 1.f);
-	LightDesc.vSpecular = LightDesc.vDiffuse;
+	LightDesc.vDiffuse = _float4(1.f, 0.7f, 0.3f, 1.f);
+	/*LightDesc.vAmbient = _float4(0.8f, 0.f, 0.f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;*/
+
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
 		return E_FAIL;

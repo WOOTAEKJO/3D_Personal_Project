@@ -48,8 +48,21 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	m_fLookAt_Height = m_fOriginLookAt_Height;
 	m_vClampMinMax = _float2(XMConvertToRadians(-30.f), XMConvertToRadians(30.f));
 
-	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
 	{
+		m_vOriginOffset = { -0.7f,-0.5f,-0.7f };
+		m_vOffset = m_vOriginOffset;
+		m_vClampMinMax = _float2(XMConvertToRadians(-20.f), XMConvertToRadians(20.f));
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		m_vOriginOffset = { 0.7f,-0.5f,0.7f };
+		m_vOffset = m_vOriginOffset;
+		m_vClampMinMax = _float2(XMConvertToRadians(-20.f), XMConvertToRadians(20.f));
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		m_vOriginOffset = { 0.7f,-0.5f,0.7f };
 		m_vOffset = _float3(-1.5f, -0.5f, -1.5f);
 		m_vClampMinMax = _float2(XMConvertToRadians(-20.f), XMConvertToRadians(20.f));
 	}
@@ -59,7 +72,10 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	vPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
 	vDir = XMVector4Normalize(m_pTargetTransform->Get_State(CTransform::STATE::STATE_LOOK));
 
+
 	XMStoreFloat4(&CameraDesc.vEye, vPos - XMLoadFloat3(&m_vOffset));
+	//XMStoreFloat4(&CameraDesc.vAte, vPos);
+	XMStoreFloat4(&m_vPrevTargetPos, vPos);
 	XMStoreFloat4(&CameraDesc.vAte, vPos);
 
 	CameraDesc.fFovy = XMConvertToRadians(60.f);
@@ -69,8 +85,6 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	CameraDesc.fSpeedPerSec = 30.f;
 	CameraDesc.fRotationPerSec = XMConvertToRadians(180.f);
 
-	XMStoreFloat4(&m_vPrevTargetPos, vPos);
-
 	if (FAILED(__super::Initialize(&CameraDesc)))
 		return E_FAIL;
 
@@ -78,17 +92,20 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 	m_fDampConstant = 2.f * sqrt(m_fSpringConstant);
 	m_vVeclocity = _float3(0.f, 0.f, 0.f);
 
+	m_fSensitivity = 0.01f;
+
 	return S_OK;
 }
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	//Mouse_Fix();
+	//Mouse_Fix();	
 	StateTrans(fTimeDelta);
 	if (m_bCutScene)
 		CutScene(fTimeDelta);
 	else
 		Mouse_Input(fTimeDelta);
+
 }
 
 void CTargetCamera::Tick(_float fTimeDelta)
@@ -99,7 +116,20 @@ void CTargetCamera::Tick(_float fTimeDelta)
 
 void CTargetCamera::Late_Tick(_float fTimeDelta)
 {
-	
+
+	if (!m_bActivate)
+	{
+		if (m_fSensitivity < 1.f)
+		{
+			m_fSensitivity += fTimeDelta;
+		}
+		else {
+			m_bActivate = true;
+			/*m_vOriginOffset = { 0.7f,-0.5f,0.7f };
+			m_vOffset = m_vOriginOffset;*/
+		}
+
+	}
 }
 
 _vector CTargetCamera::Camera_Shaking(_fvector vCamPos, _float fTimeDelta)
@@ -234,8 +264,8 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 
 	_vector vResultPos = Camera_Spring(vEye, vPos, fTimeDelta * m_fSensitivity);
 
-	/*if (!XMVector3NearEqual(vResultPos, vEye, XMVectorSet(1.f,1.f,1.f,0.f)))
-		return;*/
+	if (!XMVector3NearEqual(vResultPos, vPos, XMVectorSet(1.f,1.f,1.f,0.f)))
+		return;
 
 	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vResultPos);
 

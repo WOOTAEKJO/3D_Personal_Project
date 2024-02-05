@@ -47,6 +47,11 @@ public:
 
 	_float4x4	Get_Col_WorldMat(); // 콜라이더의 월드행렬을 가져옴
 
+	void		Start_DeadTime() { m_bDeadTime = true; }
+
+protected:
+	CTexture*	m_pNoiseTextureCom = { nullptr };
+
 protected:
 	CBone*		m_pSocketBone = { nullptr };
 	CCollider*	m_pWeaponColliderCom = { nullptr };
@@ -60,9 +65,20 @@ protected:
 
 protected:
 	_bool				m_bActivate = { true };
+	_bool				m_bDeadTime = { false };
 
 protected:
-	void	Monster_Dead();
+	_float m_fDissolveAmount = { 0.f };
+	_float m_fDissolveGradiationDistance = { 0.f };
+	_float3 m_vDissolveGradiationStartColor;
+	_float3 m_vDissolveGradiationGoalColor;
+
+protected:
+	CGameObject*	m_pLightEffect = { nullptr };
+
+protected:
+	void	Monster_Dead(_float fTimeDelta);
+	void	Dissolve(_float fAmount, _float fDistance,_float fTimeDelta);
 
 protected:
 	virtual HRESULT Bind_ShaderResources() override;
