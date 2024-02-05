@@ -40,7 +40,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	if (FAILED(Ready_Layer_BackGround(TEXT("BackGround"))))
 		return E_FAIL;
 
-	m_pGameInstance->Play_Sound(L"BGM", L"LoadingBGM.ogg", CHANNELID::SOUND_BGM, 1.f, true);
+	m_pGameInstance->Play_Sound(L"BGM", L"LoadingBGM.ogg", CHANNELID::SOUND_BGM, 1.f);
 	//m_pGameInstance->Play_Sound(L"BGM", L"LogoBGM.ogg", CHANNELID::SOUND_BGM, 1.f, true);
 
 	return S_OK;

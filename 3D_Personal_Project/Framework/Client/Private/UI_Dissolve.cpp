@@ -141,7 +141,7 @@ void CUI_Dissolve::Dissolve_Render(_float fTimeDelta)
 			m_Dissolve_Desc.fDissolveAmount -= fTimeDelta;
 
 		if (m_Dissolve_Desc.fDissolveGradiationDistance > 0.f)
-			m_Dissolve_Desc.fDissolveGradiationDistance -= fTimeDelta * 1.5f; 
+			m_Dissolve_Desc.fDissolveGradiationDistance -= fTimeDelta * 2.f; 
 
 		if (m_Dissolve_Desc.fDissolveAmount <= 0.f)
 			m_bReady = true;
@@ -151,7 +151,7 @@ void CUI_Dissolve::Dissolve_Render(_float fTimeDelta)
 		m_bReady = false;
 
 		if (m_Dissolve_Desc.fDissolveAmount < 1.f)
-			m_Dissolve_Desc.fDissolveAmount += fTimeDelta * 1.5f;
+			m_Dissolve_Desc.fDissolveAmount += fTimeDelta * 2.f;
 
 		if (m_Dissolve_Desc.fDissolveGradiationDistance < 1.f)
 			m_Dissolve_Desc.fDissolveGradiationDistance += fTimeDelta ;

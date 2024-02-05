@@ -50,7 +50,7 @@ _uint CNorMonster_Attack::State_Tick(_float fTimeDelta)
 		if (Is_Attack_Time(fTimeDelta,0.3f))
 		{
 			dynamic_cast<CSkullCrossBow*>(m_pOwner)->Create_Bullet();
-			m_pGameInstance->Play_Sound(L"Spooketon", L"Attack2.ogg", CHANNELID::SOUND_MOSTER_ATTACK, 1.f);
+			m_pGameInstance->Play_Sound(L"Spooketon", L"Attack2.ogg", CHANNELID::SOUND_MOSTER_ATTACK2, 1.f);
 		}
 	}
 

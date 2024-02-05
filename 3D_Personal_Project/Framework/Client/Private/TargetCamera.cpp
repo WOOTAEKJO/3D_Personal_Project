@@ -61,6 +61,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 	XMStoreFloat4(&CameraDesc.vEye, vPos - XMLoadFloat3(&m_vOffset));
 	XMStoreFloat4(&CameraDesc.vAte, vPos);
+
 	CameraDesc.fFovy = XMConvertToRadians(60.f);
 	CameraDesc.fAspect = ((_float)g_iWinSizeX) / g_iWinSizeY;
 	CameraDesc.fNear = 0.1f;
@@ -92,12 +93,13 @@ void CTargetCamera::Priority_Tick(_float fTimeDelta)
 
 void CTargetCamera::Tick(_float fTimeDelta)
 { 	
+
 	__super::Tick(fTimeDelta);
 }
 
 void CTargetCamera::Late_Tick(_float fTimeDelta)
 {
-
+	
 }
 
 _vector CTargetCamera::Camera_Shaking(_fvector vCamPos, _float fTimeDelta)
@@ -195,6 +197,9 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
 	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
+	/*if (!XMVector3NearEqual(vTargetPos, vPos, XMVectorSet(1.f,1.f,1.f,0.f)))
+		return;*/
+
 	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y;
 
 	if (!m_bStateTrans)
@@ -227,7 +232,12 @@ void CTargetCamera::Mouse_Input(_float fTimeDelta)
 		vEye = Camera_Shaking(vEye, fTimeDelta);
 	}
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, Camera_Spring(vEye, vPos, fTimeDelta * m_fSensitivity));
+	_vector vResultPos = Camera_Spring(vEye, vPos, fTimeDelta * m_fSensitivity);
+
+	/*if (!XMVector3NearEqual(vResultPos, vEye, XMVectorSet(1.f,1.f,1.f,0.f)))
+		return;*/
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vResultPos);
 
 	vTargetPos.m128_f32[1] += m_pTargetTransform->Get_Scaled().y * m_fLookAt_Height;
 	m_vPrevTargetPos.y = vTargetPos.m128_f32[1];
@@ -247,11 +257,8 @@ void CTargetCamera::Mouse_Fix()
 
 void CTargetCamera::CutScene(_float fTimeDelta)
 {
-	_long MouseMove = 0;
 
 	_vector vTargetPos, vPos, vDir, vEye;
-
-	_matrix matRot = XMMatrixIdentity();
 
 	vTargetPos = m_pTargetTransform->Get_State(CTransform::STATE::STATE_POS);
 	vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);

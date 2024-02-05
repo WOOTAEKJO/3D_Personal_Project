@@ -105,6 +105,9 @@ void CCamera::Camera_Sliding(_fvector vPosition, CNavigation* pNavigation, _floa
 
 _vector CCamera::Camera_Spring(_fvector vTargetPos, _fvector vPos, _float fTimeDelta, _float fRatio)
 {
+	if (fTimeDelta > 1.f)
+		return vPos;
+
 	_vector vResultPos;
 
 	_vector vDisplacement = vPos - vTargetPos;

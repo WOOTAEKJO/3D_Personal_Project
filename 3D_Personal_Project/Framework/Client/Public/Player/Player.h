@@ -67,7 +67,9 @@ private:
 private:
 	_uint				m_iAttackID = { CPlayer::STATE::ATTACK1 };
 
-
+private:
+	_int* m_pMaxHP = {nullptr};
+	_int* m_pCurHP = { nullptr };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

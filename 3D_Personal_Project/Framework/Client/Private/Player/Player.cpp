@@ -32,12 +32,18 @@ CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-	: CCharacter(rhs)
+	: CCharacter(rhs),m_pMaxHP(rhs.m_pMaxHP),m_pCurHP(rhs.m_pCurHP)
 {
 }
 
 HRESULT CPlayer::Initialize_Prototype()
 {
+	m_pMaxHP = new _int;
+	m_pCurHP = new _int;
+
+	*m_pMaxHP = 100;
+	*m_pCurHP = *m_pMaxHP;
+
 	return S_OK;
 }
 
@@ -104,11 +110,15 @@ HRESULT CPlayer::Initialize(void* pArg)
 	m_Status_Desc.iMaxHP = 100;
 	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
 
+	m_Status_Desc.iMaxHP = *m_pMaxHP;
+
 	return S_OK;
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
+	m_Status_Desc.iCurHP = *m_pCurHP;
+
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
@@ -248,9 +258,11 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			&& !m_Status_Desc.bHited)
 		{
 			m_bHit_Effect = true;
-			//m_Status_Desc.bHited = true;
-			if(m_Status_Desc.iCurHP > 10)
-				m_Status_Desc.iCurHP -= 1;
+
+			/*if(m_Status_Desc.iCurHP > 10)
+				m_Status_Desc.iCurHP -= 1;*/
+			if (*m_pCurHP > 10)
+				*m_pCurHP -= 1;
 
 			CParticle::PARTICLEINFO Info = {};
 			Info.pOwner = this;
@@ -582,6 +594,12 @@ CGameObject* CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	__super::Free();
+
+	if (m_isCloned == false)
+	{
+		Safe_Delete(m_pMaxHP);
+		Safe_Delete(m_pCurHP);
+	}
 
 	for (auto& iter : m_mapParts)
 		Safe_Release(iter.second);

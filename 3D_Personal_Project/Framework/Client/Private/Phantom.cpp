@@ -718,6 +718,20 @@ void CPhantom::Judge_Dead()
 	}
 }
 
+void CPhantom::Fall(_float fTimeDelta)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	if (XMVector3NearEqual(vPos, XMVectorSet(0.f, 3.f, 0.f, 0.f), XMVectorSet(1000.f, 0.1f, 1000.f, 0.f)))
+		return;
+
+	_vector vUp = m_pTransformCom->Get_State(CTransform::STATE::STATE_UP);
+
+	vPos += XMVector3Normalize(vUp) * -1.f * fTimeDelta;
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
+}
+
 void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
 	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_TRIGGER_BULLET)

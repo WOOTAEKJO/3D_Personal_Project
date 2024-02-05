@@ -76,6 +76,9 @@ public:
 	void	Judge_Dead();
 
 public:
+	void	Fall(_float fTimeDelta);
+
+public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
