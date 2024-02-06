@@ -19,7 +19,7 @@ HRESULT CPhantom_Summon::Initialize(CGameObject* pGameObject)
 void CPhantom_Summon::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::SUMMON);
-
+	m_pGameInstance->Play_Sound(L"Phantom", L"SummonVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
 }
 
 _uint CPhantom_Summon::State_Priority_Tick(_float fTimeDelta)
@@ -29,6 +29,14 @@ _uint CPhantom_Summon::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPhantom_Summon::State_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::SUMMON, 60.f))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"Phantom", L"SummonVoice2.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
+			m_bSound = false;
+		}
+	}
 	
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -45,7 +53,7 @@ _uint CPhantom_Summon::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Summon::State_Exit()
 {
-	
+	m_bSound = true;
 }
 
 CPhantom_Summon* CPhantom_Summon::Create(CGameObject* pGameObject)

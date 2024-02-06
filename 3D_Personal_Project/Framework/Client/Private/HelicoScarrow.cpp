@@ -67,6 +67,8 @@ HRESULT CHelicoScarrow::Initialize(void* pArg)
 	m_Status_Desc.bAttack_able = false;
 	m_Status_Desc.bTalk = true;
 
+	if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Boss1"), this))) return E_FAIL;
+
 	return S_OK;
 }
 
@@ -75,6 +77,21 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 	if (!m_bActivate)
 		return;
 
+	if (m_bActivate && (m_pLightEffect == nullptr))
+	{
+		_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+		_float4 vEffectPos;
+		XMStoreFloat4(&vEffectPos, vTmp);
+
+		CBone* pBone = m_pModelCom->Get_Bones()[16];
+
+		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+			MASK_GLOWTEST_TAG, _float2(10.f, 10.f),
+			vEffectPos, _float4(1.f, 0.8f, 0.f, 1.f), 0.3f, &m_pLightEffect);
+	}
+
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
 	CGameObject::Priority_Tick(fTimeDelta);
 }
@@ -82,7 +99,11 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 void CHelicoScarrow::Tick(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;
+	{
+		m_pStateMachineCom->Set_State(CHelicoScarrow::STATE::DEAD);
+	}
+
+	Hide();
 
 	Shock_Wave_Radius_Compute();
 
@@ -96,9 +117,10 @@ void CHelicoScarrow::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
-
-	/*if (m_Status_Desc.iCurHP <= 0)
-		Set_Dead();*/
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+		return;
 }
 
 HRESULT CHelicoScarrow::Render()
@@ -108,6 +130,36 @@ HRESULT CHelicoScarrow::Render()
 
 	if (FAILED(CMonster::Render()))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CHelicoScarrow::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint iIndx[4] = { 1,2,6,7 };
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", iIndx[i])))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", iIndx[i], TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(iIndx[i]);
+	}
 
 	return S_OK;
 }
@@ -164,15 +216,25 @@ void CHelicoScarrow::Create_Monster()
 
 _bool CHelicoScarrow::Is_SubMonster_AllDead()
 {
+	_uint iCount = 0;
+
 	for(auto& iter : m_vecSubMonster)
 	{
-		if (!iter->Get_Dead())
-			return false;
+		/*if (!iter->Get_Dead())
+			return false;*/
+
+		if ((iter == nullptr) || iter->Get_Dead() || dynamic_cast<CMonster*>(iter)->Get_DeadTime())
+			++iCount;
 	}
 
-	m_vecSubMonster.clear();
+	if (iCount == 3)
+	{
+		m_vecSubMonster.clear();
+		return true;
+	}
 
-	return true;
+	//return true;
+	return false;
 }
 
 void CHelicoScarrow::Dead_CountDown()
@@ -256,20 +318,25 @@ void CHelicoScarrow::Create_Shock_Wave()
 
 void CHelicoScarrow::Shock_Wave_Radius_Compute()
 {
-	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
-		return;
+	if (m_pStateMachineCom->Get_StateID() == (_uint)STATE::GROUND_SMASH ||
+		m_pStateMachineCom->Get_PrevID() == (_uint)STATE::GROUND_SMASH)
+	{
+		if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
+			return;
 
-	if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
-		return;
+		if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
+			return;
 
-	_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 
-	_vector vDir = vPos - vColPos;
+		_vector vDir = vPos - vColPos;
 
-	_float fDistance = XMVectorGetX( XMVector3Length(vDir));
+		_float fDistance = XMVectorGetX(XMVector3Length(vDir));
 
-	dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+		dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+	}
+
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -285,6 +352,9 @@ void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1HIT_TAG,
 			GO_PARTICLENORMAL_TAG,
 			this, nullptr, 0.5f);
+
+		m_pGameInstance->Play_Sound(L"HelicoScarrow", L"HitVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
+		m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Hit.ogg", CHANNELID::SOUND_BOSS_HIT, 0.5f);
 	}
 }
 
@@ -362,6 +432,20 @@ HRESULT CHelicoScarrow::Init_Point_Light()
 	Safe_AddRef(m_pLight);
 
 	return S_OK;
+}
+
+void CHelicoScarrow::Hide()
+{
+	if (m_pLightEffect == nullptr)
+		return;
+
+	if (m_pStateMachineCom->Get_StateID() == (_uint)STATE::DIVE_IDLE)
+	{
+		dynamic_cast<CEffect_Light*>(m_pLightEffect)->Set_Activate(false);
+	}
+	else {
+		dynamic_cast<CEffect_Light*>(m_pLightEffect)->Set_Activate(true);
+	}
 }
 
 CHelicoScarrow* CHelicoScarrow::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)

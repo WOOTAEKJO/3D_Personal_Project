@@ -52,8 +52,15 @@ HRESULT CRenderTarget_Manager::Add_MRT(const wstring& strMRTTag, RTV_TYPE eType)
 	return S_OK;
 }
 
-HRESULT CRenderTarget_Manager::Begin_MRT(const wstring& strMRTTag)
+HRESULT CRenderTarget_Manager::Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
 {
+	ID3D11ShaderResourceView* pSRV[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = {
+		nullptr
+	};
+
+	m_pContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pSRV);
+	// 쉐이더 리소스 초기화
+
 	list<CRenderTarget*>* pList =Find_MRT(strMRTTag);
 	if (pList == nullptr)
 		return E_FAIL;
@@ -68,7 +75,12 @@ HRESULT CRenderTarget_Manager::Begin_MRT(const wstring& strMRTTag)
 		pRenderTargets[iNum++] = iter->Get_RTV();
 	}
 	
-	m_pContext->OMSetRenderTargets(iNum, pRenderTargets, m_pGameInstance->Get_DSV());
+	if (nullptr != pDSV)
+		m_pContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	// 깊이 버퍼 클리어
+
+	m_pContext->OMSetRenderTargets(iNum, pRenderTargets, nullptr == pDSV ? m_pGameInstance->Get_DSV() : pDSV);
+	// 인자로 받는 깊이 버퍼가 nullptr이면 원래 깊이 버퍼로 아니면 인자로 받은 깊이 버퍼로
 
 	return S_OK;
 }

@@ -12,12 +12,13 @@ CCollider::CCollider(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 CCollider::CCollider(const CCollider& rhs)
 	:CComponent(rhs)
+{
 #ifdef _DEBUG
 
-	, m_pBatch(rhs.m_pBatch)
-	, m_pEffect(rhs.m_pEffect), m_pInputLayout(rhs.m_pInputLayout)
+	m_pBatch = rhs.m_pBatch;
+	m_pEffect = rhs.m_pEffect;
+	m_pInputLayout = rhs.m_pInputLayout;
 
-{
 	Safe_AddRef(m_pInputLayout);
 
 #endif
@@ -137,6 +138,8 @@ HRESULT CCollider::Render()
 	return S_OK;
 }
 
+#endif
+
 _bool CCollider::Collision(CCollider* pTargetCollider)
 {
 	/*if (m_pBounding == nullptr || m_pOwner == nullptr)
@@ -220,7 +223,6 @@ void CCollider::OnCollisionExit(CCollider* pOtherCollider)
 	m_pOwner->OnCollisionExit(pOtherCollider,m_iColID);
 }
 
-#endif
 
 CCollider* CCollider::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {

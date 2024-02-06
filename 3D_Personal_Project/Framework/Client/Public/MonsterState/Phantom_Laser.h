@@ -23,6 +23,7 @@ public:
 
 public:
 	_bool	m_bAttack = { true };
+	_bool	m_bSound = { true };
 
 public:
 	static	CPhantom_Laser* Create(CGameObject* pGameObject);

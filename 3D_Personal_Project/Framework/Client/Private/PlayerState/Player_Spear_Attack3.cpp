@@ -20,6 +20,8 @@ void CPlayer_Spear_Attack3::State_Enter()
 	Trans_Attack(true);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK3);
 	Attack_Particle(1.f);
+
+	
 }
 
 _uint CPlayer_Spear_Attack3::State_Priority_Tick(_float fTimeDelta)
@@ -46,7 +48,17 @@ _uint CPlayer_Spear_Attack3::State_Tick(_float fTimeDelta)
 		return CPlayer::STATE::IDLE;
 
 	if (m_fTime > 0.2f)
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"Jack", L"Attack3Voice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+			m_pGameInstance->Play_Sound(L"Jack", L"Attack3.ogg", CHANNELID::SOUND_PLAYER_ATTACK, 0.5f);
+			m_bSound = false;
+		}
+
 		Shovel_Rush_Attack(fTimeDelta);
+	}
+		
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -62,6 +74,7 @@ _uint CPlayer_Spear_Attack3::State_Late_Tick(_float fTimeDelta)
 
 void CPlayer_Spear_Attack3::State_Exit()
 {
+	m_bSound = true;
 	m_fTime = 0.f;
 	Trans_Attack(false);
 }

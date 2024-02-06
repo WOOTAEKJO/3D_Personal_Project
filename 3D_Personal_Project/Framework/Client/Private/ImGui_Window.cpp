@@ -10,7 +10,6 @@
 #include "Demo.h"
 #include <sstream>
 
-
 CImGui_Window::CImGui_Window(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:m_pGameInstance(CGameInstance::GetInstance()),
 	m_pDevice(pDevice), m_pContext(pContext)

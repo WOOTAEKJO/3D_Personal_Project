@@ -491,8 +491,41 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_HELICOBULLET_PATH))))
 		return E_FAIL;*/
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_BOMB_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_BOMB_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_BOMB_PATH))))
+		return E_FAIL;*/
+
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_ENVY_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_ENVY_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_GLUTTONY_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_GLUTTONY_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_GREED_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_GREED_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_LUXURY_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_LUXURY_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_PRIDE_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_PRIDE_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_SLOTH_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_SLOTH_PATH))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_WRATH_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_WRATH_PATH))))
+		return E_FAIL;*/
+
+
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FLOORLAMP_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FLOORLAMP_PATH))))
 		return E_FAIL;
 
 #pragma endregion 

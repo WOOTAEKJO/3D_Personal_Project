@@ -514,6 +514,84 @@
     <Filter Include="02.GameObjects\08. Effect\07. Water">
       <UniqueIdentifier>{4d0610ae-65f0-4ed9-a817-a8ad80dff6ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08. Effect\08. Trail">
+      <UniqueIdentifier>{38e3fe05-3016-432f-b25b-0becd9f369f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production">
+      <UniqueIdentifier>{bbb3352c-8dec-413d-a1ce-61ebb77d0455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\00. OwlTalk">
+      <UniqueIdentifier>{f52f0033-f071-4bda-b83c-0b42d6dc13ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy">
+      <UniqueIdentifier>{ece850ad-2ec8-4ec9-b66d-8925ba5197d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready">
+      <UniqueIdentifier>{446cca8a-855b-4bd2-ae8a-96f21fe02711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\01. CrowTalk">
+      <UniqueIdentifier>{c42b718c-fb6b-43c8-8420-da4949f95d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\02. Boss1Talk">
+      <UniqueIdentifier>{0c6dfed3-d3ca-4c9b-b0e2-881e73a4853d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\03. Boss2Intro">
+      <UniqueIdentifier>{c2760345-44ae-4f74-953a-02cff4327fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\04. Boss2Talk">
+      <UniqueIdentifier>{f0faab9c-3867-49a8-87bc-e4692abf5cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint">
+      <UniqueIdentifier>{8f424943-8e26-4894-8343-b4b19c45fb6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd">
+      <UniqueIdentifier>{af212508-1cf3-4111-a8da-c77ff35186b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle">
+      <UniqueIdentifier>{1a3f92b7-71eb-4b9c-a5fa-5863baff320a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle\00. PuzzleMgr">
+      <UniqueIdentifier>{1c8e922c-8525-4874-98dd-e8c6b7984c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\96. Puzzle\01. PuzzleMgr2">
+      <UniqueIdentifier>{1261f62b-4dfb-4562-bf90-7728bf6b6ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\05. OwlTalk2">
+      <UniqueIdentifier>{0606f0e5-8d1d-4a28-9e49-f981d264ee53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\06. OwlTalk3">
+      <UniqueIdentifier>{9960496c-8676-49cc-97ed-231b2ff19939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06. Particle\06. NonBlur_Particle">
+      <UniqueIdentifier>{ca1d073f-7e7b-4bea-9892-8a904656a3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI">
+      <UniqueIdentifier>{c9c31921-3fab-4a29-8e49-c8bc27815f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\00. ChatBox">
+      <UniqueIdentifier>{5cd3e8b0-ba3f-4e78-9862-3734b1c38db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\01. Move">
+      <UniqueIdentifier>{406070d1-4940-49c7-b36c-dc50b95f7ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\02. HP">
+      <UniqueIdentifier>{58e0ec22-d762-4550-82a8-03ab87fd941e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\09. UI\03. Dissolve">
+      <UniqueIdentifier>{df71a413-4075-482f-a7b6-4e013a3a7b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Manager\02. GameMgr">
+      <UniqueIdentifier>{0cc48f70-d780-4ca3-bc38-d024a9c1a5a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\08. Effect\09. Light">
+      <UniqueIdentifier>{92dc71c8-5090-4724-b3f5-00bfd7f16d97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\07. Ending">
+      <UniqueIdentifier>{22711272-5cf9-4361-8110-5460acb2483f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\08. Ending2">
+      <UniqueIdentifier>{c5766cad-80f6-48c4-8fc1-64f54fb2fc47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -975,6 +1053,84 @@
     <ClInclude Include="..\Public\Effect_Water.h">
       <Filter>02.GameObjects\08. Effect\07. Water</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail.h">
+      <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk.h">
+      <Filter>92. Production\00. OwlTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Production.h">
+      <Filter>92. Production</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrowDummy.h">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NPCState\NPC_Ready.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CrowTalk.h">
+      <Filter>92. Production\01. CrowTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss1Talk.h">
+      <Filter>92. Production\02. Boss1Talk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss2Intro.h">
+      <Filter>92. Production\03. Boss2Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CameraPoint.h">
+      <Filter>02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Boss2Talk.h">
+      <Filter>92. Production\04. Boss2Talk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterState\Phantom_IntroEnd.h">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Puzzle.h">
+      <Filter>02.GameObjects\96. Puzzle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PuzzleMgr2.h">
+      <Filter>02.GameObjects\96. Puzzle\01. PuzzleMgr2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PuzzleMgr.h">
+      <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk2.h">
+      <Filter>92. Production\05. OwlTalk2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\OwlTalk3.h">
+      <Filter>92. Production\06. OwlTalk3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Particle_NonBlur.h">
+      <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI.h">
+      <Filter>02.GameObjects\09. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ChatBox.h">
+      <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Move.h">
+      <Filter>02.GameObjects\09. UI\01. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_HP.h">
+      <Filter>02.GameObjects\09. UI\02. HP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Dissolve.h">
+      <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameMgr.h">
+      <Filter>96. Manager\02. GameMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Light.h">
+      <Filter>02.GameObjects\08. Effect\09. Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ending.h">
+      <Filter>92. Production\07. Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ending2.h">
+      <Filter>92. Production\08. Ending2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1408,6 +1564,84 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Water.cpp">
       <Filter>02.GameObjects\08. Effect\07. Water</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail.cpp">
+      <Filter>02.GameObjects\08. Effect\08. Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk.cpp">
+      <Filter>92. Production\00. OwlTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Client_Production.cpp">
+      <Filter>92. Production</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrowDummy.cpp">
+      <Filter>02.GameObjects\05. Character\02. NPC\00. Crow\00. Dummy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NPCState\NPC_Ready.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\02. NPC\04. Ready</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CrowTalk.cpp">
+      <Filter>92. Production\01. CrowTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss1Talk.cpp">
+      <Filter>92. Production\02. Boss1Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss2Intro.cpp">
+      <Filter>92. Production\03. Boss2Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CameraPoint.cpp">
+      <Filter>02.GameObjects\02. Camera\01. TargetCamera\00. CameraPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Boss2Talk.cpp">
+      <Filter>92. Production\04. Boss2Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterState\Phantom_IntroEnd.cpp">
+      <Filter>95. State\00. StatMachine_State\00. Character\01. Monster\01. Boss_Monster\01. Phantom\17. IntroEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Puzzle.cpp">
+      <Filter>02.GameObjects\96. Puzzle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PuzzleMgr2.cpp">
+      <Filter>02.GameObjects\96. Puzzle\01. PuzzleMgr2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PuzzleMgr.cpp">
+      <Filter>02.GameObjects\96. Puzzle\00. PuzzleMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk2.cpp">
+      <Filter>92. Production\05. OwlTalk2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\OwlTalk3.cpp">
+      <Filter>92. Production\06. OwlTalk3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Particle_NonBlur.cpp">
+      <Filter>02.GameObjects\06. Particle\06. NonBlur_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI.cpp">
+      <Filter>02.GameObjects\09. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ChatBox.cpp">
+      <Filter>02.GameObjects\09. UI\00. ChatBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Move.cpp">
+      <Filter>02.GameObjects\09. UI\01. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_HP.cpp">
+      <Filter>02.GameObjects\09. UI\02. HP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Dissolve.cpp">
+      <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Light.cpp">
+      <Filter>02.GameObjects\08. Effect\09. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameMgr.cpp">
+      <Filter>96. Manager\02. GameMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ending.cpp">
+      <Filter>92. Production\07. Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ending2.cpp">
+      <Filter>92. Production\08. Ending2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

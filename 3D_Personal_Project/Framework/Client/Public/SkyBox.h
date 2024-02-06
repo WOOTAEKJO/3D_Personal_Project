@@ -34,6 +34,10 @@ private:
 	CTexture*		m_pTextureCom = { nullptr };
 
 private:
+	_float2						m_vFogPosition = { 0.f,0.f };
+	_float4						m_vFogColor = { 1.f,1.f,1.f,1.f };
+
+private:
 	HRESULT Bind_ShaderResources();
 	HRESULT Ready_Component() ;
 

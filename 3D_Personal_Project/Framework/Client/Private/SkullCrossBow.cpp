@@ -14,6 +14,10 @@
 
 #include "Light.h"
 
+#include "Effect_Energy.h"
+
+#include "Utility_Effect.h"
+
 CSkullCrossBow::CSkullCrossBow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
@@ -68,13 +72,31 @@ HRESULT CSkullCrossBow::Initialize(void* pArg)
 	if (FAILED(Init_Point_Light()))
 		return E_FAIL;
 
+	
 
 	return S_OK;
 }
 
 void CSkullCrossBow::Priority_Tick(_float fTimeDelta)
 {
-	Monster_Dead();
+	if (m_bActivate && (m_pLightEffect == nullptr))
+	{
+		_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+		_float4 vEffectPos;
+		XMStoreFloat4(&vEffectPos, vTmp);
+
+		CBone* pBone = m_pModelCom->Get_Bones()[11];
+
+		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+			MASK_GLOWTEST_TAG, _float2(7.f,7.f),
+			vEffectPos, _float4(0.8f, 0.2f, 0.2f, 1.f), 0.3f,&m_pLightEffect);
+	}
+
+	Monster_Dead(fTimeDelta);
+
+	Dissolve(0.5f, 0.3f, fTimeDelta);
 
 	CMonster::Priority_Tick(fTimeDelta);
 }
@@ -92,7 +114,11 @@ void CSkullCrossBow::Late_Tick(_float fTimeDelta)
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
 
-	
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+		return;
 }
 
 HRESULT CSkullCrossBow::Render()
@@ -106,15 +132,49 @@ HRESULT CSkullCrossBow::Render()
 	return S_OK;
 }
 
+HRESULT CSkullCrossBow::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CSkullCrossBow::Render_Blur()
+{
+	if (!m_bActivate)
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	for (_uint i = 0; i < 2; ++i)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
 HRESULT CSkullCrossBow::Create_Bullet()
 {
-	CNormal_Bullet::BULLET_DESC BulletDesc = {};
+	CGameObject* pBullet = nullptr;
+
+	CNormal_Bullet::BULLET_NORMAL_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
-	BulletDesc.fRadius = 0.05f;
+	BulletDesc.fRadius = 0.03f;
 	BulletDesc.fLifeTime = 2.f;
 	BulletDesc.fSpeed = 3.f;
 	BulletDesc.pTarget = m_pPlayer;
+	BulletDesc.vTrailColor = _float4(0.8f, 0.2f, 0.2f, 1.f);
 
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS) +
 		XMVector3Normalize(m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK)) * 0.1f;
@@ -124,7 +184,26 @@ HRESULT CSkullCrossBow::Create_Bullet()
 	XMStoreFloat4(&BulletDesc.fStartPos, vPos);
 
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_BULLET],
-		GO_NORMAL_BULLET_TAG, &BulletDesc)))
+		GO_NORMAL_BULLET_TAG, &BulletDesc, reinterpret_cast<CGameObject**>(&pBullet))))
+		return E_FAIL;
+
+	CEffect_Energy::EFFECT_ENERGYINFO Info = {};
+	Info.pOwner = pBullet;
+	Info.fLifeTime = 0.f;
+	Info.strEffectTextureTag = TEX_BUBLE_TAG;
+	Info.vSize = _float2(0.07f, 0.07f);
+	Info.vColor = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	Info.fSizeSpeed = -0.01f;
+
+	CTransform* pTrans = pBullet->Get_Component<CTransform>();
+
+	_vector vBulletPos = pTrans->Get_State(CTransform::STATE::STATE_POS);
+	vBulletPos.m128_f32[1] += pTrans->Get_Scaled().y;
+
+	XMStoreFloat4(&Info.vPos, vBulletPos);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTENERGY_TAG, &Info)))
 		return E_FAIL;
 
 	return S_OK;
@@ -140,6 +219,8 @@ void CSkullCrossBow::Load_FromJson(const json& In_Json)
 
 void CSkullCrossBow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
+	if (!m_bActivate || m_bDeadTime)
+		return;
 
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
@@ -154,6 +235,9 @@ void CSkullCrossBow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			m_Status_Desc.iCurHP -= 1;
 
 			Create_Damage_Effect(0.3f, TEX_DAMAGEIMPACT_TAG);
+
+			m_pGameInstance->Play_Sound(L"Spooketon", L"HitVoice.ogg", CHANNELID::SOUND_MONSTER_VOICE, 0.5f);
+			m_pGameInstance->Play_Sound(L"Spooketon", L"Hit.ogg", CHANNELID::SOUND_MONSTER_HIT, 0.3f);
 		}
 	}
 }
@@ -221,9 +305,13 @@ HRESULT CSkullCrossBow::Init_Point_Light()
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.3f;
-	LightDesc.vDiffuse = _float4(0.8f, 0.2f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
-	LightDesc.vSpecular = LightDesc.vDiffuse;
+	LightDesc.vDiffuse = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	/*LightDesc.vAmbient = _float4(0.8f, 0.2f, 0.2f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;*/
+
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
 		return E_FAIL;

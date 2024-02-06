@@ -23,6 +23,8 @@ public:
 
 private:
 	_bool	m_bParticle = { true };
+	_bool	m_bSound = { true };
+	_bool	m_bSound2 = { true };
 
 public:
 	static	CPhantom_Dead* Create(CGameObject* pGameObject);

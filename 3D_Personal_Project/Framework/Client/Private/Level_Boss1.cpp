@@ -15,6 +15,14 @@
 #include "Monster.h"
 #include "Trigger.h"
 
+#include "Utility_Effect.h"
+
+#include "Boss1Talk.h"
+#include "Boss2Intro.h"
+#include "Boss2Talk.h"
+
+#include "CameraPoint.h"
+
 CLevel_Boss1::CLevel_Boss1(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -25,9 +33,12 @@ HRESULT CLevel_Boss1::Initialize()
 	if (FAILED(Ready_Layer_BackGround(g_strLayerName[LAYER_BACKGROUND])))
 		return E_FAIL;
 
+	if (FAILED(Ready_Production()))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Plateform(g_strLayerName[LAYER_PLATEFORM])))
 		return E_FAIL;
-	
+
 	if (FAILED(Ready_Layer_Player(g_strLayerName[LAYER_PLAYER])))
 		return E_FAIL;
 
@@ -50,6 +61,27 @@ HRESULT CLevel_Boss1::Initialize()
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_MONSTER))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Pair_Collision(COLLIDER_LAYER::COL_PLAYER, COLLIDER_LAYER::COL_TRIGGER))) return E_FAIL;
 
+	m_pGameInstance->Fog_SetUp(_float2(0.f, 15.f), _float4(1.f, 0.6f, 0.6f, 0.5f));
+
+	CUtility_Effect::Create_Particle_Stage(m_pGameInstance, PARTICLE_STAGE2IDLE_TAG, _float4(14.5f, 0.f, 17.f, 1.f),
+		nullptr, nullptr);
+
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 700.f;
+
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
+	// 그림자 빛 세팅
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Stage2BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+	m_pGameInstance->Play_Sound(L"BGM", L"StageAmbiant.ogg", CHANNELID::SOUND_ENVIRONMENT, 0.7f, true);
+
 	return S_OK; 
 }
 
@@ -60,6 +92,12 @@ void CLevel_Boss1::Tick(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
 			return;
 	}
+
+	/*if (m_pGameInstance->Key_Down(DIK_1))
+	{
+		if (FAILED(m_pGameInstance->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pDevice, m_pContext, LEVEL_BOSS2))))
+			return;
+	}*/
 }
 
 HRESULT CLevel_Boss1::Render()
@@ -85,7 +123,9 @@ HRESULT CLevel_Boss1::Ready_Layer_Player(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+	/*if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+		return E_FAIL;*/
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_NPC], ANIMMODEL_CROW_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -93,6 +133,17 @@ HRESULT CLevel_Boss1::Ready_Layer_Player(const wstring& strLayerTag)
 
 HRESULT CLevel_Boss1::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
+	CCameraPoint::CAMERAPOINT_DESC TriggerDesc = {};
+	//TriggerDesc.vPosition = _float4(21.4f, 6.f, 21.6f, 1.f);
+	TriggerDesc.vPosition = _float4(26.750, 3.f, 28.6f, 1.f);
+	TriggerDesc.vAtPos = _float4(21.4f, 6.f, 21.6f, 1.f);
+	TriggerDesc.vScale = _float3(1.f,1.f,1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_CAMERAPOINT_TAG, &TriggerDesc)))
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -121,14 +172,33 @@ HRESULT CLevel_Boss1::Ready_Trigger()
 		})))
 		return E_FAIL;
 
-		CTrigger::TRIGGER_DESC TriggerDesc = {};
-		TriggerDesc.strEventName = TEXT("Portal_Boss2");
-		TriggerDesc.vPosition = _float4(26.3f, 2.f, 28.4f, 1.f);
-		TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
 
-		if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
-			, GO_TRIGGER_TAG, &TriggerDesc)))
-			return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Event(TEXT("Boss1Talk"), [this]() {
+		
+		m_pGameInstance->SetUp_Production(TEXT("Boss1Talk"));
+
+		})))
+		return E_FAIL;
+
+		CTrigger::TRIGGER_DESC TriggerDesc = {};
+	TriggerDesc.strEventName = TEXT("Boss1Talk");
+	TriggerDesc.vPosition = _float4(17.3f, 2.f, 18.f, 1.f);
+	TriggerDesc.vScale = _float3(2.f, 1.f, 2.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_TRIGGER_TAG, &TriggerDesc)))
+		return E_FAIL;
+
+	
+
+	return S_OK;
+}
+
+HRESULT CLevel_Boss1::Ready_Production()
+{
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss1Talk"), CBoss1Talk::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss2Intro"), CBoss2Intro::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Boss2Talk"), CBoss2Talk::Create()))) return E_FAIL;
 
 	return S_OK;
 }

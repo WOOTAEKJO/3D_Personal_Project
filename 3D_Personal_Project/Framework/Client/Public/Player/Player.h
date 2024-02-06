@@ -34,10 +34,12 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	
 
 public:
 	CGameObject* Find_Parts(PARTS_TYPE ePartsTag);
 	CModel* Get_BodyModel();
+	CTransform* Get_BodyTransform();
 	CCollider* Get_WeaponCollider();
 	_uint		Get_NextAttackID() { return m_iAttackID; }
 	_int	Get_CurrentState();
@@ -65,24 +67,34 @@ private:
 private:
 	_uint				m_iAttackID = { CPlayer::STATE::ATTACK1 };
 
+private:
+	_int* m_pMaxHP = {nullptr};
+	_int* m_pCurHP = { nullptr };
 
+private:
+	CGameObject* m_pLightEffect = { nullptr };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Init_Point_Light() override;
+	HRESULT	Ready_UI();
 
 private:
 	HRESULT	Ready_State();
 	HRESULT	Ready_Parts();
 	HRESULT	Ready_Controller();
 	virtual HRESULT	Ready_Animation() override;
+	virtual	HRESULT	Ready_Act() override;
 	HRESULT	Add_Parts(const wstring& strPrototypeTag, PARTS_TYPE ePartsTag, void* pArg = nullptr);
 	HRESULT	Add_WeaponType_By_Animation(WEAPON_TYPE eWeaponType, STATE eStateType, _uint iAnimIndex);
 	_int Find_AnimIndex(WEAPON_TYPE eWeaponType, STATE eStateType);
 
 private:
 	void			NextAttackID();
+
+private:
+	void			ShadowLight_SetUp();
 
 public:
 	static	CPlayer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

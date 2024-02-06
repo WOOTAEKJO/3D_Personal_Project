@@ -26,6 +26,22 @@ HRESULT CSkyBox::Initialize(void* pArg)
 	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+	{
+		m_vFogColor = _float4(1.f, 0.6f, 0.6f, 0.5f);
+		m_vFogPosition = _float2(0.f, 20.f);
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		m_vFogColor = _float4(1.f, 0.6f, 0.6f, 0.5f);
+		m_vFogPosition = _float2(0.f, 20.f);
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		m_vFogColor = _float4(0.4f, 1.f, 1.f, 0.5f);
+		m_vFogPosition = _float2(0.f, 30.f);
+	}
+
 	return S_OK;
 }
 
@@ -78,6 +94,10 @@ HRESULT CSkyBox::Bind_ShaderResources()
 		return E_FAIL;
 	if (FAILED(m_pTextureCom->Bind_ShaderResource(m_pShaderCom, "g_Texture", 2)))
 		return E_FAIL;
+
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFogStart", &m_vFogPosition.x, sizeof(_float)))) return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fFogEnd", &m_vFogPosition.y, sizeof(_float)))) return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4)))) return E_FAIL;
 	
 	return S_OK;
 }

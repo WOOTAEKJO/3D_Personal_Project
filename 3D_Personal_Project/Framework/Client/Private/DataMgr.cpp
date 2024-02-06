@@ -8,6 +8,8 @@
 #include "Plateform_Instancing.h"
 #include "Character.h"
 
+#include "PuzzleMgr.h"
+
 IMPLEMENT_SINGLETON(CDataMgr)
 
 CDataMgr::CDataMgr()
@@ -80,9 +82,9 @@ HRESULT CDataMgr::Level_Object_Load(const _char* strFilePath)
 					return E_FAIL;
 			}
 			else {
-				if(!wcscmp(CUtility_String::string_To_Wstring(strProTagName).c_str(), GO_PLATEFORM_TRAP_TAG))
-					int a = 0;
-
+				/*if(!wcscmp(CUtility_String::string_To_Wstring(strProTagName).c_str(), GO_PLATEFORM_TRAP_TAG))
+					int a = 0;*/
+				
 				CPlateform::PLATEFORM_DESC Plateform_Desc = {};
 				Plateform_Desc.strModelTag = CUtility_String::string_To_Wstring(strModelName);
 				Plateform_Desc.vPos = _float4(0.f, 0.f, 0.f, 1.f);
@@ -92,6 +94,11 @@ HRESULT CDataMgr::Level_Object_Load(const _char* strFilePath)
 					CUtility_String::string_To_Wstring(strProTagName),
 					&Plateform_Desc, reinterpret_cast<CGameObject**>(&pObject_Demo))))
 					return E_FAIL;
+
+				if (!wcscmp(CUtility_String::string_To_Wstring(strProTagName).c_str(), GO_PUZZLE_TAG))
+				{
+					CPuzzleMgr::GetInstance()->Add_Puzzle(pObject_Demo);
+				}
 			}
 
 			pObject_Demo->Get_Component<CTransform>()->Set_WorldMatrix(matWorld);
@@ -191,7 +198,6 @@ HRESULT CDataMgr::Level_Object_Instancing_Load(const _char* strFilePath)
 
 	return S_OK;
 
-	return S_OK;
 }
 
 void CDataMgr::Free()

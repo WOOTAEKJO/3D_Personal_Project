@@ -25,6 +25,8 @@ HRESULT CLevel_Tool::Initialize()
 	if (FAILED(CImGuiMgr::GetInstance()->Initialize(m_pDevice, m_pContext)))
 		return E_FAIL;
 
+	m_pGameInstance->Fog_SetUp(_float2(0.f, 1000.f), _float4(1.f, 1.f, 1.f, 1.f));
+
 	return S_OK;
 }
 

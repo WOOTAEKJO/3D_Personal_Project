@@ -32,6 +32,8 @@ void CBounding_Sphere::Update(_fmatrix matWorld)
 	m_pOriSphere->Transform(*m_pSphere, matWorld);
 }
 
+#ifdef _DEBUG
+
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
 	if (m_pSphere == nullptr || pBatch == nullptr)
@@ -41,6 +43,8 @@ HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _f
 
 	return S_OK;
 }
+
+#endif
 
 _bool CBounding_Sphere::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, 
 	_float* fPushedDist, _float4* vColliderPos)

@@ -21,7 +21,10 @@ HRESULT CPhantom_Dead::Initialize(CGameObject* pGameObject)
 void CPhantom_Dead::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::DEAD);
-	
+	//m_pOwner->Camera_Zoom(_float3(-2.f, -1.f, -2.f));
+	//_float3(-1.5f, -0.5f, -1.5f);
+	//m_pOwner->Camera_SetUp_LookAt_Hegith(1.5f);
+	m_pGameInstance->SetUp_Production(TEXT("Ending"));
 }
 
 _uint CPhantom_Dead::State_Priority_Tick(_float fTimeDelta)
@@ -39,9 +42,37 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 			CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT1_TAG, GO_PARTICLESPRITE_TAG,
 				m_pOwner, nullptr, 9.9f,nullptr, true);
 			CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
-				m_pOwner, nullptr, 10.f, nullptr, true);
+				m_pOwner, nullptr, 10.f, nullptr, true,false);
+
+			m_pGameInstance->Play_Sound(L"BGM", L"Stage3Victory.ogg", CHANNELID::SOUND_BGM, 0.7f);
+			m_pGameInstance->Play_Sound(L"Phantom", L"Dead.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
+			
 			m_bParticle = false;
 		}
+	}
+
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(10, 180))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"Phantom", L"Dead2.ogg", CHANNELID::SOUND_BOSS_VOICE, 1.f);
+			m_pOwner->Start_DeadTime();
+			m_bSound = false;
+		}
+	}
+
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(10, 320))
+	{
+		if (m_bSound2)
+		{
+			m_pGameInstance->Play_Sound(L"BGM", L"Stage2BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+
+
+			m_pGameInstance->SetUp_Production(TEXT("Ending2"));
+			m_bSound2 = false;
+		}
+
+		dynamic_cast<CPhantom*>(m_pOwner)->Fall(fTimeDelta);
 	}
 
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
@@ -51,11 +82,16 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 
 _uint CPhantom_Dead::State_Late_Tick(_float fTimeDelta)
 {
+
+
 	return m_iStateID;
 }
 
 void CPhantom_Dead::State_Exit()
 {
+	m_bSound = true;
+	m_bSound2 = true;
+	m_bParticle = true;
 }
 
 CPhantom_Dead* CPhantom_Dead::Create(CGameObject* pGameObject)

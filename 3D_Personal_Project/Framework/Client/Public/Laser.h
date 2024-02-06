@@ -20,8 +20,6 @@ public:
 private:
 	CGameObject* m_pElec = { nullptr };
 
-
-
 private:
 	HRESULT	Bind_ShaderResources();
 	HRESULT	Ready_Component();

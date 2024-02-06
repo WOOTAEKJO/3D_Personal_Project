@@ -29,7 +29,14 @@ _uint CPhantom_Vanish::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPhantom_Vanish::State_Tick(_float fTimeDelta)
 {
-	
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::VANISH, 45.f))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"Phantom", L"Vanish.ogg", CHANNELID::SOUND_BOSS_ATTACK, 2.f);
+			m_bSound = false;
+		}
+	}
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
 	return m_iStateID;
@@ -50,6 +57,7 @@ _uint CPhantom_Vanish::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Vanish::State_Exit()
 {
+	m_bSound = true;
 }
 
 CPhantom_Vanish* CPhantom_Vanish::Create(CGameObject* pGameObject)

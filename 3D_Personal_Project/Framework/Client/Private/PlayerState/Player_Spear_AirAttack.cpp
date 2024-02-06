@@ -21,6 +21,9 @@ void CPlayer_Spear_AirAttack::State_Enter()
 	m_pOwner->Animation_By_Type(CPlayer::STATE::AIR_ATTACK);
 
 	Attack_Particle(1.f);
+
+	m_pGameInstance->Play_Sound(L"Jack", L"Attack4Voice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+	
 }
 
 _uint CPlayer_Spear_AirAttack::State_Priority_Tick(_float fTimeDelta)
@@ -58,6 +61,9 @@ _uint CPlayer_Spear_AirAttack::State_Late_Tick(_float fTimeDelta)
 				m_pOwner, &m_pElec[2], 3.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 			Particle_Loop_SetUp(m_pElec[2], false);
 
+			m_pOwner->Camera_Shaking(0.3f, 0.3f, 0.13f);
+
+			m_pGameInstance->Play_Sound(L"Jack", L"Attack4.ogg", CHANNELID::SOUND_PLAYER_ATTACK, 0.7f);
 		}
 		
 		if (m_pOwnerModel->Is_Animation_Finished()) {
@@ -99,8 +105,8 @@ void CPlayer_Spear_AirAttack::Free()
 {
 	__super::Free();
 
-	for (_uint i = 0; i < 3; i++)
+	/*for (_uint i = 0; i < 3; i++)
 	{
 		Safe_Release(m_pElec[i]);
-	}
+	}*/
 }

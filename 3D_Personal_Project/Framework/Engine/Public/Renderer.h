@@ -11,7 +11,8 @@ class CComponent;
 class CRenderer final : public CBase
 {
 public:
-	enum RENDERGROUP {RENDER_PRIORITY,RENDER_NONLIGHT,RENDER_NONBLEND,RENDER_BLEND,RENDER_UI,RENDER_END};
+	enum RENDERGROUP {RENDER_PRIORITY, RENDER_SHADOW, RENDER_BLUR,
+		RENDER_NONLIGHT,RENDER_NONBLEND,RENDER_BLEND,RENDER_UI,RENDER_END};
 	// ±×¸®´Â ¼ø¼­´ë·Î ·»´õ ¿­°ÅÃ¼¸¦ ¸¸µë
 private:
 	CRenderer(ID3D11Device* pDevice,ID3D11DeviceContext* pContext);
@@ -22,6 +23,9 @@ public:
 	HRESULT	Add_RenderGroup(RENDERGROUP eRenderID, class CGameObject* pGameObject);
 	HRESULT	Add_DebugRender(CComponent* pComponent);
 	HRESULT	Draw_RenderGroup();
+
+	void	Fog_SetUp(_float2 vForStart_End, _float4 vFogColor);
+
 private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
@@ -45,14 +49,21 @@ private:
 	list<CComponent*>			m_listComponent;
 #endif 
 
+private:
+	_float2						m_vFogPosition = {0.f,0.f};
+	_float4						m_vFogColor = {1.f,1.f,1.f,1.f};
 
+private:
+	ID3D11DepthStencilView* m_pLightDepthDSV = { nullptr };	// ½¦µµ¿ì ·»´õ Å¸°Ù Àü¿ë ±íÀÌ ¹öÆÛ
 
 private:
 	HRESULT Render_Priority();
+	HRESULT Render_Shadow();
 	HRESULT Render_NonLight();
 	HRESULT Render_NonBlend();
 	HRESULT Render_LightAcc();
 	HRESULT Render_Deferred();
+	HRESULT Render_Bloom();
 	HRESULT Render_Blend();
 	HRESULT Render_UI();
 
@@ -64,6 +75,7 @@ private:
 
 private:
 	HRESULT	Ready_Component();
+	HRESULT	Create_DepthStencil();
 
 public:
 	static  CRenderer*	Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

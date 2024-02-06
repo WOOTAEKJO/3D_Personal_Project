@@ -72,6 +72,7 @@ void CHelico_Bullet::Late_Tick(_float fTimeDelta)
 
 		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, strTag, GO_PARTICLESUB_TAG,
 			this, nullptr, 0.3f);
+
 	}
 		
 
@@ -86,6 +87,8 @@ void CHelico_Bullet::Late_Tick(_float fTimeDelta)
 		CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1AIRATTACKEND_TAG,
 			GO_PARTICLENORMAL_TAG,
 			this, nullptr, 0.5f);
+
+		m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Attack1_Hit.ogg", CHANNELID::SOUND_BOSS_ATTACK, 0.3f);
 		Set_Dead();
 	}
 		

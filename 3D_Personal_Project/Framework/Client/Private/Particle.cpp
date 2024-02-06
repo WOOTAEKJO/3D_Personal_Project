@@ -4,12 +4,12 @@
 #include "Bone.h"
 
 CParticle::CParticle(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-	:CGameObject(pDevice, pContext)
+	:CAlphaObject(pDevice, pContext)
 {
 }
 
 CParticle::CParticle(const CParticle& rhs)
-	:CGameObject(rhs)
+	: CAlphaObject(rhs)
 {
 }
 
@@ -30,6 +30,7 @@ HRESULT CParticle::Initialize(void* pArg)
 	m_strParticleTag = pInfo->strParticleTag;
 	m_fLifeTime = pInfo->fLifeTime;
 	m_bChild = pInfo->bChild;
+	m_bBlur = pInfo->bBlur;
 
 	return S_OK;
 }
@@ -59,6 +60,7 @@ void CParticle::Late_Tick(_float fTimeDelta)
 		m_pTransformCom->LookAt(vLook);*/
 	}
 
+	Compute_CamDistance();
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
 		return;
 }

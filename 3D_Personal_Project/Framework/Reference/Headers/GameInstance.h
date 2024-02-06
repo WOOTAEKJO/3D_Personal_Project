@@ -8,6 +8,8 @@
 
 #include "Utility_String.h"
 
+#include "ShadowLight.h"
+
 /* 클라이언트에서 엔진의 기능을 사용하기위해 반드시 거쳐야하는 객체. */
 
 /* DX11을 통해 필요한 객체를 생성하고 렌더링하는 작업을 수행한다. */
@@ -84,6 +86,8 @@ public: /* For.Object_Manager */
 public: /* For.Renderer*/
 	HRESULT	Add_RenderGroup(CRenderer::RENDERGROUP eRenderID, class CGameObject* pGameObject);
 	HRESULT	Add_DebugRender(CComponent* pComponent);
+
+	void	Fog_SetUp(_float2 vForStart_End, _float4 vFogColor);
 
 public: /* For.Event_Manager*/
 	HRESULT	Add_Event(const wstring & strEventTag, function<void()> pFunction);
@@ -227,7 +231,7 @@ public: /* For. Font_Manager*/
 public: /* For. CRednerTarget_Manager*/
 	HRESULT	Add_RenderTarget(RTV_TYPE eType, _uint iSizeX, _uint iSizeY, DXGI_FORMAT Pixel_Format, const _float4& vColor);
 	HRESULT	Add_MRT(const wstring& strMRTTag, RTV_TYPE eType);
-	HRESULT	Begin_MRT(const wstring& strMRTTag);
+	HRESULT	Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
 	HRESULT	End_MRT();
 	HRESULT Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader* pShader, const _char* pConstantName);
 
@@ -241,6 +245,8 @@ public: /* For. CLight_Manager*/
 	HRESULT	Add_Light(const LIGHT_DESC& eLightDesc, _Out_ class CLight** ppLight = nullptr);
 	void Delete_Light(CLight* ppLight);
 	HRESULT	Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer);
+	HRESULT	Add_ShadowLight(const SHADOW_LIGHT_DESC& eLightDesc);
+	class CShadowLight* Get_ShadowLight();
 
 public: /* For. Camera_Manager*/
 	HRESULT	Add_Camera(const wstring& strCameraTag, class CCamera* pCamera);
@@ -251,6 +257,20 @@ public: /* For. Frustum*/
 	_bool	IsIn_Local_FrustumPlanes(_fvector vPoint, _float fRadius);
 	_bool	IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius);
 
+public: /* For. Production_Manager*/
+	HRESULT	Add_Production(const wstring& strProductionTag, class CProduction* pProduction);
+	HRESULT	Add_Actor(const wstring& strProductionTag, const wstring& strActorTag, CGameObject* pActor);
+	void	SetUp_Production(const wstring& strProductionTag);
+	void	Finish_Production();
+
+public: /* For. Sound_Manager*/
+	void Play_Sound(const wstring& strGroupKey, const wstring& strSoundKey, CHANNELID eID, _float fVolume = 1.f,
+		_bool bLoop = false);
+	void Play_BGM(const wstring& strGroupKey, const wstring& strSoundKey, _float fVolume = 1.f);
+	void Stop_Sound(CHANNELID eID);
+	void Stop_All();
+	void Set_ChannelVolume(CHANNELID eID, float fVolume);
+	_bool Is_SoundFinished(CHANNELID eID);
 
 private:
 	class CGraphic_Device*			m_pGraphic_Device = { nullptr };
@@ -271,6 +291,8 @@ private:
 	class CLight_Manager*			m_pLight_Manager = { nullptr };
 	class CCamera_Manager*			m_pCamera_Manager = { nullptr };
 	class CFrustum*					m_pFrustum = { nullptr };
+	class CProduction_Manager*		m_pProduction_Manager = { nullptr };
+	class CSound_Manager*			m_pSound_Manager = { nullptr };
 	// 매니저급 클래스들을 관리하기 위함
 
 

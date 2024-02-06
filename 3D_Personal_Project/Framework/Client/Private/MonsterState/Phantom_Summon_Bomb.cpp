@@ -36,6 +36,7 @@ _uint CPhantom_Summon_Bomb::State_Tick(_float fTimeDelta)
 		if (m_bBomb)
 		{
 			dynamic_cast<CPhantom*>(m_pOwner)->Start_Point_Toward_Bomb();
+			m_pGameInstance->Play_Sound(L"Phantom", L"Bomb.ogg", CHANNELID::SOUND_BOSS_ATTACK, 1.f);
 			m_bBomb = false;
 		}
 	}

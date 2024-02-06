@@ -26,11 +26,16 @@ void CNPC_Attack::State_Enter()
 	m_pOwner->Trans_Attack(true);
 
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW) {
-		_float4 vPos;
-		XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
+		if (m_bFind)
+		{
+			_float4 vPos;
+			XMStoreFloat4(&vPos, m_pOnwerTransform->Get_State(CTransform::STATE::STATE_POS));
 
-		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
-			GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f,0.f,0.f), nullptr, 1.f);
+			CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_CROWATTACK_TAG,
+				GO_PARTICLEATTACK_TAG, m_pOwner, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.f,false,false);
+
+			m_pGameInstance->Play_Sound(L"Character", L"Crow.ogg", CHANNELID::SOUND_NPC_VOICE, 1.f, false);
+		}
 	}
 }
 
@@ -58,13 +63,12 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 {
 	if (m_pOwner->Get_NPCType() == CNPC::NPC_TYPE::CROW)
 	{
-		/*if (m_pOwner->Is_Target_Range(0.1f))
-			return CNPC::STATE::IDLE;*/
-		_bool b = dynamic_cast<CCrow*>(m_pOwner)->Is_Col();
-
-		if (b)
+		if (dynamic_cast<CCrow*>(m_pOwner)->Is_Col())
 			return CNPC::STATE::IDLE;
-
+		else if(m_pOwner->Is_Target_Range(0.05f))
+			return CNPC::STATE::IDLE;
+		else if(m_pGameInstance->Key_Down(DIK_P))
+			return CNPC::STATE::IDLE;
 	}
 
 	return m_iStateID;
@@ -74,6 +78,7 @@ void CNPC_Attack::State_Exit()
 {
 	m_pOwner->Trans_Attack(false);
 	m_bFind = false;
+	dynamic_cast<CCrow*>(m_pOwner)->Reset_Col();
 }
 
 CNPC_Attack* CNPC_Attack::Create(CGameObject* pGameObject)

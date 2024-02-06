@@ -6,9 +6,11 @@
 #include "Particle_Attack.h"
 #include "Particle_Stage.h"
 
+#include "Effect_Trail.h"
+
 void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const wstring& strParticleTag,
 	const wstring& strObjTag, CGameObject* pOwner, CGameObject** pOut, _float fLifeTime, vector<CBone*>* vecBone,
-	_bool bChild)
+	_bool bChild, _bool bBlur)
 {
 	CParticle::PARTICLEINFO Info = {};
 	Info.pOwner = pOwner;
@@ -19,6 +21,7 @@ void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const
 	else
 		Info.pBones = *vecBone;
 	Info.bChild = bChild;
+	Info.bBlur = bBlur;
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Info, reinterpret_cast<CGameObject**>(pOut))))
@@ -27,7 +30,7 @@ void CUtility_Effect::Create_Particle_Normal(CGameInstance* pGameInstance, const
 
 void CUtility_Effect::Create_Particle_Attack(CGameInstance* pGameInstance, const wstring& strParticleTag,
 	const wstring& strObjTag, CGameObject* pOwner, _float4 vPos, _float3 vDir, CGameObject** pOut, _float fLifeTime,
-	_bool bKeep)
+	_bool bKeep, _bool bBlur)
 {
 	CParticle_Attack::ATTACKPARTICLE_DESC Desc = {};
 	Desc.pOwner = pOwner;
@@ -36,18 +39,21 @@ void CUtility_Effect::Create_Particle_Attack(CGameInstance* pGameInstance, const
 	Desc.strParticleTag = strParticleTag;
 	Desc.fLifeTime = fLifeTime;
 	Desc.bKeep = bKeep;
+	Desc.bBlur = bBlur;
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		strObjTag, &Desc, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }
 
-void CUtility_Effect::Create_Particle_Stage(CGameInstance* pGameInstance, const wstring& strParticleTag, _float4 vPos, CGameObject* pOwner, CGameObject** pOut)
+void CUtility_Effect::Create_Particle_Stage(CGameInstance* pGameInstance, const wstring& strParticleTag,
+	_float4 vPos, CGameObject* pOwner, CGameObject** pOut, _bool bBlur)
 {
 	CParticle_Stage::STAGEPARTICLE_DESC Desc = {};
 	Desc.pOwner = pOwner;
 	Desc.vPos = vPos;
 	Desc.strParticleTag = strParticleTag;
+	Desc.bBlur = bBlur;
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		GO_PARTICLESTAGE_TAG, &Desc, reinterpret_cast<CGameObject**>(pOut))))
@@ -106,5 +112,44 @@ void CUtility_Effect::Create_Damage_Effect(CGameInstance* pGameInstance, CGameOb
 
 	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
 		GO_EFFECTDAMAGE_TAG, &Info)))
+		return;
+}
+
+void CUtility_Effect::Create_Effect_Trail(CGameInstance* pGameInstance, const wstring& strTextureTag, const wstring& strMaskTextureTag
+	,CGameObject* pOwner, _float fAlpha, _bool bRevers,
+	_float3 vTrailPos_0, _float3 vTrailPos_1, _uint iTrailMaxCnt, _uint iLerpPointNum,
+	_float4 vColor, CGameObject** pOut)
+{
+	CEffect_Trail::EFFECT_TRAILINFO Info = {};
+	Info.pOwner = pOwner;
+	Info.strEffectTextureTag = strTextureTag;
+	Info.vTrailPos_0 = vTrailPos_0;
+	Info.vTrailPos_1 = vTrailPos_1;
+	Info.iTrailMaxCnt = iTrailMaxCnt;
+	Info.iLerpPointNum = iLerpPointNum;
+	Info.vSolid_Color = vColor;
+	Info.strMaskTag = strMaskTextureTag;
+	Info.fAlpha = fAlpha;
+	Info.bRevers = bRevers;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTTRAIL_TAG, &Info, reinterpret_cast<CGameObject**>(pOut))))
+		return;
+}
+
+void CUtility_Effect::Create_Effect_Light(CGameInstance* pGameInstance, CGameObject* pOwner, CBone* pBone
+	, const wstring& strMaskTag, _float2 vSize, _float4 vPos, _float4 vColor, _float fAlpha, CGameObject** pOut)
+{
+	CEffect_Light::EFFECT_LIGHT_INFO Info = {};
+	Info.pOwner = pOwner;
+	Info.strEffectTextureTag = strMaskTag;
+	Info.strMaskTag = strMaskTag;
+	Info.vSolid_Color = vColor;
+	Info.fAlpha = fAlpha;
+	Info.vSize = vSize;
+	Info.pSocketBone = pBone;
+
+	if (FAILED(pGameInstance->Add_Clone(pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_EFFECT],
+		GO_EFFECTLIGHT_TAG, &Info, reinterpret_cast<CGameObject**>(pOut))))
 		return;
 }

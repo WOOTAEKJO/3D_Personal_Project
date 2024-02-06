@@ -37,6 +37,8 @@ void CBounding_AABB::Update(_fmatrix matWorld)
 	m_pOriAABB->Transform(*m_pAABB, WorldMat);
 }
 
+#ifdef _DEBUG
+
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fvector vColor)
 {
 	if (m_pAABB == nullptr || pBatch == nullptr)
@@ -46,6 +48,7 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _fve
 
 	return S_OK;
 }
+#endif
 
 _bool CBounding_AABB::Collision(CCollider* pTargetCollider, _float3* vCollisionDir, 
 	_float* fPushedDist, _float4* vColliderPos)

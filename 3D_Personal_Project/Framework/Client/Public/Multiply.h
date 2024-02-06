@@ -22,10 +22,13 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-
+	virtual HRESULT Render_Blur() override;
 
 public:
 	void	Toward(_float fTimeDelta);
+
+public:
+	_bool	Get_DeadTime() { return m_bDeadTime; }
 
 private:
 	CBone* m_pSocketBone = { nullptr };
@@ -37,6 +40,9 @@ private:
 	CGameObject* m_pEffect = { nullptr };
 	_bool		m_bTrans = { false };
 	_float		m_fTransTimeAcc = { 0.f };
+
+private:
+	_bool		m_bDeadTime = { false };
 
 private:
 	HRESULT	Bind_ShaderResources();

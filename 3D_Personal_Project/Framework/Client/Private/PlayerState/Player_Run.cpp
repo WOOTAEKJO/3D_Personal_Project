@@ -22,6 +22,8 @@ void CPlayer_Run::State_Enter()
 	Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
 		&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 	Particle_Loop_SetUp(m_pParticle, false);
+
+	m_pGameInstance->Play_Sound(L"Jack", L"Run.ogg", CHANNELID::SOUND_PLAYER_MOVE, 0.5f);
 }
 
 _uint CPlayer_Run::State_Priority_Tick(_float fTimeDelta)
@@ -47,6 +49,8 @@ _uint CPlayer_Run::State_Tick(_float fTimeDelta)
 		Create_Particle(PARTICLE_JACKRUN_TAG, GO_PARTICLENORMAL_TAG, m_pOwner,
 			&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 		Particle_Loop_SetUp(m_pParticle, false);
+
+		m_pGameInstance->Play_Sound(L"Jack", L"Run.ogg", CHANNELID::SOUND_PLAYER_MOVE, 0.3f);
 		m_bRun = false;
 	}
 

@@ -22,7 +22,8 @@ public:
 	virtual void	State_Exit() override;
 
 private:
-	
+	_bool	m_bSound = { false };
+
 public:
 	static	CNorMonster_Attack* Create(CGameObject* pGameObject);
 	virtual	void			Free() override;

@@ -46,6 +46,7 @@ protected:
 	_uint					m_iVertexStride = { 0 };		// 정점 하나의 크기
 	_uint					m_iVertexBuffersNum = { 0 };	// 버텍스 버퍼들의 갯수
 
+	_uint					m_iPrimitiveNum = { 0 };		// 삼각형 갯수
 	_uint					m_iIndexNum = { 0 };			// 인덱스 갯수
 	_uint					m_iIndexStride = { 0 };			// 인덱스 하나의 크기
 	DXGI_FORMAT				m_eIndexForMat = { };			// 인덱스 포맷 설정, 인덱스 하나의 크기

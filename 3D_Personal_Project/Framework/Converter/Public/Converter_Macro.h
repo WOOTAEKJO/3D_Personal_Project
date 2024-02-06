@@ -364,6 +364,27 @@
 #define	MODEL_LAND_TAG			TEXT("Prototype_Component_Model_Land")
 #define	MODEL_LAND_PATH		"../Bin/Resources/Models/NonAnimModel/Land/Land.fbx"
 
+#define	MODEL_ENVY_TAG			TEXT("Prototype_Component_Model_Envy")
+#define	MODEL_ENVY_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Envy.fbx"
+
+#define	MODEL_GLUTTONY_TAG			TEXT("Prototype_Component_Model_Gluttony")
+#define	MODEL_GLUTTONY_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Gluttony.fbx"
+
+#define	MODEL_GREED_TAG			TEXT("Prototype_Component_Model_Greed")
+#define	MODEL_GREED_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Greed.fbx"
+
+#define	MODEL_LUXURY_TAG			TEXT("Prototype_Component_Model_Luxury")
+#define	MODEL_LUXURY_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Luxury.fbx"
+
+#define	MODEL_PRIDE_TAG			TEXT("Prototype_Component_Model_Pride")
+#define	MODEL_PRIDE_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Pride.fbx"
+
+#define	MODEL_SLOTH_TAG			TEXT("Prototype_Component_Model_Sloth")
+#define	MODEL_SLOTH_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Sloth.fbx"
+
+#define	MODEL_WRATH_TAG			TEXT("Prototype_Component_Model_Wrath")
+#define	MODEL_WRATH_PATH		"../Bin/Resources/Models/NonAnimModel/Trigger/Wrath.fbx"
+
 #pragma endregion
 
 #pragma region 기타 컴포넌트

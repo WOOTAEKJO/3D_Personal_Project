@@ -197,6 +197,8 @@ void CBomb::Dead_Particle()
 	CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_EXPLOSION4_TAG,
 		GO_PARTICLEATTACK_TAG, this, vPos, _float3(0.f, 0.f, 0.f), nullptr, 1.5f);
 
+	m_pGameInstance->Play_Sound(L"Phantom", L"BombHit.ogg", CHANNELID::SOUND_BOSS_ATTACK, 1.f);
+
 	Set_Dead();
 }
 

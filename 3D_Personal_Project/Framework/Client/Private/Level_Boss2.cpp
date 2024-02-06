@@ -13,6 +13,11 @@
 #include "Monster.h"
 #include "Utility_Effect.h"
 
+#include "CameraPoint.h"
+
+#include "Ending.h"
+#include "Ending2.h"
+
 CLevel_Boss2::CLevel_Boss2(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: CLevel(pDevice, pContext)
 {
@@ -21,6 +26,9 @@ CLevel_Boss2::CLevel_Boss2(ID3D11Device * pDevice, ID3D11DeviceContext * pContex
 HRESULT CLevel_Boss2::Initialize()
 {
 	if (FAILED(Ready_Layer_BackGround(g_strLayerName[LAYER_BACKGROUND])))
+		return E_FAIL;
+
+	if (FAILED(Ready_Production()))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Plateform(g_strLayerName[LAYER_PLATEFORM])))
@@ -52,7 +60,23 @@ HRESULT CLevel_Boss2::Initialize()
 	CUtility_Effect::Create_Effect_Normal(m_pGameInstance, TEX_WATER_TAG, GO_EFFECTWATER_TAG, nullptr,
 		XMVectorSet(16.739, 7.f, 18.639, 1.f), nullptr, 0.f, _float2(25.f, 25.f));
 	
-	
+	m_pGameInstance->Fog_SetUp(_float2(0.f, 30.f), _float4(0.4f, 1.f, 1.f, 0.5f));
+
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(30.f, 30.f, 30.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 700.f;
+
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
+	// 그림자 빛 세팅
+
+	m_pGameInstance->Play_Sound(L"BGM", L"Stage3BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
+
 	return S_OK; 
 }
 
@@ -84,7 +108,7 @@ HRESULT CLevel_Boss2::Ready_Layer_Player(const wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_JACK_TAG)))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), strLayerTag, ANIMMODEL_CROW_TAG)))
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_NPC], ANIMMODEL_CROW_TAG)))
 		return E_FAIL;
 
 	return S_OK;
@@ -92,6 +116,15 @@ HRESULT CLevel_Boss2::Ready_Layer_Player(const wstring& strLayerTag)
 
 HRESULT CLevel_Boss2::Ready_Layer_Plateform(const wstring& strLayerTag)
 {
+	CCameraPoint::CAMERAPOINT_DESC TriggerDesc = {};
+	//TriggerDesc.vPosition = _float4(21.4f, 6.f, 21.6f, 1.f);
+	TriggerDesc.vPosition = _float4(13.104, 8.f, 15.24, 1.f);
+	TriggerDesc.vAtPos = _float4(15.531, 13.f, 21.415f, 1.f);
+	TriggerDesc.vScale = _float3(1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_PLATEFORM]
+		, GO_CAMERAPOINT_TAG, &TriggerDesc)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -110,6 +143,14 @@ HRESULT CLevel_Boss2::Ready_Layer_Camera(const wstring& strLayerTag)
 HRESULT CLevel_Boss2::Ready_Layer_Monster(const wstring& strLayerTag)
 {
 
+	return S_OK;
+}
+
+HRESULT CLevel_Boss2::Ready_Production()
+{
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Ending"), CEnding::Create()))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Production(TEXT("Ending2"), CEnding2::Create()))) return E_FAIL;
+	
 	return S_OK;
 }
 

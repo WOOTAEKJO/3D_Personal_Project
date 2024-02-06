@@ -4,6 +4,10 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "DataMgr.h"
+#include "GameMgr.h"
+
+#include "UI_ChatBox.h"
+#include "UI_Move.h"
 
 CMainApp::CMainApp()	
 	: m_pGameInstance(CGameInstance::GetInstance())
@@ -32,9 +36,24 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(CDataMgr::GetInstance()->Initialize()))
 		return E_FAIL;
+	if (FAILED(CGameMgr::GetInstance()->Initialize()))
+		return E_FAIL;
 
 	if (FAILED(Ready_Font()))
 		return E_FAIL;
+
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
+	Shadow_Desc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect = ((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 800.f;
+
+	m_pGameInstance->Add_ShadowLight(Shadow_Desc);
+	// 그림자 빛 세팅
 
 	return S_OK;
 }
@@ -59,6 +78,8 @@ HRESULT CMainApp::Render()
 	/* 그려야할 모델들을 그리낟.*/	
 	m_pGameInstance->Render_Engine();
 
+
+#ifdef _DEBUG
 	++m_iNumRender;
 
 	if (1.f <= m_fTimeAcc)
@@ -69,6 +90,8 @@ HRESULT CMainApp::Render()
 	}
 
 	m_pGameInstance->Render_Font(FONT_139EX, m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 0.f, 0.f, 1.f));
+
+#endif
 	m_pGameInstance->Present();
 
 	return S_OK;
@@ -92,6 +115,7 @@ HRESULT CMainApp::Open_Level(LEVEL eStartLevelID)
 HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 {
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Rect>(BUFFER_RECT_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Shader_ProtoType<VTXPOSTEX>(SHADER_POS_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CStateMachine>(COM_STATEMACHINE_TAG))) return E_FAIL;
@@ -99,6 +123,18 @@ HRESULT CMainApp::Ready_ProtoType_Component_ForStaticLevel()
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CRigidBody>(COM_RIGIDBODY_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CCollider>(COM_COLLIDER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_ETC_ProtoType<CController>(COM_CONTROLLER_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_HEADDEATH_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING1_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SPINNER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_ChatBox>(GO_UICHATBOX_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Move>(GO_UIMOVE_TAG))) return E_FAIL;
 
 	return S_OK;
 }
@@ -126,6 +162,7 @@ CMainApp * CMainApp::Create()
 void CMainApp::Free()
 {
 	CDataMgr::GetInstance()->DestroyInstance();
+	CGameMgr::GetInstance()->DestroyInstance();
 	Safe_Release(m_pContext);
 	Safe_Release(m_pDevice);
 

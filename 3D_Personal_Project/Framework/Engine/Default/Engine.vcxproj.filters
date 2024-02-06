@@ -286,6 +286,21 @@
     <Filter Include="01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect">
       <UniqueIdentifier>{1d7eabf2-46f9-4a95-9515-e2052e4633ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail">
+      <UniqueIdentifier>{ecc9b48d-7d9d-47b8-ad14-db08e43c4838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97. Manager\04. Production_Manager">
+      <UniqueIdentifier>{1e7e9261-9f72-4714-858b-a0def80c2767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97. Manager\04. Production_Manager\00. Production">
+      <UniqueIdentifier>{0eff7cbe-1ef2-4f7b-9fb3-57278b66d902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\07. Light\01. ShadowLight">
+      <UniqueIdentifier>{b3b8ba74-a0f9-411b-b684-7452c2105b86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\97. Manager\05. Sound_Manager">
+      <UniqueIdentifier>{36d3156c-f2c7-44ec-beba-73b755deb16c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\public\Base.h">
@@ -561,6 +576,21 @@
     <ClInclude Include="..\Public\VIBuffer_DRect.h">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Trail.h">
+      <Filter>01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Production_Manager.h">
+      <Filter>01.Utility\97. Manager\04. Production_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Production.h">
+      <Filter>01.Utility\97. Manager\04. Production_Manager\00. Production</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ShadowLight.h">
+      <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Sound_Manager.h">
+      <Filter>01.Utility\97. Manager\05. Sound_Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\private\Base.cpp">
@@ -814,6 +844,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_DRect.cpp">
       <Filter>01.Utility\03. Component\00. VIBuffer\00. VIBuffer_Rect\00. VIBuffer_DRect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Trail.cpp">
+      <Filter>01.Utility\03. Component\00. VIBuffer\07. VIBuffer_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Production_Manager.cpp">
+      <Filter>01.Utility\97. Manager\04. Production_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Production.cpp">
+      <Filter>01.Utility\97. Manager\04. Production_Manager\00. Production</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ShadowLight.cpp">
+      <Filter>01.Utility\07. Light\01. ShadowLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Sound_Manager.cpp">
+      <Filter>01.Utility\97. Manager\05. Sound_Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include "Player_Spear_AirAttack.h"
 #include "Player_Jump.h"
 
+#include "Effect_Trail.h"
 #include "Utility_Effect.h"
 
 CPlayer_Weapon_Shovel::CPlayer_Weapon_Shovel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
@@ -39,33 +40,58 @@ HRESULT CPlayer_Weapon_Shovel::Initialize(void* pArg)
 	if (FAILED(m_pGameInstance->Load_Data_Json(GO_PLAYER_SHOVEL_TAG,this)))
 		return E_FAIL;
 
-	m_pParentsTransform = ((PLAYERSHOVEL_DESC*)pArg)->pParentsTransform;
+	PLAYERSHOVEL_DESC* Desc = ((PLAYERSHOVEL_DESC*)pArg);
+
+	m_pOwner = dynamic_cast<CPlayer*>( Desc->pOwner);
+	if (m_pOwner == nullptr)
+		return E_FAIL;
+
+	m_pParentsTransform = Desc->pParentsTransform;
 	Safe_AddRef(m_pParentsTransform);
-	m_pSocketBone = (((PLAYERSHOVEL_DESC*)pArg)->pBones)[m_iSocketBoneIndex];
+	m_pSocketBone = Desc->pBones[m_iSocketBoneIndex];
 	Safe_AddRef(m_pSocketBone);
 
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
+
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, MASK_JACKTRAIL3_TAG, this,0.3f,true,
+		_float3(0.f, 0.1f, 0.f),_float3(0.f, 0.3f, 0.f), 15,15, _float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
 
 	return S_OK;
 }
 
 void CPlayer_Weapon_Shovel::Priority_Tick(_float fTimeDelta)
 {
-
+	XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() * m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_matWorldMat));
 }
 
 void CPlayer_Weapon_Shovel::Tick(_float fTimeDelta)
 {
-	
+	if (m_pColliderCom->Get_UseCol())
+	{
+		if (!m_bTrail)
+		{
+			dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Reset(XMLoadFloat4x4(&m_matWorldMat));
+			m_bTrail = true;
+		}
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(XMLoadFloat4x4(&m_matWorldMat));
+	}
+	else
+	{
+		m_bTrail = false;
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Reset(XMLoadFloat4x4(&m_matWorldMat));
+	}
 }
 
 void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)
 {
-	XMStoreFloat4x4(&m_matWorldMat ,m_pTransformCom->Get_WorldMatrix_Matrix() *m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
+	
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
 		return;
 }
@@ -82,6 +108,34 @@ HRESULT CPlayer_Weapon_Shovel::Render()
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
 		m_pShaderCom->Begin(0);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Weapon_Shovel::Render_Shadow()
+{
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightFar", &m_pGameInstance->Get_ShadowLight()->
+		Open_Light_Desc()->fFar, sizeof(_float))))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(3);
 
 		m_pModelCom->Render(i);
 	}
@@ -128,6 +182,8 @@ void CPlayer_Weapon_Shovel::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
 		CUtility_Effect::Create_Particle_Attack(m_pGameInstance, PARTICLE_JACKATTACK8_TAG,
 			GO_PARTICLEATTACK_TAG, this, vCreatePos, vDir, nullptr, 1.f);
+
+		m_pOwner->Camera_Shaking(0.2f, 0.2f, 0.08f);
 	}
 }
 
@@ -163,14 +219,15 @@ HRESULT CPlayer_Weapon_Shovel::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	Sphere_Desc.fRadius = 40.f;
-	Sphere_Desc.vCenter = _float3(0.f, 220.f, 0.f);
+	Sphere_Desc.fRadius = 50.f;
+	Sphere_Desc.vCenter = _float3(0.f, 240.f, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 	for (_uint i = 1; i < 4; i++)
 	{
-		Sphere_Desc.vCenter = _float3(0.f, 220.f - (80.f*i), 0.f);
+		Sphere_Desc.vCenter = _float3(0.f, 240.f - (100.f*i), 0.f);
 		m_pColliderCom->Add_Bounding(&Sphere_Desc);
 	}
+	
 	
 
 	return S_OK;

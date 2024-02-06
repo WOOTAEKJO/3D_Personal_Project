@@ -29,6 +29,8 @@
 
 #define BUFFER_PARTICLEPOINT_TAG	TEXT("Prototype_Component_VIBuffer_ParticlePoint")
 
+#define BUFFER_TRAIL_TAG	TEXT("Prototype_Component_VIBuffer_Trail")
+
 #pragma endregion
 
 #pragma region 쉐이더
@@ -230,6 +232,8 @@
 #define	MODELINSTANCING_SMALLROCK_TAG			TEXT("Prototype_Component_ModelInstancing_SmallRock")
 #define	MODELINSTANCING_PURPLESCHROOMS_TAG		TEXT("Prototype_Component_ModelInstancing_PurpleSchrooms")
 
+#pragma endregion
+
 #pragma region 파티클
 
 #define	PARTICLE_TEST_TAG		TEXT("Prototype_Component_Particle_Test1")
@@ -264,6 +268,9 @@
 
 #define	PARTICLE_BOSS1HIT_TAG		TEXT("Prototype_Component_Particle_Boss1Hit")
 
+#define	PARTICLE_BOSS1BAT1_TAG		TEXT("Prototype_Component_Particle_Boss1Bat1")
+#define	PARTICLE_BOSS1BAT2_TAG		TEXT("Prototype_Component_Particle_Boss1Bat2")
+
 #define	PARTICLE_BAT1_TAG		TEXT("Prototype_Component_Particle_Bat1")
 #define	PARTICLE_BAT2_TAG		TEXT("Prototype_Component_Particle_Bat2")
 
@@ -293,9 +300,13 @@
 #define	PARTICLE_METEOREXPLOSION2_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion2")
 #define	PARTICLE_METEOREXPLOSION3_TAG		TEXT("Prototype_Component_Particle_MeteorExplosion3")
 
+#define	PARTICLE_STAGE1IDLE_TAG		TEXT("Prototype_Component_Particle_Stage1IDLE")
+#define	PARTICLE_STAGE2IDLE_TAG		TEXT("Prototype_Component_Particle_Stage2IDLE")
 #define	PARTICLE_STAGE3IDLE_TAG		TEXT("Prototype_Component_Particle_Stage3IDLE")
 
-#pragma endregion
+#define	PARTICLE_PORTAL_TAG		TEXT("Prototype_Component_Particle_Portal")
+
+#define	PARTICLE_DUST_TAG		TEXT("Prototype_Component_Particle_Dust")
 
 #pragma endregion
 
@@ -309,6 +320,20 @@
 #define	MODEL_BOMB_TAG			TEXT("Prototype_Component_Model_Bomb")
 
 #pragma endregion
+
+#define	MODEL_ENVY_TAG			TEXT("Prototype_Component_Model_Envy")
+
+#define	MODEL_GLUTTONY_TAG			TEXT("Prototype_Component_Model_Gluttony")
+
+#define	MODEL_GREED_TAG			TEXT("Prototype_Component_Model_Greed")
+
+#define	MODEL_LUXURY_TAG			TEXT("Prototype_Component_Model_Luxury")
+
+#define	MODEL_PRIDE_TAG			TEXT("Prototype_Component_Model_Pride")
+
+#define	MODEL_SLOTH_TAG			TEXT("Prototype_Component_Model_Sloth")
+
+#define	MODEL_WRATH_TAG			TEXT("Prototype_Component_Model_Wrath")
 
 #pragma endregion
 
@@ -379,6 +404,60 @@
 
 #pragma endregion
 
+#pragma region 마스크 텍스쳐
+
+#define MASK_GLOWTEST_TAG		TEXT("Prototype_Component_Texture_GlowTest")
+
+#define MASK_JACKTRAIL_TAG		TEXT("Prototype_Component_Texture_JackTrail")
+#define MASK_JACKTRAIL2_TAG		TEXT("Prototype_Component_Texture_JackTrailT")
+#define MASK_JACKTRAIL3_TAG		TEXT("Prototype_Component_Texture_JackTrailF")
+
+#define MASK_CROWTRAIL_TAG		TEXT("Prototype_Component_Texture_CrowTrail")
+
+#define MASK_NORMALBULLETTRAIL_TAG		TEXT("Prototype_Component_Texture_NormalBulletTrail")
+
+#define MASK_LIGHTMASK_TAG		TEXT("Prototype_Component_Texture_LightMask")
+
+#pragma endregion
+
+#pragma region 노이즈 텍스쳐
+
+#define NOISE_DEFAULT_TAG		TEXT("Prototype_Component_Texture_Default")
+
+#pragma endregion
+
+#pragma region UI 텍스쳐
+
+#define UI_CROW_TAG		TEXT("Prototype_Component_Texture_CharacterCrow")
+#define UI_JACK_TAG		TEXT("Prototype_Component_Texture_CharacterJack")
+#define UI_OWL_TAG		TEXT("Prototype_Component_Texture_CharacterOwl")
+#define UI_PHANTOM_TAG		TEXT("Prototype_Component_Texture_CharacterPhantom")
+#define UI_SCARECROW_TAG		TEXT("Prototype_Component_Texture_CharacterScarecrow")
+
+#define UI_CHATBOX_TAG		TEXT("Prototype_Component_Texture_ChatBox")
+
+#define UI_CROWLIFEBAR_TAG		TEXT("Prototype_Component_Texture_CrowLifebar")
+
+#define UI_HEADDEATH_TAG		TEXT("Prototype_Component_Texture_HeadDeath")
+
+#define UI_LIFEBARMASK_TAG		TEXT("Prototype_Component_Texture_LifebarMask")
+
+#define UI_LOADING1_TAG		TEXT("Prototype_Component_Texture_LoadingScreensLVLF")
+#define UI_LOADING2_TAG		TEXT("Prototype_Component_Texture_LoadingScreensLVLS")
+
+#define UI_LOGO_TAG		TEXT("Prototype_Component_Texture_PumpkinJack")
+
+#define UI_SPINNER_TAG		TEXT("Prototype_Component_Texture_Spinner")
+
+#define UI_MAIN_TAG		TEXT("Prototype_Component_Main")
+
+#define UI_LOADINGHOLDER_TAG		TEXT("Prototype_Component_LoadingScreensHolder")
+#define UI_LOADINGLOGO_TAG		TEXT("Prototype_Component_LoadingScreensLogo")
+
+#define UI_SUBBAR_TAG		TEXT("Prototype_Component_SubBar")
+
+#define UI_DISSOLVE_TAG		TEXT("Prototype_Component_Dissolve")
+
 #pragma endregion
 
 #pragma region 원형객체
@@ -409,6 +488,7 @@
 #define GO_PARTICLEATTACK_TAG			TEXT("Prototype_GameObject__ParticleAttack")
 #define GO_PARTICLEALWAYS_TAG			TEXT("Prototype_GameObject__ParticleAlways")
 #define GO_PARTICLESTAGE_TAG			TEXT("Prototype_GameObject__ParticleStage")
+#define GO_PARTICLENONBLUR_TAG			TEXT("Prototype_GameObject__ParticleNonBlur")
 
 #define GO_EFFECTDAMAGE_TAG			TEXT("Prototype_GameObject_EffectDamage")
 #define GO_EFFECTHALO_TAG			TEXT("Prototype_GameObject_EffectHalo")
@@ -419,6 +499,8 @@
 #define GO_EFFECTENERGY_TAG			TEXT("Prototype_GameObject_Energy")
 #define GO_EFFECTTARGET_TAG			TEXT("Prototype_GameObject_Target")
 #define GO_EFFECTWATER_TAG			TEXT("Prototype_GameObject_Water")
+#define GO_EFFECTTRAIL_TAG			TEXT("Prototype_GameObject_Trail")
+#define GO_EFFECTLIGHT_TAG			TEXT("Prototype_GameObject_Light")
 
 #define GO_SKYBOX_TAG			TEXT("Prototype_GameObject_SkyBox")
 
@@ -432,6 +514,17 @@
 #define GO_BOMB_TAG			TEXT("Prototype_GameObject_Bomb")
 #define GO_TARGETBULLET_TAG			TEXT("Prototype_GameObject_TargetBullet")
 #define GO_METEOR_TAG			TEXT("Prototype_GameObject_Meteor")
+
+#define GO_CROWDUMMY_TAG			TEXT("Prototype_GameObject_CrowDummy")
+
+#define GO_CAMERAPOINT_TAG			TEXT("Prototype_GameObject_CameraPoint")
+
+#define GO_PUZZLE_TAG			TEXT("Prototype_GameObject_Puzzle")
+
+#define GO_UICHATBOX_TAG			TEXT("Prototype_GameObject_UIChatBox")
+#define GO_UIMOVE_TAG			TEXT("Prototype_GameObject_UIMove")
+#define GO_UIHP_TAG			TEXT("Prototype_GameObject_UIHP")
+#define GO_UIDISSOLVE_TAG			TEXT("Prototype_GameObject_UIDissolve")
 
 #pragma region 캐릭터
 

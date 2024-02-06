@@ -32,6 +32,15 @@ _uint CPhantom_Hit::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPhantom_Hit::State_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::HIT, 75.f))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Play_Sound(L"Phantom", L"Hit.ogg", CHANNELID::SOUND_BOSS_HIT, 1.f);
+			m_bSound = false;
+		}
+	}
+
 	
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -59,6 +68,7 @@ _uint CPhantom_Hit::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Hit::State_Exit()
 {
+	m_bSound = true;
 }
 
 CPhantom_Hit* CPhantom_Hit::Create(CGameObject* pGameObject)

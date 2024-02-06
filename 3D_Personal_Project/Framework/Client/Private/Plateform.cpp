@@ -41,8 +41,6 @@ HRESULT CPlateform::Initialize(void* pArg)
 
 	m_RandomNumber = mt19937_64(m_RandomDevice());
 
-	
-	
 	return S_OK;
 }
 
@@ -73,7 +71,14 @@ void CPlateform::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
 
+	if (m_bLight)
+	{
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
+			return;
+	}
 	
 }
 
@@ -95,6 +100,48 @@ HRESULT CPlateform::Render()
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT CPlateform::Render_Shadow()
+{
+	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::VIEW))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance->Get_ShadowLight()->
+		Get_Matrix(CShadowLight::STATE::PROJ))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightFar", &m_pGameInstance->Get_ShadowLight()->
+		Open_Light_Desc()->fFar, sizeof(_float))))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (_uint i = 0; i < iNumMeshs; i++)
+	{
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(3);
+
+		m_pModelCom->Render(i);
+	}
+
+	return S_OK;
+}
+
+HRESULT CPlateform::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 1, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(1);
 
 	return S_OK;
 }
@@ -125,6 +172,15 @@ void CPlateform::Update_Light()
 		return;
 
 	m_pLight->Open_Light_Desc()->vPos = m_vLightPos;*/
+}
+
+_bool CPlateform::Compare_ModelTag(const wstring& strModelTag)
+{
+	if (!wcscmp(CUtility_String::Get_LastName(m_strModelTag).c_str(),
+		CUtility_String::Get_LastName(strModelTag).c_str()))
+		return true;
+
+	return false;
 }
 
 void CPlateform::Write_Json(json& Out_Json)

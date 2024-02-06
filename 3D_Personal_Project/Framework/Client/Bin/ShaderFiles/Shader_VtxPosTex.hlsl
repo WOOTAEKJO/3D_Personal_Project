@@ -5,8 +5,12 @@ texture2D	g_Texture[2];
 
 texture2D g_DiffuseTexture;
 texture2D g_DepthTexture;
+texture2D g_MaskTexture;
+texture2D g_NoiseTexture;
+texture2D g_DissolveTexture;
 
 vector g_vSolid_Color;
+//vector g_vSub_Color;
 
 float g_fAlpha;
 
@@ -15,6 +19,13 @@ float g_fRadius;
 float g_fCompare_Radius;
 
 float g_fTimeDelta;
+
+bool g_bRevers;
+
+float g_fDissolveAmount;
+float g_fDissolveGradiationDistance;
+float3 g_vDissolveGradiationStartColor;
+float3 g_vDissolveGradiationGoalColor;
 
 struct VS_IN
 {
@@ -64,12 +75,17 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
-	vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
+	//vector vSColor = g_Texture[0].Sample(LinearSampler, In.vTexCoord);
+	//vector vDColor = g_Texture[1].Sample(LinearSampler, In.vTexCoord);
+   
+    float4 vResultColor = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
 
-	Out.vColor = vSColor + vDColor;
-	
-	return Out;
+    if (vResultColor.a <0.3f)
+        discard;
+    
+    Out.vColor = vResultColor;
+    
+    return Out;
 }
 
 struct VS_OUT_EFFECT
@@ -115,7 +131,7 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
         discard;
     
     Out.vColor = vColor; //  * g_vSolid_Color;
-    
+  
     //float2 vDepthTexcoord;
     //vDepthTexcoord.x = (In.vPosition.x / In.vPosition.w) * 0.5f + 0.5f;
     //vDepthTexcoord.y = (In.vPosition.y / In.vPosition.w) * -0.5f + 0.5f;
@@ -125,7 +141,7 @@ PS_OUT PS_MAIN_EFFECT(PS_IN_EFFECT In)
     //Out.vColor.a = Out.vColor.a * (vDepthDesc.y * 1000.f - In.vProjPos.w) * 2.f;
 	// 화면에 그려진 픽셀들의 깊이 값과 비교해서 깊이 값이 크면 알파가 크게 작으면 알파가 점점 작아져서 투명해진다.
 	
-    return Out;
+        return Out;
 }
 
 PS_OUT PS_MAIN_EFFECT_SOLID(PS_IN_EFFECT In)
@@ -258,12 +274,13 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04);
+    float4 vColor = g_DiffuseTexture.Sample(LinearSampler, (In.vTexCoord * 10.f) + g_fTimeDelta * 0.04f);
     
     if (vColor.a < 0.8f)
         discard;
     
-    if (vColor.r < 0.0196555f)
+    // 0.0196555f
+    if (vColor.r < 0.0196078432f)
     {
         vColor.a = max(vColor.a - g_fAlpha * 1.5f, 0.f);
     }else
@@ -274,10 +291,130 @@ PS_OUT PS_MAIN_EFFECT_WATER(PS_IN_EFFECT In)
     return Out;
 }
 
+PS_OUT PS_MAIN_TRAIL(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+   
+    float4 vColor = g_vSolid_Color;
+   
+    if (g_bRevers)
+    {
+        vColor.a = (1.f - vMask.x);
+    }
+    else
+    {
+        vColor.a = vMask.x;
+    }
+    
+    if (vColor.a < g_fAlpha)
+        discard;
+	
+    Out.vColor = vColor;
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_HP(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    float2 vUV = In.vTexCoord * 0.08f;
+    vUV.y += g_fTimeDelta * 0.01f;
+
+    float4 vNoiseColor = g_NoiseTexture.Sample(LinearSampler, vUV);
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+
+    float4 vSubColor = float4(0.6f, 0.2f, 0.2f, 0.3f);
+
+    float4 vColor;
+
+    float2 vUV2 = In.vTexCoord;
+
+    if (vUV2.x <= g_fRadius)
+    {
+        vColor = g_vSolid_Color;
+    }
+    else {
+        vColor = vSubColor;
+
+    }
+    vColor.rgb *= vNoiseColor.rgb * 2 + 1;
+    vColor.a *= vMask.x;
+
+    if (vMask.x < 1.f)
+    {
+        vColor = float4(0.f, 0.f, 0.f, vColor.a);
+    }
+
+    if (vColor.a < 0.3f)
+        discard;
+
+    if (vColor.x == 0.f)
+        vColor.a = 1.f;
+
+    Out.vColor = vColor;
+
+    return Out;
+}
+
+PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    
+    float4 DissolveTexture = g_DissolveTexture.Sample(LinearSampler, In.vTexCoord + g_fTimeDelta * 0.01f);
+
+    float DissolveDesc = DissolveTexture.r;
+
+    float4 DiffuseTexture1 = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord);
+    float4 DiffuseTexture2 = g_DiffuseTexture.Sample(LinearSampler, In.vTexCoord + DissolveDesc* g_fDissolveAmount);
+
+    float4 DiffuseTexture;
+
+    clip(DissolveDesc - g_fDissolveAmount);
+
+    if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
+    {
+        float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+        Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
+       
+    }
+    else {
+        Out.vColor = DiffuseTexture2;
+    }
+
+    if (DiffuseTexture1.a < 0.3f)
+        discard;
+
+    return Out;
+}
+
+PS_OUT PS_MAIN_EFFECT_LIGHT(PS_IN_EFFECT In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 vDiffuseColor = g_vSolid_Color;
+    float4 vMask = g_MaskTexture.Sample(LinearSampler, In.vTexCoord);
+   
+    //if (vMask.x > 0.1f)
+    //    vMask.x = 0.1f;
+    
+    vDiffuseColor.a *= vMask.x;
+   
+    if (vDiffuseColor.a < g_fAlpha)
+        discard;
+
+    Out.vColor = vDiffuseColor;
+   
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
 	/* 내가 원하는 특정 셰이더들을 그리는 모델에 적용한다. */
-	pass Default
+	pass Default //0
 	{
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -290,7 +427,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
-    pass Effect
+    pass Effect //1
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -303,11 +440,11 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT();
     }
 
-    pass Effect_Solid
+    pass Effect_Solid //2
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xffffffff);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
 
         VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
         GeometryShader = NULL;
@@ -316,7 +453,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_SOLID();
     }
 
-    pass Effect_Invisibility
+    pass Effect_Invisibility //3
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -329,7 +466,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_INVISIBILITY();
     }
 
-    pass Effect_Reaper
+    pass Effect_Reaper //4
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
@@ -342,7 +479,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_REAPER();
     }
 
-    pass Effect_Blend
+    pass Effect_Blend //5
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -355,7 +492,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_BLEND();
     }
 
-    pass Effect_Blend_Invisibility
+    pass Effect_Blend_Invisibility //6
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -381,7 +518,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_TARGET();
     }
 
-    pass Effect_Water //7
+    pass Effect_Water //8
     {
         SetRasterizerState(RS_Cull_None);
         SetDepthStencilState(DSS_Default, 0);
@@ -392,6 +529,60 @@ technique11 DefaultTechnique
         HullShader = NULL;
         DomainShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_EFFECT_WATER();
+    }
+
+    pass Effect_Trail // 9
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_TRAIL();
+    }
+
+    pass Effect_HP // 10
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_HP();
+    }
+
+    pass Effect_Dissolve // 11
+    {
+        SetRasterizerState(RS_Cull_None);
+        SetDepthStencilState(DSS_None, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+    }
+
+    pass Effect_Light // 12
+    {
+        SetRasterizerState(RS_Cull_None);
+        //SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_None, 0);
+        //SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
+        SetBlendState(BS_AlphaBlend_Add, float4(0.0f, 0.0f, 0.0f, 1.0f), 0xffffffff);   
+        
+        VertexShader = compile vs_5_0 VS_MAIN_EFFECT();
+        GeometryShader = NULL;
+        HullShader = NULL;
+        DomainShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_EFFECT_LIGHT();
     }
 
 }

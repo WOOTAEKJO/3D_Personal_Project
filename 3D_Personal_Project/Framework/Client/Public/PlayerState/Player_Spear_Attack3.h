@@ -16,6 +16,10 @@ public:
 	virtual _uint	State_Tick(_float fTimeDelta) override;
 	virtual _uint	State_Late_Tick(_float fTimeDelta) override;
 	virtual void	State_Exit() override;
+
+private:
+	_bool	m_bSound = { true };
+
 private:
 	void	Shovel_Rush_Attack(_float fTimeDelta);
 public:

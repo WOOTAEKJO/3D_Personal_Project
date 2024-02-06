@@ -21,6 +21,8 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	virtual HRESULT Render_Shadow() override;
+	virtual HRESULT Render_Blur() override;
 
 public:
 	_bool	Is_AllHited(_uint iNum);
@@ -56,6 +58,9 @@ private:
 	virtual HRESULT Ready_Component() override;
 	virtual HRESULT	Ready_State() override;
 	virtual HRESULT	Init_Point_Light() override;
+
+private:
+	void	Hide();
 
 public:
 	static	CHelicoScarrow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

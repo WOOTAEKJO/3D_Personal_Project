@@ -23,18 +23,29 @@
 
 #include "Particle.h"
 
+#include "Utility_Effect.h"
+
+#include "UI.h"
+#include "UI_HP.h"
+
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
 {
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-	: CCharacter(rhs)
+	: CCharacter(rhs),m_pMaxHP(rhs.m_pMaxHP),m_pCurHP(rhs.m_pCurHP)
 {
 }
 
 HRESULT CPlayer::Initialize_Prototype()
 {
+	m_pMaxHP = new _int;
+	m_pCurHP = new _int;
+
+	*m_pMaxHP = 100;
+	*m_pCurHP = *m_pMaxHP;
+
 	return S_OK;
 }
 
@@ -64,27 +75,63 @@ HRESULT CPlayer::Initialize(void* pArg)
 	if (FAILED(Ready_Controller()))
 		return E_FAIL;
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
+	if (FAILED(Ready_UI()))
+		return E_FAIL;
+
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	if(m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
-	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(39.53f, 9.f, 28.438f, 1.f));
+		m_pNavigationCom->Set_CurrentIndex(397);*/
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("CrowTalk"), TEXT("Player"), this))) return E_FAIL;
+
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(10.f, 2.f, 13.f, 1.f));
-	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Player"), this))) return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Talk"), TEXT("Player"), this))) return E_FAIL;
+		
+	}		
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(16.5f, 7.f, 18.5f, 1.f));
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Ending2"), TEXT("Player"), this))) return E_FAIL;
+	}
+		
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
 
-	//m_pNavigationCom->Find_CurrentCell(m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
 
-	if (FAILED(Init_Point_Light()))
-		return E_FAIL;
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = Get_BodyModel()->Get_Bones()[7];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(25000.f, 25000.f),
+		vEffectPos, _float4(1.f, 0.6f, 0.4f, 1.f), 0.3f,&m_pLightEffect);
+
+	m_Status_Desc.iMaxHP = *m_pMaxHP;
+	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
 
 	return S_OK;
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
 {
+	m_Status_Desc.iCurHP = *m_pCurHP;
+
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Priority_Tick(fTimeDelta);
@@ -95,7 +142,8 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 
 void CPlayer::Tick(_float fTimeDelta)
 {
-	
+	//ShadowLight_SetUp();
+
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Tick(fTimeDelta);
@@ -149,6 +197,15 @@ CModel* CPlayer::Get_BodyModel()
 		return nullptr;
 
 	return pBody->Get_Component<CModel>();
+}
+
+CTransform* CPlayer::Get_BodyTransform()
+{
+	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>(Find_Parts(PARTS_TYPE::PARTS_BODY));
+	if (pBody == nullptr)
+		return nullptr;
+
+	return pBody->Get_Component<CTransform>();
 }
 
 CCollider* CPlayer::Get_WeaponCollider()
@@ -212,9 +269,11 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 			&& !m_Status_Desc.bHited)
 		{
 			m_bHit_Effect = true;
-			//m_Status_Desc.bHited = true;
-			if(m_Status_Desc.iCurHP > 1)
-				m_Status_Desc.iCurHP -= 1;
+
+			/*if(m_Status_Desc.iCurHP > 10)
+				m_Status_Desc.iCurHP -= 1;*/
+			if (*m_pCurHP > 10)
+				*m_pCurHP -= 1;
 
 			CParticle::PARTICLEINFO Info = {};
 			Info.pOwner = this;
@@ -227,6 +286,8 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 				return;
 
 			Create_Damage_Effect(0.3f,TEX_DAMAGEIMPACT_TAG);
+			m_pGameInstance->Play_Sound(L"Jack", L"HitVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 1.f);
+			m_pGameInstance->Play_Sound(L"Jack", L"Hit.ogg", CHANNELID::SOUND_PLAYER_HIT, 0.3f);
 		}
 	}
 }
@@ -290,15 +351,50 @@ HRESULT CPlayer::Init_Point_Light()
 
 	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
 	XMStoreFloat4(&LightDesc.vPos, vPos);
-	LightDesc.fRange = 0.6f;
+	LightDesc.fRange = 0.4f;
 	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.1f, 0.1f, 1.f);
-	LightDesc.vSpecular = LightDesc.vDiffuse;
+	//LightDesc.vAmbient = _float4(1.f, 0.6f, 0.4f, 1.f);
+	// //LightDesc.vSpecular = LightDesc.vDiffuse;
+	// 
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);;
 
 	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
 		return E_FAIL;
 
 	Safe_AddRef(m_pLight);
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_UI()
+{
+
+	CUI_HP::UI_HP_DESC Hp_Desc = {};
+
+	Hp_Desc.strTextureTag = TEX_WATER_TAG;
+	Hp_Desc.strMaskTexture = UI_LIFEBARMASK_TAG;
+	Hp_Desc.strNoiseTexture = UI_SUBBAR_TAG;
+	Hp_Desc.vSolidColor = _float4(0.f, 0.2f, 0.f, 1.f);
+	Hp_Desc.vCenterPos = _float2(g_iWinSizeX * 0.15f, (_float)g_iWinSizeY - g_iWinSizeY * 0.1f);
+	Hp_Desc.vScale = _float2(350.f, 80.f);
+	Hp_Desc.pOwner = this;
+	Hp_Desc.iShaderPassIndx = 10;
+	Hp_Desc.bRender = true;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, GO_UIHP_TAG, &Hp_Desc))) return E_FAIL;
+
+	CUI::UI_DESC Desc = {};
+
+	Desc.strTextureTag = UI_CROWLIFEBAR_TAG;
+	Desc.vCenterPos = _float2(Hp_Desc.vCenterPos.x + Hp_Desc.vScale.x * 0.01f, Hp_Desc.vCenterPos.y - Hp_Desc.vScale.y * 0.51f);
+	Desc.vScale = _float2(360.f, 100.f);
+	Desc.bRender = true;
+
+	if (FAILED(m_pGameInstance->Add_Clone(m_pGameInstance->Get_Current_Level(), g_strLayerName[LAYER::LAYER_UI]
+		, GO_UICHATBOX_TAG, &Desc))) return E_FAIL;
 
 	return S_OK;
 }
@@ -336,6 +432,7 @@ HRESULT CPlayer::Ready_Parts()
 	CPlayer_Weapon_Shovel::PLAYERSHOVEL_DESC PlayerShovel_Desc = {};
 	PlayerShovel_Desc.pParentsTransform = m_pTransformCom;
 	PlayerShovel_Desc.pBones = Get_BodyModel()->Get_Bones();
+	PlayerShovel_Desc.pOwner = this;
 	if (FAILED(Add_Parts(GO_PLAYER_SHOVEL_TAG, PARTS_TYPE::PARTS_WEAPON, &PlayerShovel_Desc))) return E_FAIL;
 
 	/*CCrow::CROW_DESC Crow_Desc = {};
@@ -389,6 +486,12 @@ HRESULT CPlayer::Ready_Animation()
 	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::ROLL, 114))) return E_FAIL;
 
 	m_eCurrentWeaponType = WEAPON_TYPE::TYPE_SHOVEL;
+
+	return S_OK;
+}
+
+HRESULT CPlayer::Ready_Act()
+{
 
 	return S_OK;
 }
@@ -459,6 +562,26 @@ void CPlayer::NextAttackID()
 	}
 }
 
+void CPlayer::ShadowLight_SetUp()
+{
+	SHADOW_LIGHT_DESC Shadow_Desc = {};
+
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	//XMStoreFloat4(&Shadow_Desc.vPos, XMVectorAdd(vPos, XMVectorSet(-5.f, 5.f, -5.f, 0.f)));
+	XMStoreFloat4(&Shadow_Desc.vAt, vPos);
+	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
+	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
+
+	Shadow_Desc.fFov = XMConvertToRadians(60.f);
+	Shadow_Desc.fAspect =((_float)g_iWinSizeX / g_iWinSizeY);
+	Shadow_Desc.fNear = 0.1f;
+	Shadow_Desc.fFar = 600.f;
+
+	//m_pGameInstance->Get_ShadowLight()->Open_Light_Desc();
+	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
+}
+
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	CPlayer* pInstance = new CPlayer(pDevice, pContext);
@@ -486,6 +609,12 @@ CGameObject* CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	__super::Free();
+
+	if (m_isCloned == false)
+	{
+		Safe_Delete(m_pMaxHP);
+		Safe_Delete(m_pCurHP);
+	}
 
 	for (auto& iter : m_mapParts)
 		Safe_Release(iter.second);

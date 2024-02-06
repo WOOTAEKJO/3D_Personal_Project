@@ -59,6 +59,8 @@ HRESULT CNavigation::Initialize(void* pArg)
 	return S_OK;
 }
 
+#ifdef _DEBUG
+
 HRESULT CNavigation::Render()
 {
 
@@ -116,6 +118,8 @@ HRESULT CNavigation::Render()
 
 	return S_OK;
 }
+
+#endif
 
 void CNavigation::Update(_float4x4 matWorld)
 {
@@ -595,10 +599,14 @@ vector<CCell*> CNavigation::Get_Navigation_Cells()
 	return m_vecCell;
 }
 
+#ifdef _DEBUG
+
 void CNavigation::Update_Buffer(_uint iCellIndex,FLOAT3X3 vPositions)
 {
 	m_vecCell[iCellIndex]->Update_Buffer(vPositions);
 }
+
+#endif
 
 CNavigation* CNavigation::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, NAVITYPE eType, const _char* strNavigationPath)
 {

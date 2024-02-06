@@ -25,6 +25,8 @@ public:
 
 	static wstring Get_MiddleName(wstring str);
 	static wstring Get_LastName(wstring str);
+
+	static _bool Compare_WString(wstring strSoul, wstring strDest);
 };
 
 END

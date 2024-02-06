@@ -75,7 +75,6 @@ void CTrigger::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 		m_pGameInstance->Execute_Event(m_strEventName);
 		m_bCheck = true;
 	}
-		
 }
 
 void CTrigger::OnCollisionStay(CCollider* pCollider, _uint iColID)

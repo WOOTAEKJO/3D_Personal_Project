@@ -27,6 +27,7 @@
 #include "Phantom_Summon_Loop.h"
 #include "Phantom_Vanish.h"
 #include "Phantom_Dash.h"
+#include "Phantom_IntroEnd.h"
 
 #include "Plateform.h"
 #include "Cell.h"
@@ -83,7 +84,7 @@ HRESULT CPhantom::Initialize(void* pArg)
 	m_pTransformCom->Set_Scaling(0.5f, 0.5f, 0.5f);
 
 	m_Status_Desc.bAttack_able = false;
-	m_Status_Desc.bTalk = true;
+	
 
 	SetUp_Random_Pos();
 
@@ -99,22 +100,56 @@ HRESULT CPhantom::Initialize(void* pArg)
 
 void CPhantom::Priority_Tick(_float fTimeDelta)
 {
+	
+
+	if (m_bStart)
+	{
+		if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+		{
+			m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, _float4(0.f, 0.f, 0.f, 1.f));
+			if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Intro"), TEXT("Boss2"), this))) return;
+			if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Talk"), TEXT("Boss2"), this))) return;
+
+			m_Status_Desc.bTalk = true;
+		}
+		else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+		{
+			m_Status_Desc.bTalk = false;
+			XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+		}
+		m_bStart = false;
+	}
+
+	if (m_bActivate && (m_pLightEffect == nullptr))
+	{
+		_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+		_float4 vEffectPos;
+		XMStoreFloat4(&vEffectPos, vTmp);
+
+		CBone* pBone = m_pModelCom->Get_Bones()[7];
+
+		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+			MASK_GLOWTEST_TAG, _float2(90.f, 90.f),
+			vEffectPos, _float4(0.f, 0.7f, 1.f, 1.f), 0.3f, &m_pLightEffect);
+	}
+
 	if (!m_bActivate)
 		return;
 
-	
-
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
+
 	CGameObject::Priority_Tick(fTimeDelta);
+	// 캐릭터 사전 틱을 거치지 않으려고
 }
 
 void CPhantom::Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_0))
-		m_Status_Desc.bTalk = false;
+	Dissolve(0.25f, 0.05f, fTimeDelta);
 
-	if (m_Status_Desc.bTalk)
-		XMStoreFloat4(&m_vOriginPos, m_pTransformCom->Get_State(CTransform::STATE::STATE_POS));
+	if (m_pGameInstance->Key_Down(DIK_0))
+		m_pStateMachineCom->Set_State(CPhantom::STATE::DEAD);
 
 	CMonster::Tick(fTimeDelta);
 }
@@ -126,6 +161,10 @@ void CPhantom::Late_Tick(_float fTimeDelta)
 	CMonster::Late_Tick(fTimeDelta);
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
 
 	Judge_Dead();
@@ -149,10 +188,39 @@ HRESULT CPhantom::Render()
 
 		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
 
-		m_pShaderCom->Begin(1);
+		m_pShaderCom->Begin(4);
 
 		m_pModelCom->Render(i);
 	}
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Render_Shadow()
+{
+	if (FAILED(CMonster::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CPhantom::Render_Blur()
+{
+	if (!m_bActivate)
+		return S_OK;
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+
+	if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", 0)))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 0, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(0);
 
 	return S_OK;
 }
@@ -226,23 +294,27 @@ void CPhantom::Shock_Wave_Radius_Compute()
 	if (!m_bSmashTime)
 		return;
 
-	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
-		return;
+	if (m_pStateMachineCom->Get_StateID() == (_uint)STATE::MARTEAU ||
+		m_pStateMachineCom->Get_PrevID() == (_uint)STATE::MARTEAU)
+	{
+		if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
+			return;
 
-	if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
-		return;
+		if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
+			return;
 
-	_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-	_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK);
+		_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK);
 
-	vPos += XMVector3Normalize(vLook) * 2.f;
+		vPos += XMVector3Normalize(vLook) * 2.f;
 
-	_vector vDir = vPos - vColPos;
+		_vector vDir = vPos - vColPos;
 
-	_float fDistance = XMVectorGetX(XMVector3Length(vDir));
+		_float fDistance = XMVectorGetX(XMVector3Length(vDir));
 
-	dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+		dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+	}	
 }
 
 void CPhantom::Create_Laser()
@@ -553,6 +625,7 @@ void CPhantom::Create_TargetBullet()
 	Info.strEffectTextureTag = TEX_BUBLE_TAG;
 	Info.vSize = _float2(0.4f, 0.4f);
 	Info.vColor = _float4(0.f, 1.f, 1.f, 1.f);
+	Info.fSizeSpeed = -1.f;
 
 	XMStoreFloat4(&Info.vPos, pBullet->Get_Component<CTransform>()->Get_State(CTransform::STATE::STATE_POS));
 
@@ -583,7 +656,7 @@ void CPhantom::Create_Meteor()
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
 	BulletDesc.fRadius = 0.2f;
 	BulletDesc.fLifeTime = 0.f;
-	BulletDesc.fSpeed = 5.f;
+	BulletDesc.fSpeed = 10.f;
 	BulletDesc.pTarget = m_pPlayer;
 
 	_float fX = Random({ -1.f,-0.7f,-0.5f,-0.3f,-0.2f,-0.1f,0.f,0.1f,0.2f,0.3f,0.5f,0.7f,1.f});
@@ -615,7 +688,7 @@ void CPhantom::Drop_Floor(_uint iFloorType)
 
 	for (auto& iter : Plateform)
 	{
-		wstring strTag = CUtility_String::Get_LastName(dynamic_cast<CPlateform*>(iter)->Get_ModelTag());
+		/*wstring strTag = CUtility_String::Get_LastName(dynamic_cast<CPlateform*>(iter)->Get_ModelTag());
 
 		if (!wcscmp(strTag.c_str(),
 			CUtility_String::Get_LastName(MODEL_TREE_PLATEFORME01X01_TAG).c_str()))
@@ -631,6 +704,27 @@ void CPhantom::Drop_Floor(_uint iFloorType)
 				if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -4)
 				{
 					dynamic_cast<CPlateform*>(iter)->Set_Fall();
+				}
+			}
+		}*/
+		if (!wcscmp(iter->Get_ProtoTag().c_str(),
+			GO_PLATEFORM_TAG))
+		{
+
+			if (dynamic_cast<CPlateform*>(iter)->Compare_ModelTag(MODEL_TREE_PLATEFORME01X01_TAG))
+			{
+				if (iFloorType == 0)
+				{
+					if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -3)
+					{
+						dynamic_cast<CPlateform*>(iter)->Set_Fall();
+					}
+				}
+				else if (iFloorType == 1) {
+					if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -4)
+					{
+						dynamic_cast<CPlateform*>(iter)->Set_Fall();
+					}
 				}
 			}
 		}
@@ -680,8 +774,28 @@ void CPhantom::Judge_Dead()
 		if (m_pIDLEParicle != nullptr && !m_pIDLEParicle->Get_Dead())
 		{
 			m_pIDLEParicle->Set_Dead();
+			
+		}
+
+		if (m_pLightEffect != nullptr && !m_pLightEffect->Get_Dead())
+		{
+			m_pLightEffect->Set_Dead();
 		}
 	}
+}
+
+void CPhantom::Fall(_float fTimeDelta)
+{
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+
+	if (XMVector3NearEqual(vPos, XMVectorSet(0.f, 3.f, 0.f, 0.f), XMVectorSet(1000.f, 0.1f, 1000.f, 0.f)))
+		return;
+
+	_vector vUp = m_pTransformCom->Get_State(CTransform::STATE::STATE_UP);
+
+	vPos += XMVector3Normalize(vUp) * -1.f * fTimeDelta;
+
+	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, vPos);
 }
 
 void CPhantom::OnCollisionEnter(CCollider* pCollider, _uint iColID)
@@ -721,6 +835,7 @@ HRESULT CPhantom::Ready_Component()
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
 	if (FAILED(Add_Component<CStateMachine>(COM_STATEMACHINE_TAG, &m_pStateMachineCom))) return E_FAIL;
+	if (FAILED(Add_Component<CTexture>(NOISE_DEFAULT_TAG, &m_pNoiseTextureCom))) return E_FAIL;
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
@@ -753,6 +868,7 @@ HRESULT CPhantom::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::SUMMON_LOOP, CPhantom_Summon_Loop::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::VANISH, CPhantom_Vanish::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DASH, CPhantom_Dash::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::INTROEND, CPhantom_IntroEnd::Create(this)))) return E_FAIL;
 
 	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;

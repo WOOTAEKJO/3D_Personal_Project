@@ -63,7 +63,9 @@ void CEffect_Water::Late_Tick(_float fTimeDelta)
 
 	m_fTimeDelta += fTimeDelta;
 
-	__super::Late_Tick(fTimeDelta);
+	//__super::Late_Tick(fTimeDelta);
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;
 
 }
 

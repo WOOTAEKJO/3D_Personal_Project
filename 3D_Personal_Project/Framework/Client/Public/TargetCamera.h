@@ -37,8 +37,15 @@ public:
 	void	SetUp_LookAt_Height(_float fHeight) { m_fLookAt_Height = fHeight; }
 	void	Reset_LookAt_Height() { m_fLookAt_Height = m_fOriginLookAt_Height; }
 
+	_vector	Camera_Shaking(_fvector vCamPos, _float fTimeDelta);
+	void	Shaking_SetUp(_float fAmplitude, _float fSpeed,_float fTime);
+
+	void	Change_Target(_float fSensitivity,_bool bCutScene, CGameObject* pTarget = nullptr);
+	void	CutSceneSpring(_bool bSpring) { m_bCutSceneSpring = bSpring; }
+
 private:
 	CGameObject* m_pTarget = { nullptr };
+	CGameObject* m_pOriginTarget = { nullptr };
 	CTransform* m_pTargetTransform = { nullptr };
 	CStateMachine* m_pTargetStateMachine = { nullptr };
 
@@ -54,6 +61,10 @@ private:
 
 	_float3			m_vOriginOffset = { 0.7f,-0.5f,0.7f };
 	_float3			m_vOffset;
+
+private:
+	_float2			m_vClampMinMax = { 0.f,0.f };
+
 private:
 	wstring			m_strCurrentNaviTag;
 
@@ -65,12 +76,29 @@ private:
 	_float			m_fTransAcc = { 0.f };
 
 private:
+	_bool			m_bShaking = { false };
+	_float			m_fShakingTimeAcc = { 0.f };
+	_float			m_fShakingAmplitude = { 0.f };
+	_float			m_fShakingSpeed = { 0.f };
+	_float			m_fShakingTime = { 0.f };
+
+private:
+	_bool			m_bCutScene = { false };
+	_bool			m_bCutSceneSpring = { true };
+	_float			m_fSensitivity = { 1.f };
+
+private:
+	_bool			m_bActivate = { false };
+
+private:
 	HRESULT	Ready_Component();
 	void	StateTrans(_float fTimeDelta);
 
 private:
 	void	Mouse_Input(_float fTimeDelta);
 	void	Mouse_Fix();
+
+	void	CutScene(_float fTimeDelta);
 
 public:
 	static	CTargetCamera* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

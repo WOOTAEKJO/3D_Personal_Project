@@ -8,6 +8,9 @@
 
 #include "Monster.h"
 
+#include "Utility_Effect.h"
+#include "Effect_Trail.h"
+
 CCrow::CCrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CNPC(pDevice, pContext)
 {
@@ -44,16 +47,59 @@ HRESULT CCrow::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
-	m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, _float4(27.201f,8.25f,43.852f,1.f));
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("CrowTalk"), TEXT("Crow"), this))) return E_FAIL;
+
+		if (FAILED(m_pStateMachineCom->Init_State(STATE::READY)))
+			return E_FAIL;
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
 		m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+
+		if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+			return E_FAIL;
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS,
+			m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
+
+		if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
+			return E_FAIL;
+	}
 
 	m_pTransformCom->Set_Ground(false);
 
-	//m_Status_Desc.fDetection_Range = ;
+	/*CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, this, _float3(0.f, 0.03f, 0.f),
+		_float3(0.f, 0.04f, 0.f), 30,12, _float4(0.2f, 0.6f, 1.f, 1.f), &m_pTrailEffect);*/
+
+	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, MASK_CROWTRAIL_TAG, this, 0.f,
+		false, _float3(0.f, 0.03f, 0.f), _float3(0.f, 0.045f, 0.f), 100, 12,
+		_float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
+
+
+	/*_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = m_pModelCom->Get_Bones()[5];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(1000.f, 1000.f),
+		vEffectPos, _float4(1.f, 0.7f, 0.3f, 1.f),0.3f);*/
 
 	return S_OK;
 }
@@ -70,12 +116,18 @@ void CCrow::Priority_Tick(_float fTimeDelta)
 
 void CCrow::Tick(_float fTimeDelta)
 {
+	if (m_pTrailEffect != nullptr)
+		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Update(m_pTransformCom->Get_WorldMatrix_Matrix());
 	CNPC::Tick(fTimeDelta);
 }
 
 void CCrow::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
@@ -86,6 +138,37 @@ void CCrow::Late_Tick(_float fTimeDelta)
 }
 
 HRESULT CCrow::Render()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	for (size_t i = 0; i < iNumMeshs; i++)
+	{
+		if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", i)))
+			return E_FAIL;
+
+		m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", i, TEXTURETYPE::TYPE_DIFFUSE);
+
+		m_pShaderCom->Begin(2);
+
+		m_pModelCom->Render(i);
+	}
+
+
+	return S_OK;
+}
+
+HRESULT CCrow::Render_Shadow()
+{
+	if (FAILED(CNPC::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CCrow::Render_Blur()
 {
 	if (FAILED(Bind_ShaderResources()))
 		return E_FAIL;
@@ -204,12 +287,16 @@ _bool CCrow::Find_Range_Monster(_float fRange)
 
 _bool CCrow::Is_Col()
 {
-	return m_pColliderCom->Get_Collision();
+	//return m_pColliderCom->Get_Collision();
+	return m_bCol;
 }
 
 void CCrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
-
+	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
+	{
+		m_bCol = true;
+	}
 }
 
 void CCrow::OnCollisionStay(CCollider* pCollider, _uint iColID)
@@ -241,6 +328,9 @@ HRESULT CCrow::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_iDiscardIndx", &iIndx, sizeof(_uint2))))
 		return E_FAIL;
 
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bHited", &m_bHit_Effect, sizeof(_bool))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -257,8 +347,8 @@ HRESULT CCrow::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	Sphere_Desc.fRadius = 0.2f;
-	Sphere_Desc.vCenter = _float3(0.f, 0.1f, 0.f);
+	Sphere_Desc.fRadius = 0.25f;
+	Sphere_Desc.vCenter = _float3(0.f, 0.f, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 
 	return S_OK;
@@ -278,6 +368,31 @@ HRESULT CCrow::Ready_Animation()
 	Add_TypeAnimIndex(STATE::FOLLOW, 1);
 	Add_TypeAnimIndex(STATE::ATTACK, 1);
 	Add_TypeAnimIndex(STATE::TALK, 2);
+
+	return S_OK;
+}
+
+HRESULT CCrow::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.5f;
+	LightDesc.vDiffuse = _float4(1.f, 0.7f, 0.3f, 1.f);
+	/*LightDesc.vAmbient = _float4(0.8f, 0.f, 0.f, 1.f);
+	LightDesc.vSpecular = LightDesc.vDiffuse;*/
+
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }

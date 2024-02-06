@@ -101,7 +101,9 @@ void CEffect_Reaper::Late_Tick(_float fTimeDelta)
 		break;
 	}
 
-	__super::Late_Tick(fTimeDelta);
+	//__super::Late_Tick(fTimeDelta);
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+		return;
 
 }
 

@@ -5,6 +5,8 @@
 #include "NPC_IDLE.h"
 #include "NPC_Follow.h"
 #include "NPC_Attack.h"
+#include "NPC_Talk.h"
+#include "NPC_Ready.h"
 
 CNPC::CNPC(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
@@ -52,11 +54,21 @@ void CNPC::Tick(_float fTimeDelta)
 void CNPC::Late_Tick(_float fTimeDelta)
 {
 	CCharacter::Late_Tick(fTimeDelta);
+
+	Update_Light();
 }
 
 HRESULT CNPC::Render()
 {
 	if (FAILED(CCharacter::Render()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CNPC::Render_Shadow()
+{
+	if (FAILED(CCharacter::Render_Shadow()))
 		return E_FAIL;
 
 	return S_OK;
@@ -167,9 +179,9 @@ HRESULT CNPC::Ready_State()
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNPC_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::FOLLOW, CNPC_Follow::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNPC_Attack::Create(this)))) return E_FAIL;
-
-	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
-		return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::TALK, CNPC_Talk::Create(this)))) return E_FAIL;
+	if (FAILED(m_pStateMachineCom->Add_State(STATE::READY, CNPC_Ready::Create(this)))) return E_FAIL;
+	
 
 	return S_OK;
 }

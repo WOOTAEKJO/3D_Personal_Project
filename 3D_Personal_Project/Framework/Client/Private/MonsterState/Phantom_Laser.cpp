@@ -20,13 +20,11 @@ void CPhantom_Laser::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::LASER);
 	
-
+	m_pGameInstance->Play_Sound(L"Phantom", L"LaserVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.7f);
 }
 
 _uint CPhantom_Laser::State_Priority_Tick(_float fTimeDelta)
 {
-	
-
 	return m_iStateID;
 }
 
@@ -39,6 +37,8 @@ _uint CPhantom_Laser::State_Tick(_float fTimeDelta)
 		if (m_bAttack)
 		{
 			dynamic_cast<CPhantom*>(m_pOwner)->Create_Laser();
+			m_pGameInstance->Play_Sound(L"Phantom", L"Laser.ogg", CHANNELID::SOUND_BOSS_ATTACK, 0.7f);
+			m_pGameInstance->Play_Sound(L"Phantom", L"LaserFire.ogg", CHANNELID::SOUND_BOSS_HIT, 1.f, true);
 			m_bAttack = false;
 		}
 		else {
@@ -49,6 +49,8 @@ _uint CPhantom_Laser::State_Tick(_float fTimeDelta)
 		}
 	}
 
+	
+
 	m_pOwner->TargetLook();
 	m_pOwnerModel->Play_Animation(fTimeDelta, false);
 
@@ -57,6 +59,15 @@ _uint CPhantom_Laser::State_Tick(_float fTimeDelta)
 
 _uint CPhantom_Laser::State_Late_Tick(_float fTimeDelta)
 {
+	if (m_pOwnerModel->Is_CurAnim_Arrival_TrackPosition(CPhantom::STATE::LASER, 260.f))
+	{
+		if (m_bSound)
+		{
+			m_pGameInstance->Stop_Sound(CHANNELID::SOUND_BOSS_ATTACK);
+			m_bSound = false;
+		}
+	}
+
 	if (m_pOwnerModel->Is_Animation_Finished())
 	{
 		return CPhantom::STATE::VANISH;
@@ -67,7 +78,11 @@ _uint CPhantom_Laser::State_Late_Tick(_float fTimeDelta)
 
 void CPhantom_Laser::State_Exit()
 {
+
+	m_pGameInstance->Stop_Sound(CHANNELID::SOUND_BOSS_HIT);
 	m_bAttack = true;
+	m_bSound = true;
+
 }
 
 CPhantom_Laser* CPhantom_Laser::Create(CGameObject* pGameObject)

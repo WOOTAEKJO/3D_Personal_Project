@@ -21,7 +21,7 @@ public:
 	HRESULT	Ready_Layer_Plateform(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Camera(const wstring& strLayerTag);
 	HRESULT	Ready_Layer_Monster(const wstring& strLayerTag);
-	
+	HRESULT	Ready_Production();
 private:
 	_bool m_bCheck = { true };
 

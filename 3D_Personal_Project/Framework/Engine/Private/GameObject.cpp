@@ -91,7 +91,7 @@ void CGameObject::In_WorldPlanes()
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_float3 fSize = m_pTransformCom->Get_Scaled();
 	//_float fRadius = fSize.x <= fSize.z ? fSize.z : fSize.x;
-	_float fRadius = (fSize.z + fSize.x) * 6.f;
+	_float fRadius = (fSize.z + fSize.x) * 8.f;
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 	m_bIn_WorldPlanes = m_pGameInstance->IsIn_World_FrustumPlanes(vPos, fRadius);
 }

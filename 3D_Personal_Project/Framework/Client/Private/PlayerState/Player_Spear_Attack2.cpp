@@ -20,6 +20,9 @@ void CPlayer_Spear_Attack2::State_Enter()
 	Trans_Attack(true);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ATTACK2);
 	Attack_Particle(1.f);
+
+	m_pGameInstance->Play_Sound(L"Jack", L"Attack2Voice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+	
 }
 
 _uint CPlayer_Spear_Attack2::State_Priority_Tick(_float fTimeDelta)
@@ -31,24 +34,15 @@ _uint CPlayer_Spear_Attack2::State_Priority_Tick(_float fTimeDelta)
 
 _uint CPlayer_Spear_Attack2::State_Tick(_float fTimeDelta)
 {
-	/*if (m_pOwnerModel->Is_Animation_Finished()) {
-
-		Trans_Attack(false);
-
-		m_fTime += fTimeDelta;
-
-		if (m_pOnwerController->Mouse_Down(CPlayer::KEY_STATE::KEY_LB_ATTACK))
+	if (m_bSound)
+	{
+		m_fSoundTime += fTimeDelta;
+		if (m_fSoundTime > 0.13f)
 		{
-			m_fTime = 0.f;
-			return CPlayer::STATE::ATTACK3;
+			m_pGameInstance->Play_Sound(L"Jack", L"Attack2.ogg", CHANNELID::SOUND_PLAYER_ATTACK, 0.5f);
+			m_bSound = false;
 		}
-
-		if (m_fTime > 0.3f)
-		{
-			m_fTime = 0.f;
-			return CPlayer::STATE::IDLE;
-		}
-	}*/
+	}
 	
 	m_fTime += fTimeDelta;
 
@@ -79,6 +73,8 @@ void CPlayer_Spear_Attack2::State_Exit()
 {
 	Trans_Attack(false);
 	m_fTime = 0.f;
+	m_bSound = true;
+	m_fSoundTime = 0.f;
 }
 
 

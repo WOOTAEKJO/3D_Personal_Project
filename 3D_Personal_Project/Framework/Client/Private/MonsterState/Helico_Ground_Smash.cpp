@@ -54,6 +54,8 @@ _uint CHelico_Ground_Smash::State_Late_Tick(_float fTimeDelta)
 		{
 			dynamic_cast<CHelicoScarrow*>(m_pOwner)->Create_Shock_Wave();
 			
+			m_pGameInstance->Play_Sound(L"HelicoScarrow", L"WaveVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
+			m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Wave.ogg", CHANNELID::SOUND_BOSS_HIT, 0.5f);
 
 			m_bAttack = false;
 		}

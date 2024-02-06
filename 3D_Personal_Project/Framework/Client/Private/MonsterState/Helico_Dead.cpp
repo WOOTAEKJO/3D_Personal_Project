@@ -22,15 +22,25 @@ void CHelico_Dead::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DEAD);
 	
-	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT1_TAG, GO_PARTICLESPRITE_TAG,
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1BAT1_TAG, GO_PARTICLESPRITE_TAG,
 		m_pOwner, nullptr, 1.f);
-	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BAT2_TAG, GO_PARTICLESPRITE_TAG,
-		m_pOwner, nullptr, 1.f);
+	CUtility_Effect::Create_Particle_Normal(m_pGameInstance, PARTICLE_BOSS1BAT2_TAG, GO_PARTICLESPRITE_TAG,
+		m_pOwner, nullptr, 1.f,false,false);
 	m_pOwner->Set_Light_Activate(false);
+
+	m_pGameInstance->Play_Sound(L"HelicoScarrow", L"Attack_StartVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
 }
 
 _uint CHelico_Dead::State_Priority_Tick(_float fTimeDelta)
 {
+	m_fTime += fTimeDelta;
+
+	if (m_fTime > 0.5f && m_bIntro)
+	{
+		m_pGameInstance->SetUp_Production(TEXT("Boss2Intro"));
+		m_bIntro = false;
+	}
+
 	return m_iStateID;
 }
 

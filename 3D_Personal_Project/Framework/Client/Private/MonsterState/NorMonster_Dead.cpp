@@ -17,7 +17,7 @@ HRESULT CNorMonster_Dead::Initialize(CGameObject* pGameObject)
 
 void CNorMonster_Dead::State_Enter()
 {
-	m_pOwnerModel->Set_AnimationIndex(8);
+	//m_pOwnerModel->Set_AnimationIndex(8);
 }
 
 _uint CNorMonster_Dead::State_Priority_Tick(_float fTimeDelta)
@@ -28,13 +28,12 @@ _uint CNorMonster_Dead::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNorMonster_Dead::State_Tick(_float fTimeDelta)
 {
+	m_fTime += fTimeDelta;
 
-	if (m_pOwner->Is_Target_Range(7.f * 0.16f ))
-	{
-		return CMonster::STATE::MOVE;
-	}
-
-	m_pOwnerModel->Play_Animation(fTimeDelta, true);
+	if (m_fTime > 2.f)
+		m_pOwner->Set_Dead();
+	
+	//m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
 	return m_iStateID;
 }

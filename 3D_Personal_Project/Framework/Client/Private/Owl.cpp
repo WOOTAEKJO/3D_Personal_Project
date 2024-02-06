@@ -7,6 +7,9 @@
 #include "Player.h"
 
 #include "Monster.h"
+#include "Trigger.h"
+
+#include "Utility_Effect.h"
 
 COwl::COwl(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CNPC(pDevice, pContext)
@@ -14,12 +17,16 @@ COwl::COwl(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 COwl::COwl(const COwl& rhs)
-	: CNPC(rhs)
+	: CNPC(rhs), m_pCount(rhs.m_pCount)
 {
 }
 
 HRESULT COwl::Initialize_Prototype()
 {
+	m_pCount = new _uint;
+
+	*m_pCount = 0;
+
 	return S_OK;
 }
 
@@ -44,13 +51,45 @@ HRESULT COwl::Initialize(void* pArg)
 	if (FAILED(Ready_State()))
 		return E_FAIL;
 
-	//m_pTransformCom->Set_Scaling(0.2f, 0.2f, 0.2f);
+	if (FAILED(Init_Point_Light()))
+		return E_FAIL;
+
+	m_Status_Desc.bHited = false;
+	
+	if (*m_pCount == 0)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Owl"), this)))
+			return E_FAIL;
+
+		*m_pCount += 1;
+	}
+	else if (*m_pCount == 1)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Owl"), this)))
+			return E_FAIL;
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Owl"), this)))
+			return E_FAIL;
+	}
+
+	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
+
+	_float4 vEffectPos;
+	XMStoreFloat4(&vEffectPos, vTmp);
+
+	CBone* pBone = m_pModelCom->Get_Bones()[6];
+
+	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
+		MASK_GLOWTEST_TAG, _float2(10.f, 10.f),
+		vEffectPos, _float4(0.8f, 1.f, 0.8f, 1.f), 0.3f);
 
 	return S_OK;
 }
 
 void COwl::Priority_Tick(_float fTimeDelta)
 {
+	
+
 	CNPC::Priority_Tick(fTimeDelta);
 }
 
@@ -62,6 +101,10 @@ void COwl::Tick(_float fTimeDelta)
 void COwl::Late_Tick(_float fTimeDelta)
 {
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_SHADOW, this)))
+		return;
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
 
 	CNPC::Late_Tick(fTimeDelta);
@@ -90,6 +133,33 @@ HRESULT COwl::Render()
 	return S_OK;
 }
 
+HRESULT COwl::Render_Shadow()
+{
+	if (FAILED(CNPC::Render_Shadow()))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT COwl::Render_Blur()
+{
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
+
+	if (FAILED(m_pModelCom->Bind_Blend(m_pShaderCom, "g_BlendMatrix", 1)))
+		return E_FAIL;
+
+	m_pModelCom->Bind_ShaderResources(m_pShaderCom, "g_DiffuseTexture", 1, TEXTURETYPE::TYPE_DIFFUSE);
+
+	m_pShaderCom->Begin(0);
+
+	m_pModelCom->Render(1);
+
+	return S_OK;
+}
+
 void COwl::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 {
 }
@@ -113,6 +183,8 @@ HRESULT COwl::Bind_ShaderResources()
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matProj", &m_pGameInstance
 		->Get_Transform_Float4x4(CPipeLine::TRANSFORMSTATE::PROJ))))
 		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_RawValue("g_bHited", &m_bHit_Effect, sizeof(_bool))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -120,7 +192,8 @@ HRESULT COwl::Bind_ShaderResources()
 HRESULT COwl::Ready_Component()
 {
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
-	NavigationDesc.iCurrentIndex = m_pPlayer->Get_Component<CNavigation>()->Get_CurrentIndex();
+	//NavigationDesc.iCurrentIndex = m_pPlayer->Get_Component<CNavigation>()->Get_CurrentIndex();
+	//NavigationDesc.iCurrentIndex = 0;
 	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
 
 	if (FAILED(Add_Component<CShader>(SHADER_ANIMMESH_TAG, &m_pShaderCom))) return E_FAIL;
@@ -138,7 +211,11 @@ HRESULT COwl::Ready_Component()
 
 HRESULT COwl::Ready_State()
 {
+
 	if (FAILED(__super::Ready_State()))
+		return E_FAIL;
+
+	if (FAILED(m_pStateMachineCom->Init_State(STATE::IDLE)))
 		return E_FAIL;
 
 	return S_OK;
@@ -150,6 +227,32 @@ HRESULT COwl::Ready_Animation()
 	/*Add_TypeAnimIndex(STATE::FOLLOW, 1);
 	Add_TypeAnimIndex(STATE::ATTACK, 1);*/
 	Add_TypeAnimIndex(STATE::TALK, 2);
+
+	return S_OK;
+}
+
+HRESULT COwl::Init_Point_Light()
+{
+	LIGHT_DESC LightDesc = {};
+	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
+
+	LightDesc.eType = LIGHT_DESC::TYPE_POINT;
+	XMStoreFloat4(&LightDesc.vPos, vPos);
+	LightDesc.fRange = 0.5f;
+	LightDesc.vDiffuse = _float4(0.2f, 0.6f, 0.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.2f, 0.6f, 0.f, 1.f);
+	//LightDesc.vSpecular = LightDesc.vDiffuse;
+
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+
+	if (FAILED(m_pGameInstance->Add_Light(LightDesc, reinterpret_cast<CLight**>(&m_pLight))))
+		return E_FAIL;
+
+	Safe_AddRef(m_pLight);
 
 	return S_OK;
 }
@@ -181,4 +284,9 @@ CGameObject* COwl::Clone(void* pArg)
 void COwl::Free()
 {
 	__super::Free();
+
+	if (m_isCloned == false)
+	{
+		Safe_Delete(m_pCount);
+	}
 }

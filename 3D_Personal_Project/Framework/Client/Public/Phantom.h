@@ -9,7 +9,7 @@ class CPhantom final : public CMonster
 {
 public:
 	enum STATE {ATTAQUE_CHASSE,CHASSE,HIT_CHASSE,IDLE,APPEAR,BOUH,HIT,INTRO,
-	LASER,MARTEAU,DEAD,SHOOT,SUMMON,SUMMON_BOMB,SUMMON_LOOP,VANISH,DASH,STATE_END};
+	LASER,MARTEAU,DEAD,SHOOT,SUMMON,SUMMON_BOMB,SUMMON_LOOP,VANISH,DASH,INTROEND,STATE_END};
 	
 	enum PHASE { PAHSE1, PAHSE2, PAHSE_END };
 
@@ -25,6 +25,8 @@ public:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void Late_Tick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
+	virtual HRESULT Render_Shadow() override;
+	virtual HRESULT Render_Blur() override;
 
 public:
 	PHASE	Get_CurrentPhase() { return m_eCurrentPhase; }
@@ -75,6 +77,9 @@ public:
 	void	Judge_Dead();
 
 public:
+	void	Fall(_float fTimeDelta);
+
+public:
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) override;
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) override;
@@ -102,6 +107,9 @@ private:
 
 private:
 	_bool		m_bSmashTime = { false };
+
+private:
+	_bool		m_bStart = { true };
 
 private:
 	virtual HRESULT Bind_ShaderResources() override;

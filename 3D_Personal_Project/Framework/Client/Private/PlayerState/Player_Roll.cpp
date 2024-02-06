@@ -19,6 +19,9 @@ void CPlayer_Roll::State_Enter()
 {
 	//m_pOwnerModel->Set_AnimationIndex(114);
 	m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+
+	m_pGameInstance->Play_Sound(L"Jack", L"RollVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+	m_pGameInstance->Play_Sound(L"Jack", L"Roll.ogg", CHANNELID::SOUND_PLAYER_MOVE, 1.f);
 }
 
 _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
@@ -30,6 +33,8 @@ _uint CPlayer_Roll::State_Priority_Tick(_float fTimeDelta)
 			&m_pParticle, 1.f, &m_pOwner->Get_BodyModel()->Get_Bones());
 		Particle_Loop_SetUp(m_pParticle, false);
 	}
+
+	
 
 	return m_iStateID;
 }
@@ -43,7 +48,11 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 		if (m_pOwnerModel->Is_Animation_Finished())
 		{
 			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+			{
+				m_pGameInstance->Play_Sound(L"Jack", L"RollVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+				m_pGameInstance->Play_Sound(L"Jack", L"Roll.ogg", CHANNELID::SOUND_PLAYER_MOVE, 1.f);
 				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			}
 			else
 				return CPlayer::STATE::RUN;
 		}
@@ -54,7 +63,11 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 		if (m_pOwnerModel->Is_Animation_Finished())
 		{
 			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+			{
+				m_pGameInstance->Play_Sound(L"Jack", L"RollVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+				m_pGameInstance->Play_Sound(L"Jack", L"Roll.ogg", CHANNELID::SOUND_PLAYER_MOVE, 1.f);
 				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			}	
 			else
 				return CPlayer::STATE::RUN;
 		}
@@ -65,7 +78,11 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 		if (m_pOwnerModel->Is_Animation_Finished())
 		{
 			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+			{
+				m_pGameInstance->Play_Sound(L"Jack", L"RollVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+				m_pGameInstance->Play_Sound(L"Jack", L"Roll.ogg", CHANNELID::SOUND_PLAYER_MOVE, 1.f);
 				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			}
 			else
 				return CPlayer::STATE::RUN;
 		}
@@ -75,7 +92,11 @@ _uint CPlayer_Roll::State_Tick(_float fTimeDelta)
 		if (m_pOwnerModel->Is_Animation_Finished())
 		{
 			if (m_pOnwerController->Key_Pressing(CPlayer::KEY_STATE::KEY_ROLL))
+			{
+				m_pGameInstance->Play_Sound(L"Jack", L"RollVoice.ogg", CHANNELID::SOUND_PLAYER_VOICE, 3.f);
+				m_pGameInstance->Play_Sound(L"Jack", L"Roll.ogg", CHANNELID::SOUND_PLAYER_MOVE, 1.f);
 				m_pOwner->Animation_By_Type(CPlayer::STATE::ROLL);
+			}
 			else
 				return CPlayer::STATE::RUN;
 		}

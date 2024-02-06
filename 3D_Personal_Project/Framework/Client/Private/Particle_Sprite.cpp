@@ -79,8 +79,15 @@ void CParticle_Sprite::Late_Tick(_float fTimeDelta)
 ;
 	}
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
-		return;
+	if (m_bBlur) {
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONLIGHT, this)))
+			return;
+	}
+	else {
+		Compute_CamDistance();
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLEND, this)))
+			return;
+	}
 
 	Judge_Dead(fTimeDelta);
 }

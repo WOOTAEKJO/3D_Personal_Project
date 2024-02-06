@@ -19,6 +19,7 @@ HRESULT CNPC_Talk::Initialize(CGameObject* pGameObject)
 void CNPC_Talk::State_Enter()
 {
 	m_pOwner->Set_TypeAnimIndex(CNPC::STATE::TALK);
+
 }
 
 _uint CNPC_Talk::State_Priority_Tick(_float fTimeDelta)
@@ -29,6 +30,7 @@ _uint CNPC_Talk::State_Priority_Tick(_float fTimeDelta)
 
 _uint CNPC_Talk::State_Tick(_float fTimeDelta)
 {
+	
 	m_pOwnerModel->Play_Animation(fTimeDelta, true);
 
 	return m_iStateID;

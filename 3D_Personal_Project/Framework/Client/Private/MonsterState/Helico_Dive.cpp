@@ -19,6 +19,7 @@ HRESULT CHelico_Dive::Initialize(CGameObject* pGameObject)
 void CHelico_Dive::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CHelicoScarrow::STATE::DIVE);
+	m_pGameInstance->Play_Sound(L"HelicoScarrow", L"WaveVoice.ogg", CHANNELID::SOUND_BOSS_VOICE, 0.5f);
 }
 
 _uint CHelico_Dive::State_Priority_Tick(_float fTimeDelta)

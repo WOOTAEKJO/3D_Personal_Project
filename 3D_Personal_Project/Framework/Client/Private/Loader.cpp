@@ -28,6 +28,7 @@
 #include "Particle_Attack.h"
 #include "Particle_Always.h"
 #include "Particle_Stage.h"
+#include "Particle_NonBlur.h"
 
 #include "Effect_Damage.h"
 #include "Effect_Halo.h"
@@ -38,6 +39,8 @@
 #include "Effect_Energy.h"
 #include "Effect_Target.h"
 #include "Effect_Water.h"
+#include "Effect_Trail.h"
+#include "Effect_Light.h"
 
 #include "Player.h"
 #include "Player_Body.h"
@@ -45,6 +48,7 @@
 #include "Player_Weapon_Shovel.h"
 #include "Crow.h"
 #include "Owl.h"
+#include "CrowDummy.h"
 
 #include "Spooketon.h"
 #include "SkullCrossBow.h"
@@ -64,6 +68,13 @@
 #include "Target_Bullet.h"
 #include "Meteor.h"
 
+#include "CameraPoint.h"
+
+#include "Puzzle.h"
+
+#include "UI_ChatBox.h"
+#include "UI_HP.h"
+#include "UI_Dissolve.h"
 
 CLoader::CLoader(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	: m_pDevice(pDevice)
@@ -123,7 +134,8 @@ HRESULT CLoader::Loading()
 	// 소유권 획득을 요구
 
 	HRESULT hr = 0;
-	m_pGameInstance->Set_Current_Level(m_eNextLevelID);
+	
+
 	switch (m_eNextLevelID)
 	{
 	case LEVEL_LOGO:
@@ -158,16 +170,29 @@ HRESULT CLoader::Loading_For_Logo_Level()
 	/* 로고 레벨에 필요한 자원을 로드하자. */
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로드하는 중입니다."));
 
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_HEADDEATH_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING1_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SPINNER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_MAIN_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_BACKGROUND_TAG, 2))) return E_FAIL;
-		
+
 	lstrcpy(m_szLoadingText, TEXT("모델를(을) 로드하는 중입니다."));
+
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를(을) 로드하는 중입니다."));
 	
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CBackGround>(G0_BACKGROUND_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CGameObject_Test>(GO_GAMEOBJECTTEST_TAG))) return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_ChatBox>(GO_UICHATBOX_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -195,6 +220,8 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Trail>(BUFFER_TRAIL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -253,10 +280,15 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CCrow>(ANIMMODEL_CROW_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<COwl>(ANIMMODEL_OWL_TAG))) return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CCrowDummy>(GO_CROWDUMMY_TAG))) return E_FAIL;
+	
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(ANIMMODEL_SPOOKETON_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkullCrossBow>(ANIMMODEL_SKULLCROSSBOW_TAG))) return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTrigger>(GO_TRIGGER_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPuzzle>(GO_PUZZLE_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CNormal_Bullet>(GO_NORMAL_BULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CRange_Bullet>(GO_RANGE_BULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CShock_Wave>(GO_SHOCK_WAVE_TAG))) return E_FAIL;
@@ -267,14 +299,18 @@ HRESULT CLoader::Loading_For_GamePlay_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Attack>(GO_PARTICLEATTACK_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Always>(GO_PARTICLEALWAYS_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_Stage>(GO_PARTICLESTAGE_TAG))) return E_FAIL;
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CParticle_NonBlur>(GO_PARTICLENONBLUR_TAG))) return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Damage>(GO_EFFECTDAMAGE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Halo>(GO_EFFECTHALO_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Soul>(GO_EFFECTSOUL_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Reaper>(GO_EFFECTREAPER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Energy>(GO_EFFECTENERGY_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Trail>(GO_EFFECTTRAIL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Light>(GO_EFFECTLIGHT_TAG))) return E_FAIL;
 
-	
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_HP>(GO_UIHP_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CUI_Dissolve>(GO_UIDISSOLVE_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -370,6 +406,8 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN2_TAG))) return E_FAIL;
 	//if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DTerrain>(BUFFER_DTERRAIN_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Trail>(BUFFER_TRAIL_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -406,22 +444,13 @@ HRESULT CLoader::Loading_For_Boss1_Level()
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체를(을) 로드하는 중입니다."));
 
-	//if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTerrain>(G0_TERRAIN2_TAG))) return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTargetCamera>(GO_TARGETCAMERA_TAG))) return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlateform>(GO_PLATEFORM_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSkyBox>(GO_SKYBOX_TAG))) return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer>(ANIMMODEL_JACK_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Body>(GO_PLAYER_BODY_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Spear>(GO_PLAYER_SPEAR_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPlayer_Weapon_Shovel>(GO_PLAYER_SHOVEL_TAG))) return E_FAIL;
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CCrow>(ANIMMODEL_CROW_TAG))) return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CSpooketon>(ANIMMODEL_SPOOKETON_TAG))) return E_FAIL;*/
+	
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelicoScarrow>(ANIMMODEL_HELICOSCARROW_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CHelico_Bullet>(MODEL_HELICOBULLET_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPhantom>(ANIMMODEL_PHANTOM_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CCameraPoint>(GO_CAMERAPOINT_TAG))) return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -447,6 +476,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_Terrain_ProtoType_Binary(BUFFER_TERRAIN3_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Cube>(BUFFER_CUBE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_DRect>(BUFFER_DRECT_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Buffer_ProtoType<CVIBuffer_Trail>(BUFFER_TRAIL_TAG))) return E_FAIL;
 
 	_matrix	matPivot;
 	matPivot = XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -488,7 +518,7 @@ HRESULT CLoader::Loading_For_Boss2_Level()
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CTarget_Bullet>(GO_TARGETBULLET_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CMeteor>(GO_METEOR_TAG))) return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CPhantom>(ANIMMODEL_PHANTOM_TAG))) return E_FAIL;
+	
 
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_Laser>(GO_EFFECTLASER_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_GameObject_ProtoType<CEffect_DashRoad>(GO_EFFECTDASHROAD_TAG))) return E_FAIL;
@@ -526,6 +556,15 @@ HRESULT CLoader::Item()
 	matPivot = XMMatrixScaling(0.0015f, 0.0015f, 0.0015f) * XMMatrixRotationY(XMConvertToRadians(180.f));
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_HELICOBULLET_TAG, matPivot))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_BOMB_TAG, matPivot))) return E_FAIL;
+
+	matPivot = XMMatrixScaling(0.002f, 0.002f, 0.002f) * XMMatrixRotationY(XMConvertToRadians(180.f));
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_ENVY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GLUTTONY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_GREED_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_LUXURY_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_PRIDE_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_SLOTH_TAG, matPivot))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Model_ProtoType(MODEL_WRATH_TAG, matPivot))) return E_FAIL;
 
 #pragma endregion
 
@@ -739,6 +778,41 @@ HRESULT CLoader::Effect_Tex()
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_LASER_TAG, 1))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(TEX_WATER_TAG, 1))) return E_FAIL;
 
+	//----- Mask -------
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_GLOWTEST_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_JACKTRAIL3_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_CROWTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_NORMALBULLETTRAIL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(MASK_LIGHTMASK_TAG, 1))) return E_FAIL;
+
+	//----- UI -------
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_CROW_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_JACK_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_OWL_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_PHANTOM_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SCARECROW_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_CHATBOX_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_CROWLIFEBAR_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LIFEBARMASK_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_HEADDEATH_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING1_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADING2_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SPINNER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_MAIN_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGHOLDER_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_LOADINGLOGO_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_SUBBAR_TAG, 1))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(UI_DISSOLVE_TAG, 1))) return E_FAIL;
+
+	// ------ Noise ----------
+
+	if (FAILED(m_pGameInstance->Add_Texture_ProtoType(NOISE_DEFAULT_TAG, 1))) return E_FAIL;
+
 	return S_OK;
 }
 
@@ -802,8 +876,17 @@ HRESULT CLoader::Particle()
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION2_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_METEOREXPLOSION3_TAG))) return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_STAGE1IDLE_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_STAGE2IDLE_TAG))) return E_FAIL;
 	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_STAGE3IDLE_TAG))) return E_FAIL;
-	
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT1_TAG))) return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_BOSS1BAT2_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_PORTAL_TAG))) return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Particle_ProtoType(PARTICLE_DUST_TAG))) return E_FAIL;
+
 	return S_OK;
 }
 

@@ -13,6 +13,8 @@
 #include "Light_Manager.h"
 #include "Camera_Manager.h"
 #include "Frustum.h"
+#include "Production_Manager.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
@@ -113,6 +115,16 @@ HRESULT CGameInstance::Initialize_Engine(_uint iNumLevels, const wstring& strFil
 	if (nullptr == m_pFrustum)
 		return E_FAIL;
 
+	/* 연출 매니저 사용 준비*/
+	m_pProduction_Manager = CProduction_Manager::Create();
+	if (nullptr == m_pProduction_Manager)
+		return E_FAIL;
+
+	/* 사운드 매니저 사용 준비*/
+	m_pSound_Manager = CSound_Manager::Create();
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+	
 	m_pDevice = *ppDevice;
 	m_pContext = *ppContext;
 
@@ -139,6 +151,8 @@ void CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pPipeLine->Tick();
 	m_pFrustum->Tick();
 	
+	m_pProduction_Manager->Tick();
+
 	m_pLevel_Manager->Tick(fTimeDelta);
 
 	m_pInput_Device->LateUpdate_InputDev();
@@ -153,6 +167,8 @@ HRESULT CGameInstance::Render_Engine()
 		return E_FAIL;
 
 	m_pRenderer->Draw_RenderGroup();
+
+	m_pProduction_Manager->Render();
 
 #ifdef _DEBUG
 	m_pLevel_Manager->Render();
@@ -413,6 +429,14 @@ HRESULT CGameInstance::Add_DebugRender(CComponent* pComponent)
 		return E_FAIL;
 
 	return m_pRenderer->Add_DebugRender(pComponent);
+}
+
+void CGameInstance::Fog_SetUp(_float2 vForStart_End, _float4 vFogColor)
+{
+	if (nullptr == m_pRenderer)
+		return ;
+
+	m_pRenderer->Fog_SetUp(vForStart_End, vFogColor);
 }
 
 HRESULT CGameInstance::Add_Event(const wstring& strEventTag, function<void()> pFunction)
@@ -711,12 +735,12 @@ HRESULT CGameInstance::Add_MRT(const wstring& strMRTTag, RTV_TYPE eType)
 	return m_pRenderTarget_Manager->Add_MRT(strMRTTag, eType);
 }
 
-HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
 {
 	if (nullptr == m_pRenderTarget_Manager)
 		return E_FAIL;
 
-	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pRenderTarget_Manager->Begin_MRT(strMRTTag, pDSV);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -735,6 +759,8 @@ HRESULT CGameInstance::Bind_RenderTarget_ShaderResource(RTV_TYPE eType, CShader*
 	return m_pRenderTarget_Manager->Bind_ShaderResource(eType, pShader, pConstantName);
 }
 
+#ifdef _DEBUG
+
 HRESULT CGameInstance::Ready_RTV_Debug(RTV_TYPE eType, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	if (nullptr == m_pRenderTarget_Manager)
@@ -750,6 +776,8 @@ HRESULT CGameInstance::Render_MRT_Debug(const wstring& strMRTTag, CShader* pShad
 
 	return m_pRenderTarget_Manager->Render_Debug(strMRTTag, pShader, pBuffer);
 }
+
+#endif
 
 HRESULT CGameInstance::Add_Light(const LIGHT_DESC& eLightDesc,CLight** ppLight)
 {
@@ -773,6 +801,22 @@ HRESULT CGameInstance::Render_Light(CShader* pShader, CVIBuffer_Rect* pBuffer)
 		return E_FAIL;
 
 	return m_pLight_Manager->Render(pShader, pBuffer);
+}
+
+HRESULT CGameInstance::Add_ShadowLight(const SHADOW_LIGHT_DESC& eLightDesc)
+{
+	if (nullptr == m_pLight_Manager)
+		return E_FAIL;
+
+	return m_pLight_Manager->Add_ShadowLight(eLightDesc);
+}
+
+CShadowLight* CGameInstance::Get_ShadowLight()
+{
+	if (nullptr == m_pLight_Manager)
+		return nullptr;
+
+	return m_pLight_Manager->Get_ShadowLight();
 }
 
 HRESULT CGameInstance::Add_Camera(const wstring& strCameraTag, CCamera* pCamera)
@@ -816,11 +860,93 @@ _bool CGameInstance::IsIn_World_FrustumPlanes(_fvector vPoint, _float fRadius)
 	return m_pFrustum->IsIn_World_FrustumPlanes(vPoint, fRadius);
 }
 
+HRESULT CGameInstance::Add_Production(const wstring& strProductionTag, CProduction* pProduction)
+{
+	if (m_pProduction_Manager == nullptr)
+		return E_FAIL;
+
+	return m_pProduction_Manager->Add_Production(strProductionTag, pProduction);
+}
+
+HRESULT CGameInstance::Add_Actor(const wstring& strProductionTag, const wstring& strActorTag, CGameObject* pActor)
+{
+	if (m_pProduction_Manager == nullptr)
+		return E_FAIL;
+
+	return m_pProduction_Manager->Add_Actor(strProductionTag, strActorTag, pActor);
+}
+
+void CGameInstance::SetUp_Production(const wstring& strProductionTag)
+{
+	if (m_pProduction_Manager == nullptr)
+		return;
+
+	m_pProduction_Manager->SetUp_Production(strProductionTag);
+}
+
+void CGameInstance::Finish_Production()
+{
+	if (m_pProduction_Manager == nullptr)
+		return;
+
+	m_pProduction_Manager->Finish_Production();
+}
+
+void CGameInstance::Play_Sound(const wstring& strGroupKey, const wstring& strSoundKey, CHANNELID eID, _float fVolume, _bool bLoop)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Play_Sound(strGroupKey, strSoundKey, eID, fVolume, bLoop);
+}
+
+void CGameInstance::Play_BGM(const wstring& strGroupKey, const wstring& strSoundKey, _float fVolume)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Play_BGM(strGroupKey, strSoundKey, fVolume);
+}
+
+void CGameInstance::Stop_Sound(CHANNELID eID)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Stop_Sound(eID);
+}
+
+void CGameInstance::Stop_All()
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Stop_All();
+}
+
+void CGameInstance::Set_ChannelVolume(CHANNELID eID, float fVolume)
+{
+	if (m_pSound_Manager == nullptr)
+		return;
+
+	m_pSound_Manager->Set_ChannelVolume(eID, fVolume);
+}
+
+_bool CGameInstance::Is_SoundFinished(CHANNELID eID)
+{
+	if (m_pSound_Manager == nullptr)
+		return false;
+
+	return m_pSound_Manager->Is_SoundFinished(eID);
+}
+
 void CGameInstance::Release_Manager()
 {
 	Safe_Release(m_pDevice);
 	Safe_Release(m_pContext);
 
+	Safe_Release(m_pSound_Manager);
+	Safe_Release(m_pProduction_Manager);
 	Safe_Release(m_pFrustum);
 	Safe_Release(m_pLight_Manager);
 	Safe_Release(m_pFile_Manager);
