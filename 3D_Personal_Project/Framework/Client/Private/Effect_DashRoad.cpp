@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "Character.h"
 
+#include "Multiply.h"
+
 CEffect_DashRoad::CEffect_DashRoad(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CEffect(pDevice, pContext)
 {
@@ -72,7 +74,7 @@ void CEffect_DashRoad::Tick(_float fTimeDelta)
 
 void CEffect_DashRoad::Late_Tick(_float fTimeDelta)
 {
-	if (m_pOwner == nullptr || m_pOwner->Get_Dead())
+	if (m_pOwner == nullptr || m_pOwner->Get_Dead() || dynamic_cast<CMultiply*>(m_pOwner)->Get_DeadTime())
 	{
 		Invisibility(fTimeDelta * 5.f);
 

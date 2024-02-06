@@ -283,5 +283,5 @@ void CClient_Production::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pCamera);
+	//Safe_Release(m_pCamera);
 }

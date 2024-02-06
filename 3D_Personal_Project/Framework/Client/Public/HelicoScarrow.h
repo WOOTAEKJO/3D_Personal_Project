@@ -59,6 +59,9 @@ private:
 	virtual HRESULT	Ready_State() override;
 	virtual HRESULT	Init_Point_Light() override;
 
+private:
+	void	Hide();
+
 public:
 	static	CHelicoScarrow* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	virtual CGameObject* Clone(void* pArg) override;

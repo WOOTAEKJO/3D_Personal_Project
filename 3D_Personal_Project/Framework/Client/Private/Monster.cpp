@@ -180,7 +180,7 @@ void CMonster::Monster_Dead(_float fTimeDelta)
 			m_pStateMachineCom->Set_State(CMonster::STATE::DEAD);
 
 			m_bDeadTime = true;
-			//m_bActivate = false;
+			m_bActivate = false;
 
 			m_pColliderCom->Set_UseCol(false);
 

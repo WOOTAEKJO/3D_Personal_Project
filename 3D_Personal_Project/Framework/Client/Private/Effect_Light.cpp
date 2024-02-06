@@ -65,14 +65,17 @@ void CEffect_Light::Late_Tick(_float fTimeDelta)
 	if (m_pOwner == nullptr || m_pOwner->Get_Dead())
 		Set_Dead();
 
-	_float4 vPos;
-	memcpy(&vPos, &m_matWorldMat.m[3], sizeof(_float4));
+	if (m_bActivate)
+	{
+		_float4 vPos;
+		memcpy(&vPos, &m_matWorldMat.m[3], sizeof(_float4));
 
-	_vector vTmpPos = XMLoadFloat4(&vPos);
-	_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_POS);
+		_vector vTmpPos = XMLoadFloat4(&vPos);
+		_vector vCamPos = m_pGameInstance->Get_CameraState_Mat(CPipeLine::CAMERASTATE::CAM_POS);
 
-	if(XMVector3NearEqual(vTmpPos, vCamPos,XMVectorSet(9.f,9.f,9.f,0.f)))
-		__super::Late_Tick(fTimeDelta);
+		if (XMVector3NearEqual(vTmpPos, vCamPos, XMVectorSet(9.f, 9.f, 9.f, 0.f)))
+			__super::Late_Tick(fTimeDelta);
+	}
 }
 
 HRESULT CEffect_Light::Render()

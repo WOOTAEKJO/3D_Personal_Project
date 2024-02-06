@@ -228,6 +228,8 @@
     <ClInclude Include="..\Public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Effect_Water.h" />
     <ClInclude Include="..\Public\Effect_Window.h" />
+    <ClInclude Include="..\Public\Ending.h" />
+    <ClInclude Include="..\Public\Ending2.h" />
     <ClInclude Include="..\Public\GameMgr.h" />
     <ClInclude Include="..\Public\GameObject_Test.h" />
     <ClInclude Include="..\Public\HelicoScarrow.h" />
@@ -400,6 +402,8 @@
     <ClCompile Include="..\Private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Effect_Water.cpp" />
     <ClCompile Include="..\Private\Effect_Window.cpp" />
+    <ClCompile Include="..\Private\Ending.cpp" />
+    <ClCompile Include="..\Private\Ending2.cpp" />
     <ClCompile Include="..\Private\GameMgr.cpp" />
     <ClCompile Include="..\Private\GameObject_Test.cpp" />
     <ClCompile Include="..\Private\HelicoScarrow.cpp" />

@@ -104,6 +104,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
 	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(16.5f, 7.f, 18.5f, 1.f));
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Ending2"), TEXT("Player"), this))) return E_FAIL;
 	}
 		
 

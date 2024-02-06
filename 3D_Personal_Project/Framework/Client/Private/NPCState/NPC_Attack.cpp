@@ -65,9 +65,10 @@ _uint CNPC_Attack::State_Late_Tick(_float fTimeDelta)
 	{
 		if (dynamic_cast<CCrow*>(m_pOwner)->Is_Col())
 			return CNPC::STATE::IDLE;
-		else if(m_pOwner->Is_Target_Range(0.01f))
+		else if(m_pOwner->Is_Target_Range(0.05f))
 			return CNPC::STATE::IDLE;
-
+		else if(m_pGameInstance->Key_Down(DIK_P))
+			return CNPC::STATE::IDLE;
 	}
 
 	return m_iStateID;

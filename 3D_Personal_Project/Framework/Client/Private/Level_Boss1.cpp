@@ -143,6 +143,8 @@ HRESULT CLevel_Boss1::Ready_Layer_Plateform(const wstring& strLayerTag)
 		, GO_CAMERAPOINT_TAG, &TriggerDesc)))
 		return E_FAIL;
 
+	
+
 	return S_OK;
 }
 

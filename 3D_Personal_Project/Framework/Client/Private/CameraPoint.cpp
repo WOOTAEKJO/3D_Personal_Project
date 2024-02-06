@@ -40,7 +40,15 @@ HRESULT CCameraPoint::Initialize(void* pArg)
 
 	m_pTransformCom->LookAt(XMLoadFloat4(&pTriggerDesc->vAtPos));
 
-	if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Intro"), TEXT("Cam"), this))) return E_FAIL;
+	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS1)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss2Intro"), TEXT("Cam"), this))) return E_FAIL;
+	}
+	else if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_BOSS2)
+	{
+		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Ending"), TEXT("Cam"), this))) return E_FAIL;
+	}
+	
 
 	return S_OK;
 }

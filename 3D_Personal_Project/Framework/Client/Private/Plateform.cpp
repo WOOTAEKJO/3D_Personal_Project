@@ -174,6 +174,15 @@ void CPlateform::Update_Light()
 	m_pLight->Open_Light_Desc()->vPos = m_vLightPos;*/
 }
 
+_bool CPlateform::Compare_ModelTag(const wstring& strModelTag)
+{
+	if (!wcscmp(CUtility_String::Get_LastName(m_strModelTag).c_str(),
+		CUtility_String::Get_LastName(strModelTag).c_str()))
+		return true;
+
+	return false;
+}
+
 void CPlateform::Write_Json(json& Out_Json)
 {
 	string strTag;

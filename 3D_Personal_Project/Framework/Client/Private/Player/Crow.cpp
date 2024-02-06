@@ -89,7 +89,7 @@ HRESULT CCrow::Initialize(void* pArg)
 		_float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
 
 
-	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+	/*_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
 
 	_float4 vEffectPos;
@@ -99,7 +99,7 @@ HRESULT CCrow::Initialize(void* pArg)
 
 	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
 		MASK_GLOWTEST_TAG, _float2(1000.f, 1000.f),
-		vEffectPos, _float4(1.f, 0.7f, 0.3f, 1.f),0.3f);
+		vEffectPos, _float4(1.f, 0.7f, 0.3f, 1.f),0.3f);*/
 
 	return S_OK;
 }
@@ -347,8 +347,8 @@ HRESULT CCrow::Ready_Component()
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
-	Sphere_Desc.fRadius = 0.2f;
-	Sphere_Desc.vCenter = _float3(0.f, 0.1f, 0.f);
+	Sphere_Desc.fRadius = 0.25f;
+	Sphere_Desc.vCenter = _float3(0.f, 0.f, 0.f);
 	if (FAILED(Add_Component<CCollider>(COM_COLLIDER_TAG, &m_pColliderCom, &Sphere_Desc))) return E_FAIL;
 
 	return S_OK;

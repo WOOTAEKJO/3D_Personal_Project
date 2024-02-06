@@ -28,6 +28,7 @@ public:
 	virtual HRESULT Render() override;
 
 public:
+	void	Set_Activate(_bool bCheck) { m_bActivate = bCheck; }
 
 private:
 	CTexture* m_pMaskTextureCom = { nullptr };
@@ -42,6 +43,9 @@ private:
 
 private:
 	EFFECT_LIGHT_INFO m_Light_Info;
+
+private:
+	_bool	m_bActivate = { true };
 
 private:
 	virtual HRESULT	Bind_ShaderResources() override;

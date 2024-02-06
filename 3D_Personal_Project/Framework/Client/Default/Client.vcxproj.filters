@@ -586,6 +586,12 @@
     <Filter Include="02.GameObjects\08. Effect\09. Light">
       <UniqueIdentifier>{92dc71c8-5090-4724-b3f5-00bfd7f16d97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="92. Production\07. Ending">
+      <UniqueIdentifier>{22711272-5cf9-4361-8110-5460acb2483f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="92. Production\08. Ending2">
+      <UniqueIdentifier>{c5766cad-80f6-48c4-8fc1-64f54fb2fc47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -1119,6 +1125,12 @@
     <ClInclude Include="..\Public\Effect_Light.h">
       <Filter>02.GameObjects\08. Effect\09. Light</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ending.h">
+      <Filter>92. Production\07. Ending</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ending2.h">
+      <Filter>92. Production\08. Ending2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1624,6 +1636,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\GameMgr.cpp">
       <Filter>96. Manager\02. GameMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ending.cpp">
+      <Filter>92. Production\07. Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ending2.cpp">
+      <Filter>92. Production\08. Ending2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

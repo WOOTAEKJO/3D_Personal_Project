@@ -99,7 +99,7 @@ HRESULT CTargetCamera::Initialize(void* pArg)
 
 void CTargetCamera::Priority_Tick(_float fTimeDelta)
 {
-	//Mouse_Fix();	
+	Mouse_Fix();	
 	StateTrans(fTimeDelta);
 	if (m_bCutScene)
 		CutScene(fTimeDelta);
@@ -283,6 +283,8 @@ void CTargetCamera::Mouse_Fix()
 
 	ClientToScreen(g_hWnd, &pt);
 	SetCursorPos(pt.x, pt.y);
+
+	ShowCursor(false);
 }
 
 void CTargetCamera::CutScene(_float fTimeDelta)

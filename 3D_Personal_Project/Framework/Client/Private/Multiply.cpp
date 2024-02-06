@@ -101,7 +101,11 @@ void CMultiply::Late_Tick(_float fTimeDelta)
 	
 	m_fTimeAcc += fTimeDelta;
 	if (m_fTimeAcc > m_fLifeTime)
+	{
 		Set_Dead();
+		m_bDeadTime = true;
+	}
+		
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
 		return;

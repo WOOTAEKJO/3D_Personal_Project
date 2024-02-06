@@ -38,7 +38,9 @@ HRESULT CShock_Wave::Initialize(void* pArg)
 void CShock_Wave::Priority_Tick(_float fTimeDelta)
 {
 	
-
+	if (m_pGameInstance == nullptr && m_bDead == false)
+		Set_Dead();
+	//자꾸 오류나서 이렇게 조건 잡는다.
 }
 
 void CShock_Wave::Tick(_float fTimeDelta)

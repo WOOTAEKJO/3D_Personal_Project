@@ -294,23 +294,27 @@ void CPhantom::Shock_Wave_Radius_Compute()
 	if (!m_bSmashTime)
 		return;
 
-	if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
-		return;
+	if (m_pStateMachineCom->Get_StateID() == (_uint)STATE::MARTEAU ||
+		m_pStateMachineCom->Get_PrevID() == (_uint)STATE::MARTEAU)
+	{
+		if (m_pShockWave_Col == nullptr || m_pShockWave_Col->Get_Dead())
+			return;
 
-	if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
-		return;
+		if (m_pShockWave_Effect == nullptr || m_pShockWave_Effect->Get_Dead())
+			return;
 
-	_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-	_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK);
+		_vector vColPos = dynamic_cast<CShock_Wave*>(m_pShockWave_Col)->Get_ColWorldMat(1).r[3];
+		_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
+		_vector vLook = m_pTransformCom->Get_State(CTransform::STATE::STATE_LOOK);
 
-	vPos += XMVector3Normalize(vLook) * 2.f;
+		vPos += XMVector3Normalize(vLook) * 2.f;
 
-	_vector vDir = vPos - vColPos;
+		_vector vDir = vPos - vColPos;
 
-	_float fDistance = XMVectorGetX(XMVector3Length(vDir));
+		_float fDistance = XMVectorGetX(XMVector3Length(vDir));
 
-	dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+		dynamic_cast<CEffect_Reaper*>(m_pShockWave_Effect)->Set_Radius(fDistance);
+	}	
 }
 
 void CPhantom::Create_Laser()
@@ -684,7 +688,7 @@ void CPhantom::Drop_Floor(_uint iFloorType)
 
 	for (auto& iter : Plateform)
 	{
-		wstring strTag = CUtility_String::Get_LastName(dynamic_cast<CPlateform*>(iter)->Get_ModelTag());
+		/*wstring strTag = CUtility_String::Get_LastName(dynamic_cast<CPlateform*>(iter)->Get_ModelTag());
 
 		if (!wcscmp(strTag.c_str(),
 			CUtility_String::Get_LastName(MODEL_TREE_PLATEFORME01X01_TAG).c_str()))
@@ -700,6 +704,27 @@ void CPhantom::Drop_Floor(_uint iFloorType)
 				if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -4)
 				{
 					dynamic_cast<CPlateform*>(iter)->Set_Fall();
+				}
+			}
+		}*/
+		if (!wcscmp(iter->Get_ProtoTag().c_str(),
+			GO_PLATEFORM_TAG))
+		{
+
+			if (dynamic_cast<CPlateform*>(iter)->Compare_ModelTag(MODEL_TREE_PLATEFORME01X01_TAG))
+			{
+				if (iFloorType == 0)
+				{
+					if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -3)
+					{
+						dynamic_cast<CPlateform*>(iter)->Set_Fall();
+					}
+				}
+				else if (iFloorType == 1) {
+					if (dynamic_cast<CPlateform*>(iter)->Get_TriggerNum() == -4)
+					{
+						dynamic_cast<CPlateform*>(iter)->Set_Fall();
+					}
 				}
 			}
 		}

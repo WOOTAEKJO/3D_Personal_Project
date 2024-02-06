@@ -37,6 +37,7 @@ public:
 
 public:
 	void	Update_Light();
+	_bool	Compare_ModelTag(const wstring& strModelTag);
 
 public:
 	virtual void Write_Json(json& Out_Json) override;
@@ -44,7 +45,7 @@ public:
 
 public:
 	void		Set_ModelTag(const wstring& strModelTag) { m_strModelTag = strModelTag; }
-	wstring		Get_ModelTag() { return m_strModelTag; }
+	wstring&		Get_ModelTag() { return m_strModelTag; }
 
 	void		Set_TriggerNum(_int iNum) { m_iTriggerNum = iNum; }
 	_int		Get_TriggerNum() { return m_iTriggerNum; }

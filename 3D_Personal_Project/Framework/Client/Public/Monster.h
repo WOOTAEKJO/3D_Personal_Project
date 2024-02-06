@@ -49,6 +49,8 @@ public:
 
 	void		Start_DeadTime() { m_bDeadTime = true; }
 
+	_bool		Get_DeadTime() { return m_bDeadTime; }
+
 protected:
 	CTexture*	m_pNoiseTextureCom = { nullptr };
 

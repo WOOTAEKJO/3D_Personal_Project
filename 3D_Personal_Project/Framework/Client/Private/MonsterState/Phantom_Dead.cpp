@@ -21,7 +21,10 @@ HRESULT CPhantom_Dead::Initialize(CGameObject* pGameObject)
 void CPhantom_Dead::State_Enter()
 {
 	m_pOwnerModel->Set_AnimationIndex(CPhantom::STATE::DEAD);
-	
+	//m_pOwner->Camera_Zoom(_float3(-2.f, -1.f, -2.f));
+	//_float3(-1.5f, -0.5f, -1.5f);
+	//m_pOwner->Camera_SetUp_LookAt_Hegith(1.5f);
+	m_pGameInstance->SetUp_Production(TEXT("Ending"));
 }
 
 _uint CPhantom_Dead::State_Priority_Tick(_float fTimeDelta)
@@ -65,7 +68,7 @@ _uint CPhantom_Dead::State_Tick(_float fTimeDelta)
 			m_pGameInstance->Play_Sound(L"BGM", L"Stage2BGM.ogg", CHANNELID::SOUND_BGM, 0.7f, true);
 
 
-
+			m_pGameInstance->SetUp_Production(TEXT("Ending2"));
 			m_bSound2 = false;
 		}
 

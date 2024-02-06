@@ -28,7 +28,7 @@ void CCrowTalk::Enter()
 
 	PRODUCTION_ACTOR_DESC CrowInfo1 = {};
 	CrowInfo1.fSensitivity = 0.1f;
-	CrowInfo1.vOffset = Compute_Offset(TEXT("Crow"), 0.1f, -0.2f, -0.5f);
+	CrowInfo1.vOffset = Compute_Offset(TEXT("Crow"), 0.1f, 0.05f, -0.3f);
 	CrowInfo1.iAnimIndex = 2;
 	CrowInfo1.strActorTag = TEXT("Crow");
 

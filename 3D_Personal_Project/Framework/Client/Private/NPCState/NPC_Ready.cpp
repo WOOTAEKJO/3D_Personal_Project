@@ -75,9 +75,12 @@ void CNPC_Ready::State_Exit()
 		{
 			if (i == 9)
 				return;
-			dynamic_cast<CMonster*>(iter)->Set_Activate();
-			CGameMgr::GetInstance()->Add_GameToken(iter);
-			++i;
+			if (!dynamic_cast<CMonster*>(iter)->Get_DeadTime())
+			{
+				dynamic_cast<CMonster*>(iter)->Set_Activate();
+				CGameMgr::GetInstance()->Add_GameToken(iter);
+				++i;
+			}
 		}
 
 		})))

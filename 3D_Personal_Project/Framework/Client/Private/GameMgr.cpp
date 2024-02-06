@@ -4,6 +4,8 @@
 #include "GameInstance.h"
 #include "GameObject.h"
 
+#include "Monster.h"
+
 IMPLEMENT_SINGLETON(CGameMgr)
 
 CGameMgr::CGameMgr()
@@ -45,7 +47,7 @@ void CGameMgr::Start_Game(GAME_EVENT_DESC Event_Desc)
 
 void CGameMgr::Is_End_Game()
 {
-	if (!m_bGameActivate || m_listToken.empty())
+	if (m_listToken.empty() || !m_bGameActivate)
 		return;
 
 	_uint iCount = 0;
@@ -54,10 +56,18 @@ void CGameMgr::Is_End_Game()
 	{
 		/*if (!iter->Get_Dead())
 			return;*/
-		if ((iter == nullptr) || iter->Get_Dead())
+		if ((iter == nullptr) || iter->Get_Dead() || dynamic_cast<CMonster*>(iter)->Get_DeadTime())
 			++iCount;
 
 	}
+
+	/*if (iCount == m_iListCount || m_pGameInstance->Key_Down(DIK_1))
+	{
+		m_pGameInstance->Execute_Event(m_Event_Desc.strEndEventName);
+		m_bGameActivate = false;
+		m_iListCount = 0;
+		m_listToken.clear();
+	}*/
 
 	if (iCount == m_iListCount)
 	{
