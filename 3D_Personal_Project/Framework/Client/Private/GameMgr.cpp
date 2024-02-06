@@ -29,6 +29,8 @@ HRESULT CGameMgr::Add_GameToken(CGameObject* pToken)
 
 	m_listToken.push_back(pToken);
 
+	++m_iListCount;
+
 	return S_OK;
 }
 
@@ -46,17 +48,25 @@ void CGameMgr::Is_End_Game()
 	if (!m_bGameActivate || m_listToken.empty())
 		return;
 
+	_uint iCount = 0;
+
 	for (auto& iter : m_listToken)
 	{
-		if (!iter->Get_Dead())
-			return;
-		/*if (iter != nullptr)
+		/*if (!iter->Get_Dead())
 			return;*/
+		if ((iter == nullptr) || iter->Get_Dead())
+			++iCount;
+
 	}
 
-	m_pGameInstance->Execute_Event(m_Event_Desc.strEndEventName);
-	m_bGameActivate = false;
-	m_listToken.clear();
+	if (iCount == m_iListCount)
+	{
+		m_pGameInstance->Execute_Event(m_Event_Desc.strEndEventName);
+		m_bGameActivate = false;
+		m_iListCount = 0;
+		m_listToken.clear();
+	}
+
 }
 
 void CGameMgr::Free()

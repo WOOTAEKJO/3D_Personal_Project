@@ -13,7 +13,7 @@ BEGIN(Client)
 
 class CGameMgr final : public CBase
 {
-	
+
 public:
 	typedef struct tagGmaeMgr_Desc
 	{
@@ -47,7 +47,8 @@ private:
 private:
 	_bool	m_bGameActivate = { false };
 	GAME_EVENT_DESC m_Event_Desc;
-	
+
+	_uint	m_iListCount = { 0 };
 
 public:
 	virtual	void	Free() override;

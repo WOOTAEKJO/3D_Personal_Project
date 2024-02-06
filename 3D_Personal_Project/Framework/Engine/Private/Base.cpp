@@ -22,7 +22,7 @@ _ulong CBase::Release()
 		delete this;
 
 		return 0;
-	}
+	}                          
 	else
 		return m_dwRefCnt--;
 }

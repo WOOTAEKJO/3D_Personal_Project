@@ -1619,11 +1619,11 @@
     <ClCompile Include="..\Private\UI_Dissolve.cpp">
       <Filter>02.GameObjects\09. UI\03. Dissolve</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\GameMgr.cpp">
-      <Filter>96. Manager\02. GameMgr</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Light.cpp">
       <Filter>02.GameObjects\08. Effect\09. Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameMgr.cpp">
+      <Filter>96. Manager\02. GameMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
