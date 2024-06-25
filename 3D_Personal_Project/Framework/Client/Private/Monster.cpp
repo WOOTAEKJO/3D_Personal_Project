@@ -16,21 +16,21 @@
 
 CMonster::CMonster(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
-{
+{// 디바이스와 디바이스 컨텍스트를 받아 초기화
 }
 
 CMonster::CMonster(const CMonster& rhs)
 	:CCharacter(rhs)
-{
+{// 복사 생성자
 }
 
 HRESULT CMonster::Initialize_Prototype()
-{
+{// 원형 객체 초기화
 	return S_OK;
 }
 
 HRESULT CMonster::Initialize(void* pArg)
-{
+{// 사본 객체 초기화
 	
 	if (FAILED(CCharacter::Initialize(pArg)))
 		return E_FAIL;
@@ -39,21 +39,24 @@ HRESULT CMonster::Initialize(void* pArg)
 		g_strLayerName[LAYER_PLAYER]).front());
 	if (m_pPlayer == nullptr)
 		return E_FAIL;
+	// 플레이어 객체를 받아온다.
 
 	m_pPlayer_Transform = m_pPlayer->Get_Component<CTransform>();
 	if (m_pPlayer_Transform == nullptr)
 		return E_FAIL;
+	// 플레이어의 트랜스폼 컴포넌트를 받아온다.
 
 	m_fDissolveAmount = 0.f;
 	m_fDissolveGradiationDistance = 0.f;
 	m_vDissolveGradiationStartColor = _float3(0.f,0.f,0.f);
 	m_vDissolveGradiationGoalColor = _float3(0.f, 0.f, 0.f);
+	// 디졸브 변수 초기화
 
 	return S_OK;
 }
 
 void CMonster::Priority_Tick(_float fTimeDelta)
-{
+{// 우선순위 틱
 	if (!m_bActivate)
 		return;
 
@@ -61,7 +64,7 @@ void CMonster::Priority_Tick(_float fTimeDelta)
 }
 
 void CMonster::Tick(_float fTimeDelta)
-{
+{// 일반적인 틱
 	
 
 	if (!m_bActivate)
@@ -71,7 +74,7 @@ void CMonster::Tick(_float fTimeDelta)
 }
 
 void CMonster::Late_Tick(_float fTimeDelta)
-{
+{// 늦은 틱
 	if (!m_bActivate)
 		return;
 
@@ -81,7 +84,7 @@ void CMonster::Late_Tick(_float fTimeDelta)
 }
 
 HRESULT CMonster::Render()
-{
+{// 객체 렌더링
 	if (!m_bActivate && !m_bDeadTime)
 		return S_OK;
 
@@ -103,7 +106,7 @@ HRESULT CMonster::Render()
 }
 
 HRESULT CMonster::Render_Shadow()
-{
+{// 그림자 렌더링
 	if (!m_bActivate)
 		return S_OK;
 
@@ -114,17 +117,17 @@ HRESULT CMonster::Render_Shadow()
 }
 
 void CMonster::TargetLook()
-{
+{// Y값을 고려하지 않고 타겟을 바라본다.
 	m_pTransformCom->LookAt_OnLand(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 }
 
 void CMonster::TargetLook_Y()
-{
+{// Y값을 고려해서 타겟을 바라본다.
 	m_pTransformCom->LookAt(m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS));
 }
 
 _bool CMonster::Turn(_float fTimeDelta, _bool bCheck)
-{
+{// 회전
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_vector vTargetPos = m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS);
 
@@ -136,7 +139,7 @@ _bool CMonster::Turn(_float fTimeDelta, _bool bCheck)
 }
 
 _bool CMonster::Is_Target_Range(_float fRange)
-{
+{// 범위 안에 타겟 있는지 체크
 	_float vDist = XMVectorGetX(XMVector3Length((m_pPlayer_Transform->Get_State(CTransform::STATE::STATE_POS)
 		- m_pTransformCom->Get_State(CTransform::STATE::STATE_POS))));
 
@@ -147,7 +150,7 @@ _bool CMonster::Is_Target_Range(_float fRange)
 }
 
 CCollider* CMonster::Get_WeaponCollider()
-{
+{// 무기 콜라이더 반환
 	if (m_pWeaponColliderCom == nullptr)
 		return nullptr;
 
@@ -155,7 +158,7 @@ CCollider* CMonster::Get_WeaponCollider()
 }
 
 _float4x4 CMonster::Get_Col_WorldMat()
-{
+{// 콜라이더 월드행렬 반환
 	if(m_pColliderCom == nullptr)
 		return _float4x4();
 
@@ -163,7 +166,7 @@ _float4x4 CMonster::Get_Col_WorldMat()
 }
 
 void CMonster::Monster_Dead(_float fTimeDelta)
-{
+{// 몬스터 죽음 처리
 	if (m_Status_Desc.iCurHP <= 0)
 	{
 		//Set_Dead();
@@ -191,7 +194,7 @@ void CMonster::Monster_Dead(_float fTimeDelta)
 }
 
 void CMonster::Dissolve(_float fAmount, _float fDistance, _float fTimeDelta)
-{
+{// 디졸브 처리
 	if (m_bDeadTime)
 	{
 		if (m_fDissolveAmount < 1.f)
@@ -203,7 +206,7 @@ void CMonster::Dissolve(_float fAmount, _float fDistance, _float fTimeDelta)
 }
 
 HRESULT CMonster::Bind_ShaderResources()
-{
+{// 셰이더 리소스 바인딩
 	if (FAILED(CCharacter::Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -223,7 +226,7 @@ HRESULT CMonster::Bind_ShaderResources()
 }
 
 HRESULT CMonster::Ready_Component()
-{
+{// 컴포넌트 준비
 	if (FAILED(CCharacter::Ready_Component()))
 		return E_FAIL;
 
@@ -233,7 +236,7 @@ HRESULT CMonster::Ready_Component()
 }
 
 HRESULT CMonster::Ready_State()
-{
+{// 일반적인 몬스터 상태 준비
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CNorMonster_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::MOVE, CNorMonster_Move::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK, CNorMonster_Attack::Create(this)))) return E_FAIL;
@@ -249,7 +252,7 @@ HRESULT CMonster::Ready_State()
 }
 
 void CMonster::Free()
-{
+{// 메모리 해제
 	__super::Free();
 
 	Safe_Release(m_pSocketBone);

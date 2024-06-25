@@ -6,7 +6,7 @@ CGameObject::CGameObject(ID3D11Device * pDevice, ID3D11DeviceContext * pContext)
 	, m_pContext(pContext)
 	, m_pGameInstance(CGameInstance::GetInstance())
 	, m_isCloned(false)
-{
+{// 디바이스와 디바이스 컨텍스트를 받아 초기화
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext);
 	Safe_AddRef(m_pGameInstance);
@@ -18,19 +18,19 @@ CGameObject::CGameObject(const CGameObject & rhs)
 	, m_pGameInstance(rhs.m_pGameInstance)
 	, m_isCloned(true)
 	, m_bDead(false)
-{
+{ // 복사 생성자
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pContext); 
 	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CGameObject::Initialize_Prototype()
-{
+{// 원형 객체 초기화
 	return S_OK;
 }
 
 HRESULT CGameObject::Initialize(void* pArg)
-{
+{// 사본 객체 초기화
 	
 	GAMEOBJECT_DESC GameObject_Desc = {};
 
@@ -40,6 +40,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	m_pTransformCom = CTransform::Create(m_pDevice,m_pContext, GameObject_Desc.fSpeedPerSec, GameObject_Desc.fRotationPerSec);
 	if (m_pTransformCom == nullptr)
 		return E_FAIL;
+	// 트랜스폼 컴포넌트 생성
 
 	wstring strTag = TAG_NAME<CTransform>() + TEXT("0");
 
@@ -48,35 +49,39 @@ HRESULT CGameObject::Initialize(void* pArg)
 
 	m_mapComponent.emplace(strTag, m_pTransformCom);
 	Safe_AddRef(m_pTransformCom);
+	// 생성한 트랜스폼 컴포넌트 추가
 	
 	return S_OK;
 }
 
 void CGameObject::Priority_Tick(_float fTimeDelta)
-{
+{// 우선순위 틱
 	for (auto& iter : m_mapComponent)
 	{
 		if (iter.second != nullptr)
 			iter.second->Priority_Tick(fTimeDelta);
 	}
+	// 소유한 컴포넌트의 우선순위 틱 호출
 }
 
 void CGameObject::Tick(_float fTimeDelta)
-{
+{// 일반적인 틱
 	for (auto& iter : m_mapComponent)
 	{
 		if (iter.second != nullptr)
 			iter.second->Tick(fTimeDelta);
 	}
+	// 소유한 컴포넌트의 일반적인 틱 호출
 }
 
 void CGameObject::Late_Tick(_float fTimeDelta)
-{
+{// 늦은 틱
 	for (auto& iter : m_mapComponent)
 	{
 		if (iter.second != nullptr)
 			iter.second->Late_Tick(fTimeDelta);
 	}
+	// 소유한 컴포넌트의 늦은 틱 호출
 
 	In_WorldPlanes();
 }
@@ -87,7 +92,7 @@ HRESULT CGameObject::Render()
 }
 
 void CGameObject::In_WorldPlanes()
-{
+{// 게임 오브젝트가 월드 절두체 평면 안에 있는지 판단
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	_float3 fSize = m_pTransformCom->Get_Scaled();
 	//_float fRadius = fSize.x <= fSize.z ? fSize.z : fSize.x;
@@ -97,7 +102,7 @@ void CGameObject::In_WorldPlanes()
 }
 
 void CGameObject::Write_Json(json& Out_Json)
-{
+{// 제이슨 저장
 	for (auto& iter : m_mapComponent)
 	{
 		if(iter.second->Get_UseJson())
@@ -106,7 +111,7 @@ void CGameObject::Write_Json(json& Out_Json)
 }
 
 void CGameObject::Load_FromJson(const json& In_Json)
-{
+{// 제이슨 로드
 	for (auto& iter : m_mapComponent)
 	{
 		if (iter.second->Get_UseJson())
@@ -115,17 +120,14 @@ void CGameObject::Load_FromJson(const json& In_Json)
 }
 
 void CGameObject::Distroy()
-{
+{// 객체 파괴 시
 	for (auto& iter : m_mapComponent) {
 		iter.second->Set_Owner(nullptr);
 	}
-	/*for (auto& iter : m_mapComponent)
-		Safe_Release(iter.second);
-	m_mapComponent.clear();*/
 }
 
 HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototypeTag, const wstring& strComTag, CComponent** pOut, void* pArg)
-{
+{// 컴포넌트 추가
 	CComponent* pComponent = Find_Component(strComTag);
 	if (pComponent != nullptr)
 		return E_FAIL;
@@ -144,7 +146,7 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const wstring& strPrototyp
 }
 
 CComponent* CGameObject::Find_Component(const wstring& strComTag)
-{
+{// 컴포넌트 검색
 	auto& iter = m_mapComponent.find(strComTag);
 
 	if (iter == m_mapComponent.end())
@@ -154,7 +156,7 @@ CComponent* CGameObject::Find_Component(const wstring& strComTag)
 }
 
 HRESULT CGameObject::Delete_Component(const wstring& strComTag)
-{
+{// 컴포넌트 삭제
 	auto& iter = m_mapComponent.find(strComTag);
 
 	if (iter == m_mapComponent.end())
@@ -168,7 +170,7 @@ HRESULT CGameObject::Delete_Component(const wstring& strComTag)
 }
 
 void CGameObject::Free()
-{
+{// 메모리 해제
 	__super::Free();
 
 	Safe_Release(m_pTransformCom);

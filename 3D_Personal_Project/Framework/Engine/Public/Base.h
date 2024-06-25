@@ -30,7 +30,7 @@ public:
 		const _char* szTmp = typeid(T).name();
 		MultiByteToWideChar(CP_ACP, 0, szTmp, strlen(szTmp), szFullPath, MAX_PATH);
 		return szFullPath;
-	}
+	} // 클래스 명을 wstring 형식으로 반환
 
 public:
 	virtual void Write_Json(json& Out_Json) {};

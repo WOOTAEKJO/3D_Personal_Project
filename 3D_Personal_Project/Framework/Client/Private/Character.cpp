@@ -10,21 +10,21 @@
 
 CCharacter::CCharacter(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
-{
+{// 디바이스와 디바이스 컨텍스트를 받아 초기화
 }
 
 CCharacter::CCharacter(const CCharacter& rhs)
 	:CGameObject(rhs)
-{
+{// 복사 생성자
 }
 
 HRESULT CCharacter::Initialize_Prototype()
-{
+{// 원형 객체 초기화
 	return S_OK;
 }
 
 HRESULT CCharacter::Initialize(void* pArg)
-{
+{// 사본 객체 초기화
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
@@ -39,20 +39,21 @@ HRESULT CCharacter::Initialize(void* pArg)
 }
 
 void CCharacter::Priority_Tick(_float fTimeDelta)
-{
+{// 우선순위 틱
 	if(m_pColliderCom != nullptr)
 		m_pColliderCom->Update(m_pTransformCom->Get_WorldMatrix_Matrix());
+	// 콜라이더 업데이트
 
 	CGameObject::Priority_Tick(fTimeDelta);
 }
 
 void CCharacter::Tick(_float fTimeDelta)
-{
+{// 일반적인 틱
 	CGameObject::Tick(fTimeDelta);
 }
 
 void CCharacter::Late_Tick(_float fTimeDelta)
-{	
+{// 늦은 틱
 	CGameObject::Late_Tick(fTimeDelta);
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom))) return;
@@ -75,14 +76,13 @@ HRESULT CCharacter::Render()
 
 		m_pModelCom->Render(i);
 	}
+	// 객체 렌더링
 
 	return S_OK;
 }
 
 HRESULT CCharacter::Render_Shadow()
 {
-	/*if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat)))
-		return E_FAIL;*/
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance->Get_ShadowLight()->
@@ -94,6 +94,8 @@ HRESULT CCharacter::Render_Shadow()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightFar", &m_pGameInstance->Get_ShadowLight()->
 		Open_Light_Desc()->fFar, sizeof(_float))))
 		return E_FAIL;
+
+	// 셰이더 리소스 바인딩
 
 	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
@@ -108,12 +110,12 @@ HRESULT CCharacter::Render_Shadow()
 
 		m_pModelCom->Render(i);
 	}
-
+	// 객체 그림자 렌더링
 	return S_OK;
 }
 
 void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
-{
+{// 애니메이션 전환
 	if (m_pModelCom == nullptr)
 		return;
 
@@ -126,7 +128,7 @@ void CCharacter::Set_TypeAnimIndex(_uint iAnimTag)
 }
 
 void CCharacter::Set_Light_Activate(_bool bCheck)
-{
+{// 라이트 활성화/비활성화
 	if (m_pLight == nullptr)
 		return;
 
@@ -134,7 +136,7 @@ void CCharacter::Set_Light_Activate(_bool bCheck)
 }
 
 void CCharacter::Camera_Zoom(_float3 vOffset)
-{
+{// 카메라 줌
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_CAMERA]).front());
 
@@ -145,7 +147,7 @@ void CCharacter::Camera_Zoom(_float3 vOffset)
 }
 
 void CCharacter::Camera_Shaking(_float fAmplitude, _float fSpeed, _float fTime)
-{
+{// 카메라 쉐이킹
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_CAMERA]).front());
 
@@ -153,7 +155,7 @@ void CCharacter::Camera_Shaking(_float fAmplitude, _float fSpeed, _float fTime)
 }
 
 void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
-{
+{// 카메라 LookAt 높이 변경
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_CAMERA]).front());
 
@@ -164,7 +166,7 @@ void CCharacter::Camera_SetUp_LookAt_Hegith(_float fHeight)
 }
 
 void CCharacter::Camera_Target_Change(_float3 vOffset,_float fSensitivity, _bool bCutScene, CGameObject* pTarget)
-{
+{// 카메라 타겟 변경
 	CTargetCamera* pCamera = dynamic_cast<CTargetCamera*>(m_pGameInstance->Get_ObjectList(m_pGameInstance->Get_Current_Level(),
 		g_strLayerName[LAYER::LAYER_CAMERA]).front());
 
@@ -186,7 +188,7 @@ HRESULT CCharacter::Init_Point_Light()
 }
 
 void CCharacter::Update_Light()
-{
+{// 라이트 위치 업데이트
 	if (m_pLight == nullptr)
 		return;
 
@@ -196,7 +198,7 @@ void CCharacter::Update_Light()
 }
 
 HRESULT CCharacter::Bind_ShaderResources()
-{
+{// 셰이더 리소스 바인딩
 	if (FAILED(m_pTransformCom->Bind_ShaderResources(m_pShaderCom, "g_matWorld")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matView", &m_pGameInstance
@@ -213,7 +215,7 @@ HRESULT CCharacter::Bind_ShaderResources()
 }
 
 HRESULT CCharacter::Ready_Component()
-{
+{// 컴포넌트 준비
 
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
@@ -241,7 +243,7 @@ HRESULT CCharacter::Ready_Act()
 }
 
 void CCharacter::Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex)
-{
+{// 애니메이션 추가
 	_int iAnimIndx = Find_TypeAnimIndex(iAnimTag);
 	if (iAnimIndx != -1)
 		return;
@@ -250,7 +252,7 @@ void CCharacter::Add_TypeAnimIndex(_uint iAnimTag, _uint iAnimIndex)
 }
 
 _int CCharacter::Find_TypeAnimIndex(_uint iAnimTag)
-{
+{// 애니메이션 검색
 	auto& iter = m_mapTypeAnimIndex.find(iAnimTag);
 	if (iter == m_mapTypeAnimIndex.end())
 		return -1;
@@ -259,7 +261,7 @@ _int CCharacter::Find_TypeAnimIndex(_uint iAnimTag)
 }
 
 void CCharacter::Pushed()
-{
+{// 밀림
 	_vector vDir = XMLoadFloat3(&m_pColliderCom->Get_CollisionDir());
 	_float fDist = m_pColliderCom->Get_PushedDist();
 
@@ -269,12 +271,12 @@ void CCharacter::Pushed()
 }
 
 void CCharacter::Pushed_Reset()
-{
+{// 밀림 리셋
 	m_pRigidBodyCom->Reset_Force(CRigidBody::TYPE::TYPE_ACCEL);
 }
 
 void CCharacter::Reset_Hit(_float fTimeDelta)
-{
+{// 히트 리셋
 	if (!m_bHit_Effect)
 		return;
 
@@ -288,7 +290,7 @@ void CCharacter::Reset_Hit(_float fTimeDelta)
 }
 
 void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextureTag)
-{
+{// 데미지 이펙트 생성
 	CEffect::EFFECTINFO Info = {};
 	Info.pOwner = this;
 	Info.fLifeTime = fLifeTime;
@@ -302,8 +304,6 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 
 	_float2 vRandom;
 	m_pGameInstance->Random_Float2(&vRandom, -0.1f, 0.1f);
-	/*vCamPos.m128_f32[0] += vRandom.x;
-	vCamPos.m128_f32[1] += vRandom.y;*/
 
 	_vector vDir = XMVector3Normalize(vCamPos - vPos);
 	vPos += vDir * m_pTransformCom->Get_Scaled().z * 0.5f;
@@ -318,7 +318,7 @@ void CCharacter::Create_Damage_Effect(_float fLifeTime, const wstring& strTextur
 }
 
 void CCharacter::Create_Soul_Effect(_float fLifeTime)
-{
+{// 소울 이펙트 생성
 	CEffect::EFFECTINFO Info = {};
 	Info.pOwner = this;
 	Info.fLifeTime = fLifeTime;
@@ -335,7 +335,7 @@ void CCharacter::Create_Soul_Effect(_float fLifeTime)
 }
 
 void CCharacter::Free()
-{
+{// 메모리 해제
 	__super::Free();
 
 	Safe_Release(m_pModelCom);

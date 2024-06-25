@@ -15,36 +15,35 @@
 
 CPlayer_Weapon_Shovel::CPlayer_Weapon_Shovel(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CGameObject(pDevice, pContext)
-{
+{// 디바이스와 디바이스 컨텍스트를 받아 초기화
 }
 
 CPlayer_Weapon_Shovel::CPlayer_Weapon_Shovel(const CPlayer_Weapon_Shovel& rhs)
 	: CGameObject(rhs)
-{
+{// 복사 생성자
 }
 
 HRESULT CPlayer_Weapon_Shovel::Initialize_Prototype()
-{
+{// 원형 객체 초기화
 	return S_OK;
 }
 
 HRESULT CPlayer_Weapon_Shovel::Initialize(void* pArg)
-{
+{// 사본 객체 초기화
 
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Component()))
-		return E_FAIL;*/
 
 	if (FAILED(m_pGameInstance->Load_Data_Json(GO_PLAYER_SHOVEL_TAG,this)))
-		return E_FAIL;
+		return E_FAIL; // 제이슨 파일 로드
 
 	PLAYERSHOVEL_DESC* Desc = ((PLAYERSHOVEL_DESC*)pArg);
 
 	m_pOwner = dynamic_cast<CPlayer*>( Desc->pOwner);
 	if (m_pOwner == nullptr)
 		return E_FAIL;
+	// 플레이어 객체를 오너로 받는다.
 
 	m_pParentsTransform = Desc->pParentsTransform;
 	Safe_AddRef(m_pParentsTransform);
@@ -52,21 +51,26 @@ HRESULT CPlayer_Weapon_Shovel::Initialize(void* pArg)
 	Safe_AddRef(m_pSocketBone);
 
 	m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER_BULLET, m_pColliderCom);
+	// 콜라이더 설정
 
 	CUtility_Effect::Create_Effect_Trail(m_pGameInstance, TEX_WATER_TAG, MASK_JACKTRAIL3_TAG, this,0.3f,true,
 		_float3(0.f, 0.1f, 0.f),_float3(0.f, 0.3f, 0.f), 15,15, _float4(1.f, 0.7f, 0.3f, 1.f), &m_pTrailEffect);
+	// 트레일 이펙트 생성
 
 	return S_OK;
 }
 
 void CPlayer_Weapon_Shovel::Priority_Tick(_float fTimeDelta)
-{
+{// 우선순위 틱
 	XMStoreFloat4x4(&m_matWorldMat, m_pTransformCom->Get_WorldMatrix_Matrix() * m_pSocketBone->Get_CombinedTransformationMatrix() * m_pParentsTransform->Get_WorldMatrix_Matrix());
+	// 무기의 월드행렬, 뼈의 월드 행렬, 플레이어의 월드 행렬을 곱해 월드행렬 변수에 저장
+
 	m_pColliderCom->Update(XMLoadFloat4x4(&m_matWorldMat));
+	// 콜라이더 업데이트
 }
 
 void CPlayer_Weapon_Shovel::Tick(_float fTimeDelta)
-{
+{// 일반적인 틱
 	if (m_pColliderCom->Get_UseCol())
 	{
 		if (!m_bTrail)
@@ -81,10 +85,11 @@ void CPlayer_Weapon_Shovel::Tick(_float fTimeDelta)
 		m_bTrail = false;
 		dynamic_cast<CEffect_Trail*>(m_pTrailEffect)->Trail_Reset(XMLoadFloat4x4(&m_matWorldMat));
 	}
+	// 무기 활성화 시 트레일 이펙트 활성화
 }
 
 void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)
-{
+{// 늦은 틱
 	
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
@@ -94,12 +99,14 @@ void CPlayer_Weapon_Shovel::Late_Tick(_float fTimeDelta)
 
 	if (FAILED(m_pGameInstance->Add_DebugRender(m_pColliderCom)))
 		return;
+
+	// 렌더 그룹 추가
 }
 
 HRESULT CPlayer_Weapon_Shovel::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+		return E_FAIL; // 셰이더 리소스 바인딩
 
 	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
@@ -111,7 +118,7 @@ HRESULT CPlayer_Weapon_Shovel::Render()
 
 		m_pModelCom->Render(i);
 	}
-
+	// 객체 렌더링
 	return S_OK;
 }
 
@@ -128,6 +135,7 @@ HRESULT CPlayer_Weapon_Shovel::Render_Shadow()
 	if (FAILED(m_pShaderCom->Bind_RawValue("g_fLightFar", &m_pGameInstance->Get_ShadowLight()->
 		Open_Light_Desc()->fFar, sizeof(_float))))
 		return E_FAIL;
+	// 셰이더 리소스 바인딩
 
 	_uint	iNumMeshs = m_pModelCom->Get_MeshesNum();
 
@@ -140,11 +148,13 @@ HRESULT CPlayer_Weapon_Shovel::Render_Shadow()
 		m_pModelCom->Render(i);
 	}
 
+	// 객체 그림자 렌더링
+
 	return S_OK;
 }
 
 void CPlayer_Weapon_Shovel::Load_FromJson(const json& In_Json)
-{
+{// 제이슨 로드
 	if (In_Json.find("ModelTag") == In_Json.end())
 		return;
 
@@ -160,7 +170,7 @@ void CPlayer_Weapon_Shovel::Load_FromJson(const json& In_Json)
 }
 
 void CPlayer_Weapon_Shovel::OnCollisionEnter(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 발생 시
 	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
 	{
 		_vector vColDir = XMLoadFloat3(&m_pColliderCom->Get_CollisionDir());
@@ -188,15 +198,15 @@ void CPlayer_Weapon_Shovel::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 }
 
 void CPlayer_Weapon_Shovel::OnCollisionStay(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 유지 시
 }
 
 void CPlayer_Weapon_Shovel::OnCollisionExit(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 종료 시
 }
 
 HRESULT CPlayer_Weapon_Shovel::Bind_ShaderResources()
-{
+{// 셰이더 리소스 바인딩
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_matWorld", &m_matWorldMat )))
 		return E_FAIL;
@@ -211,7 +221,7 @@ HRESULT CPlayer_Weapon_Shovel::Bind_ShaderResources()
 }
 
 HRESULT CPlayer_Weapon_Shovel::Ready_Component()
-{
+{// 컴포넌트 준비
 
 	if (FAILED(Add_Component<CShader>(SHADER_MESH_TAG, &m_pShaderCom))) return E_FAIL;
 	if (FAILED(Add_Component<CModel>(m_strModelTag, &m_pModelCom))) return E_FAIL;
@@ -234,7 +244,7 @@ HRESULT CPlayer_Weapon_Shovel::Ready_Component()
 }
 
 CPlayer_Weapon_Shovel* CPlayer_Weapon_Shovel::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
+{// 원형 객체 생성
 	CPlayer_Weapon_Shovel* pInstance = new CPlayer_Weapon_Shovel(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
@@ -246,7 +256,7 @@ CPlayer_Weapon_Shovel* CPlayer_Weapon_Shovel::Create(ID3D11Device* pDevice, ID3D
 }
 
 CGameObject* CPlayer_Weapon_Shovel::Clone(void* pArg)
-{
+{// 사본 객체 생성
 	CPlayer_Weapon_Shovel* pInstance = new CPlayer_Weapon_Shovel(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
@@ -258,7 +268,7 @@ CGameObject* CPlayer_Weapon_Shovel::Clone(void* pArg)
 }
 
 void CPlayer_Weapon_Shovel::Free()
-{
+{// 메모리 해제
 	__super::Free();
 
 	Safe_Release(m_pShaderCom);

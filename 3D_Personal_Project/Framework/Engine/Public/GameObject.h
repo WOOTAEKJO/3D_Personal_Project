@@ -3,6 +3,13 @@
 #include "Base.h"
 #include "GameInstance.h"
 
+/*
+	게임 오브젝트들의 부모격 추상 클래스입니다.
+	CBase 클래스를 상속받았습니다.
+	게임 오브젝트가 가지고 있는 공통된 기능들을 관리합니다.
+
+*/
+
 BEGIN(Engine)
 
 class ENGINE_DLL CGameObject abstract : public CBase
@@ -16,29 +23,29 @@ public:
 		_float	fSpeedPerSec = 0.f;
 		_float	fRotationPerSec = 0.f;
 
-	}GAMEOBJECT_DESC;
+	}GAMEOBJECT_DESC; // 게임 오브젝트 정의 구조체
 
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 	// 원본을 생성할 때 디바이스들을 받아오는 생성자
 	CGameObject(const CGameObject& rhs);
 	// 사본을 생성할 때 원보의 값들을 복사하는 복사 생성자
-	virtual ~CGameObject() = default;
+	virtual ~CGameObject() = default; // 가상 소멸자
 
 public:
 	virtual HRESULT Initialize_Prototype(); // 원본 초기화
 	virtual HRESULT Initialize(void* pArg); // 사본 초기화
-	virtual void Priority_Tick(_float fTimeDelta);
-	virtual void Tick(_float fTimeDelta);
-	virtual void Late_Tick(_float fTimeDelta);
+	virtual void Priority_Tick(_float fTimeDelta); // 우선순위 틱
+	virtual void Tick(_float fTimeDelta); // 일반적인 틱
+	virtual void Late_Tick(_float fTimeDelta); // 늦은 틱
 	// 업데이트를 먼저, 중간, 나중으로 나누어 사용한다.
 
-	virtual HRESULT Render();
-	virtual HRESULT Render_Shadow() { return S_OK; }
-	virtual HRESULT Render_Blur() { return S_OK; }
+	virtual HRESULT Render(); // 객체 렌더
+	virtual HRESULT Render_Shadow() { return S_OK; } // 객체 그림자 렌더
+	virtual HRESULT Render_Blur() { return S_OK; } // 객체 특정 메쉬 블러 렌더
 
 public:
-	void	In_WorldPlanes();
+	void	In_WorldPlanes(); // 게임 오브젝트가 월드 절두체 평면 안에 있는지 판단
 
 public:
 	template<typename T>
@@ -52,36 +59,40 @@ public:
 		}
 
 		return dynamic_cast<T*>(pComponent);
-	}
+	} // 특정 컴포넌트를 반환하는 템플릿 함수
 
 public:
+	// 프로토타입 태그 관련 메서드들
 	void	Set_ProtoTag(const wstring& strProtoTag) { m_strProtoTag = strProtoTag; }
 	wstring	Get_ProtoTag() { return m_strProtoTag; }
 
+	// 레이어 이름 관련 메서드들
 	void	Set_LayerName(const wstring& strLayerName) { m_strLayerName = strLayerName; }
 	wstring Get_LayerName() { return m_strLayerName; }
 
 public:
+	// 죽음 처리 관련 메서드들
 	void	Set_Dead() { m_bDead = true; }
 	_bool	Get_Dead() { return m_bDead; }
 
+	// 월드 절두체 평면 안에 있는지 판단 변수 반환
 	_bool	Get_In_WorldPlanes() { return m_bIn_WorldPlanes; }
 
 public:
-	virtual void Write_Json(json& Out_Json) override;
-	virtual void Load_FromJson(const json& In_Json) override;
+	virtual void Write_Json(json& Out_Json) override; // 제이슨 저장
+	virtual void Load_FromJson(const json& In_Json) override; // 제이슨 로드
 
-public:
+public:// 충돌 관련 메서드들
 	virtual void	OnCollisionEnter(CCollider* pCollider, _uint iColID) {};
 	virtual void	OnCollisionStay(CCollider* pCollider, _uint iColID) {};
 	virtual void	OnCollisionExit(CCollider* pCollider, _uint iColID) {};
 
 public:
-	void	Distroy();
+	void	Distroy(); // 오브젝트 파괴 관련
 
 protected:
-	ID3D11Device*				m_pDevice = { nullptr };
-	ID3D11DeviceContext*		m_pContext = { nullptr };
+	ID3D11Device*				m_pDevice = { nullptr }; // 디바이스
+	ID3D11DeviceContext*		m_pContext = { nullptr }; // 디바이스 컨텍스트
 
 protected:
 	class CGameInstance*		m_pGameInstance = { nullptr };
@@ -90,14 +101,13 @@ protected:
 	class CTransform*			m_pTransformCom = { nullptr };
 	
 protected:
-	map<const wstring, class CComponent*>	m_mapComponent;
+	map<const wstring, class CComponent*>	m_mapComponent; // 소유한 컴포넌트 관리 map 컨테이너
 
 protected:
-	_bool						m_bDead = { false };
+	_bool						m_bDead = { false }; // 죽음 판단 변수
 
 protected:
-	_bool						m_isCloned = { false };
-	// 클론인지 아닌지를 판단
+	_bool						m_isCloned = { false }; // 클론인지 아닌지를 판단
 
 protected:
 	wstring						m_strProtoTag;
@@ -108,7 +118,7 @@ protected:
 
 protected:
 	HRESULT	Add_Component(_uint iLevelIndex,const wstring& strPrototypeTag,
-		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr);
+		const wstring& strComTag, _Inout_ class CComponent** pOut,void* pArg = nullptr); // 컴포넌트 추가
 
 	template<typename T>
 	HRESULT Add_Component(const wstring& strPrototypeTag, T** pCom, void* pArg = nullptr, _uint iNum = 0)
@@ -133,14 +143,14 @@ protected:
 		Safe_AddRef(Clone);
 
 		return S_OK;
-	}
+	} // 컴포넌트 추가 템플릿 함수
 
-	class CComponent* Find_Component(const wstring & strComTag);
-	HRESULT Delete_Component(const wstring& strComTag);
+	class CComponent* Find_Component(const wstring & strComTag); // 컴포넌트 검색
+	HRESULT Delete_Component(const wstring& strComTag); // 컴포넌트 삭제
 
 public:
-	virtual CGameObject* Clone(void* pArg) = 0;
-	virtual void Free() override;
+	virtual CGameObject* Clone(void* pArg) = 0; // 원현 객체 생성 순수 가상 함수
+	virtual void Free() override; // 메모리 해제
 };
 
 END

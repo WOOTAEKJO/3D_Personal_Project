@@ -3,6 +3,13 @@
 #include "Base.h"
 #include "GameInstance.h"
 
+/*
+	게임 오브젝트들의 부모격 추상 클래스입니다.
+	CBase 클래스를 상속받았습니다.
+	게임 오브젝트가 가지고 있는 공통된 기능들을 관리합니다.
+
+*/
+
 BEGIN(Engine)
 
 class ENGINE_DLL CGameObject abstract : public CBase
@@ -16,7 +23,7 @@ public:
 		_float	fSpeedPerSec = 0.f;
 		_float	fRotationPerSec = 0.f;
 
-	}GAMEOBJECT_DESC;
+	}GAMEOBJECT_DESC; // 게임 오브젝트 정의 구조체
 
 protected:
 	CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);

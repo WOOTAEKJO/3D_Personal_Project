@@ -22,21 +22,25 @@
 #include "Utility_Effect.h"
 #include "Effect_Reaper.h"
 
+// 디바이스와 디바이스 컨텍스트를 받아 초기화
 CHelicoScarrow::CHelicoScarrow(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CMonster(pDevice, pContext)
 {
 }
 
+// 복사 생성자
 CHelicoScarrow::CHelicoScarrow(const CHelicoScarrow& rhs)
 	:CMonster(rhs)
 {
 }
 
+// 원형 객체 초기화
 HRESULT CHelicoScarrow::Initialize_Prototype()
 {
 	return S_OK;
 }
 
+// 사본 객체 초기화
 HRESULT CHelicoScarrow::Initialize(void* pArg)
 {
 
@@ -44,30 +48,25 @@ HRESULT CHelicoScarrow::Initialize(void* pArg)
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))
-		return E_FAIL;
+		return E_FAIL; // 컴포넌트 준비
 
 	if (FAILED(Ready_State()))
-		return E_FAIL;
+		return E_FAIL; // 상태 준비
 
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_MONSTER, m_pColliderCom)))
-		return E_FAIL;
-
-	/*if (FAILED(m_pGameInstance->Load_Data_Json(m_strModelTag, this)))
-		return E_FAIL;*/
+		return E_FAIL; // 콜라이더 추가
 
 	if (FAILED(Init_Point_Light()))
-		return E_FAIL;
+		return E_FAIL; // 포인트 라이트 초기화
 
 	m_pSocketBone = m_pModelCom->Get_Bone(2);
 	Safe_AddRef(m_pSocketBone);
-
-	/*m_Status_Desc.iMaxHP = 5;
-	m_Status_Desc.iCurHP = 5;*/
 
 	m_Status_Desc.bAttack_able = false;
 	m_Status_Desc.bTalk = true;
 
 	if (FAILED(m_pGameInstance->Add_Actor(TEXT("Boss1Talk"), TEXT("Boss1"), this))) return E_FAIL;
+	// 연출을 위한 액터 추가
 
 	return S_OK;
 }
@@ -90,18 +89,15 @@ void CHelicoScarrow::Priority_Tick(_float fTimeDelta)
 		CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
 			MASK_GLOWTEST_TAG, _float2(10.f, 10.f),
 			vEffectPos, _float4(1.f, 0.8f, 0.f, 1.f), 0.3f, &m_pLightEffect);
-	}
+	} // 라이트 이펙트 생성
 
 	m_pColliderCom->Update(m_pSocketBone->Get_CombinedTransformationMatrix() * m_pTransformCom->Get_WorldMatrix_Matrix());
+	// 콜라이더 업데이트
 	CGameObject::Priority_Tick(fTimeDelta);
 }
 
 void CHelicoScarrow::Tick(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(DIK_0))
-	{
-		m_pStateMachineCom->Set_State(CHelicoScarrow::STATE::DEAD);
-	}
 
 	Hide();
 
@@ -121,23 +117,24 @@ void CHelicoScarrow::Late_Tick(_float fTimeDelta)
 		return;
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_BLUR, this)))
 		return;
+	// 렌더 그룹에 추가
 }
 
-HRESULT CHelicoScarrow::Render()
+HRESULT CHelicoScarrow::Render() 
 {
 	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+		return E_FAIL; // 셰이더 리소스 바인딩
 
 	if (FAILED(CMonster::Render()))
-		return E_FAIL;
+		return E_FAIL;// 모델 렌더링
 
 	return S_OK;
 }
 
-HRESULT CHelicoScarrow::Render_Shadow()
+HRESULT CHelicoScarrow::Render_Shadow() 
 {
 	if (FAILED(CMonster::Render_Shadow()))
-		return E_FAIL;
+		return E_FAIL;// 그림자 렌더링
 
 	return S_OK;
 }
@@ -159,13 +156,13 @@ HRESULT CHelicoScarrow::Render_Blur()
 		m_pShaderCom->Begin(0);
 
 		m_pModelCom->Render(iIndx[i]);
-	}
+	} // 특정 메쉬 블러 렌더링
 
 	return S_OK;
 }
 
 _bool CHelicoScarrow::Is_AllHited(_uint iNum)
-{
+{// 히트 카운트 체크
 	if (iNum >= 2)
 		return false;
 
@@ -176,12 +173,12 @@ _bool CHelicoScarrow::Is_AllHited(_uint iNum)
 }
 
 void CHelicoScarrow::Reset_Hited()
-{
+{ // 히트 카운트 리셋
 	m_iHited_Count[1] = 0;
 }
 
 void CHelicoScarrow::Create_Monster()
-{
+{ // 서브 몬스터 생성
 	CGameObject* pMonst = nullptr;
 	CCharacter::CHARACTER_DESC Character_Desc = {};
 
@@ -215,14 +212,12 @@ void CHelicoScarrow::Create_Monster()
 }
 
 _bool CHelicoScarrow::Is_SubMonster_AllDead()
-{
+{ // 서브 몬스터 모두 데드인지 체크
 	_uint iCount = 0;
 
 	for(auto& iter : m_vecSubMonster)
 	{
-		/*if (!iter->Get_Dead())
-			return false;*/
-
+		
 		if ((iter == nullptr) || iter->Get_Dead() || dynamic_cast<CMonster*>(iter)->Get_DeadTime())
 			++iCount;
 	}
@@ -233,17 +228,16 @@ _bool CHelicoScarrow::Is_SubMonster_AllDead()
 		return true;
 	}
 
-	//return true;
 	return false;
 }
 
 void CHelicoScarrow::Dead_CountDown()
-{
+{ // 보스의 데드 카운트 체크
 	m_iHited_Count[0] += 1;
 }
 
 void CHelicoScarrow::Creat_Bullet()
-{
+{ // 총알 생성
 	CHelico_Bullet::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
@@ -282,7 +276,7 @@ void CHelicoScarrow::Creat_Bullet()
 }
 
 void CHelicoScarrow::Create_Shock_Wave()
-{
+{ // 충격파 생성
 	CShock_Wave::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_MONSTER_BULLET;
@@ -317,7 +311,7 @@ void CHelicoScarrow::Create_Shock_Wave()
 }
 
 void CHelicoScarrow::Shock_Wave_Radius_Compute()
-{
+{ // 충격파 반경 계산
 	if (m_pStateMachineCom->Get_StateID() == (_uint)STATE::GROUND_SMASH ||
 		m_pStateMachineCom->Get_PrevID() == (_uint)STATE::GROUND_SMASH)
 	{
@@ -340,7 +334,7 @@ void CHelicoScarrow::Shock_Wave_Radius_Compute()
 }
 
 void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
-{
+{ // 충돌 발생 시
 	if ((pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_PLAYER_BULLET) &&
 		m_Status_Desc.bHited == false)
 	{
@@ -359,16 +353,16 @@ void CHelicoScarrow::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 }
 
 void CHelicoScarrow::OnCollisionStay(CCollider* pCollider, _uint iColID)
-{
+{ // 충돌 유지 시
 	
 }
 
 void CHelicoScarrow::OnCollisionExit(CCollider* pCollider, _uint iColID)
-{
+{ // 충돌 종료 시
 }
 
 HRESULT CHelicoScarrow::Bind_ShaderResources()
-{
+{ // 셰이더 리소스 바인딩
 	if (FAILED(CMonster::Bind_ShaderResources()))
 		return E_FAIL;
 
@@ -376,7 +370,7 @@ HRESULT CHelicoScarrow::Bind_ShaderResources()
 }
 
 HRESULT CHelicoScarrow::Ready_Component()
-{
+{ // 컴포넌트 준비
 	if (FAILED(CMonster::Ready_Component()))
 		return E_FAIL;
 
@@ -392,7 +386,7 @@ HRESULT CHelicoScarrow::Ready_Component()
 }
 
 HRESULT CHelicoScarrow::Ready_State()
-{
+{ // 상태 준비
 
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DEAD, CHelico_Dead::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::DIVE, CHelico_Dive::Create(this)))) return E_FAIL;
@@ -414,7 +408,7 @@ HRESULT CHelicoScarrow::Ready_State()
 }
 
 HRESULT CHelicoScarrow::Init_Point_Light()
-{
+{ // 포인트 라이트 초기화
 	LIGHT_DESC LightDesc = {};
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
@@ -435,7 +429,7 @@ HRESULT CHelicoScarrow::Init_Point_Light()
 }
 
 void CHelicoScarrow::Hide()
-{
+{ // 숨김 처리
 	if (m_pLightEffect == nullptr)
 		return;
 
@@ -449,7 +443,7 @@ void CHelicoScarrow::Hide()
 }
 
 CHelicoScarrow* CHelicoScarrow::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
+{ // 원형 객체 생성
 	CHelicoScarrow* pInstance = new CHelicoScarrow(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
@@ -461,7 +455,7 @@ CHelicoScarrow* CHelicoScarrow::Create(ID3D11Device* pDevice, ID3D11DeviceContex
 }
 
 CGameObject* CHelicoScarrow::Clone(void* pArg)
-{
+{ // 사본 객체 생성
 	CHelicoScarrow* pInstance = new CHelicoScarrow(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
@@ -473,7 +467,7 @@ CGameObject* CHelicoScarrow::Clone(void* pArg)
 }
 
 void CHelicoScarrow::Free()
-{
+{ // 메모리 해제
 	__super::Free();
 	
 }

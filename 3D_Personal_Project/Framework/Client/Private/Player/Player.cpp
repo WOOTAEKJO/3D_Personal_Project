@@ -30,16 +30,16 @@
 
 CPlayer::CPlayer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:CCharacter(pDevice, pContext)
-{
+{// 디바이스와 디바이스 컨텍스트를 받아 초기화
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
 	: CCharacter(rhs),m_pMaxHP(rhs.m_pMaxHP),m_pCurHP(rhs.m_pCurHP)
-{
+{// 복사 생성자
 }
 
 HRESULT CPlayer::Initialize_Prototype()
-{
+{// 원형 초기화
 	m_pMaxHP = new _int;
 	m_pCurHP = new _int;
 
@@ -50,44 +50,44 @@ HRESULT CPlayer::Initialize_Prototype()
 }
 
 HRESULT CPlayer::Initialize(void* pArg)
-{
+{// 사본 초기화
 	CHARACTER_DESC Character_Desc = {};
 
 	Character_Desc.fRotationPerSec = XMConvertToRadians(90.f);
 	Character_Desc.fSpeedPerSec = 5.f;
 	Character_Desc.strModelTag = ANIMMODEL_JACK_TAG;
+	// 플레이어 기본 상태 초기화
 
 	if (FAILED(CCharacter::Initialize(&Character_Desc)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Component()))
-		return E_FAIL;
+		return E_FAIL; // 컴포넌트 준비
 
 	if (FAILED(Ready_Parts()))
-		return E_FAIL;
+		return E_FAIL; // 파츠 준비
 
 	if (FAILED(Ready_Animation()))
-		return E_FAIL;
+		return E_FAIL; // 애니메이션 준비
 
 	if (FAILED(Ready_State()))
-		return E_FAIL;
+		return E_FAIL; // 상태 준비
 
 	if (FAILED(Ready_Controller()))
-		return E_FAIL;
+		return E_FAIL; // 컨트롤러 준비
 
 	if (FAILED(Init_Point_Light()))
-		return E_FAIL;
+		return E_FAIL; // 포인트 라이트 초기화
 
 	if (FAILED(Ready_UI()))
-		return E_FAIL;
+		return E_FAIL; // UI 준비
 
 	m_pTransformCom->Set_Scaling(0.16f, 0.16f, 0.16f);
 
 	if (m_pGameInstance->Get_Current_Level() == (_uint)LEVEL::LEVEL_GAMEPLAY)
 	{
 		m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(4.f, 7.f, 4.f, 1.f));
-		/*m_pTransformCom->Set_State(CTransform::STATE::STATE_POS, XMVectorSet(39.53f, 9.f, 28.438f, 1.f));
-		m_pNavigationCom->Set_CurrentIndex(397);*/
+		
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk"), TEXT("Player"), this))) return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk2"), TEXT("Player"), this))) return E_FAIL;
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("OwlTalk3"), TEXT("Player"), this))) return E_FAIL;
@@ -107,8 +107,8 @@ HRESULT CPlayer::Initialize(void* pArg)
 		if (FAILED(m_pGameInstance->Add_Actor(TEXT("Ending2"), TEXT("Player"), this))) return E_FAIL;
 	}
 		
-
 	if (FAILED(m_pGameInstance->Add_Collision(COLLIDER_LAYER::COL_PLAYER, m_pColliderCom))) return E_FAIL;
+	// 콜라이더 설정
 
 	_vector vTmp = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vTmp.m128_f32[1] += m_pTransformCom->Get_Scaled().y;
@@ -121,6 +121,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 	CUtility_Effect::Create_Effect_Light(m_pGameInstance, this, pBone,
 		MASK_GLOWTEST_TAG, _float2(25000.f, 25000.f),
 		vEffectPos, _float4(1.f, 0.6f, 0.4f, 1.f), 0.3f,&m_pLightEffect);
+	// 라이트 이펙트 생성
 
 	m_Status_Desc.iMaxHP = *m_pMaxHP;
 	m_Status_Desc.iCurHP = m_Status_Desc.iMaxHP;
@@ -129,7 +130,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 }
 
 void CPlayer::Priority_Tick(_float fTimeDelta)
-{
+{// 우선순위 틱
 	m_Status_Desc.iCurHP = *m_pCurHP;
 
 	for (auto& iter : m_mapParts)
@@ -141,9 +142,7 @@ void CPlayer::Priority_Tick(_float fTimeDelta)
 }
 
 void CPlayer::Tick(_float fTimeDelta)
-{
-	//ShadowLight_SetUp();
-
+{// 일반적인 틱
 	for (auto& iter : m_mapParts)
 	{
 		iter.second->Tick(fTimeDelta);
@@ -153,7 +152,7 @@ void CPlayer::Tick(_float fTimeDelta)
 }
 
 void CPlayer::Late_Tick(_float fTimeDelta)
-{
+{// 늦은 틱
 	NextAttackID();
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RENDER_NONBLEND, this)))
@@ -175,13 +174,13 @@ void CPlayer::Late_Tick(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
 	if (FAILED(Bind_ShaderResources()))
-		return E_FAIL;
+		return E_FAIL; // 셰이더 리소스 바인딩
 
 	return S_OK;
 }
 
 CGameObject* CPlayer::Find_Parts(PARTS_TYPE ePartsTag)
-{
+{// 특정 파츠 검색후 반환
 	auto iter = m_mapParts.find(ePartsTag);
 
 	if (iter == m_mapParts.end())
@@ -191,7 +190,7 @@ CGameObject* CPlayer::Find_Parts(PARTS_TYPE ePartsTag)
 }
 
 CModel* CPlayer::Get_BodyModel()
-{
+{// 몸체 모델 컴포넌트 반환
 	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>( Find_Parts(PARTS_TYPE::PARTS_BODY));
 	if (pBody == nullptr)
 		return nullptr;
@@ -200,7 +199,7 @@ CModel* CPlayer::Get_BodyModel()
 }
 
 CTransform* CPlayer::Get_BodyTransform()
-{
+{// 몸체 트렌스폼 컴포넌트 반환
 	CPlayer_Body* pBody = dynamic_cast<CPlayer_Body*>(Find_Parts(PARTS_TYPE::PARTS_BODY));
 	if (pBody == nullptr)
 		return nullptr;
@@ -209,7 +208,7 @@ CTransform* CPlayer::Get_BodyTransform()
 }
 
 CCollider* CPlayer::Get_WeaponCollider()
-{
+{// 무기 콜라이더 컴포넌트 반환
 	CGameObject* pWeapon = Find_Parts(PARTS_TYPE::PARTS_WEAPON);
 	if (pWeapon == nullptr)
 		return nullptr;
@@ -218,7 +217,7 @@ CCollider* CPlayer::Get_WeaponCollider()
 }
 
 _int CPlayer::Get_CurrentState()
-{
+{// 현재 상태 반환
 	if (m_pStateMachineCom == nullptr)
 		return -1;
 
@@ -226,7 +225,7 @@ _int CPlayer::Get_CurrentState()
 }
 
 void CPlayer::Animation_By_Type(STATE eType)
-{
+{// 상태에 맞는 애니메이션으로 전환
 	_int iAnimIndex = Find_AnimIndex(m_eCurrentWeaponType, eType);
 	if (iAnimIndex == -1)
 		return;
@@ -239,7 +238,7 @@ void CPlayer::Animation_By_Type(STATE eType)
 }
 
 void CPlayer::Create_Range_Bullet()
-{
+{// 특정 총알 생성
 	CRange_Bullet::BULLET_DESC BulletDesc = {};
 	BulletDesc.pOwner = this;
 	BulletDesc.eCollider_Layer = COLLIDER_LAYER::COL_PLAYER_BULLET;
@@ -261,7 +260,7 @@ void CPlayer::Create_Range_Bullet()
 }
 
 void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 발생 시
 	if (iColID == m_pColliderCom->Get_Collider_ID())
 	{
 		if ((pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER_BULLET || 
@@ -293,7 +292,7 @@ void CPlayer::OnCollisionEnter(CCollider* pCollider, _uint iColID)
 }
 
 void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 유지 시
 	if (pCollider->Get_ColLayer_Type() == (_uint)COLLIDER_LAYER::COL_MONSTER)
 	{
 		Pushed();
@@ -301,12 +300,12 @@ void CPlayer::OnCollisionStay(CCollider* pCollider, _uint iColID)
 }
 
 void CPlayer::OnCollisionExit(CCollider* pCollider, _uint iColID)
-{
+{// 충돌 종료 시
 	Pushed_Reset();
 }
 
 HRESULT CPlayer::Bind_ShaderResources()
-{
+{// 셰이더 리소스 바인딩
 	if (FAILED(m_mapParts[PARTS_TYPE::PARTS_BODY]->Get_Component<CShader>()->Bind_RawValue("g_bHited", &m_bHit_Effect,
 		sizeof(_bool)))) return E_FAIL;
 
@@ -315,7 +314,7 @@ HRESULT CPlayer::Bind_ShaderResources()
 }
 
 HRESULT CPlayer::Ready_Component()
-{
+{// 컴포넌트 준비
 	CNavigation::NAVIGATION_DESC NavigationDesc = {};
 	NavigationDesc.iCurrentIndex = 0;
 	if (FAILED(Add_Component<CNavigation>(m_pGameInstance->Get_CurNavigationTag(), &m_pNavigationCom, &NavigationDesc))) return E_FAIL;
@@ -326,10 +325,6 @@ HRESULT CPlayer::Ready_Component()
 	RigidBody_Desc.pOwner = this;
 	if (FAILED(Add_Component<CRigidBody>(COM_RIGIDBODY_TAG, &m_pRigidBodyCom,&RigidBody_Desc))) return E_FAIL;
 
-	/*CBounding_AABB::BOUNDING_AABB_DESC AABB_Desc = {};
-	AABB_Desc.eType = CBounding::TYPE::TYPE_AABB;
-	AABB_Desc.vExtents = _float3(0.5f, 1.f, 0.5f);
-	AABB_Desc.vCenter = _float3(0.f, AABB_Desc.vExtents.y, 0.f);*/
 	CBounding_Sphere::BOUNDING_SPHERE_DESC Sphere_Desc = {};
 	Sphere_Desc.pOnwer = this;
 	Sphere_Desc.eType = CBounding::TYPE::TYPE_SPHERE;
@@ -344,7 +339,7 @@ HRESULT CPlayer::Ready_Component()
 }
 
 HRESULT CPlayer::Init_Point_Light()
-{
+{// 포인트 라이트 초기화
 	LIGHT_DESC LightDesc = {};
 	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
 	vPos.m128_u8[0] = m_pTransformCom->Get_Scaled().y;
@@ -353,10 +348,6 @@ HRESULT CPlayer::Init_Point_Light()
 	XMStoreFloat4(&LightDesc.vPos, vPos);
 	LightDesc.fRange = 0.4f;
 	LightDesc.vDiffuse = _float4(1.f, 0.6f, 0.4f, 1.f);
-	//LightDesc.vAmbient = _float4(1.f, 0.6f, 0.4f, 1.f);
-	// //LightDesc.vSpecular = LightDesc.vDiffuse;
-	// 
-	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);;
 
@@ -369,7 +360,7 @@ HRESULT CPlayer::Init_Point_Light()
 }
 
 HRESULT CPlayer::Ready_UI()
-{
+{// UI 준비
 
 	CUI_HP::UI_HP_DESC Hp_Desc = {};
 
@@ -400,7 +391,7 @@ HRESULT CPlayer::Ready_UI()
 }
 
 HRESULT CPlayer::Ready_State()
-{
+{// 상태 준비
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::IDLE, CPlayer_IDLE::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::RUN, CPlayer_Run::Create(this)))) return E_FAIL;
 	if (FAILED(m_pStateMachineCom->Add_State(STATE::ATTACK1, CPlayer_Spear_Attack1::Create(this)))) return E_FAIL;
@@ -419,7 +410,7 @@ HRESULT CPlayer::Ready_State()
 }
 
 HRESULT CPlayer::Ready_Parts()
-{
+{// 파츠 준비
 	CPlayer_Body::PLAYERBODY_DESC PlayerBody_Desc = {};
 	PlayerBody_Desc.pParentsTransform = m_pTransformCom;
 	if (FAILED(Add_Parts(GO_PLAYER_BODY_TAG, PARTS_TYPE::PARTS_BODY,&PlayerBody_Desc))) return E_FAIL;
@@ -435,18 +426,11 @@ HRESULT CPlayer::Ready_Parts()
 	PlayerShovel_Desc.pOwner = this;
 	if (FAILED(Add_Parts(GO_PLAYER_SHOVEL_TAG, PARTS_TYPE::PARTS_WEAPON, &PlayerShovel_Desc))) return E_FAIL;
 
-	/*CCrow::CROW_DESC Crow_Desc = {};
-	Crow_Desc.pPlayer = this;
-	Crow_Desc.fRotationPerSec = XMConvertToRadians(90.f);
-	Crow_Desc.fSpeedPerSec = 5.f;
-	Crow_Desc.strModelTag = ANIMMODEL_CROW_TAG;
-	if (FAILED(Add_Parts(GO_CROW_TAG, PARTS_TYPE::PARTS_CROW, &Crow_Desc))) return E_FAIL;*/
-
 	return S_OK;
 }
 
 HRESULT CPlayer::Ready_Controller()
-{
+{// 컨트롤러 준비
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_FRONT,DIK_W))) return E_FAIL;
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_BACK, DIK_S))) return E_FAIL;
 	if (FAILED(m_pControllerCom->Add_ControllKey(KEY_STATE::KEY_RIGHT, DIK_D))) return E_FAIL;
@@ -462,7 +446,7 @@ HRESULT CPlayer::Ready_Controller()
 }
 
 HRESULT CPlayer::Ready_Animation()
-{
+{// 무기 타입에 따른 애니메이션 준비
 	WEAPON_TYPE Weapon_Type = WEAPON_TYPE::TYPE_SPEAR;
 	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::IDLE, 83))) return E_FAIL;
 	if(FAILED(Add_WeaponType_By_Animation(Weapon_Type, CPlayer::RUN, 86))) return E_FAIL;
@@ -497,7 +481,7 @@ HRESULT CPlayer::Ready_Act()
 }
 
 HRESULT CPlayer::Add_Parts(const wstring& strPrototypeTag, PARTS_TYPE ePartsTag, void* pArg)
-{
+{// 파츠 추가
 	CGameObject* pParts = nullptr;
 
 	pParts = m_pGameInstance->Add_Independent_Clone(strPrototypeTag, pArg);
@@ -513,7 +497,7 @@ HRESULT CPlayer::Add_Parts(const wstring& strPrototypeTag, PARTS_TYPE ePartsTag,
 }
 
 HRESULT CPlayer::Add_WeaponType_By_Animation(WEAPON_TYPE eWeaponType, STATE eStateType, _uint iAnimIndex)
-{
+{// 무기 타입에 따른 애니메이션 추가
 	if (eWeaponType >= WEAPON_TYPE::TYPE_END || eStateType >= STATE::STATE_END)
 		return E_FAIL;
 
@@ -532,7 +516,7 @@ HRESULT CPlayer::Add_WeaponType_By_Animation(WEAPON_TYPE eWeaponType, STATE eSta
 }
 
 _int CPlayer::Find_AnimIndex(WEAPON_TYPE eWeaponType, STATE eStateType)
-{
+{// 특정 무기 타입에 따른 애니메이션 검색
 	auto& WeaponType = m_mapTypeAnimation.find(eWeaponType);
 	if (WeaponType == m_mapTypeAnimation.end())
 		return -1;
@@ -545,7 +529,7 @@ _int CPlayer::Find_AnimIndex(WEAPON_TYPE eWeaponType, STATE eStateType)
 }
 
 void CPlayer::NextAttackID()
-{
+{// 다음 연계 공격을 준비
 	switch (m_pStateMachineCom->Get_PrevID())
 	{
 	case (_uint)CPlayer::STATE::ATTACK1:
@@ -562,28 +546,8 @@ void CPlayer::NextAttackID()
 	}
 }
 
-void CPlayer::ShadowLight_SetUp()
-{
-	SHADOW_LIGHT_DESC Shadow_Desc = {};
-
-	_vector vPos = m_pTransformCom->Get_State(CTransform::STATE::STATE_POS);
-
-	//XMStoreFloat4(&Shadow_Desc.vPos, XMVectorAdd(vPos, XMVectorSet(-5.f, 5.f, -5.f, 0.f)));
-	XMStoreFloat4(&Shadow_Desc.vAt, vPos);
-	Shadow_Desc.vPos = _float4(40.f, 40.f, 40.f, 1.f);
-	Shadow_Desc.vUpDir = _float4(0.f, 1.f, 0.f, 0.f);
-
-	Shadow_Desc.fFov = XMConvertToRadians(60.f);
-	Shadow_Desc.fAspect =((_float)g_iWinSizeX / g_iWinSizeY);
-	Shadow_Desc.fNear = 0.1f;
-	Shadow_Desc.fFar = 600.f;
-
-	//m_pGameInstance->Get_ShadowLight()->Open_Light_Desc();
-	m_pGameInstance->Get_ShadowLight()->Set_Light_Desc(Shadow_Desc);
-}
-
 CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-{
+{// 원형 객체 생성
 	CPlayer* pInstance = new CPlayer(pDevice, pContext);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
@@ -595,7 +559,7 @@ CPlayer* CPlayer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 }
 
 CGameObject* CPlayer::Clone(void* pArg)
-{
+{// 사본 객체 생성
 	CPlayer* pInstance = new CPlayer(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
@@ -607,7 +571,7 @@ CGameObject* CPlayer::Clone(void* pArg)
 }
 
 void CPlayer::Free()
-{
+{// 메모리 해제
 	__super::Free();
 
 	if (m_isCloned == false)
