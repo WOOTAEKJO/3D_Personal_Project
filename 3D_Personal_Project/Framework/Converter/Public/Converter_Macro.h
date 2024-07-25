@@ -77,6 +77,9 @@
 #define	ANIMMODEL_PHANTOM_TAG				TEXT("Prototype_Component_AnimModel_PhantomBoss")
 #define	ANIMMODEL_PHANTOM_PATH			"../Bin/Resources/Models/AnimModel/PhantomBoss/PhantomBoss.fbx"
 
+#define	ANIMMODEL_NPCTEST_TAG				TEXT("Prototype_Component_AnimModel_NPCTest")
+#define	ANIMMODEL_NPCTEST_PATH			"../Bin/Resources/Models/AnimModel/NPCTest/NPCTest.fbx"
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

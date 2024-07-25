@@ -104,6 +104,9 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_OWL_PATH))))
 		return E_FAIL;*/
 
+	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), ANIMMODEL_NPCTEST_TAG,
+		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_ANIM, ANIMMODEL_NPCTEST_PATH))))
+		return E_FAIL;
 	
 
 #pragma region Level1 Moster
@@ -524,9 +527,9 @@ HRESULT CLoader::Loading_For_Converter_Level()
 		return E_FAIL;*/
 
 
-	if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FLOORLAMP_TAG,
+	/*if (FAILED(m_pGameInstance->Add_Component_ProtoType(m_pGameInstance->Get_Current_Level(), MODEL_FLOORLAMP_TAG,
 		CConverter_Model::Create(m_pDevice, m_pContext, CConverter_Model::TYPE_NONANIM, MODEL_FLOORLAMP_PATH))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 #pragma endregion 
 

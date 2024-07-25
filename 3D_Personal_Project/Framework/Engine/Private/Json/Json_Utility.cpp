@@ -36,7 +36,8 @@ HRESULT CJson_Utility::Load_Json(const char* _strPath, json& pOut)
 	return S_OK;
 }
 
-HRESULT CJson_Utility::Save_Json(const char* _strPath, json _json)
+HRESULT CJson_Utility::
+(const char* _strPath, json _json)
 {
 	ofstream fout;
 

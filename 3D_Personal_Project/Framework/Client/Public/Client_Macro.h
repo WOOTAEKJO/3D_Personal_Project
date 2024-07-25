@@ -71,6 +71,8 @@
 
 #define	ANIMMODEL_PHANTOM_TAG			TEXT("Prototype_Component_AnimModel_PhantomBoss")
 
+#define	ANIMMODEL_NPCTEST_TAG				TEXT("Prototype_Component_AnimModel_NPCTest")
+
 #pragma endregion
 
 #pragma region ÀÏ¹Ý¸ðµ¨

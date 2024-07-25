@@ -359,6 +359,10 @@ HRESULT CLoader::Loading_For_Tool_Level()
 	matPivot = XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_OWL_TAG, matPivot))) return E_FAIL;
 
+	matPivot = XMMatrixIdentity();
+	if (FAILED(m_pGameInstance->Add_ANIM_Model_ProtoType(ANIMMODEL_NPCTEST_TAG, matPivot))) return E_FAIL;
+
+
 	lstrcpy(m_szLoadingText, TEXT("네비게이션를(을) 로드하는 중입니다."));
 	if (FAILED(m_pGameInstance->Add_Navigation_ProtoType_Demo(COM_NAVIGATION_DEMO_TAG))) return E_FAIL;
 

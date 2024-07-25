@@ -93,7 +93,7 @@ HRESULT CModel_Instancing::Render(_uint iMeshIndx)
 		m_vecMesh[iMeshIndx]->Get_VertexBuffer(),
 		m_pInstanceBuffer
 	};	// 버텍스 버퍼들 배열
-
+	
 	_uint			iStrides[] = {
 		m_vecMesh[iMeshIndx]->Get_VertexStride(),
 		m_iInstanceStride

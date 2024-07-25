@@ -165,10 +165,6 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagVertex_Mesh
 	{
-		XMFLOAT3	vPosition;
-		XMFLOAT3	vTangent;	// 접선 벡터 : 정점 표면의 정보.		탄젠트 공간 x 축
-		XMFLOAT3	vNormal;	// 법선 벡터 : 면에서 수직인 벡터.		탄젠트 공간 z 축
-		XMFLOAT2	vTexCoord;
 
 		static const unsigned int	iElementsNum = 4;
 		static const D3D11_INPUT_ELEMENT_DESC	Elements[iElementsNum];
